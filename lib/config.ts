@@ -1,0 +1,87 @@
+export const COMPANY = {
+  legalName: "Phoenixwebhost Inc.",
+  shortName: "Phoenixwebhost",
+  owner: "Alex Ochoa",
+  city: "Phoenix, AZ",
+  email: "hello@phoenixwebhost.com",
+  phone: "(602) 555-0140",
+  domain: "phoenixwebhost.com",
+} as const;
+
+export const PRICING = {
+  setupCents: 20_000,
+  monthlyCents: 6_900,
+  setupLabel: "$200",
+  monthlyLabel: "$69",
+  extraPageMin: 75,
+  extraPageMax: 150,
+  logoMin: 100,
+  logoMax: 300,
+  includedEditMinutes: 30,
+  includedEditRequests: 2,
+  unpaidGraceDays: 2,
+  filesKeptDays: 30,
+} as const;
+
+export const TEMPLATES: {
+  id: import("./types").TemplateId;
+  name: string;
+  nameEs: string;
+  blurb: string;
+  blurbEs: string;
+}[] = [
+  {
+    id: "contractor",
+    name: "Contractor & trades",
+    nameEs: "Contratista y oficios",
+    blurb: "Roofing, HVAC, plumbing, landscaping, and job-site businesses.",
+    blurbEs: "Techados, A/C, plomería, jardinería y oficios.",
+  },
+  {
+    id: "salon",
+    name: "Salon & beauty",
+    nameEs: "Salón y belleza",
+    blurb: "Hair, nails, spa, and appointment-based shops.",
+    blurbEs: "Cabello, uñas, spa y citas.",
+  },
+  {
+    id: "restaurant",
+    name: "Restaurant & cafe",
+    nameEs: "Restaurante y café",
+    blurb: "Menus, hours, and a clear call to visit or order.",
+    blurbEs: "Menú, horario y una llamada clara a visitar u ordenar.",
+  },
+  {
+    id: "professional",
+    name: "Professional services",
+    nameEs: "Servicios profesionales",
+    blurb: "Bookkeeping, insurance, consulting, and local offices.",
+    blurbEs: "Contabilidad, seguros, consultoría y oficinas locales.",
+  },
+];
+
+export function publicSiteUrl() {
+  return (
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000")
+  );
+}
+
+export function clientSitePath(slug: string) {
+  return `/s/${slug}`;
+}
+
+export function clientSubdomainHost(slug: string) {
+  const root = process.env.NEXT_PUBLIC_ROOT_DOMAIN || COMPANY.domain;
+  return `${slug}.${root}`;
+}
+
+export function stripeConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY &&
+      process.env.STRIPE_SETUP_PRICE_ID &&
+      process.env.STRIPE_MONTHLY_PRICE_ID,
+  );
+}
