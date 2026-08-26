@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SiteFooter, SiteHeader } from "@/components/marketing/Chrome";
+import { SiteFooter, SiteHeader, StudioShell } from "@/components/marketing/Chrome";
 import { RequestForm } from "@/components/marketing/RequestForm";
 import { TEMPLATES } from "@/lib/config";
 import { requestPath, t } from "@/lib/i18n";
@@ -8,92 +8,92 @@ import type { Locale } from "@/lib/types";
 export function MarketingPage({ locale }: { locale: Locale }) {
   const c = t(locale);
   return (
-    <div className="grain flex min-h-full flex-col">
+    <StudioShell>
       <SiteHeader locale={locale} />
       <main>
-        <section className="mx-auto grid max-w-6xl gap-12 px-5 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-24">
+        <section className="mx-auto grid max-w-6xl gap-12 px-5 py-20 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:py-28">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-mesa">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-gold">
               {c.heroKicker}
             </p>
-            <h1 className="mt-4 max-w-xl text-4xl leading-[1.12] text-ink sm:text-5xl">
+            <h1 className="mt-5 max-w-xl font-display text-5xl leading-[1.08] text-cream sm:text-6xl">
               {c.heroTitle}
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-soft">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-cream-soft">
               {c.heroLead}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 href={requestPath(locale)}
-                className="rounded-full bg-clay px-6 py-3 text-sm font-semibold text-white hover:bg-clay-dark"
+                className="btn-gold rounded-full px-7 py-3 text-sm"
               >
                 {c.ctaPrimary}
               </Link>
               <a
                 href="#pricing"
-                className="rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink hover:bg-sand"
+                className="rounded-full border border-gold-line px-7 py-3 text-sm font-semibold text-cream hover:border-gold hover:text-gold"
               >
                 {c.ctaSecondary}
               </a>
             </div>
-            <p className="mt-6 text-sm text-ink-soft">{c.ownerLine}</p>
+            <p className="mt-6 text-sm text-cream-soft">{c.ownerLine}</p>
           </div>
-          <div className="rounded-3xl border border-line bg-paper p-8 shadow-[0_20px_50px_rgba(28,23,18,0.06)]">
-            <p className="text-sm uppercase tracking-[0.16em] text-ink-soft">
+          <div className="rounded-3xl border border-gold-line bg-dusk-card p-8 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
+            <p className="text-sm uppercase tracking-[0.18em] text-gold">
               {locale === "es" ? "Precios claros" : "Clear prices"}
             </p>
             <div className="mt-6 grid gap-6">
               <div>
-                <p className="font-display text-5xl text-ink">{c.priceLaunch}</p>
-                <p className="mt-1 text-ink-soft">{c.priceLaunchHint}</p>
+                <p className="font-display text-6xl tracking-tight text-gold">{c.priceLaunch}</p>
+                <p className="mt-1 text-cream-soft">{c.priceLaunchHint}</p>
               </div>
               <div className="rule" />
               <div>
-                <p className="font-display text-5xl text-ink">{c.priceMonth}</p>
-                <p className="mt-1 text-ink-soft">{c.priceMonthHint}</p>
+                <p className="font-display text-6xl tracking-tight text-gold">{c.priceMonth}</p>
+                <p className="mt-1 text-cream-soft">{c.priceMonthHint}</p>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="pricing" className="border-y border-line bg-sand/70">
+        <section id="pricing" className="border-y border-gold-line bg-[#0e1626]">
           <div className="mx-auto grid max-w-6xl gap-6 px-5 py-16 md:grid-cols-2">
-            <article className="rounded-2xl border border-line bg-paper p-8">
-              <h2 className="font-display text-3xl">{c.launchTitle}</h2>
-              <p className="mt-4 leading-relaxed text-ink-soft">{c.launchBody}</p>
+            <article className="rounded-2xl border border-gold-line bg-dusk-card p-8">
+              <h2 className="font-display text-3xl text-cream">{c.launchTitle}</h2>
+              <p className="mt-4 leading-relaxed text-cream-soft">{c.launchBody}</p>
             </article>
-            <article className="rounded-2xl border border-line bg-paper p-8">
-              <h2 className="font-display text-3xl">{c.monthTitle}</h2>
-              <p className="mt-4 leading-relaxed text-ink-soft">{c.monthBody}</p>
+            <article className="rounded-2xl border border-gold-line bg-dusk-card p-8">
+              <h2 className="font-display text-3xl text-cream">{c.monthTitle}</h2>
+              <p className="mt-4 leading-relaxed text-cream-soft">{c.monthBody}</p>
             </article>
           </div>
         </section>
 
         <section id="included" className="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-3xl">{c.includedTitle}</h2>
+            <h2 className="font-display text-3xl text-cream">{c.includedTitle}</h2>
             <ul className="mt-6 space-y-3">
               {c.included.map((item) => (
-                <li key={item} className="flex gap-3 text-ink-soft">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-clay" />
+                <li key={item} className="flex gap-3 text-cream-soft">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
                   {item}
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h2 className="font-display text-3xl">{c.notIncludedTitle}</h2>
+            <h2 className="font-display text-3xl text-cream">{c.notIncludedTitle}</h2>
             <ul className="mt-6 space-y-3">
               {c.notIncluded.map((item) => (
-                <li key={item} className="flex gap-3 text-ink-soft">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-mesa" />
+                <li key={item} className="flex gap-3 text-cream-soft">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold/50" />
                   {item}
                 </li>
               ))}
             </ul>
-            <div className="mt-10 rounded-2xl bg-sage px-6 py-5 text-white">
-              <h3 className="font-display text-2xl">{c.unpaidTitle}</h3>
-              <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm/6 text-white/90">
+            <div className="mt-10 rounded-2xl border border-gold-line bg-dusk-card px-6 py-5">
+              <h3 className="font-display text-2xl text-cream">{c.unpaidTitle}</h3>
+              <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm/6 text-cream-soft">
                 {c.unpaidSteps.map((step) => (
                   <li key={step}>{step}</li>
                 ))}
@@ -102,23 +102,23 @@ export function MarketingPage({ locale }: { locale: Locale }) {
           </div>
         </section>
 
-        <section className="border-y border-line bg-sand/50">
+        <section className="border-y border-gold-line bg-[#0e1626]">
           <div className="mx-auto max-w-6xl px-5 py-16">
-            <h2 className="font-display text-3xl">{c.templatesTitle}</h2>
-            <p className="mt-3 max-w-2xl text-ink-soft">{c.templatesLead}</p>
+            <h2 className="font-display text-3xl text-cream">{c.templatesTitle}</h2>
+            <p className="mt-3 max-w-2xl text-cream-soft">{c.templatesLead}</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {TEMPLATES.map((tpl) => (
                 <article
                   key={tpl.id}
-                  className="rounded-2xl border border-line bg-paper p-5"
+                  className="rounded-2xl border border-gold-line bg-dusk-card p-5"
                 >
-                  <p className="text-xs uppercase tracking-[0.14em] text-mesa">
+                  <p className="text-xs uppercase tracking-[0.14em] text-gold">
                     {tpl.id}
                   </p>
-                  <h3 className="mt-2 font-display text-xl">
+                  <h3 className="mt-2 font-display text-xl text-cream">
                     {locale === "es" ? tpl.nameEs : tpl.name}
                   </h3>
-                  <p className="mt-2 text-sm text-ink-soft">
+                  <p className="mt-2 text-sm text-cream-soft">
                     {locale === "es" ? tpl.blurbEs : tpl.blurb}
                   </p>
                 </article>
@@ -128,22 +128,25 @@ export function MarketingPage({ locale }: { locale: Locale }) {
         </section>
 
         <section id="how" className="mx-auto max-w-6xl px-5 py-16">
-          <h2 className="font-display text-3xl">{c.howTitle}</h2>
+          <h2 className="font-display text-3xl text-cream">{c.howTitle}</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {c.howSteps.map((step) => (
-              <article key={step.n} className="rounded-2xl border border-line p-6">
-                <p className="font-display text-3xl text-clay">{step.n}</p>
-                <h3 className="mt-2 font-display text-xl">{step.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">{step.d}</p>
+              <article
+                key={step.n}
+                className="rounded-2xl border border-gold-line bg-dusk-card p-6"
+              >
+                <p className="font-display text-3xl text-gold">{step.n}</p>
+                <h3 className="mt-2 font-display text-xl text-cream">{step.t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-cream-soft">{step.d}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="border-y border-line bg-paper">
+        <section className="border-y border-gold-line bg-[#0e1626]">
           <div className="mx-auto max-w-6xl px-5 py-16">
-            <h2 className="font-display text-3xl">{c.aboutTitle}</h2>
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-ink-soft">
+            <h2 className="font-display text-3xl text-cream">{c.aboutTitle}</h2>
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-cream-soft">
               {c.aboutBody}
             </p>
           </div>
@@ -151,13 +154,13 @@ export function MarketingPage({ locale }: { locale: Locale }) {
 
         <section id="request" className="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-3xl">{c.requestTitle}</h2>
-            <p className="mt-4 leading-relaxed text-ink-soft">{c.requestLead}</p>
+            <h2 className="font-display text-3xl text-cream">{c.requestTitle}</h2>
+            <p className="mt-4 leading-relaxed text-cream-soft">{c.requestLead}</p>
           </div>
           <RequestForm locale={locale} />
         </section>
       </main>
       <SiteFooter locale={locale} />
-    </div>
+    </StudioShell>
   );
 }

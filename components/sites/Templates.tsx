@@ -15,7 +15,7 @@ export function SiteChrome({
 }) {
   const dark = tone === "dark";
   return (
-    <div className={dark ? "min-h-full bg-[#111816] text-[#f4efe6]" : "min-h-full"}>
+    <div className={dark ? "min-h-full bg-[#111816] text-[#f4efe6]" : "min-h-full bg-paper text-ink"}>
       <header
         className={`border-b px-5 py-4 ${dark ? "border-white/10" : "border-line bg-paper/90"}`}
       >
@@ -195,7 +195,7 @@ export function ProfessionalSite({ client }: { client: Client }) {
 
 export function OfflineSite({ client }: { client: Client }) {
   return (
-    <div className="flex min-h-full flex-col items-center justify-center bg-sand px-6 py-20 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-sand px-6 py-20 text-center text-ink">
       <p className="text-sm uppercase tracking-[0.18em] text-mesa">
         Phoenixwebhost Inc.
       </p>
@@ -217,7 +217,7 @@ export function OfflineSite({ client }: { client: Client }) {
 
 export function TakenDownSite() {
   return (
-    <div className="flex min-h-full flex-col items-center justify-center bg-paper px-6 py-20 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-paper px-6 py-20 text-center text-ink">
       <h1 className="font-display text-4xl">This site is no longer available</h1>
       <p className="mt-4 text-ink-soft">
         Files were kept for 30 days after the account went unpaid, then removed.

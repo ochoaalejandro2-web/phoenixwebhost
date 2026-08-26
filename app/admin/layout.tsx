@@ -14,7 +14,7 @@ export default async function AdminLayout({
   await requireOwner();
   const mode = storageMode();
   return (
-    <div className="flex min-h-full bg-sand">
+    <div className="flex min-h-full bg-sand text-ink">
       <aside className="hidden w-60 shrink-0 border-r border-line bg-sage text-white md:flex md:flex-col">
         <div className="flex items-center gap-2 px-5 py-5">
           <Mark size={28} />
