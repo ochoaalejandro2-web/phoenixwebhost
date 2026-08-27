@@ -49,6 +49,8 @@ export type Client = {
   stripeSubscriptionId: string | null;
   stripeBoostSubscriptionId: string | null;
   localBoost: boolean;
+  stripeEmailSubscriptionId: string | null;
+  businessEmail: boolean;
   reminderSentAt: string | null;
   overdueSince: string | null;
   offlineAt: string | null;
@@ -70,6 +72,7 @@ export type Lead = {
   message: string;
   locale: Locale;
   wantsLocalBoost: boolean;
+  wantsBusinessEmail: boolean;
   createdAt: string;
 };
 

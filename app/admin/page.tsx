@@ -86,6 +86,7 @@ export default async function AdminHome() {
               <th className="px-4 py-3">Site</th>
               <th className="px-4 py-3">Payment</th>
               <th className="px-4 py-3">Boost</th>
+              <th className="px-4 py-3">Email</th>
               <th className="px-4 py-3">Last payment</th>
               <th className="px-4 py-3">Next invoice</th>
             </tr>
@@ -110,6 +111,9 @@ export default async function AdminHome() {
                 </td>
                 <td className="px-4 py-3">
                   {client.localBoost ? "Local Boost" : "—"}
+                </td>
+                <td className="px-4 py-3">
+                  {client.businessEmail ? "Business Email" : "—"}
                 </td>
                 <td className="px-4 py-3">{fmt(client.lastPaymentAt)}</td>
                 <td className="px-4 py-3">{fmt(client.nextInvoiceAt)}</td>

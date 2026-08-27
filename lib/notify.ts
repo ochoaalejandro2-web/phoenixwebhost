@@ -316,6 +316,9 @@ export async function notifyNewLead(lead: Lead) {
         lead.wantsLocalBoost
           ? "Wants Local Boost ($99 + $79/mo)"
           : "No Local Boost",
+        lead.wantsBusinessEmail
+          ? "Wants Business Email ($49 + $19/mo)"
+          : "No Business Email",
       ].join(" · "),
       extraLabel: "Notes",
       createdAt: lead.createdAt,

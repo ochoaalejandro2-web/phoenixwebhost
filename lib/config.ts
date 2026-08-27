@@ -17,6 +17,10 @@ export const PRICING = {
   boostMonthlyCents: 7_900,
   boostSetupLabel: "$99",
   boostMonthlyLabel: "$79",
+  emailSetupCents: 4_900,
+  emailMonthlyCents: 1_900,
+  emailSetupLabel: "$49",
+  emailMonthlyLabel: "$19",
   extraPageMin: 75,
   extraPageMax: 150,
   logoMin: 100,
@@ -105,8 +109,22 @@ export function stripeBoostConfigured() {
   );
 }
 
+export function stripeEmailConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY &&
+      process.env.STRIPE_EMAIL_SETUP_PRICE_ID &&
+      process.env.STRIPE_EMAIL_MONTHLY_PRICE_ID,
+  );
+}
+
 export function boostPriceIds() {
   const setup = process.env.STRIPE_BOOST_SETUP_PRICE_ID;
   const monthly = process.env.STRIPE_BOOST_MONTHLY_PRICE_ID;
+  return [setup, monthly].filter((id): id is string => Boolean(id));
+}
+
+export function emailPriceIds() {
+  const setup = process.env.STRIPE_EMAIL_SETUP_PRICE_ID;
+  const monthly = process.env.STRIPE_EMAIL_MONTHLY_PRICE_ID;
   return [setup, monthly].filter((id): id is string => Boolean(id));
 }

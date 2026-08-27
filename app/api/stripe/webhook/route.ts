@@ -1,7 +1,19 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { applyLocalBoostPurchased, applyPaymentFailed, applyPaymentSucceeded } from "@/lib/billing";
-import { boostPriceIds } from "@/lib/config";
+import {
+  applyBusinessEmailPurchased,
+  applyLocalBoostPurchased,
+  applyPaymentFailed,
+  applyPaymentSucceeded,
+} from "@/lib/billing";
+import {
+  isCheckoutKind,
+  kindHasBoost,
+  kindHasEmail,
+  kindHasPlan,
+  type CheckoutKind,
+} from "@/lib/checkout";
+import { boostPriceIds, emailPriceIds } from "@/lib/config";
 import {
   getClient,
   getClientByStripeCustomer,
@@ -23,17 +35,25 @@ function asId(
 function metadataBoost(meta?: Stripe.Metadata | null) {
   return (
     meta?.localBoost === "true" ||
-    meta?.checkoutKind === "plan_and_boost" ||
-    meta?.checkoutKind === "boost"
+    (isCheckoutKind(meta?.checkoutKind) && kindHasBoost(meta.checkoutKind))
   );
 }
 
-function metadataKind(meta?: Stripe.Metadata | null) {
-  const kind = meta?.checkoutKind;
-  if (kind === "boost" || kind === "plan_and_boost" || kind === "plan") {
-    return kind;
-  }
-  return metadataBoost(meta) ? "plan_and_boost" : "plan";
+function metadataEmail(meta?: Stripe.Metadata | null) {
+  return (
+    meta?.businessEmail === "true" ||
+    (isCheckoutKind(meta?.checkoutKind) && kindHasEmail(meta.checkoutKind))
+  );
+}
+
+function metadataKind(meta?: Stripe.Metadata | null): CheckoutKind {
+  if (isCheckoutKind(meta?.checkoutKind)) return meta.checkoutKind;
+  const boost = metadataBoost(meta);
+  const email = metadataEmail(meta);
+  if (boost && email) return "plan_and_boost_and_email";
+  if (boost) return "plan_and_boost";
+  if (email) return "plan_and_email";
+  return "plan";
 }
 
 function priceIdFromUnknown(value: unknown): string | undefined {
@@ -56,36 +76,56 @@ function linePriceId(line: {
   );
 }
 
-function idsIncludeBoost(priceIds: Array<string | undefined>) {
-  const boost = new Set(boostPriceIds());
-  if (boost.size === 0) return false;
-  return priceIds.some((id) => id && boost.has(id));
+function idsInclude(priceIds: Array<string | undefined>, known: string[]) {
+  const set = new Set(known);
+  if (set.size === 0) return false;
+  return priceIds.some((id) => id && set.has(id));
 }
 
-async function sessionBoughtBoost(
+async function sessionLinePriceIds(
   stripe: Stripe,
   session: Stripe.Checkout.Session,
 ) {
-  if (metadataBoost(session.metadata)) return true;
-  if (boostPriceIds().length === 0) return false;
   try {
     const items = await stripe.checkout.sessions.listLineItems(session.id, {
       limit: 20,
     });
-    return idsIncludeBoost(items.data.map((item) => linePriceId(item)));
+    return items.data.map((item) => linePriceId(item));
   } catch {
-    return false;
+    return [];
   }
 }
 
-function invoiceBoughtBoost(invoice: Stripe.Invoice) {
-  if (
-    metadataBoost(invoice.metadata) ||
-    metadataBoost(invoice.parent?.subscription_details?.metadata)
-  ) {
-    return true;
+async function sessionAddOns(
+  stripe: Stripe,
+  session: Stripe.Checkout.Session,
+) {
+  const fromMetaBoost = metadataBoost(session.metadata);
+  const fromMetaEmail = metadataEmail(session.metadata);
+  if (fromMetaBoost && fromMetaEmail) {
+    return { boost: true, email: true };
   }
-  return idsIncludeBoost(invoice.lines.data.map((line) => linePriceId(line)));
+  const prices = await sessionLinePriceIds(stripe, session);
+  return {
+    boost: fromMetaBoost || idsInclude(prices, boostPriceIds()),
+    email: fromMetaEmail || idsInclude(prices, emailPriceIds()),
+  };
+}
+
+function invoiceAddOns(invoice: Stripe.Invoice) {
+  const meta =
+    invoice.metadata || invoice.parent?.subscription_details?.metadata;
+  const prices = invoice.lines.data.map((line) => linePriceId(line));
+  return {
+    boost:
+      metadataBoost(meta) ||
+      metadataBoost(invoice.metadata) ||
+      idsInclude(prices, boostPriceIds()),
+    email:
+      metadataEmail(meta) ||
+      metadataEmail(invoice.metadata) ||
+      idsInclude(prices, emailPriceIds()),
+  };
 }
 
 function invoiceHasBaseMonthly(invoice: Stripe.Invoice) {
@@ -94,21 +134,29 @@ function invoiceHasBaseMonthly(invoice: Stripe.Invoice) {
   return invoice.lines.data.some((line) => linePriceId(line) === base);
 }
 
-function isBoostOnlySubscription(client: Client, subscriptionId?: string) {
-  return Boolean(
-    subscriptionId &&
-      client.stripeBoostSubscriptionId === subscriptionId &&
-      client.stripeSubscriptionId !== subscriptionId,
+function isAddonOnlySubscription(client: Client, subscriptionId?: string) {
+  if (!subscriptionId) return false;
+  if (client.stripeSubscriptionId === subscriptionId) return false;
+  return (
+    client.stripeBoostSubscriptionId === subscriptionId ||
+    client.stripeEmailSubscriptionId === subscriptionId
   );
 }
 
 function invoiceKind(
   invoice: Stripe.Invoice,
-  boughtBoost: boolean,
-): ReturnType<typeof metadataKind> {
+  addOns: { boost: boolean; email: boolean },
+): CheckoutKind {
   const hasBase = invoiceHasBaseMonthly(invoice);
-  if (hasBase) return boughtBoost ? "plan_and_boost" : "plan";
-  if (boughtBoost) return "boost";
+  if (hasBase) {
+    if (addOns.boost && addOns.email) return "plan_and_boost_and_email";
+    if (addOns.boost) return "plan_and_boost";
+    if (addOns.email) return "plan_and_email";
+    return "plan";
+  }
+  if (addOns.boost && addOns.email) return "boost_and_email";
+  if (addOns.boost) return "boost";
+  if (addOns.email) return "email";
   return metadataKind(
     invoice.metadata || invoice.parent?.subscription_details?.metadata,
   );
@@ -116,29 +164,57 @@ function invoiceKind(
 
 function applyCheckoutIds(
   client: Client,
-  kind: ReturnType<typeof metadataKind>,
+  kind: CheckoutKind,
   customerId?: string,
   subscriptionId?: string,
 ): Client {
-  const next = {
+  const next: Client = {
     ...client,
     stripeCustomerId: customerId || client.stripeCustomerId,
   };
-  if (kind === "boost") {
-    return {
-      ...next,
-      stripeBoostSubscriptionId:
-        subscriptionId || client.stripeBoostSubscriptionId,
-    };
+  if (!subscriptionId) return next;
+  if (kindHasPlan(kind)) {
+    next.stripeSubscriptionId = subscriptionId;
   }
+  if (kindHasBoost(kind)) {
+    next.stripeBoostSubscriptionId = subscriptionId;
+  }
+  if (kindHasEmail(kind)) {
+    next.stripeEmailSubscriptionId = subscriptionId;
+  }
+  return next;
+}
+
+function withAddonNotes(client: Client, bodies: string[]): Client {
+  if (bodies.length === 0) return client;
+  const at = new Date().toISOString();
   return {
-    ...next,
-    stripeSubscriptionId: subscriptionId || client.stripeSubscriptionId,
-    stripeBoostSubscriptionId:
-      kind === "plan_and_boost"
-        ? subscriptionId || client.stripeBoostSubscriptionId
-        : client.stripeBoostSubscriptionId,
+    ...client,
+    notes: [
+      ...bodies.map((body) => ({
+        id: `note_${crypto.randomUUID()}`,
+        body,
+        createdAt: at,
+      })),
+      ...client.notes,
+    ],
   };
+}
+
+function clearAddonSubscription(client: Client, subscriptionId: string): Client {
+  const next = { ...client };
+  const notes: string[] = [];
+  if (next.stripeBoostSubscriptionId === subscriptionId) {
+    next.localBoost = false;
+    next.stripeBoostSubscriptionId = null;
+    notes.push("Local Boost subscription ended.");
+  }
+  if (next.stripeEmailSubscriptionId === subscriptionId) {
+    next.businessEmail = false;
+    next.stripeEmailSubscriptionId = null;
+    notes.push("Business Email subscription ended.");
+  }
+  return withAddonNotes(next, notes);
 }
 
 async function findClientFromEvent(event: Stripe.Event) {
@@ -200,21 +276,26 @@ export async function POST(request: Request) {
     const customerId = asId(session.customer);
     const subscriptionId = asId(session.subscription);
     const kind = metadataKind(session.metadata);
-    const boughtBoost = await sessionBoughtBoost(stripe, session);
-    const resolvedKind =
-      kind === "boost"
-        ? "boost"
-        : boughtBoost
-          ? "plan_and_boost"
-          : kind;
+    const addOns = await sessionAddOns(stripe, session);
+    let resolvedKind: CheckoutKind = kind;
+    if (!kindHasPlan(kind)) {
+      resolvedKind = kind;
+    } else if (addOns.boost && addOns.email) {
+      resolvedKind = "plan_and_boost_and_email";
+    } else if (addOns.boost) {
+      resolvedKind = "plan_and_boost";
+    } else if (addOns.email) {
+      resolvedKind = "plan_and_email";
+    }
     let next = applyCheckoutIds(client, resolvedKind, customerId, subscriptionId);
-    if (resolvedKind !== "boost") {
+    if (kindHasPlan(resolvedKind)) {
       next = applyPaymentSucceeded({
         ...next,
         siteStatus: client.siteStatus === "paused" ? "live" : client.siteStatus,
       });
     }
-    if (boughtBoost) next = applyLocalBoostPurchased(next);
+    if (addOns.boost) next = applyLocalBoostPurchased(next);
+    if (addOns.email) next = applyBusinessEmailPurchased(next);
     await upsertClient(next);
   }
 
@@ -229,13 +310,14 @@ export async function POST(request: Request) {
     const nextInvoice = invoice.lines.data[0]?.period?.end
       ? new Date(invoice.lines.data[0].period.end * 1000).toISOString()
       : undefined;
-    const boughtBoost = invoiceBoughtBoost(invoice);
-    const kind = invoiceKind(invoice, boughtBoost);
+    const addOns = invoiceAddOns(invoice);
+    const kind = invoiceKind(invoice, addOns);
     let next = applyCheckoutIds(client, kind, customerId, subscriptionId);
-    if (kind !== "boost") {
+    if (kindHasPlan(kind)) {
       next = applyPaymentSucceeded(next, new Date().toISOString(), nextInvoice);
     }
-    if (boughtBoost) next = applyLocalBoostPurchased(next);
+    if (addOns.boost) next = applyLocalBoostPurchased(next);
+    if (addOns.email) next = applyBusinessEmailPurchased(next);
     await upsertClient(next);
   }
 
@@ -245,18 +327,26 @@ export async function POST(request: Request) {
     };
     const parentSub = invoice.parent?.subscription_details?.subscription;
     const subscriptionId = asId(parentSub ?? invoice.subscription);
-    if (isBoostOnlySubscription(client, subscriptionId) || invoiceKind(invoice, invoiceBoughtBoost(invoice)) === "boost") {
-      await upsertClient({
-        ...client,
-        notes: [
-          {
-            id: `note_${crypto.randomUUID()}`,
-            body: "Local Boost payment failed. Website hosting is unchanged.",
-            createdAt: new Date().toISOString(),
-          },
-          ...client.notes,
-        ],
-      });
+    const addOns = invoiceAddOns(invoice);
+    const kind = invoiceKind(invoice, addOns);
+    if (isAddonOnlySubscription(client, subscriptionId) || !kindHasPlan(kind)) {
+      const bodies: string[] = [];
+      if (kindHasBoost(kind) || client.stripeBoostSubscriptionId === subscriptionId) {
+        bodies.push("Local Boost payment failed. Website hosting is unchanged.");
+      }
+      if (kindHasEmail(kind) || client.stripeEmailSubscriptionId === subscriptionId) {
+        bodies.push(
+          "Business Email payment failed. Website hosting is unchanged.",
+        );
+      }
+      await upsertClient(
+        withAddonNotes(
+          client,
+          bodies.length
+            ? bodies
+            : ["Add-on payment failed. Website hosting is unchanged."],
+        ),
+      );
     } else {
       await upsertClient(applyPaymentFailed(client));
     }
@@ -264,20 +354,11 @@ export async function POST(request: Request) {
 
   if (event.type === "customer.subscription.deleted") {
     const sub = event.data.object as Stripe.Subscription;
-    if (isBoostOnlySubscription(client, sub.id) || metadataKind(sub.metadata) === "boost") {
-      await upsertClient({
-        ...client,
-        localBoost: false,
-        stripeBoostSubscriptionId: null,
-        notes: [
-          {
-            id: `note_${crypto.randomUUID()}`,
-            body: "Local Boost subscription ended.",
-            createdAt: new Date().toISOString(),
-          },
-          ...client.notes,
-        ],
-      });
+    if (
+      isAddonOnlySubscription(client, sub.id) ||
+      !kindHasPlan(metadataKind(sub.metadata))
+    ) {
+      await upsertClient(clearAddonSubscription(client, sub.id));
     } else {
       await upsertClient(applyPaymentFailed(client));
     }
@@ -285,45 +366,49 @@ export async function POST(request: Request) {
 
   if (event.type === "customer.subscription.updated") {
     const sub = event.data.object as Stripe.Subscription;
-    const boostOnly =
-      isBoostOnlySubscription(client, sub.id) ||
-      metadataKind(sub.metadata) === "boost";
+    const kind = metadataKind(sub.metadata);
+    const addonOnly =
+      isAddonOnlySubscription(client, sub.id) || !kindHasPlan(kind);
     if (sub.status === "past_due" || sub.status === "unpaid") {
-      if (boostOnly) {
-        await upsertClient({
-          ...client,
-          notes: [
-            {
-              id: `note_${crypto.randomUUID()}`,
-              body: "Local Boost is past due. Website hosting is unchanged.",
-              createdAt: new Date().toISOString(),
-            },
-            ...client.notes,
-          ],
-        });
+      if (addonOnly) {
+        const bodies: string[] = [];
+        if (kindHasBoost(kind) || client.stripeBoostSubscriptionId === sub.id) {
+          bodies.push(
+            "Local Boost is past due. Website hosting is unchanged.",
+          );
+        }
+        if (kindHasEmail(kind) || client.stripeEmailSubscriptionId === sub.id) {
+          bodies.push(
+            "Business Email is past due. Website hosting is unchanged.",
+          );
+        }
+        await upsertClient(
+          withAddonNotes(
+            client,
+            bodies.length
+              ? bodies
+              : ["Add-on is past due. Website hosting is unchanged."],
+          ),
+        );
       } else {
         await upsertClient(applyPaymentFailed(client));
       }
     }
     if (sub.status === "active") {
-      let next: Client = client;
-      if (!boostOnly) {
-        next = applyPaymentSucceeded({
-          ...next,
-          stripeSubscriptionId: sub.id,
-          stripeBoostSubscriptionId:
-            metadataKind(sub.metadata) === "plan_and_boost"
-              ? sub.id
-              : client.stripeBoostSubscriptionId,
-        });
-      } else {
-        next = {
-          ...next,
-          stripeBoostSubscriptionId: sub.id,
-        };
+      let next: Client = applyCheckoutIds(
+        client,
+        kind,
+        asId(sub.customer),
+        sub.id,
+      );
+      if (!addonOnly) {
+        next = applyPaymentSucceeded(next);
       }
       if (metadataBoost(sub.metadata)) {
         next = applyLocalBoostPurchased(next);
+      }
+      if (metadataEmail(sub.metadata)) {
+        next = applyBusinessEmailPurchased(next);
       }
       await upsertClient(next);
     }

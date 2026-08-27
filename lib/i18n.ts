@@ -71,7 +71,7 @@ export const copy = {
       {
         n: "2",
         t: "Pay $200 to launch, then $69/month",
-        d: "Card checkout. The monthly charge keeps hosting and small edits going. Optional Local Boost can be added in the same checkout.",
+        d: "Card checkout. The monthly charge keeps hosting and small edits going. Optional Local Boost and Business Email can be added in the same checkout.",
       },
       {
         n: "3",
@@ -84,7 +84,7 @@ export const copy = {
       "Phoenixwebhost Inc. is owned by Alex Ochoa in Phoenix, Arizona. We build websites for Arizona small businesses and then keep those sites live. If you write in, a person who knows your site answers.",
     requestTitle: "Request a site",
     requestLead:
-      "Tell us about the business. We will follow up. If you are ready, you can pay the $200 launch and start the $69/month plan by card. Local Boost is optional.",
+      "Tell us about the business. We will follow up. If you are ready, you can pay the $200 launch and start the $69/month plan by card. Local Boost and Business Email are optional.",
     formName: "Your name",
     formBusiness: "Business name",
     formEmail: "Email",
@@ -94,6 +94,8 @@ export const copy = {
     formSubmit: "Send request",
     formPay: "Pay $200 + start $69/month",
     formPayBoost: "Pay launch, care, and Local Boost",
+    formPayEmail: "Pay launch, care, and Business Email",
+    formPayBoostEmail: "Pay launch, care, Local Boost, and Business Email",
     formThanks: "Request received. We will be in touch.",
     boostKicker: "Optional add-on",
     boostTitle: "Local Boost — $99 once + $79/month extra",
@@ -106,6 +108,17 @@ export const copy = {
       "Optional and separate. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
     boostMissing:
       "Local Boost checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
+    emailKicker: "Optional add-on",
+    emailTitle: "Business Email — $49 once + $19/month extra",
+    emailBody:
+      "A real business inbox on your domain, such as info@yourshop.com, so customers take you seriously. We create one professional mailbox. The monthly extra keeps that inbox working. This is not magic, and it is not unlimited mailboxes.",
+    emailSetupHint: "one-time, one professional inbox",
+    emailMonthHint: "per month extra, keep the inbox working",
+    emailCheckbox: "Add Business Email — $49 now + $19/month extra",
+    emailCheckboxHelp:
+      "Optional and separate. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
+    emailMissing:
+      "Business Email checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
     reviewsTitle: "Reviews from Arizona companies",
     reviewsLead:
       "Notes from businesses we built for. New reviews are checked before they appear here — no fake counts, no filler quotes.",
@@ -196,7 +209,7 @@ export const copy = {
       {
         n: "2",
         t: "Paga $200 para lanzar, luego $69 al mes",
-        d: "Pago con tarjeta. El cargo mensual mantiene el hospedaje y los cambios pequeños. Local Boost es opcional y se puede agregar en el mismo pago.",
+        d: "Pago con tarjeta. El cargo mensual mantiene el hospedaje y los cambios pequeños. Local Boost y Business Email son opcionales y se pueden agregar en el mismo pago.",
       },
       {
         n: "3",
@@ -209,7 +222,7 @@ export const copy = {
       "Phoenixwebhost Inc. es de Alex Ochoa en Phoenix, Arizona. Hacemos sitios para negocios pequeños de Arizona y los mantenemos en línea. Si escribe, responde alguien que conoce su sitio.",
     requestTitle: "Pedir un sitio",
     requestLead:
-      "Cuéntenos del negocio. Le respondemos. Si ya está listo, puede pagar el lanzamiento de $200 y comenzar el plan de $69 al mes con tarjeta. Local Boost es opcional.",
+      "Cuéntenos del negocio. Le respondemos. Si ya está listo, puede pagar el lanzamiento de $200 y comenzar el plan de $69 al mes con tarjeta. Local Boost y Business Email son opcionales.",
     formName: "Su nombre",
     formBusiness: "Nombre del negocio",
     formEmail: "Correo",
@@ -219,6 +232,8 @@ export const copy = {
     formSubmit: "Enviar solicitud",
     formPay: "Pagar $200 + empezar $69/mes",
     formPayBoost: "Pagar lanzamiento, cuidado y Local Boost",
+    formPayEmail: "Pagar lanzamiento, cuidado y Business Email",
+    formPayBoostEmail: "Pagar lanzamiento, cuidado, Local Boost y Business Email",
     formThanks: "Solicitud recibida. Nos pondremos en contacto.",
     boostKicker: "Complemento opcional",
     boostTitle: "Local Boost — $99 una vez + $79 al mes extra",
@@ -231,6 +246,17 @@ export const copy = {
       "Opcional y aparte. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
     boostMissing:
       "El pago de Local Boost aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
+    emailKicker: "Complemento opcional",
+    emailTitle: "Business Email — $49 una vez + $19 al mes extra",
+    emailBody:
+      "Un correo de negocio real en su dominio, como info@sunegocio.com, para que los clientes lo tomen en serio. Creamos un buzón profesional. El cargo mensual extra mantiene ese buzón funcionando. No es magia y no son buzones ilimitados.",
+    emailSetupHint: "un solo pago, un buzón profesional",
+    emailMonthHint: "al mes extra, para mantener el buzón",
+    emailCheckbox: "Agregar Business Email — $49 ahora + $19 al mes extra",
+    emailCheckboxHelp:
+      "Opcional y aparte. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
+    emailMissing:
+      "El pago de Business Email aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
     reviewsTitle: "Reseñas de empresas de Arizona",
     reviewsLead:
       "Notas de negocios para los que hicimos un sitio. Las reseñas nuevas se revisan antes de publicarse — sin cifras inventadas ni citas de relleno.",

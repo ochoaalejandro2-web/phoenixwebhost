@@ -115,6 +115,8 @@ function normalizeClient(client: Client): Client {
     ...client,
     localBoost: Boolean(client.localBoost),
     stripeBoostSubscriptionId: client.stripeBoostSubscriptionId ?? null,
+    businessEmail: Boolean(client.businessEmail),
+    stripeEmailSubscriptionId: client.stripeEmailSubscriptionId ?? null,
   };
 }
 
@@ -122,6 +124,7 @@ function normalizeLead(lead: Lead): Lead {
   return {
     ...lead,
     wantsLocalBoost: Boolean(lead.wantsLocalBoost),
+    wantsBusinessEmail: Boolean(lead.wantsBusinessEmail),
   };
 }
 
@@ -224,7 +227,8 @@ export async function getClientByStripeSubscription(subscriptionId: string) {
     state.clients.find(
       (c) =>
         c.stripeSubscriptionId === subscriptionId ||
-        c.stripeBoostSubscriptionId === subscriptionId,
+        c.stripeBoostSubscriptionId === subscriptionId ||
+        c.stripeEmailSubscriptionId === subscriptionId,
     ) ?? null
   );
 }

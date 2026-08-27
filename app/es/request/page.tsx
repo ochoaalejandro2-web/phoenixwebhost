@@ -1,6 +1,6 @@
 import { SiteFooter, SiteHeader, StudioShell } from "@/components/marketing/Chrome";
 import { RequestForm } from "@/components/marketing/RequestForm";
-import { stripeBoostConfigured } from "@/lib/config";
+import { stripeBoostConfigured, stripeEmailConfigured } from "@/lib/config";
 import { t } from "@/lib/i18n";
 
 export const metadata = { title: "Pedir un sitio" };
@@ -20,8 +20,17 @@ export default function RequestEsPage() {
             de Empresa en Google y un anuncio local pequeño a su propio sitio. No
             es SEO mágico.
           </p>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
+            Business Email opcional: $49 una vez más $19 al mes extra para un
+            buzón profesional como info@su dominio. Un correo de negocio real para
+            que lo tomen en serio — no es magia.
+          </p>
         </div>
-        <RequestForm locale="es" boostReady={stripeBoostConfigured()} />
+        <RequestForm
+          locale="es"
+          boostReady={stripeBoostConfigured()}
+          emailReady={stripeEmailConfigured()}
+        />
       </main>
       <SiteFooter locale="es" />
     </StudioShell>

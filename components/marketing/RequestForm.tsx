@@ -4,36 +4,37 @@ import { useState } from "react";
 import { t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
-function BoostToggle({
-  locale,
-  includeBoost,
+function AddonToggle({
+  checked,
   onChange,
-  boostReady,
+  ready,
+  title,
+  help,
+  missing,
 }: {
-  locale: Locale;
-  includeBoost: boolean;
+  checked: boolean;
   onChange: (value: boolean) => void;
-  boostReady: boolean;
+  ready: boolean;
+  title: string;
+  help: string;
+  missing: string;
 }) {
-  const c = t(locale);
   return (
     <div>
       <label className="flex cursor-pointer gap-3 rounded-2xl border border-zinc-200 bg-zinc-50/80 p-4 text-sm text-body">
         <input
           type="checkbox"
-          checked={includeBoost}
+          checked={checked}
           onChange={(event) => onChange(event.target.checked)}
           className="mt-1 h-4 w-4 shrink-0 accent-[#00c851]"
         />
         <span>
-          <span className="block font-medium text-ink-black">
-            {c.boostCheckbox}
-          </span>
-          <span className="mt-1 block">{c.boostCheckboxHelp}</span>
+          <span className="block font-medium text-ink-black">{title}</span>
+          <span className="mt-1 block">{help}</span>
         </span>
       </label>
-      {includeBoost && !boostReady ? (
-        <p className="mt-3 text-sm text-lime-deep">{c.boostMissing}</p>
+      {checked && !ready ? (
+        <p className="mt-3 text-sm text-lime-deep">{missing}</p>
       ) : null}
     </div>
   );
@@ -42,9 +43,11 @@ function BoostToggle({
 export function RequestForm({
   locale,
   boostReady = false,
+  emailReady = false,
 }: {
   locale: Locale;
   boostReady?: boolean;
+  emailReady?: boolean;
 }) {
   const c = t(locale);
   const [status, setStatus] = useState<"idle" | "saving" | "done" | "error">(
@@ -54,6 +57,7 @@ export function RequestForm({
   const [payError, setPayError] = useState<string | null>(null);
   const [canPay, setCanPay] = useState(false);
   const [includeBoost, setIncludeBoost] = useState(false);
+  const [includeEmail, setIncludeEmail] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -71,6 +75,7 @@ export function RequestForm({
         message: form.get("message"),
         locale,
         wantsLocalBoost: includeBoost,
+        wantsBusinessEmail: includeEmail,
       }),
     });
     if (!res.ok) {
@@ -81,11 +86,22 @@ export function RequestForm({
       id: string;
       stripeReady: boolean;
       boostReady?: boolean;
+      emailReady?: boolean;
     };
     setLeadId(data.id);
     setCanPay(data.stripeReady);
     setStatus("done");
   }
+
+  function payLabel() {
+    if (includeBoost && includeEmail) return c.formPayBoostEmail;
+    if (includeBoost) return c.formPayBoost;
+    if (includeEmail) return c.formPayEmail;
+    return c.formPay;
+  }
+
+  const addonsBlocked =
+    (includeBoost && !boostReady) || (includeEmail && !emailReady);
 
   async function startCheckout() {
     if (!leadId) return;
@@ -93,11 +109,15 @@ export function RequestForm({
       setPayError(c.boostMissing);
       return;
     }
+    if (includeEmail && !emailReady) {
+      setPayError(c.emailMissing);
+      return;
+    }
     setPayError(null);
     const res = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ leadId, includeBoost }),
+      body: JSON.stringify({ leadId, includeBoost, includeEmail }),
     });
     const data = (await res.json()) as { url?: string; error?: string };
     if (!res.ok || !data.url) {
@@ -113,24 +133,34 @@ export function RequestForm({
         <p className="font-display text-2xl text-ink-black">{c.formThanks}</p>
         <p className="mt-3 text-body">
           {locale === "es"
-            ? "Si está listo para pagar el lanzamiento de $200 y el plan de $69 al mes, use el botón de abajo. Local Boost es opcional."
-            : "If you are ready to pay the $200 launch and start $69/month, use the button below. Local Boost is optional."}
+            ? "Si está listo para pagar el lanzamiento de $200 y el plan de $69 al mes, use el botón de abajo. Local Boost y Business Email son opcionales."
+            : "If you are ready to pay the $200 launch and start $69/month, use the button below. Local Boost and Business Email are optional."}
         </p>
-        <div className="mt-6">
-          <BoostToggle
-            locale={locale}
-            includeBoost={includeBoost}
+        <div className="mt-6 grid gap-3">
+          <AddonToggle
+            checked={includeBoost}
             onChange={setIncludeBoost}
-            boostReady={boostReady}
+            ready={boostReady}
+            title={c.boostCheckbox}
+            help={c.boostCheckboxHelp}
+            missing={c.boostMissing}
+          />
+          <AddonToggle
+            checked={includeEmail}
+            onChange={setIncludeEmail}
+            ready={emailReady}
+            title={c.emailCheckbox}
+            help={c.emailCheckboxHelp}
+            missing={c.emailMissing}
           />
         </div>
         <button
           type="button"
           onClick={startCheckout}
-          disabled={!canPay || (includeBoost && !boostReady)}
+          disabled={!canPay || addonsBlocked}
           className="btn-lime mt-6 rounded-full px-5 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {includeBoost ? c.formPayBoost : c.formPay}
+          {payLabel()}
         </button>
         {!canPay && (
           <p className="mt-3 text-sm text-body">
@@ -179,11 +209,21 @@ export function RequestForm({
         {c.formMessage}
         <textarea name="message" rows={4} className="field-studio" />
       </label>
-      <BoostToggle
-        locale={locale}
-        includeBoost={includeBoost}
+      <AddonToggle
+        checked={includeBoost}
         onChange={setIncludeBoost}
-        boostReady={boostReady}
+        ready={boostReady}
+        title={c.boostCheckbox}
+        help={c.boostCheckboxHelp}
+        missing={c.boostMissing}
+      />
+      <AddonToggle
+        checked={includeEmail}
+        onChange={setIncludeEmail}
+        ready={emailReady}
+        title={c.emailCheckbox}
+        help={c.emailCheckboxHelp}
+        missing={c.emailMissing}
       />
       <button
         type="submit"

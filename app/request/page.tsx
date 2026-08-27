@@ -1,6 +1,6 @@
 import { SiteFooter, SiteHeader, StudioShell } from "@/components/marketing/Chrome";
 import { RequestForm } from "@/components/marketing/RequestForm";
-import { stripeBoostConfigured } from "@/lib/config";
+import { stripeBoostConfigured, stripeEmailConfigured } from "@/lib/config";
 import { t } from "@/lib/i18n";
 
 export const metadata = { title: "Request a site" };
@@ -19,8 +19,17 @@ export default function RequestPage() {
             Optional Local Boost: $99 once plus $79/month extra for Google Business
             Profile setup and a small local ad to your own site. Not magic SEO.
           </p>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
+            Optional Business Email: $49 once plus $19/month extra for one
+            professional inbox such as info@your domain. A real business email so
+            customers take you seriously — not magic.
+          </p>
         </div>
-        <RequestForm locale="en" boostReady={stripeBoostConfigured()} />
+        <RequestForm
+          locale="en"
+          boostReady={stripeBoostConfigured()}
+          emailReady={stripeEmailConfigured()}
+        />
       </main>
       <SiteFooter locale="en" />
     </StudioShell>

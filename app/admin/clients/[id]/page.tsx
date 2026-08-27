@@ -55,6 +55,9 @@ export default async function ClientDetailPage({
           {" · "}
           Local Boost:{" "}
           <strong>{client.localBoost ? "purchased" : "not purchased"}</strong>
+          {" · "}
+          Business Email:{" "}
+          <strong>{client.businessEmail ? "purchased" : "not purchased"}</strong>
         </p>
         <p className="mt-1 text-sm">
           Public URL:{" "}
@@ -73,6 +76,8 @@ export default async function ClientDetailPage({
           <p>Subscription: {client.stripeSubscriptionId || "—"}</p>
           <p>Local Boost: {client.localBoost ? "purchased" : "not purchased"}</p>
           <p>Boost subscription: {client.stripeBoostSubscriptionId || "—"}</p>
+          <p>Business Email: {client.businessEmail ? "purchased" : "not purchased"}</p>
+          <p>Email subscription: {client.stripeEmailSubscriptionId || "—"}</p>
           <p>Reminder: {fmt(client.reminderSentAt)}</p>
           <p>Overdue since: {fmt(client.overdueSince)}</p>
           <p>Offline at: {fmt(client.offlineAt)}</p>
@@ -126,6 +131,27 @@ export default async function ClientDetailPage({
                   <input type="hidden" name="includeBoost" value="on" />
                   <button className="rounded-full border border-line px-3 py-1.5 text-sm">
                     Checkout with Local Boost
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+          {client.businessEmail ? null : (
+            <>
+              {client.paymentStatus === "paid" ? (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="kind" value="email" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Add Business Email ($49 + $19/mo)
+                  </button>
+                </form>
+              ) : (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="includeEmail" value="on" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Checkout with Business Email
                   </button>
                 </form>
               )}
@@ -222,6 +248,14 @@ export default async function ClientDetailPage({
               <input
                 name="stripeBoostSubscriptionId"
                 defaultValue={client.stripeBoostSubscriptionId || ""}
+                className={field}
+              />
+            </label>
+            <label className="text-sm">
+              Email subscription ID
+              <input
+                name="stripeEmailSubscriptionId"
+                defaultValue={client.stripeEmailSubscriptionId || ""}
                 className={field}
               />
             </label>
