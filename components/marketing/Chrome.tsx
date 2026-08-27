@@ -12,49 +12,37 @@ export function StudioShell({
 }) {
   return (
     <div
-      className={`studio flex min-h-full flex-col bg-dusk text-cream-soft ${grain ? "grain" : ""}`}
+      className={`studio flex min-h-full flex-col bg-snow text-ink-black ${grain ? "grain" : ""}`}
     >
       {children}
     </div>
   );
 }
 
-export function SiteHeader({
-  locale,
-  overlay = false,
-}: {
-  locale: Locale;
-  overlay?: boolean;
-}) {
+export function SiteHeader({ locale }: { locale: Locale; overlay?: boolean }) {
   const c = t(locale);
   const home = homePath(locale);
   return (
-    <header
-      className={
-        overlay
-          ? "absolute inset-x-0 top-0 z-30 border-b border-white/10 bg-gradient-to-b from-[#0b1220]/80 to-transparent"
-          : "relative z-20 border-b border-gold-line bg-dusk/80 backdrop-blur"
-      }
-    >
+    <header className="sticky top-0 z-30 border-b border-gold/25 bg-snow/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
         <Link href={home} aria-label="Phoenixwebhost home">
           <Logo />
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-cream-soft md:flex">
-          <a href={`${home}#work`} className="hover:text-gold">
+        <nav className="hidden items-center gap-6 text-sm text-ink-black/70 md:flex">
+          <a href={`${home}#work`} className="hover:text-gold-deep">
             {locale === "es" ? "Trabajo" : "Work"}
           </a>
-          <a href={`${home}#pricing`} className="hover:text-gold">
+          <a href={`${home}#pricing`} className="hover:text-gold-deep">
             {c.nav.pricing}
           </a>
-          <Link href={c.otherHref} className="hover:text-gold">
+          <Link href={c.otherHref} className="hover:text-gold-deep">
             {c.otherLang}
           </Link>
         </nav>
         <div className="flex items-center gap-4">
           <Link
             href="/login"
-            className="hidden text-xs text-cream-soft/80 hover:text-gold sm:inline"
+            className="hidden text-xs text-ink-black/55 hover:text-gold-deep sm:inline"
           >
             {c.nav.owner}
           </Link>
@@ -73,22 +61,22 @@ export function SiteHeader({
 export function SiteFooter({ locale }: { locale: Locale }) {
   const c = t(locale);
   return (
-    <footer className="mt-auto border-t border-gold-line bg-[#0a101c]">
+    <footer className="mt-auto border-t border-gold/25 bg-mist">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-display text-lg text-cream">{c.footerLegal}</p>
-          <p className="mt-1 text-sm text-cream-soft">
+          <p className="font-display text-lg text-ink-black">{c.footerLegal}</p>
+          <p className="mt-1 text-sm text-ink-black/65">
             Alex Ochoa · hello@phoenixwebhost.com · {c.bilingual}
           </p>
         </div>
-        <div className="flex gap-5 text-sm text-cream-soft">
-          <Link href={homePath(locale)} className="hover:text-gold">
+        <div className="flex gap-5 text-sm text-ink-black/65">
+          <Link href={homePath(locale)} className="hover:text-gold-deep">
             {locale === "es" ? "Inicio" : "Home"}
           </Link>
-          <Link href={requestPath(locale)} className="hover:text-gold">
+          <Link href={requestPath(locale)} className="hover:text-gold-deep">
             {c.nav.request}
           </Link>
-          <Link href="/login" className="hover:text-gold">
+          <Link href="/login" className="hover:text-gold-deep">
             {c.nav.owner}
           </Link>
         </div>
