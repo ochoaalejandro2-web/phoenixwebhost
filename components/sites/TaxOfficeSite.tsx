@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
-import { tHolaTax } from "@/lib/hola-tax-i18n";
+import { tHolaTax, withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { withSiteLangPath } from "@/lib/site-locale";
 import { portalPath } from "@/lib/tax-office";
 import {
@@ -16,6 +16,9 @@ const HOLA_PHOTOS = {
   office: "/clients/hola-tax-service/office.png",
   calculator: "/clients/hola-tax-service/calculator.jpg",
   desk: "/clients/hola-tax-service/desk.jpg",
+  llcSigning: "/clients/hola-tax-service/llc-signing.jpg",
+  llcHandshake: "/clients/hola-tax-service/llc-handshake.jpg",
+  llcStorefront: "/clients/hola-tax-service/llc-storefront.jpg",
 } as const;
 
 type SiteView = {
@@ -123,6 +126,9 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
   const staff = withSiteLangPath(portalPath(client.slug, "/staff/login"), locale);
   const field =
     "rounded-none border border-[#00FF66] bg-white px-3 py-2 text-black outline-none focus:shadow-[0_0_0_3px_rgba(0,255,102,0.25)]";
+  const services = isHola
+    ? withHolaTaxLlcService(client.services)
+    : client.services;
   return (
     <div
       data-template="tax"
@@ -236,34 +242,95 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
 
       <section className="mx-auto w-full max-w-5xl px-5 py-14">
         {isHola ? (
-          <div className="mb-10 grid gap-3 sm:grid-cols-2">
-            <SiteStill
-              src={HOLA_PHOTOS.calculator}
-              alt={hola.photos.calculator}
-              sizes="(max-width: 640px) 100vw, 512px"
-              className="aspect-[3/2]"
-            />
-            <SiteStill
-              src={HOLA_PHOTOS.desk}
-              alt={hola.photos.desk}
-              sizes="(max-width: 640px) 100vw, 512px"
-              className="aspect-[3/2]"
-            />
-          </div>
+          <>
+            <div className="mb-6">
+              <SiteStill
+                src={HOLA_PHOTOS.llcSigning}
+                alt={hola.photos.llcSigning}
+                sizes="(max-width: 1024px) 100vw, 1024px"
+                className="aspect-[16/7] sm:aspect-[2.35/1]"
+              />
+            </div>
+            <div className="mb-10 grid gap-3 sm:grid-cols-2">
+              <SiteStill
+                src={HOLA_PHOTOS.calculator}
+                alt={hola.photos.calculator}
+                sizes="(max-width: 640px) 100vw, 512px"
+                className="aspect-[3/2]"
+              />
+              <SiteStill
+                src={HOLA_PHOTOS.desk}
+                alt={hola.photos.desk}
+                sizes="(max-width: 640px) 100vw, 512px"
+                className="aspect-[3/2]"
+              />
+            </div>
+          </>
         ) : null}
         <h2 className="font-display text-3xl tracking-tight text-black">
           {c.servicesTitle}
         </h2>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-          {client.services.map((service) => (
-            <li
-              key={service}
-              className="border border-[#00FF66] bg-white px-4 py-3 text-black"
-            >
-              {taxOfficeServiceLabel(service, locale)}
-            </li>
-          ))}
+          {services.map((service) => {
+            const llc = isHola && /llc/i.test(service);
+            if (llc) {
+              return (
+                <li key={service} className="bg-white sm:col-span-1">
+                  <SiteStill
+                    src={HOLA_PHOTOS.llcHandshake}
+                    alt={hola.photos.llcHandshake}
+                    sizes="(max-width: 640px) 100vw, 512px"
+                    className="aspect-[3/2]"
+                  />
+                  <p className="border-x border-b border-[#00FF66] px-4 py-3 text-black">
+                    {taxOfficeServiceLabel(service, locale)}
+                  </p>
+                </li>
+              );
+            }
+            return (
+              <li
+                key={service}
+                className="border border-[#00FF66] bg-white px-4 py-3 text-black"
+              >
+                {taxOfficeServiceLabel(service, locale)}
+              </li>
+            );
+          })}
         </ul>
+        {isHola ? (
+          <aside className="mt-6 grid gap-3 sm:grid-cols-2">
+            <SiteStill
+              src={HOLA_PHOTOS.llcStorefront}
+              alt={hola.photos.llcStorefront}
+              sizes="(max-width: 640px) 100vw, 512px"
+              className="aspect-[3/2]"
+            />
+            <div className="flex flex-col justify-center border border-[#00FF66] bg-white px-5 py-5">
+              <p className="text-sm uppercase tracking-[0.22em] text-[#00E840]">
+                {hola.llcPromoKicker}
+              </p>
+              <h3 className="mt-2 font-display text-2xl tracking-tight text-black">
+                {hola.llcPromoTitle}
+              </h3>
+              <p className="mt-3 text-black/80">{hola.llcPromo}</p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <a
+                  href={telHref(client.phone)}
+                  className="bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
+                >
+                  {c.call(client.phone)}
+                </a>
+                <a
+                  href="#contact"
+                  className="border border-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00FF66]/10"
+                >
+                  {c.ctaMessage}
+                </a>
+              </div>
+            </div>
+          </aside>
+        ) : null}
         <p className="mt-8 text-sm text-black/80">
           {client.hours} · {client.phone}
         </p>

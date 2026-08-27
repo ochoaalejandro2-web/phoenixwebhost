@@ -3,6 +3,7 @@ import path from "path";
 import { neon } from "@neondatabase/serverless";
 import { createSeedState } from "@/data/seed";
 import { findClientByCustomDomain } from "@/lib/custom-domain";
+import { withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
 import type {
   AppState,
@@ -124,11 +125,17 @@ const KNOWN_TEMPLATES: TemplateId[] = [
 
 function normalizeClient(client: Client): Client {
   let template = client.template;
-  if (client.slug === HOLA_TAX_SLUG) template = "tax";
-  else if (!KNOWN_TEMPLATES.includes(template)) template = "professional";
+  let services = client.services;
+  if (client.slug === HOLA_TAX_SLUG) {
+    template = "tax";
+    services = withHolaTaxLlcService(client.services);
+  } else if (!KNOWN_TEMPLATES.includes(template)) {
+    template = "professional";
+  }
   return {
     ...client,
     template,
+    services,
     localBoost: Boolean(client.localBoost),
     stripeBoostSubscriptionId: client.stripeBoostSubscriptionId ?? null,
     businessEmail: Boolean(client.businessEmail),

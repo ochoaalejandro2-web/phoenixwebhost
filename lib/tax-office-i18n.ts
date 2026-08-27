@@ -10,6 +10,7 @@ import type { Locale } from "@/lib/types";
 const servicesEs: Record<string, string> = {
   "Personal tax preparation": "Preparación de impuestos personales",
   "Small-business tax preparation": "Preparación de impuestos para negocios pequeños",
+  "Arizona LLC formation": "Formación de LLC en Arizona",
   "ITIN applications": "Solicitudes de ITIN",
   Bookkeeping: "Contabilidad",
   "Year-round tax support": "Apoyo con impuestos todo el año",
