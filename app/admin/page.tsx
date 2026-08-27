@@ -126,7 +126,7 @@ export default async function AdminHome() {
           <div>
             <h2 className="font-display text-2xl">Open requests</h2>
             <p className="mt-1 text-sm text-ink-soft">
-              Public "Request a site" leads. Name, contact, and note are here so
+              Public Request a site leads. Name, contact, and note are here so
               you can call without leaving the dashboard.
             </p>
           </div>
