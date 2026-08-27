@@ -52,6 +52,9 @@ export default async function ClientDetailPage({
         <p className="mt-2 text-ink-soft">
           Template: {client.template} · Site: {client.siteStatus} · Payment:{" "}
           <strong>{client.paymentStatus}</strong>
+          {" · "}
+          Local Boost:{" "}
+          <strong>{client.localBoost ? "purchased" : "not purchased"}</strong>
         </p>
         <p className="mt-1 text-sm">
           Public URL:{" "}
@@ -68,6 +71,8 @@ export default async function ClientDetailPage({
           <p>Next invoice: {fmt(client.nextInvoiceAt)}</p>
           <p>Stripe customer: {client.stripeCustomerId || "—"}</p>
           <p>Subscription: {client.stripeSubscriptionId || "—"}</p>
+          <p>Local Boost: {client.localBoost ? "purchased" : "not purchased"}</p>
+          <p>Boost subscription: {client.stripeBoostSubscriptionId || "—"}</p>
           <p>Reminder: {fmt(client.reminderSentAt)}</p>
           <p>Overdue since: {fmt(client.overdueSince)}</p>
           <p>Offline at: {fmt(client.offlineAt)}</p>
@@ -105,6 +110,27 @@ export default async function ClientDetailPage({
               Stripe Checkout
             </button>
           </form>
+          {client.localBoost ? null : (
+            <>
+              {client.paymentStatus === "paid" ? (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="kind" value="boost" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Add Local Boost ($99 + $79/mo)
+                  </button>
+                </form>
+              ) : (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="includeBoost" value="on" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Checkout with Local Boost
+                  </button>
+                </form>
+              )}
+            </>
+          )}
         </div>
 
         <form action={setSiteStatusAction} className="mt-4 flex flex-wrap items-center gap-2 text-sm">
@@ -188,6 +214,14 @@ export default async function ClientDetailPage({
               <input
                 name="stripeSubscriptionId"
                 defaultValue={client.stripeSubscriptionId || ""}
+                className={field}
+              />
+            </label>
+            <label className="text-sm">
+              Boost subscription ID
+              <input
+                name="stripeBoostSubscriptionId"
+                defaultValue={client.stripeBoostSubscriptionId || ""}
                 className={field}
               />
             </label>

@@ -48,7 +48,7 @@ export const copy = {
       "Many photos: quoted",
       "A shop: quoted",
       "A logo: $100–$300",
-      "Ads and SEO: extra, or skip at first",
+      "Magic SEO or guaranteed rankings — we do not sell that",
       "Unlimited changes — we do not sell that",
     ],
     unpaidTitle: "If a month goes unpaid",
@@ -71,7 +71,7 @@ export const copy = {
       {
         n: "2",
         t: "Pay $200 to launch, then $69/month",
-        d: "Card checkout. The monthly charge keeps hosting and small edits going.",
+        d: "Card checkout. The monthly charge keeps hosting and small edits going. Optional Local Boost can be added in the same checkout.",
       },
       {
         n: "3",
@@ -84,7 +84,7 @@ export const copy = {
       "Phoenixwebhost Inc. is owned by Alex Ochoa in Phoenix, Arizona. We build websites for Arizona small businesses and then keep those sites live. If you write in, a person who knows your site answers.",
     requestTitle: "Request a site",
     requestLead:
-      "Tell us about the business. We will follow up. If you are ready, you can pay the $200 launch and start the $69/month plan by card.",
+      "Tell us about the business. We will follow up. If you are ready, you can pay the $200 launch and start the $69/month plan by card. Local Boost is optional.",
     formName: "Your name",
     formBusiness: "Business name",
     formEmail: "Email",
@@ -93,7 +93,19 @@ export const copy = {
     formMessage: "What should the site say?",
     formSubmit: "Send request",
     formPay: "Pay $200 + start $69/month",
+    formPayBoost: "Pay launch, care, and Local Boost",
     formThanks: "Request received. We will be in touch.",
+    boostKicker: "Optional add-on",
+    boostTitle: "Local Boost — $99 once + $79/month extra",
+    boostBody:
+      "Local Google visibility for Phoenix small businesses: we set up your Google Business Profile and a small local ad that points to your own site. The monthly extra keeps that listing and ad in care. This is not magic SEO, and it does not promise rankings.",
+    boostSetupHint: "one-time, Google profile + small ad",
+    boostMonthHint: "per month extra, listing and ad care",
+    boostCheckbox: "Add Local Boost — $99 now + $79/month extra",
+    boostCheckboxHelp:
+      "Optional and separate. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
+    boostMissing:
+      "Local Boost checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
     reviewsTitle: "Reviews from Arizona companies",
     reviewsLead:
       "Notes from businesses we built for. New reviews are checked before they appear here — no fake counts, no filler quotes.",
@@ -161,7 +173,7 @@ export const copy = {
       "Muchas fotos: se cotiza",
       "Una tienda: se cotiza",
       "Un logotipo: $100–$300",
-      "Anuncios y SEO: extra, o se deja para después",
+      "SEO mágico o posiciones garantizadas — no vendemos eso",
       "Cambios ilimitados — no vendemos eso",
     ],
     unpaidTitle: "Si un mes no se paga",
@@ -184,7 +196,7 @@ export const copy = {
       {
         n: "2",
         t: "Paga $200 para lanzar, luego $69 al mes",
-        d: "Pago con tarjeta. El cargo mensual mantiene el hospedaje y los cambios pequeños.",
+        d: "Pago con tarjeta. El cargo mensual mantiene el hospedaje y los cambios pequeños. Local Boost es opcional y se puede agregar en el mismo pago.",
       },
       {
         n: "3",
@@ -197,7 +209,7 @@ export const copy = {
       "Phoenixwebhost Inc. es de Alex Ochoa en Phoenix, Arizona. Hacemos sitios para negocios pequeños de Arizona y los mantenemos en línea. Si escribe, responde alguien que conoce su sitio.",
     requestTitle: "Pedir un sitio",
     requestLead:
-      "Cuéntenos del negocio. Le respondemos. Si ya está listo, puede pagar el lanzamiento de $200 y comenzar el plan de $69 al mes con tarjeta.",
+      "Cuéntenos del negocio. Le respondemos. Si ya está listo, puede pagar el lanzamiento de $200 y comenzar el plan de $69 al mes con tarjeta. Local Boost es opcional.",
     formName: "Su nombre",
     formBusiness: "Nombre del negocio",
     formEmail: "Correo",
@@ -206,7 +218,19 @@ export const copy = {
     formMessage: "¿Qué debe decir el sitio?",
     formSubmit: "Enviar solicitud",
     formPay: "Pagar $200 + empezar $69/mes",
+    formPayBoost: "Pagar lanzamiento, cuidado y Local Boost",
     formThanks: "Solicitud recibida. Nos pondremos en contacto.",
+    boostKicker: "Complemento opcional",
+    boostTitle: "Local Boost — $99 una vez + $79 al mes extra",
+    boostBody:
+      "Visibilidad local en Google para negocios pequeños de Phoenix: configuramos su Perfil de Empresa en Google y un anuncio local pequeño que apunta a su propio sitio. El cargo mensual extra cuida ese listado y anuncio. No es SEO mágico y no promete posiciones.",
+    boostSetupHint: "un solo pago, perfil de Google + anuncio pequeño",
+    boostMonthHint: "al mes extra, cuidado del listado y anuncio",
+    boostCheckbox: "Agregar Local Boost — $99 ahora + $79 al mes extra",
+    boostCheckboxHelp:
+      "Opcional y aparte. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
+    boostMissing:
+      "El pago de Local Boost aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
     reviewsTitle: "Reseñas de empresas de Arizona",
     reviewsLead:
       "Notas de negocios para los que hicimos un sitio. Las reseñas nuevas se revisan antes de publicarse — sin cifras inventadas ni citas de relleno.",

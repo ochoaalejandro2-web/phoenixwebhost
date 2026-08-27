@@ -31,6 +31,7 @@ export default async function ClientsPage() {
               </Link>
               <p className="text-sm text-ink-soft">
                 {client.slug}.phoenixwebhost.com · {client.siteStatus} · {client.paymentStatus}
+                {client.localBoost ? " · Local Boost" : ""}
               </p>
             </div>
             <p className="text-sm text-ink-soft">

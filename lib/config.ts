@@ -13,6 +13,10 @@ export const PRICING = {
   monthlyCents: 6_900,
   setupLabel: "$200",
   monthlyLabel: "$69",
+  boostSetupCents: 9_900,
+  boostMonthlyCents: 7_900,
+  boostSetupLabel: "$99",
+  boostMonthlyLabel: "$79",
   extraPageMin: 75,
   extraPageMax: 150,
   logoMin: 100,
@@ -91,4 +95,18 @@ export function stripeConfigured() {
       process.env.STRIPE_SETUP_PRICE_ID &&
       process.env.STRIPE_MONTHLY_PRICE_ID,
   );
+}
+
+export function stripeBoostConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY &&
+      process.env.STRIPE_BOOST_SETUP_PRICE_ID &&
+      process.env.STRIPE_BOOST_MONTHLY_PRICE_ID,
+  );
+}
+
+export function boostPriceIds() {
+  const setup = process.env.STRIPE_BOOST_SETUP_PRICE_ID;
+  const monthly = process.env.STRIPE_BOOST_MONTHLY_PRICE_ID;
+  return [setup, monthly].filter((id): id is string => Boolean(id));
 }

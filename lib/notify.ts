@@ -263,8 +263,13 @@ export async function notifyNewLead(lead: Lead) {
       business: lead.businessName,
       city: lead.city,
       message: lead.message,
-      extra: lead.locale === "es" ? "Spanish" : "English",
-      extraLabel: "Language",
+      extra: [
+        lead.locale === "es" ? "Spanish" : "English",
+        lead.wantsLocalBoost
+          ? "Wants Local Boost ($99 + $79/mo)"
+          : "No Local Boost",
+      ].join(" · "),
+      extraLabel: "Notes",
       createdAt: lead.createdAt,
       adminPath: "/admin/leads",
       adminLabel: "Open in Admin → Requests",

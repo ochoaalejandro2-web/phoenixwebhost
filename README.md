@@ -1,6 +1,6 @@
 # Phoenixwebhost Inc.
 
-Arizona small-business websites. **$200 to launch. $69/month to keep it live.**
+Arizona small-business websites. **$200 to launch. $69/month to keep it live.** Optional **Local Boost** add-on: **$99 once + $79/month extra**.
 
 Owner: **Alex Ochoa**, Phoenix, AZ  
 Company: **Phoenixwebhost Inc.**  
@@ -14,6 +14,9 @@ This repo is only Phoenixwebhost. It is a separate business: marketing site, own
 | --- | --- | --- |
 | Launch | **$200 once** | A simple small-business website |
 | Stay live | **$69 / month** | Hosting plus limited care (not unlimited changes) |
+| Local Boost (optional) | **$99 once + $79 / month extra** | Google Business Profile setup and a small local ad to the client's own site, then ongoing listing and ad care. Not magic SEO. |
+
+Buying launch and care still works with Boost unchecked. Boost is a separate add-on at signup, or later from the owner panel.
 
 **$69/month includes**
 
@@ -30,7 +33,7 @@ This repo is only Phoenixwebhost. It is a separate business: marketing site, own
 - Many photos: quoted
 - Shop: quoted
 - Logo: **$100–$300**
-- Ads / SEO: extra, or skip at first
+- Ads / SEO: extra, or skip at first. Optional **Local Boost** is the local-visibility add-on (Google profile + a small ad). Not magic SEO.
 - Unlimited changes: **never**
 
 **If a month is unpaid:** reminder → site shows “temporarily offline” → files kept **30 days** → take down.
@@ -78,6 +81,8 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `STRIPE_WEBHOOK_SECRET` | for payments | `whsec_...` from the webhook endpoint |
 | `STRIPE_SETUP_PRICE_ID` | for payments | One-time **$200** price |
 | `STRIPE_MONTHLY_PRICE_ID` | for payments | Recurring **$69/month** price |
+| `STRIPE_BOOST_SETUP_PRICE_ID` | for Local Boost | One-time **$99** add-on price |
+| `STRIPE_BOOST_MONTHLY_PRICE_ID` | for Local Boost | Recurring **$79/month** add-on price |
 | `DATABASE_URL` | production on Vercel | Postgres (Neon). Without it, data is local-file or ephemeral |
 | `CRON_SECRET` | recommended | Protects `/api/cron/billing` |
 | `NOTIFY_EMAIL` | no | Owner alert inbox. Default `ochoa.alejandro2@gmail.com` |
@@ -101,7 +106,7 @@ Alex already has a Stripe account. Use **test mode** until checkout works end to
 node --env-file=.env.local scripts/setup-stripe.mjs
 ```
 
-That prints `STRIPE_SETUP_PRICE_ID` ($200 one-time) and `STRIPE_MONTHLY_PRICE_ID` ($69/month). Put both in `.env.local`.
+That prints `STRIPE_SETUP_PRICE_ID` ($200 one-time) and `STRIPE_MONTHLY_PRICE_ID` ($69/month). Put both in `.env.local`. Local Boost uses the existing test prices `STRIPE_BOOST_SETUP_PRICE_ID` ($99) and `STRIPE_BOOST_MONTHLY_PRICE_ID` ($79/month) — set those env names on Vercel; do not create extra price IDs.
 
 3. Webhook (local):
 
@@ -119,7 +124,7 @@ Paste the `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
 
 To test a failed payment / unpaid flow: card `4000 0000 0000 9995`, or in the owner panel open a client and click **Simulate unpaid** → **Apply unpaid policy** (after the 2-day grace, or it will set overdue immediately and offline when grace has passed). Mesa Street Kitchen is already overdue and offline.
 
-Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item).
+Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item). If the customer selects **Local Boost**, the same session also includes **$99 setup + $79/month**. Leaving Boost unchecked still charges only the base plan. If the Boost price env vars are missing, checkout fails closed with a clear error instead of charging a partial cart.
 
 When you are ready for real charges, switch the same variable names to **live** keys (`sk_live_...`, live price IDs, live webhook secret). Never mix test and live IDs.
 
@@ -127,8 +132,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 `/admin` after login.
 
-- Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue
-- Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, pause / offline toggle
+- Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost
+- Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, Local Boost status, pause / offline toggle. Existing clients can add Boost later from this page.
 - **New client** generates a site from a template (contractor, salon, restaurant, professional services, landscaping)
 - Public “Request a site” form lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call them right away. Missing provider keys skip that channel; the form still succeeds.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
