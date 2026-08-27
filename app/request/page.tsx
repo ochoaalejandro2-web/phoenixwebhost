@@ -11,9 +11,9 @@ export default function RequestPage() {
       <SiteHeader locale="en" />
       <main className="mx-auto grid w-full max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2">
         <div>
-          <h1 className="font-display text-4xl text-cream">{c.requestTitle}</h1>
-          <p className="mt-4 text-lg text-cream-soft">{c.requestLead}</p>
-          <p className="mt-6 text-gold">$200 to launch · $69/month to keep it live</p>
+          <h1 className="font-display text-4xl text-ink-black">{c.requestTitle}</h1>
+          <p className="mt-4 text-lg text-ink-black/70">{c.requestLead}</p>
+          <p className="price-gold mt-6">$200 to launch · $69/month to keep it live</p>
         </div>
         <RequestForm locale="en" />
       </main>

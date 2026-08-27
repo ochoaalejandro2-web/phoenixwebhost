@@ -58,9 +58,9 @@ export function RequestForm({ locale }: { locale: Locale }) {
 
   if (status === "done") {
     return (
-      <div className="rounded-2xl border border-gold-line bg-dusk-card p-6">
-        <p className="font-display text-2xl text-cream">{c.formThanks}</p>
-        <p className="mt-2 text-cream-soft">
+      <div className="rounded-2xl border border-gold/30 bg-snow p-6 ice-glow">
+        <p className="font-display text-2xl text-ink-black">{c.formThanks}</p>
+        <p className="mt-2 text-ink-black/70">
           {locale === "es"
             ? "Si está listo para pagar el lanzamiento de $200 y el plan de $69 al mes, use el botón de abajo."
             : "If you are ready to pay the $200 launch and start $69/month, use the button below."}
@@ -74,13 +74,13 @@ export function RequestForm({ locale }: { locale: Locale }) {
           {c.formPay}
         </button>
         {!canPay && (
-          <p className="mt-3 text-sm text-cream-soft">
+          <p className="mt-3 text-sm text-ink-black/60">
             {locale === "es"
               ? "El pago con tarjeta se activa cuando Alex configura Stripe. Su solicitud ya está guardada."
               : "Card checkout turns on once Alex connects Stripe. Your request is already saved."}
           </p>
         )}
-        {payError && <p className="mt-3 text-sm text-gold">{payError}</p>}
+        {payError && <p className="mt-3 text-sm text-gold-deep">{payError}</p>}
       </div>
     );
   }
@@ -88,7 +88,7 @@ export function RequestForm({ locale }: { locale: Locale }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="grid gap-4 rounded-2xl border border-gold-line bg-dusk-card p-6 text-cream-soft"
+      className="grid gap-4 rounded-2xl border border-gold/30 bg-snow p-6 text-ink-black ice-glow"
     >
       <label className="text-sm">
         {c.formName}
@@ -128,7 +128,7 @@ export function RequestForm({ locale }: { locale: Locale }) {
         {status === "saving" ? "…" : c.formSubmit}
       </button>
       {status === "error" && (
-        <p className="text-sm text-gold">
+        <p className="text-sm text-gold-deep">
           {locale === "es"
             ? "No se pudo enviar. Intente de nuevo."
             : "Could not send. Please try again."}
