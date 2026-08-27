@@ -7,6 +7,7 @@ export const TAX_TEMPLATE_ID = "tax" as const;
 export const HOLA_TAX_SLUG = "hola-tax-service";
 
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+export const MAX_SCAN_PAGES = 5;
 export const ALLOWED_CONTENT_TYPES = [
   "application/pdf",
   "image/jpeg",
@@ -49,6 +50,12 @@ export function taxBlobPrefix(clientId: string, userId: string) {
 export function safeUploadFilename(name: string) {
   const trimmed = name.trim().replace(/[/\\]/g, "").slice(0, 120);
   return trimmed || "document.pdf";
+}
+
+export function scanPdfFilename(label: string) {
+  const slug =
+    label.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "") || "document";
+  return `${slug}-scan.pdf`;
 }
 
 export function isAllowedContentType(type: string) {

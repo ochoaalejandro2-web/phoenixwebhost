@@ -163,7 +163,7 @@ Unpaid / paused sites render the “temporarily offline” page. After 30 days t
 The **Tax office** template is a sellable Phoenixwebhost layout (white / black / neon) plus a private document drop box for that shop’s tax customers. It is not tax-prep software.
 
 - Public site: `/s/{slug}` (custom domain works the same way as other clients)
-- Client login / upload: `/s/{slug}/portal`
+- Client login / upload: `/s/{slug}/portal`. On a phone, **Scan document** opens the rear camera; 1–5 photos become one private PDF.
 - Staff login: `/s/{slug}/portal/staff/login` — that shop’s folders only
 - Customers of shop A cannot see shop B. Staff of shop A cannot see shop B.
 - Files go to Vercel Blob with **private** access. Downloads require a signed-in session. Nothing is stored in git or `/public`.

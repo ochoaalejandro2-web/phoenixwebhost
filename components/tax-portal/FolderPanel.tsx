@@ -90,8 +90,9 @@ export function FolderPanel({
       <h1 className="font-display text-3xl tracking-tight">Your folder / Su carpeta</h1>
       <p className="mt-2 max-w-2xl text-sm text-black/80">
         Documents you upload here stay in a private folder at {clientName}. Only
-        you and this tax office can open them. This is not tax-prep software —
-        just a secure drop box.
+        you and this tax office can open them. On a phone you can scan a W-2,
+        1099, or ID with the camera; we save the pages as one PDF. This is not
+        tax-prep software — just a secure drop box.
       </p>
       {!storageReady || !blobReady ? (
         <p role="alert" className="mt-4 border border-black px-4 py-3 text-sm">
