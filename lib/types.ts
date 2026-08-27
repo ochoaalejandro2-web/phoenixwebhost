@@ -4,7 +4,8 @@ export type TemplateId =
   | "contractor"
   | "salon"
   | "restaurant"
-  | "professional";
+  | "professional"
+  | "landscaping";
 
 export type PaymentStatus = "paid" | "overdue" | "unpaid" | "none";
 
@@ -54,6 +55,7 @@ export type Client = {
   notes: Note[];
   editRequests: EditRequest[];
   createdAt: string;
+  sample?: boolean;
 };
 
 export type Lead = {

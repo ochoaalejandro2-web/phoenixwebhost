@@ -34,8 +34,8 @@ export const TEMPLATES: {
     id: "contractor",
     name: "Contractor & trades",
     nameEs: "Contratista y oficios",
-    blurb: "Roofing, HVAC, plumbing, landscaping, and job-site businesses.",
-    blurbEs: "Techados, A/C, plomería, jardinería y oficios.",
+    blurb: "Roofing, HVAC, plumbing, and job-site businesses.",
+    blurbEs: "Techados, A/C, plomería y oficios.",
   },
   {
     id: "salon",
@@ -57,6 +57,13 @@ export const TEMPLATES: {
     nameEs: "Servicios profesionales",
     blurb: "Bookkeeping, insurance, consulting, and local offices.",
     blurbEs: "Contabilidad, seguros, consultoría y oficinas locales.",
+  },
+  {
+    id: "landscaping",
+    name: "Landscaping & yards",
+    nameEs: "Jardinería y patios",
+    blurb: "Desert plants, lawns, irrigation, and Phoenix-area landscape crews.",
+    blurbEs: "Plantas del desierto, césped, riego y jardinería en el área de Phoenix.",
   },
 ];
 
