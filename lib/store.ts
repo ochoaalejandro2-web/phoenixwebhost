@@ -2,17 +2,39 @@ import { promises as fs } from "fs";
 import path from "path";
 import { neon } from "@neondatabase/serverless";
 import { createSeedState } from "@/data/seed";
-import type { AppState, Client, ContactMessage, Lead } from "@/lib/types";
+import type {
+  AppState,
+  AuthLock,
+  Client,
+  ContactMessage,
+  Lead,
+  Review,
+  ReviewStatus,
+} from "@/lib/types";
 
 const FILE_PATH = path.join(process.cwd(), "data", "store.json");
 const TMP_PATH = "/tmp/phoenixwebhost-store.json";
+const STORE_KEY = "__phoenixwebhost_app_store__";
 
-let memory: AppState | null = null;
-let writeChain: Promise<unknown> = Promise.resolve();
+type StoreBag = {
+  memory: AppState | null;
+  writeChain: Promise<unknown>;
+};
+
+function bag(): StoreBag {
+  const g = globalThis as typeof globalThis & {
+    [STORE_KEY]?: StoreBag;
+  };
+  if (!g[STORE_KEY]) {
+    g[STORE_KEY] = { memory: null, writeChain: Promise.resolve() };
+  }
+  return g[STORE_KEY];
+}
 
 function enqueue<T>(fn: () => Promise<T>): Promise<T> {
-  const run = writeChain.then(fn, fn);
-  writeChain = run.then(
+  const store = bag();
+  const run = store.writeChain.then(fn, fn);
+  store.writeChain = run.then(
     () => undefined,
     () => undefined,
   );
@@ -77,23 +99,56 @@ async function writePostgres(state: AppState) {
     ON CONFLICT (id) DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()`;
 }
 
-async function loadUnlocked(): Promise<AppState> {
-  if (memory) return memory;
-  const mode = storageMode();
-  let state: AppState | null = null;
-  if (mode === "postgres") state = await readPostgres();
-  else if (mode === "file") state = await readFileState();
-  if (!state) {
-    state = createSeedState();
-    if (mode === "postgres") await writePostgres(state);
-    if (mode === "file") await writeFileState(state);
+function emptyAuthLock(): AuthLock {
+  return {
+    passwordFails: 0,
+    passwordLockedUntil: null,
+    codeFails: 0,
+    codeLockedUntil: null,
+    lastCodeSentAt: null,
+    consumedNonces: [],
+  };
+}
+
+function normalizeState(state: AppState): AppState {
+  if (!Array.isArray(state.reviews)) state.reviews = [];
+  if (!Array.isArray(state.leads)) state.leads = [];
+  if (!Array.isArray(state.contactMessages)) state.contactMessages = [];
+  if (!Array.isArray(state.clients)) state.clients = [];
+  if (!state.authLock) state.authLock = emptyAuthLock();
+  if (!Array.isArray(state.authLock.consumedNonces)) {
+    state.authLock.consumedNonces = [];
   }
-  memory = state;
   return state;
 }
 
+async function loadUnlocked(): Promise<AppState> {
+  const mode = storageMode();
+  if (mode === "postgres") {
+    const existing = await readPostgres();
+    if (existing) return normalizeState(existing);
+    const seed = createSeedState();
+    await writePostgres(seed);
+    bag().memory = seed;
+    return seed;
+  }
+  if (mode === "file") {
+    const existing = await readFileState();
+    if (existing) return normalizeState(existing);
+    const seed = createSeedState();
+    await writeFileState(seed);
+    bag().memory = seed;
+    return seed;
+  }
+  const cached = bag().memory;
+  if (cached) return cached;
+  const seed = createSeedState();
+  bag().memory = seed;
+  return seed;
+}
+
 async function saveUnlocked(state: AppState) {
-  memory = state;
+  bag().memory = state;
   const mode = storageMode();
   if (mode === "postgres") await writePostgres(state);
   if (mode === "file") await writeFileState(state);
@@ -194,10 +249,72 @@ export async function listContactMessages(clientId?: string) {
   );
 }
 
+export async function addReview(review: Review) {
+  await updateState((state) => {
+    if (!state.reviews) state.reviews = [];
+    state.reviews.unshift(review);
+  });
+  return review;
+}
+
+export async function listReviews() {
+  const state = await getState();
+  return [...(state.reviews || [])].sort((a, b) => {
+    if (a.status === "pending" && b.status !== "pending") return -1;
+    if (b.status === "pending" && a.status !== "pending") return 1;
+    return b.createdAt.localeCompare(a.createdAt);
+  });
+}
+
+export async function listPublicReviews() {
+  const state = await getState();
+  return (state.reviews || [])
+    .filter((review) => review.status === "approved")
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function getReview(id: string) {
+  const state = await getState();
+  return (state.reviews || []).find((review) => review.id === id) ?? null;
+}
+
+export async function setReviewStatus(id: string, status: ReviewStatus) {
+  await updateState((state) => {
+    if (!state.reviews) state.reviews = [];
+    const index = state.reviews.findIndex((review) => review.id === id);
+    if (index < 0) return;
+    const current = state.reviews[index];
+    state.reviews[index] = {
+      ...current,
+      status,
+      publishedAt:
+        status === "approved"
+          ? current.publishedAt || new Date().toISOString()
+          : null,
+    };
+  });
+  return getReview(id);
+}
+
 export async function resetToSeed() {
   const state = createSeedState();
   await enqueue(async () => {
     await saveUnlocked(state);
   });
   return state;
+}
+
+export async function getAuthLock(): Promise<AuthLock> {
+  const state = await getState();
+  return state.authLock || emptyAuthLock();
+}
+
+export async function updateAuthLock(
+  mutator: (lock: AuthLock) => void,
+): Promise<AuthLock> {
+  const state = await updateState((current) => {
+    if (!current.authLock) current.authLock = emptyAuthLock();
+    mutator(current.authLock);
+  });
+  return state.authLock;
 }

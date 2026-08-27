@@ -78,9 +78,34 @@ export type ContactMessage = {
   createdAt: string;
 };
 
+export type ReviewStatus = "pending" | "approved" | "rejected";
+
+export type Review = {
+  id: string;
+  companyName: string;
+  reviewerName: string;
+  city: string;
+  rating: 1 | 2 | 3 | 4 | 5;
+  body: string;
+  status: ReviewStatus;
+  createdAt: string;
+  publishedAt: string | null;
+};
+
+export type AuthLock = {
+  passwordFails: number;
+  passwordLockedUntil: number | null;
+  codeFails: number;
+  codeLockedUntil: number | null;
+  lastCodeSentAt: number | null;
+  consumedNonces: string[];
+};
+
 export type AppState = {
   clients: Client[];
   leads: Lead[];
   contactMessages: ContactMessage[];
+  reviews: Review[];
+  authLock: AuthLock;
   seededAt: string;
 };

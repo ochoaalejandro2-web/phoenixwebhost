@@ -3,8 +3,10 @@ import Link from "next/link";
 import { SiteFooter, SiteHeader, StudioShell } from "@/components/marketing/Chrome";
 import { HeroDevices, TemplatePreview } from "@/components/marketing/HeroDevices";
 import { RequestForm } from "@/components/marketing/RequestForm";
+import { ReviewsSection } from "@/components/marketing/ReviewsSection";
 import { TEMPLATES } from "@/lib/config";
 import { requestPath, t } from "@/lib/i18n";
+import { listPublicReviews } from "@/lib/store";
 import type { Locale } from "@/lib/types";
 
 function AccentTitle({
@@ -49,8 +51,9 @@ function LimeCheck() {
   );
 }
 
-export function MarketingPage({ locale }: { locale: Locale }) {
+export async function MarketingPage({ locale }: { locale: Locale }) {
   const c = t(locale);
+  const reviews = await listPublicReviews();
   return (
     <StudioShell>
       <SiteHeader locale={locale} />
@@ -216,6 +219,8 @@ export function MarketingPage({ locale }: { locale: Locale }) {
           ))}
         </div>
       </section>
+
+      <ReviewsSection locale={locale} reviews={reviews} />
 
       <section className="border-t border-zinc-100 bg-zinc-50/80">
         <div className="mx-auto grid max-w-6xl gap-14 px-6 py-24 lg:grid-cols-2">

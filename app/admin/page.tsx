@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listClients, listLeads, storageMode } from "@/lib/store";
+import { listClients, listLeads, listReviews, storageMode } from "@/lib/store";
 import { stripeConfigured } from "@/lib/config";
 import { stripeModeLabel } from "@/lib/stripe";
 import { resetDemoAction } from "@/app/admin/actions";
@@ -30,6 +30,8 @@ function PayBadge({ status }: { status: string }) {
 export default async function AdminHome() {
   const clients = await listClients();
   const leads = await listLeads();
+  const reviews = await listReviews();
+  const pendingReviews = reviews.filter((review) => review.status === "pending").length;
   const paid = clients.filter((c) => c.paymentStatus === "paid").length;
   const overdue = clients.filter((c) => c.paymentStatus === "overdue").length;
   const live = clients.filter((c) => c.siteStatus === "live").length;
@@ -118,6 +120,12 @@ export default async function AdminHome() {
         form.{" "}
         <Link href="/admin/leads" className="text-clay">
           Review requests
+        </Link>
+        {" · "}
+        {pendingReviews} review{pendingReviews === 1 ? "" : "s"} waiting for
+        approval.{" "}
+        <Link href="/admin/reviews" className="text-clay">
+          Moderate reviews
         </Link>
       </p>
     </div>

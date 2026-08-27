@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
-import { homePath, requestPath, t } from "@/lib/i18n";
+import { homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
 export function StudioShell({ children }: { children: React.ReactNode }) {
@@ -23,6 +23,9 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         <nav className="hidden items-center gap-7 text-sm text-white/85 md:flex">
           <a href={`${home}#work`} className="hover:text-lime">
             {locale === "es" ? "Trabajo" : "Work"}
+          </a>
+          <a href={`${home}#reviews`} className="hover:text-lime">
+            {c.nav.reviews}
           </a>
           <a href={`${home}#pricing`} className="hover:text-lime">
             {c.nav.pricing}
@@ -64,6 +67,9 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         <div className="flex gap-6 text-sm text-white/70">
           <Link href={homePath(locale)} className="hover:text-lime">
             {locale === "es" ? "Inicio" : "Home"}
+          </Link>
+          <Link href={reviewsPath(locale)} className="hover:text-lime">
+            {c.nav.reviews}
           </Link>
           <Link href={requestPath(locale)} className="hover:text-lime">
             {c.nav.request}

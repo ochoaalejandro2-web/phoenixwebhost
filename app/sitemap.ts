@@ -6,5 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://phoenixwebhost.com/es", lastModified: new Date() },
     { url: "https://phoenixwebhost.com/request", lastModified: new Date() },
     { url: "https://phoenixwebhost.com/es/request", lastModified: new Date() },
+    { url: "https://phoenixwebhost.com/reviews", lastModified: new Date() },
+    { url: "https://phoenixwebhost.com/es/reviews", lastModified: new Date() },
   ];
 }

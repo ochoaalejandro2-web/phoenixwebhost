@@ -56,10 +56,9 @@ Open [http://localhost:3000](http://localhost:3000).
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
 | Demo restaurant | `/s/mesa-street-kitchen` (overdue, offline) |
 
-**Owner login (change in production)**
+**Owner login**
 
-- Email: `alex@phoenixwebhost.com` (or `ADMIN_EMAIL`)
-- Password: `MesaSunrise2026!` (or `ADMIN_PASSWORD`)
+Use `/login`. Email is `ADMIN_EMAIL` (default `alex@phoenixwebhost.com`). Set `ADMIN_PASSWORD` in `.env.local` / Vercel — do not commit a real password. If `RESEND_API_KEY` or complete Twilio vars are set, a 6-digit code is sent to `NOTIFY_EMAIL` / `NOTIFY_PHONE` after the password. If neither provider is configured, the owner session is issued after the password (same as before). `AUTH_SECRET` must be a long random string in production; it signs the login cookie.
 
 Demo data is seeded automatically (3 clients in test mode). `Reset demo data` on the dashboard restores it.
 
@@ -70,8 +69,8 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `ADMIN_EMAIL` | yes (has default) | Alex’s login |
-| `ADMIN_PASSWORD` | yes (has default) | Alex’s login — change this |
-| `AUTH_SECRET` | yes in production | Signs the login cookie |
+| `ADMIN_PASSWORD` | yes (has default) | Owner password — set in env, do not commit a real one |
+| `AUTH_SECRET` | yes in production | Signs the login cookie. Use a long random string |
 | `NEXT_PUBLIC_SITE_URL` | yes | Public URL, used in Stripe redirects |
 | `NEXT_PUBLIC_ROOT_DOMAIN` | no | Default `phoenixwebhost.com` |
 | `STRIPE_SECRET_KEY` | for payments | `sk_test_...` then `sk_live_...` |
@@ -80,6 +79,13 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `STRIPE_MONTHLY_PRICE_ID` | for payments | Recurring **$69/month** price |
 | `DATABASE_URL` | production on Vercel | Postgres (Neon). Without it, data is local-file or ephemeral |
 | `CRON_SECRET` | recommended | Protects `/api/cron/billing` |
+| `NOTIFY_EMAIL` | no | Owner alert inbox. Default `ochoa.alejandro2@gmail.com` |
+| `NOTIFY_PHONE` | no | Owner SMS number. Default `+14809532393` |
+| `RESEND_API_KEY` | for email alerts | Resend API key. Email is skipped if unset |
+| `RESEND_FROM` | no | From address. Default `onboarding@resend.dev` |
+| `TWILIO_ACCOUNT_SID` | for SMS alerts | Twilio account SID. SMS is skipped if any Twilio var is unset |
+| `TWILIO_AUTH_TOKEN` | for SMS alerts | Twilio auth token |
+| `TWILIO_FROM` | for SMS alerts | Twilio from number (E.164, e.g. `+1…`) |
 
 Local data is saved to `data/store.json`. On Vercel, set `DATABASE_URL` (Neon or any Postgres) so client records survive deploys. The owner panel shows a warning if that URL is missing.
 
@@ -123,7 +129,9 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue
 - Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, pause / offline toggle
 - **New client** generates a site from a template (contractor, salon, restaurant, professional services)
-- Public “Request a site” form lands under **Requests**
+- Public “Request a site” form lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call them right away. Missing provider keys skip that channel; the form still succeeds.
+- Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
+- Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
 
 ## Generated client sites
 
