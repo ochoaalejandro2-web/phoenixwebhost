@@ -1,6 +1,6 @@
-import type { Client } from "@/lib/types";
-
-export type ContactNotice = "sent" | "no-email" | "send-failed" | "missing";
+import { HolaTaxSite } from "@/components/sites/HolaTaxSite";
+import { HOLA_TAX_SLUG } from "@/lib/client-themes";
+import type { Client, ContactNotice } from "@/lib/types";
 
 type SiteView = {
   client: Client;
@@ -388,6 +388,9 @@ export function renderClientSite(
   if (client.siteStatus === "taken_down") return <TakenDownSite />;
   if (client.siteStatus === "offline" || client.siteStatus === "paused") {
     return <OfflineSite client={client} />;
+  }
+  if (client.slug === HOLA_TAX_SLUG) {
+    return <HolaTaxSite client={client} notice={notice} />;
   }
   switch (client.template) {
     case "salon":
