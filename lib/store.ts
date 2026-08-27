@@ -13,13 +13,27 @@ import type {
 
 const FILE_PATH = path.join(process.cwd(), "data", "store.json");
 const TMP_PATH = "/tmp/phoenixwebhost-store.json";
+const STORE_KEY = "__phoenixwebhost_app_store__";
 
-let memory: AppState | null = null;
-let writeChain: Promise<unknown> = Promise.resolve();
+type StoreBag = {
+  memory: AppState | null;
+  writeChain: Promise<unknown>;
+};
+
+function bag(): StoreBag {
+  const g = globalThis as typeof globalThis & {
+    [STORE_KEY]?: StoreBag;
+  };
+  if (!g[STORE_KEY]) {
+    g[STORE_KEY] = { memory: null, writeChain: Promise.resolve() };
+  }
+  return g[STORE_KEY];
+}
 
 function enqueue<T>(fn: () => Promise<T>): Promise<T> {
-  const run = writeChain.then(fn, fn);
-  writeChain = run.then(
+  const store = bag();
+  const run = store.writeChain.then(fn, fn);
+  store.writeChain = run.then(
     () => undefined,
     () => undefined,
   );
@@ -93,22 +107,30 @@ function normalizeState(state: AppState): AppState {
 }
 
 async function loadUnlocked(): Promise<AppState> {
-  if (memory) return memory;
   const mode = storageMode();
-  let state: AppState | null = null;
-  if (mode === "postgres") state = await readPostgres();
-  else if (mode === "file") state = await readFileState();
-  if (!state) {
-    state = createSeedState();
-    if (mode === "postgres") await writePostgres(state);
-    if (mode === "file") await writeFileState(state);
+  if (mode === "postgres") {
+    const existing = await readPostgres();
+    if (existing) return normalizeState(existing);
+    const seed = createSeedState();
+    await writePostgres(seed);
+    bag().memory = seed;
+    return seed;
   }
-  memory = normalizeState(state);
-  return memory;
+  if (mode === "file") {
+    const existing = await readFileState();
+    if (existing) return normalizeState(existing);
+    const seed = createSeedState();
+    await writeFileState(seed);
+    bag().memory = seed;
+    return seed;
+  }
+  if (bag().memory) return bag().memory;
+  bag().memory = createSeedState();
+  return bag().memory;
 }
 
 async function saveUnlocked(state: AppState) {
-  memory = state;
+  bag().memory = state;
   const mode = storageMode();
   if (mode === "postgres") await writePostgres(state);
   if (mode === "file") await writeFileState(state);
