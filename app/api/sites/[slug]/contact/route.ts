@@ -5,7 +5,9 @@ import {
   usableEmail,
   type SiteContactStatus,
 } from "@/lib/notify";
+import { parseSiteLocale, withSiteLangQuery } from "@/lib/site-locale";
 import { addContactMessage, getClientBySlug } from "@/lib/store";
+import type { Locale } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,7 @@ function finish(
   request: Request,
   slug: string,
   result: { sent: true } | { error: SiteContactStatus | "missing" },
+  locale?: Locale | null,
 ) {
   if (wantsJson(request)) {
     if ("sent" in result) {
@@ -43,7 +46,10 @@ function finish(
           : 502;
     return NextResponse.json({ error: result.error }, { status });
   }
-  const query = "sent" in result ? "sent=1" : `error=${result.error}`;
+  const query = withSiteLangQuery(
+    "sent" in result ? "sent=1" : `error=${result.error}`,
+    locale,
+  );
   return NextResponse.redirect(siteUrl(request, slug, query), 303);
 }
 
@@ -55,6 +61,7 @@ async function readFields(request: Request) {
       email: clip(body.email, MAX.email),
       phone: clip(body.phone, MAX.phone),
       message: clip(body.message, MAX.message),
+      locale: parseSiteLocale(clip(body.lang, 8)),
     };
   }
   const form = await request.formData();
@@ -63,6 +70,7 @@ async function readFields(request: Request) {
     email: clip(form.get("email"), MAX.email),
     phone: clip(form.get("phone"), MAX.phone),
     message: clip(form.get("message"), MAX.message),
+    locale: parseSiteLocale(clip(form.get("lang"), 8)),
   };
 }
 
@@ -96,8 +104,9 @@ export async function POST(
     return finish(request, slug, { error: "missing" });
   }
 
+  const locale = fields.locale;
   if (!fields.name || !fields.message || !usableEmail(fields.email)) {
-    return finish(request, slug, { error: "missing" });
+    return finish(request, slug, { error: "missing" }, locale);
   }
 
   try {
@@ -113,11 +122,11 @@ export async function POST(
     const status = await notifySiteContact(client, message);
     revalidatePath(`/admin/clients/${client.id}`);
     if (status === "sent") {
-      return finish(request, slug, { sent: true });
+      return finish(request, slug, { sent: true }, locale);
     }
-    return finish(request, slug, { error: status });
+    return finish(request, slug, { error: status }, locale);
   } catch (error) {
     console.error("[contact] submit failed", error);
-    return finish(request, slug, { error: "send-failed" });
+    return finish(request, slug, { error: "send-failed" }, locale);
   }
 }

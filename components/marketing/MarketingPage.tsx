@@ -179,7 +179,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
           </div>
           <p className="max-w-md text-sm leading-relaxed text-body">{c.templatesLead}</p>
         </div>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {TEMPLATES.map((tpl) => (
             <article
               key={tpl.id}

@@ -13,9 +13,17 @@ import {
   setSiteStatusAction,
 } from "@/app/admin/actions";
 import { editsThisMonth } from "@/lib/billing";
+import { isTaxOfficeTemplate } from "@/lib/client-themes";
 import { PRICING } from "@/lib/config";
 import { monthKey } from "@/lib/slug";
 import { getClient, listContactMessages } from "@/lib/store";
+import {
+  countTaxCustomers,
+  listTaxStaff,
+  taxPortalBlobReady,
+  taxPortalDbReady,
+} from "@/lib/tax-db";
+import { portalPath } from "@/lib/tax-office";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +47,10 @@ export default async function ClientDetailPage({
   const usage = editsThisMonth(client, monthKey());
   const thisMonthEdits = client.editRequests.filter((e) => e.month === monthKey());
   const messages = (await listContactMessages(client.id)).slice(0, 40);
+  const taxOffice = isTaxOfficeTemplate(client.template);
+  const taxDb = taxOffice && taxPortalDbReady();
+  const taxStaff = taxDb ? await listTaxStaff(client.id) : [];
+  const taxCustomers = taxDb ? await countTaxCustomers(client.id) : 0;
   const field =
     "mt-1 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm";
 
@@ -68,6 +80,26 @@ export default async function ClientDetailPage({
           {client.slug}.phoenixwebhost.com
           {client.customDomain ? ` · ${client.customDomain}` : ""}
         </p>
+        {taxOffice ? (
+          <p className="mt-2 rounded-xl border border-line bg-paper px-4 py-3 text-sm">
+            Tax office portal on this site (isolated to this client).{" "}
+            <Link className="text-clay" href={portalPath(client.slug)} target="_blank">
+              Open portal
+            </Link>
+            {" · "}
+            <Link className="text-clay" href={portalPath(client.slug, "/staff/login")} target="_blank">
+              Staff login
+            </Link>
+            {taxDb
+              ? ` · ${taxCustomers} tax-client account${taxCustomers === 1 ? "" : "s"} · staff ${
+                  taxStaff[0]?.email || "not set"
+                }`
+              : " · portal database is not connected"}
+            {taxOffice && !taxPortalBlobReady()
+              ? " · BLOB_READ_WRITE_TOKEN missing — uploads fail closed"
+              : ""}
+          </p>
+        ) : null}
 
         <div className="mt-6 grid gap-3 rounded-2xl border border-line bg-paper p-5 text-sm sm:grid-cols-2">
           <p>Last payment: {fmt(client.lastPaymentAt)}</p>
@@ -260,6 +292,34 @@ export default async function ClientDetailPage({
               />
             </label>
           </div>
+          {taxOffice ? (
+            <div className="grid gap-3 rounded-xl border border-dashed border-line p-4">
+              <p className="text-sm font-semibold">Tax portal staff login</p>
+              <p className="text-xs text-ink-soft">
+                Separate from Phoenixwebhost owner login. Only this shop’s
+                folders. Leave password blank to keep the current one.
+              </p>
+              <label className="text-sm">
+                Staff email
+                <input
+                  name="taxStaffEmail"
+                  type="email"
+                  defaultValue={taxStaff[0]?.email || client.email}
+                  className={field}
+                />
+              </label>
+              <label className="text-sm">
+                New staff password
+                <input
+                  name="taxStaffPassword"
+                  type="password"
+                  minLength={8}
+                  autoComplete="new-password"
+                  className={field}
+                />
+              </label>
+            </div>
+          ) : null}
           <button className="justify-self-start rounded-full bg-sage px-4 py-2 text-sm font-semibold text-white">
             Save
           </button>

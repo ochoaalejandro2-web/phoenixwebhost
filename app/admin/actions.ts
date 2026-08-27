@@ -20,7 +20,9 @@ import {
   upsertClient,
 } from "@/lib/store";
 import { TEMPLATES } from "@/lib/config";
+import { isTaxOfficeTemplate } from "@/lib/client-themes";
 import type { Client, ReviewStatus, SiteStatus, TemplateId } from "@/lib/types";
+import { upsertTaxStaffUser, taxPortalDbReady } from "@/lib/tax-db";
 
 function parseTemplateId(value: string): TemplateId {
   return TEMPLATES.some((tpl) => tpl.id === value)
@@ -78,8 +80,28 @@ export async function createClientAction(formData: FormData) {
     createdAt: new Date().toISOString(),
   };
   await upsertClient(client);
+  if (isTaxOfficeTemplate(client.template)) {
+    await maybeSetTaxStaff(client, formData);
+  }
   revalidateClient(client);
   redirect(`/admin/clients/${client.id}`);
+}
+
+async function maybeSetTaxStaff(client: Client, formData: FormData) {
+  const password = String(formData.get("taxStaffPassword") || "");
+  if (password.length < 8) return;
+  if (!taxPortalDbReady()) return;
+  const email = String(formData.get("taxStaffEmail") || client.email || "")
+    .trim()
+    .toLowerCase();
+  if (!email) return;
+  await upsertTaxStaffUser({
+    clientId: client.id,
+    email,
+    password,
+    name: client.contactName || client.businessName,
+    phone: client.phone,
+  });
 }
 
 export async function createClientFromLeadAction(formData: FormData) {
@@ -270,6 +292,9 @@ export async function saveClientAction(formData: FormData) {
       String(formData.get("stripeEmailSubscriptionId") || "").trim() || null,
   };
   await upsertClient(next);
+  if (isTaxOfficeTemplate(next.template)) {
+    await maybeSetTaxStaff(next, formData);
+  }
   revalidateClient(next);
 }
 
@@ -287,6 +312,7 @@ export async function resetDemoAction() {
   revalidatePath("/s/casa-luna-salon");
   revalidatePath("/s/mesa-street-kitchen");
   revalidatePath("/s/palo-verde-yards");
+  revalidatePath("/s/hola-tax-service");
   redirect("/admin");
 }
 

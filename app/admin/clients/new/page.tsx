@@ -1,4 +1,4 @@
-import { TEMPLATES } from "@/lib/config";
+import { TaxTemplateFields } from "@/components/admin/TaxTemplateFields";
 import { createClientAction } from "@/app/admin/actions";
 
 const field =
@@ -61,16 +61,7 @@ export default function NewClientPage() {
           Services (one per line)
           <textarea name="services" rows={4} className={field} />
         </label>
-        <label className="text-sm">
-          Template
-          <select name="template" className={field} defaultValue="contractor">
-            {TEMPLATES.map((tpl) => (
-              <option key={tpl.id} value={tpl.id}>
-                {tpl.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <TaxTemplateFields />
         <label className="text-sm">
           Custom domain (optional)
           <input name="customDomain" placeholder="www.theirshop.com" className={field} />

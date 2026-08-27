@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { neon } from "@neondatabase/serverless";
 import { createSeedState } from "@/data/seed";
+import { HOLA_TAX_SLUG } from "@/lib/tax-office";
 import type {
   AppState,
   AuthLock,
@@ -10,6 +11,7 @@ import type {
   Lead,
   Review,
   ReviewStatus,
+  TemplateId,
 } from "@/lib/types";
 
 const FILE_PATH = path.join(process.cwd(), "data", "store.json");
@@ -110,9 +112,22 @@ function emptyAuthLock(): AuthLock {
   };
 }
 
+const KNOWN_TEMPLATES: TemplateId[] = [
+  "contractor",
+  "salon",
+  "restaurant",
+  "professional",
+  "landscaping",
+  "tax",
+];
+
 function normalizeClient(client: Client): Client {
+  let template = client.template;
+  if (client.slug === HOLA_TAX_SLUG) template = "tax";
+  else if (!KNOWN_TEMPLATES.includes(template)) template = "professional";
   return {
     ...client,
+    template,
     localBoost: Boolean(client.localBoost),
     stripeBoostSubscriptionId: client.stripeBoostSubscriptionId ?? null,
     businessEmail: Boolean(client.businessEmail),

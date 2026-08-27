@@ -61,6 +61,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
 | Demo restaurant | `/s/mesa-street-kitchen` (overdue, offline) |
 | Demo landscaping (sample) | `/s/palo-verde-yards` (paid, live) |
+| Hola Tax (tax office template) | `/s/hola-tax-service` (paid, live) · client portal `/s/hola-tax-service/portal` |
 
 **Owner login**
 
@@ -96,6 +97,9 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `TWILIO_ACCOUNT_SID` | for SMS alerts | Twilio account SID. SMS is skipped if any Twilio var is unset |
 | `TWILIO_AUTH_TOKEN` | for SMS alerts | Twilio auth token |
 | `TWILIO_FROM` | for SMS alerts | Twilio from number (E.164, e.g. `+1…`) |
+| `BLOB_READ_WRITE_TOKEN` | for tax portal uploads | Vercel Blob token. Private files only. Uploads fail closed if missing |
+| `HOLA_TAX_STAFF_EMAIL` | no | Staff email bootstrap for Hola Tax Service. Default `ochoa.alejandro2@gmail.com` |
+| `HOLA_TAX_STAFF_PASSWORD` | for Hola Tax staff login | Staff password for that one shop. Separate from `ADMIN_PASSWORD`. Other tax-office clients set staff in Admin |
 
 Local data is saved to `data/store.json`. On Vercel, set `DATABASE_URL` (Neon or any Postgres) so client records survive deploys. The owner panel shows a warning if that URL is missing.
 
@@ -138,7 +142,7 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 - Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost or Business Email
 - Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, Local Boost and Business Email status, pause / offline toggle. Existing clients can add Boost or Business Email later from this page.
-- **New client** generates a site from a template (contractor, salon, restaurant, professional services, landscaping)
+- **New client** generates a site from a template (contractor, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
 - Public “Request a site” form lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call them right away. Missing provider keys skip that channel; the form still succeeds.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 - Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
@@ -153,6 +157,19 @@ When you are ready for real charges, switch the same variable names to **live** 
 The contact form on a live `/s/{slug}` site emails the address stored on that client record, and sends a copy to the owner (`NOTIFY_EMAIL` / Resend, plus SMS via `NOTIFY_PHONE` if Twilio is set). It does not send on page views — only on a real form submit. If the client has no email, the visitor sees a clear error and is asked to call. Inquiries are stored on the client in Admin. Demo records use `.example` addresses that will not deliver until you put a real inbox on the client.
 
 Unpaid / paused sites render the “temporarily offline” page. After 30 days they are taken down.
+
+## Tax office template
+
+The **Tax office** template is a sellable Phoenixwebhost layout (white / black / neon) plus a private document drop box for that shop’s tax customers. It is not tax-prep software.
+
+- Public site: `/s/{slug}` (custom domain works the same way as other clients)
+- Client login / upload: `/s/{slug}/portal`. On a phone, **Scan document** opens the rear camera; 1–5 photos become one private PDF.
+- Staff login: `/s/{slug}/portal/staff/login` — that shop’s folders only
+- Customers of shop A cannot see shop B. Staff of shop A cannot see shop B.
+- Files go to Vercel Blob with **private** access. Downloads require a signed-in session. Nothing is stored in git or `/public`.
+- Needs `DATABASE_URL` and `BLOB_READ_WRITE_TOKEN`. If either is missing, the portal fails closed and will not take uploads.
+- Create a tax-office client in Admin, then set the staff email/password on that client. Do not reuse the Phoenixwebhost owner password.
+- Hola Tax Service (`hola-tax-service`, www.hola-tax-service.com) is the first live example. Its staff login can also be bootstrapped with `HOLA_TAX_STAFF_EMAIL` / `HOLA_TAX_STAFF_PASSWORD`.
 
 ## Custom domain (CNAME)
 

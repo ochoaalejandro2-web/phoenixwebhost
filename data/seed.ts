@@ -226,8 +226,8 @@ function demoClients(): Client[] {
         "Bookkeeping",
         "Year-round tax support",
       ],
-      template: "professional",
-      customDomain: null,
+      template: "tax",
+      customDomain: "www.hola-tax-service.com",
       siteStatus: "live",
       paymentStatus: "paid",
       lastPaymentAt: isoDaysFromNow(-9),
@@ -246,7 +246,7 @@ function demoClients(): Client[] {
       notes: [
         {
           id: "note_ht_1",
-          body: "Live Phoenix tax office. White / black / neon look is a per-slug override, not a new template.",
+          body: "Live Phoenix tax office. Uses the Tax office template, including a private client document portal.",
           createdAt: isoDaysFromNow(-9),
         },
       ],
