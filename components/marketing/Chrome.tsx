@@ -3,41 +3,58 @@ import { Logo } from "@/components/brand/Logo";
 import { homePath, requestPath, t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
-export function StudioShell({ children }: { children: React.ReactNode }) {
+export function StudioShell({
+  children,
+  grain = true,
+}: {
+  children: React.ReactNode;
+  grain?: boolean;
+}) {
   return (
-    <div className="studio grain flex min-h-full flex-col bg-dusk text-cream-soft">
+    <div
+      className={`studio flex min-h-full flex-col bg-dusk text-cream-soft ${grain ? "grain" : ""}`}
+    >
       {children}
     </div>
   );
 }
 
-export function SiteHeader({ locale }: { locale: Locale }) {
+export function SiteHeader({
+  locale,
+  overlay = false,
+}: {
+  locale: Locale;
+  overlay?: boolean;
+}) {
   const c = t(locale);
   const home = homePath(locale);
   return (
-    <header className="relative z-20 border-b border-gold-line bg-dusk/80 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
+    <header
+      className={
+        overlay
+          ? "absolute inset-x-0 top-0 z-30 border-b border-white/10 bg-gradient-to-b from-[#0b1220]/80 to-transparent"
+          : "relative z-20 border-b border-gold-line bg-dusk/80 backdrop-blur"
+      }
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
         <Link href={home} aria-label="Phoenixwebhost home">
           <Logo />
         </Link>
-        <nav className="hidden items-center gap-7 text-sm text-cream-soft md:flex">
+        <nav className="hidden items-center gap-6 text-sm text-cream-soft md:flex">
+          <a href={`${home}#work`} className="hover:text-gold">
+            {locale === "es" ? "Trabajo" : "Work"}
+          </a>
           <a href={`${home}#pricing`} className="hover:text-gold">
             {c.nav.pricing}
-          </a>
-          <a href={`${home}#included`} className="hover:text-gold">
-            {c.nav.included}
-          </a>
-          <a href={`${home}#how`} className="hover:text-gold">
-            {c.nav.work}
           </a>
           <Link href={c.otherHref} className="hover:text-gold">
             {c.otherLang}
           </Link>
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Link
             href="/login"
-            className="hidden text-sm text-cream-soft hover:text-gold sm:inline"
+            className="hidden text-xs text-cream-soft/80 hover:text-gold sm:inline"
           >
             {c.nav.owner}
           </Link>
