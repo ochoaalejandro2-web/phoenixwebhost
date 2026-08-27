@@ -38,7 +38,7 @@ export default async function ClientDetailPage({
   if (!client) notFound();
   const usage = editsThisMonth(client, monthKey());
   const thisMonthEdits = client.editRequests.filter((e) => e.month === monthKey());
-  const messages = await listContactMessages(client.id);
+  const messages = (await listContactMessages(client.id)).slice(0, 40);
   const field =
     "mt-1 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm";
 
@@ -297,17 +297,31 @@ export default async function ClientDetailPage({
         </section>
 
         <section className="rounded-2xl border border-line bg-paper p-5">
-          <h2 className="font-display text-xl">Contact form messages</h2>
+          <h2 className="font-display text-xl">Site inquiries</h2>
+          <p className="mt-1 text-sm text-ink-soft">
+            From this client’s public contact form. Newest first.
+          </p>
           <ul className="mt-3 space-y-3 text-sm">
             {messages.length === 0 && (
               <li className="text-ink-soft">None yet.</li>
             )}
             {messages.map((msg) => (
-              <li key={msg.id}>
+              <li key={msg.id} className="rounded-lg border border-line p-3">
                 <p className="font-semibold">
-                  {msg.name} · {msg.email}
+                  {msg.name}
+                  {msg.email ? ` · ${msg.email}` : ""}
                 </p>
-                <p>{msg.message}</p>
+                {msg.phone ? <p className="text-ink-soft">{msg.phone}</p> : null}
+                <p className="mt-1">{msg.message}</p>
+                <p className="mt-1 text-xs text-ink-soft">
+                  {new Date(msg.createdAt).toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                  })}
+                </p>
               </li>
             ))}
           </ul>

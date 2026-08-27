@@ -1,5 +1,12 @@
 import type { Client } from "@/lib/types";
 
+export type ContactNotice = "sent" | "no-email" | "send-failed" | "missing";
+
+type SiteView = {
+  client: Client;
+  notice?: ContactNotice | null;
+};
+
 function telHref(phone: string) {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
 }
@@ -48,18 +55,64 @@ export function SiteChrome({
   );
 }
 
-function ContactBlock({ client, invert = false }: { client: Client; invert?: boolean }) {
+function ContactNoticeBanner({
+  client,
+  invert,
+  notice,
+}: {
+  client: Client;
+  invert?: boolean;
+  notice?: ContactNotice | null;
+}) {
+  if (!notice) return null;
+  const call = client.phone.trim()
+    ? ` Please call ${client.phone.trim()}.`
+    : "";
+  const tone =
+    notice === "sent"
+      ? invert
+        ? "text-[#b8e0c4]"
+        : "text-sage"
+      : invert
+        ? "text-[#f3c7b4]"
+        : "text-clay";
+  const copy =
+    notice === "sent"
+      ? `Your message was emailed to ${client.businessName}.`
+      : notice === "no-email"
+        ? `This business has no email on file, so we could not send your message.${call}`
+        : notice === "missing"
+          ? "Name, a real email, and a message are required."
+          : `We could not send your message by email.${call || " Please try again."}`;
+  return (
+    <p role={notice === "sent" ? "status" : "alert"} className={`text-sm ${tone}`}>
+      {copy}
+    </p>
+  );
+}
+
+function ContactBlock({
+  client,
+  invert = false,
+  notice,
+}: {
+  client: Client;
+  invert?: boolean;
+  notice?: ContactNotice | null;
+}) {
   return (
     <form
+      id="contact"
       action={`/api/sites/${client.slug}/contact`}
       method="post"
       className={`mt-8 grid gap-3 rounded-2xl p-6 ${invert ? "bg-white/8" : "border border-line bg-paper"}`}
     >
       <p className="font-display text-xl">Contact</p>
-      <input name="name" required placeholder="Name" className="rounded-lg border border-line bg-white px-3 py-2 text-ink" />
-      <input name="email" type="email" required placeholder="Email" className="rounded-lg border border-line bg-white px-3 py-2 text-ink" />
-      <input name="phone" placeholder="Phone" className="rounded-lg border border-line bg-white px-3 py-2 text-ink" />
-      <textarea name="message" required rows={4} placeholder="How can we help?" className="rounded-lg border border-line bg-white px-3 py-2 text-ink" />
+      <ContactNoticeBanner client={client} invert={invert} notice={notice} />
+      <input name="name" required maxLength={120} placeholder="Name" autoComplete="name" className="rounded-lg border border-line bg-white px-3 py-2 text-ink" />
+      <input name="email" type="email" required maxLength={200} placeholder="Email" autoComplete="email" className="rounded-lg border border-line bg-white px-3 py-2 text-ink" />
+      <input name="phone" maxLength={40} placeholder="Phone" autoComplete="tel" className="rounded-lg border border-line bg-white px-3 py-2 text-ink" />
+      <textarea name="message" required maxLength={4000} rows={4} placeholder="How can we help?" className="rounded-lg border border-line bg-white px-3 py-2 text-ink" />
       <button type="submit" className="justify-self-start rounded-full bg-clay px-5 py-2 text-sm font-semibold text-white">
         Send
       </button>
@@ -67,7 +120,7 @@ function ContactBlock({ client, invert = false }: { client: Client; invert?: boo
   );
 }
 
-export function ContractorSite({ client }: { client: Client }) {
+export function ContractorSite({ client, notice }: SiteView) {
   return (
     <SiteChrome client={client} tone="dark">
       <section className="mx-auto max-w-5xl px-5 py-16">
@@ -98,13 +151,13 @@ export function ContractorSite({ client }: { client: Client }) {
         <p className="text-white/70">
           {client.hours} · {client.address}, {client.city}
         </p>
-        <ContactBlock client={client} invert />
+        <ContactBlock client={client} invert notice={notice} />
       </section>
     </SiteChrome>
   );
 }
 
-export function SalonSite({ client }: { client: Client }) {
+export function SalonSite({ client, notice }: SiteView) {
   return (
     <SiteChrome client={client}>
       <section className="bg-[#f6efe8]">
@@ -128,13 +181,13 @@ export function SalonSite({ client }: { client: Client }) {
             </li>
           ))}
         </ul>
-        <ContactBlock client={client} />
+        <ContactBlock client={client} notice={notice} />
       </section>
     </SiteChrome>
   );
 }
 
-export function RestaurantSite({ client }: { client: Client }) {
+export function RestaurantSite({ client, notice }: SiteView) {
   return (
     <SiteChrome client={client}>
       <section className="bg-[#3a2a22] text-[#f7efe4]">
@@ -157,7 +210,7 @@ export function RestaurantSite({ client }: { client: Client }) {
         <p className="mt-8 text-ink-soft">
           {client.address}, {client.city}
         </p>
-        <ContactBlock client={client} />
+        <ContactBlock client={client} notice={notice} />
       </section>
     </SiteChrome>
   );
@@ -191,7 +244,7 @@ function DesertYardMark() {
   );
 }
 
-export function LandscapingSite({ client }: { client: Client }) {
+export function LandscapingSite({ client, notice }: SiteView) {
   return (
     <div className="flex min-h-full flex-col bg-[#f3efe4] text-[#1d241c]">
       <header className="border-b border-[#d7d0be] bg-[#f7f3e8]/90 px-5 py-4">
@@ -249,7 +302,7 @@ export function LandscapingSite({ client }: { client: Client }) {
         <p className="mt-8 text-sm text-[#4a5346]">
           {client.hours} · {client.address}, {client.city}
         </p>
-        <ContactBlock client={client} />
+        <ContactBlock client={client} notice={notice} />
       </section>
       <footer className="mt-auto border-t border-[#d7d0be] px-5 py-8 text-sm text-[#4a5346]">
         <div className="mx-auto flex max-w-5xl flex-col gap-2 sm:flex-row sm:justify-between">
@@ -265,7 +318,7 @@ export function LandscapingSite({ client }: { client: Client }) {
   );
 }
 
-export function ProfessionalSite({ client }: { client: Client }) {
+export function ProfessionalSite({ client, notice }: SiteView) {
   return (
     <SiteChrome client={client}>
       <section className="border-b border-line bg-[#eef2ef]">
@@ -289,7 +342,7 @@ export function ProfessionalSite({ client }: { client: Client }) {
         <p className="mt-8 text-sm text-ink-soft">
           {client.hours} · {client.phone}
         </p>
-        <ContactBlock client={client} />
+        <ContactBlock client={client} notice={notice} />
       </section>
     </SiteChrome>
   );
@@ -328,21 +381,24 @@ export function TakenDownSite() {
   );
 }
 
-export function renderClientSite(client: Client) {
+export function renderClientSite(
+  client: Client,
+  notice?: ContactNotice | null,
+) {
   if (client.siteStatus === "taken_down") return <TakenDownSite />;
   if (client.siteStatus === "offline" || client.siteStatus === "paused") {
     return <OfflineSite client={client} />;
   }
   switch (client.template) {
     case "salon":
-      return <SalonSite client={client} />;
+      return <SalonSite client={client} notice={notice} />;
     case "restaurant":
-      return <RestaurantSite client={client} />;
+      return <RestaurantSite client={client} notice={notice} />;
     case "professional":
-      return <ProfessionalSite client={client} />;
+      return <ProfessionalSite client={client} notice={notice} />;
     case "landscaping":
-      return <LandscapingSite client={client} />;
+      return <LandscapingSite client={client} notice={notice} />;
     default:
-      return <ContractorSite client={client} />;
+      return <ContractorSite client={client} notice={notice} />;
   }
 }

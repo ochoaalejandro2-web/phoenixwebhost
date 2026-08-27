@@ -264,9 +264,9 @@ export async function addContactMessage(message: ContactMessage) {
 
 export async function listContactMessages(clientId?: string) {
   const state = await getState();
-  return state.contactMessages.filter((m) =>
-    clientId ? m.clientId === clientId : true,
-  );
+  return state.contactMessages
+    .filter((m) => (clientId ? m.clientId === clientId : true))
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export async function addReview(review: Review) {

@@ -146,6 +146,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 **New client** in the panel: business name, phone, hours, copy, template → site is generated immediately.
 
+The contact form on a live `/s/{slug}` site emails the address stored on that client record, and sends a copy to the owner (`NOTIFY_EMAIL` / Resend, plus SMS via `NOTIFY_PHONE` if Twilio is set). It does not send on page views — only on a real form submit. If the client has no email, the visitor sees a clear error and is asked to call. Inquiries are stored on the client in Admin. Demo records use `.example` addresses that will not deliver until you put a real inbox on the client.
+
 Unpaid / paused sites render the “temporarily offline” page. After 30 days they are taken down.
 
 ## Custom domain (CNAME)

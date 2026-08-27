@@ -1,5 +1,7 @@
 import { publicSiteUrl } from "@/lib/config";
-import type { ContactMessage, Lead, Review } from "@/lib/types";
+import type { Client, ContactMessage, Lead, Review } from "@/lib/types";
+
+export type SiteContactStatus = "sent" | "no-email" | "send-failed";
 
 const DEFAULT_NOTIFY_EMAIL = "ochoa.alejandro2@gmail.com";
 const DEFAULT_NOTIFY_PHONE = "+14809532393";
@@ -18,8 +20,8 @@ type Alert = {
   extra?: string;
   extraLabel?: string;
   createdAt: string;
-  adminPath: string;
-  adminLabel: string;
+  adminPath?: string;
+  adminLabel?: string;
 };
 
 function notifyEmail() {
@@ -89,7 +91,8 @@ function emailBodies(alert: Alert) {
   const phoneHtml = href
     ? `<a href="${escapeHtml(href)}">${escapeHtml(phone)}</a>`
     : escapeHtml(phone);
-  const link = adminUrl(alert.adminPath);
+  const link = alert.adminPath ? adminUrl(alert.adminPath) : "";
+  const showAdmin = Boolean(link && alert.adminLabel);
   const rows: [string, string][] = [
     ["Name", escapeHtml(display(alert.name))],
   ];
@@ -121,7 +124,11 @@ function emailBodies(alert: Alert) {
       )
       .join("")}
   </table>
-  <p style="margin-top:24px"><a href="${escapeHtml(link)}">${escapeHtml(alert.adminLabel)}</a></p>
+  ${
+    showAdmin
+      ? `<p style="margin-top:24px"><a href="${escapeHtml(link)}">${escapeHtml(alert.adminLabel || "")}</a></p>`
+      : ""
+  }
 </body></html>`;
 
   const textLines = [alert.subject, "", alert.intro, "", `Name: ${display(alert.name)}`];
@@ -134,7 +141,9 @@ function emailBodies(alert: Alert) {
   }
   textLines.push(`Message: ${display(alert.message, "(none)")}`);
   textLines.push(`Received: ${when}`);
-  textLines.push("", `Admin: ${link}`);
+  if (showAdmin) {
+    textLines.push("", `Admin: ${link}`);
+  }
 
   return { html, text: textLines.join("\n") };
 }
@@ -148,31 +157,70 @@ function smsBody(alert: Alert) {
   if (alert.phone?.trim()) parts.push(`Call ${alert.phone.trim()}.`);
   if (alert.extra) parts.push(alert.extra);
   if (ask) parts.push(ask);
-  parts.push(adminUrl(alert.adminPath));
+  if (alert.adminPath) parts.push(adminUrl(alert.adminPath));
   const text = parts.join(" ");
   return text.length <= 320 ? text : `${text.slice(0, 319).trimEnd()}…`;
 }
 
-async function deliverEmail(subject: string, html: string, text: string) {
+export function usableEmail(value: string | undefined | null) {
+  const trimmed = (value || "").trim();
+  if (!trimmed || trimmed.length > 200) return null;
+  if (/\s/.test(trimmed)) return null;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return null;
+  return trimmed;
+}
+
+function clientInquiryBodies(businessName: string, message: ContactMessage) {
+  const subject = `New website message for ${businessName}`;
+  const intro =
+    "Someone wrote in from your website. Reply to this email to reach them.";
+  const { html, text } = emailBodies({
+    subject,
+    intro,
+    name: message.name,
+    phone: message.phone,
+    email: message.email,
+    business: businessName,
+    message: message.message,
+    createdAt: message.createdAt,
+  });
+  return { subject, html, text };
+}
+
+async function deliverEmail(
+  subject: string,
+  html: string,
+  text: string,
+  options?: { to?: string[]; replyTo?: string },
+) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
     console.warn("[notify] skipping email: RESEND_API_KEY is not set");
     return false;
   }
+  const to = (options?.to?.length ? options.to : [notifyEmail()])
+    .map((value) => value.trim())
+    .filter(Boolean);
+  if (to.length === 0) {
+    console.warn("[notify] skipping email: no recipient");
+    return false;
+  }
   try {
+    const payload: Record<string, unknown> = {
+      from: resendFrom(),
+      to,
+      subject,
+      html,
+      text,
+    };
+    if (options?.replyTo) payload.reply_to = options.replyTo;
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        from: resendFrom(),
-        to: [notifyEmail()],
-        subject,
-        html,
-        text,
-      }),
+      body: JSON.stringify(payload),
       signal: AbortSignal.timeout(FETCH_MS),
     });
     if (!response.ok) {
@@ -279,26 +327,66 @@ export async function notifyNewLead(lead: Lead) {
   }
 }
 
-export async function notifySiteContact(
-  businessName: string,
+function ownerContactAlert(
+  client: Pick<Client, "id" | "businessName">,
   message: ContactMessage,
-  clientId: string,
+): Alert {
+  return {
+    subject: `New contact on ${client.businessName} site`,
+    intro: "Someone wrote in on a client site.",
+    name: message.name,
+    phone: message.phone,
+    email: message.email,
+    business: client.businessName,
+    message: message.message,
+    createdAt: message.createdAt,
+    adminPath: `/admin/clients/${client.id}`,
+    adminLabel: "Open in Admin → Client",
+  };
+}
+
+async function notifyOwnerSiteContact(
+  client: Pick<Client, "id" | "businessName">,
+  message: ContactMessage,
 ) {
   try {
-    await sendBoth({
-      subject: `New contact on ${businessName} site`,
-      intro: "Someone wrote in on a client site.",
-      name: message.name,
-      phone: message.phone,
-      email: message.email,
-      business: businessName,
-      message: message.message,
-      createdAt: message.createdAt,
-      adminPath: `/admin/clients/${clientId}`,
-      adminLabel: "Open in Admin → Client",
-    });
+    await sendBoth(ownerContactAlert(client, message));
+  } catch (error) {
+    console.error("[notify] unexpected error (contact owner copy)", error);
+  }
+}
+
+export async function notifySiteContact(
+  client: Pick<Client, "id" | "businessName" | "email">,
+  message: ContactMessage,
+): Promise<SiteContactStatus> {
+  const clientEmail = usableEmail(client.email);
+  if (!clientEmail) {
+    await notifyOwnerSiteContact(client, message);
+    return "no-email";
+  }
+  try {
+    const inquiry = clientInquiryBodies(client.businessName, message);
+    const replyTo = usableEmail(message.email) ?? undefined;
+    const [clientResult] = await Promise.allSettled([
+      deliverEmail(inquiry.subject, inquiry.html, inquiry.text, {
+        to: [clientEmail],
+        replyTo,
+      }),
+      notifyOwnerSiteContact(client, message),
+    ]);
+    if (clientResult.status === "fulfilled" && clientResult.value) {
+      return "sent";
+    }
+    return "send-failed";
   } catch (error) {
     console.error("[notify] unexpected error (contact)", error);
+    try {
+      await notifyOwnerSiteContact(client, message);
+    } catch (copyError) {
+      console.error("[notify] unexpected error (contact owner copy)", copyError);
+    }
+    return "send-failed";
   }
 }
 

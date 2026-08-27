@@ -21,13 +21,32 @@ export async function generateMetadata({
   return { title: client.businessName };
 }
 
+function contactNotice(
+  search: Record<string, string | string[] | undefined>,
+) {
+  const sent = Array.isArray(search.sent) ? search.sent[0] : search.sent;
+  const error = Array.isArray(search.error) ? search.error[0] : search.error;
+  if (sent === "1") return "sent" as const;
+  if (
+    error === "no-email" ||
+    error === "send-failed" ||
+    error === "missing"
+  ) {
+    return error;
+  }
+  return null;
+}
+
 export default async function ClientSitePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { slug } = await params;
+  const query = await searchParams;
   const client = await getClientBySlug(slug);
   if (!client) notFound();
-  return renderClientSite(client);
+  return renderClientSite(client, contactNotice(query));
 }
