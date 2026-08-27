@@ -55,12 +55,13 @@ Open [http://localhost:3000](http://localhost:3000).
 | Demo contractor | `/s/desert-peak-roofing` (paid, live) |
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
 | Demo restaurant | `/s/mesa-street-kitchen` (overdue, offline) |
+| Demo landscaping (sample) | `/s/palo-verde-yards` (paid, live) |
 
 **Owner login**
 
 Use `/login`. Email is `ADMIN_EMAIL` (default `alex@phoenixwebhost.com`). Set `ADMIN_PASSWORD` in `.env.local` / Vercel — do not commit a real password. If `RESEND_API_KEY` or complete Twilio vars are set, a 6-digit code is sent to `NOTIFY_EMAIL` / `NOTIFY_PHONE` after the password. If neither provider is configured, the owner session is issued after the password (same as before). `AUTH_SECRET` must be a long random string in production; it signs the login cookie.
 
-Demo data is seeded automatically (3 clients in test mode). `Reset demo data` on the dashboard restores it.
+Demo data is seeded automatically (4 clients in test mode). `Reset demo data` on the dashboard restores it.
 
 ## Environment variables
 
@@ -128,7 +129,7 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 - Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue
 - Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, pause / offline toggle
-- **New client** generates a site from a template (contractor, salon, restaurant, professional services)
+- **New client** generates a site from a template (contractor, salon, restaurant, professional services, landscaping)
 - Public “Request a site” form lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call them right away. Missing provider keys skip that channel; the form still succeeds.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 - Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.

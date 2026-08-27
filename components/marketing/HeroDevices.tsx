@@ -92,6 +92,11 @@ const previews: Record<
     screen: "bg-white text-[#1c1712]",
     title: "Office",
   },
+  landscaping: {
+    bar: "bg-[#2f4a38] text-[#d5e4c9]",
+    screen: "bg-[#e8efe4] text-[#2f4a38]",
+    title: "Yards",
+  },
 };
 
 export function TemplatePreview({ id }: { id: string }) {

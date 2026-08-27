@@ -28,7 +28,7 @@ export const copy = {
     priceMonthHint: "per month, to stay live",
     launchTitle: "Launch — $200 once",
     launchBody:
-      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. Built for contractors, salons, restaurants, and local offices.",
+      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. Built for contractors, salons, restaurants, landscapers, and local offices.",
     monthTitle: "Stay live — $69 / month",
     monthBody:
       "Keeps the site online and covers small care. This is not unlimited work.",
@@ -58,7 +58,7 @@ export const copy = {
       "We keep your files for 30 days.",
       "Then the site comes down.",
     ],
-    templatesTitle: "Four professional starting points",
+    templatesTitle: "Five professional starting points",
     templatesLead:
       "We do not invent a brand-new design for $200. We start from a proven layout and fill it with your business.",
     howTitle: "How a launch works",
@@ -141,7 +141,7 @@ export const copy = {
     priceMonthHint: "al mes, para mantenerlo en línea",
     launchTitle: "Lanzamiento — $200 una vez",
     launchBody:
-      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Para contratistas, salones, restaurantes y oficinas locales.",
+      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Para contratistas, salones, restaurantes, jardineros y oficinas locales.",
     monthTitle: "Mantenerlo en línea — $69 / mes",
     monthBody:
       "Mantiene el sitio publicado y cubre el cuidado pequeño. Esto no es trabajo ilimitado.",
@@ -171,7 +171,7 @@ export const copy = {
       "Guardamos sus archivos 30 días.",
       "Después se da de baja el sitio.",
     ],
-    templatesTitle: "Cuatro puntos de partida profesionales",
+    templatesTitle: "Cinco puntos de partida profesionales",
     templatesLead:
       "Con $200 no inventamos una marca nueva. Partimos de un diseño comprobado y lo llenamos con su negocio.",
     howTitle: "Cómo es un lanzamiento",

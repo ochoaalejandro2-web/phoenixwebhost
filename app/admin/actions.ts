@@ -19,7 +19,14 @@ import {
   setReviewStatus,
   upsertClient,
 } from "@/lib/store";
+import { TEMPLATES } from "@/lib/config";
 import type { Client, ReviewStatus, SiteStatus, TemplateId } from "@/lib/types";
+
+function parseTemplateId(value: string): TemplateId {
+  return TEMPLATES.some((tpl) => tpl.id === value)
+    ? (value as TemplateId)
+    : "contractor";
+}
 
 function revalidateClient(client: Client) {
   revalidatePath("/admin");
@@ -49,7 +56,7 @@ export async function createClientAction(formData: FormData) {
       .split("\n")
       .map((s) => s.trim())
       .filter(Boolean),
-    template: (String(formData.get("template") || "professional") as TemplateId),
+    template: parseTemplateId(String(formData.get("template") || "contractor")),
     customDomain: String(formData.get("customDomain") || "").trim() || null,
     siteStatus: "live",
     paymentStatus: "unpaid",
@@ -260,6 +267,10 @@ export async function resetDemoAction() {
   revalidatePath("/es");
   revalidatePath("/reviews");
   revalidatePath("/es/reviews");
+  revalidatePath("/s/desert-peak-roofing");
+  revalidatePath("/s/casa-luna-salon");
+  revalidatePath("/s/mesa-street-kitchen");
+  revalidatePath("/s/palo-verde-yards");
   redirect("/admin");
 }
 

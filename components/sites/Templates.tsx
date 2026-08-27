@@ -163,6 +163,108 @@ export function RestaurantSite({ client }: { client: Client }) {
   );
 }
 
+function DesertYardMark() {
+  return (
+    <svg
+      viewBox="0 0 280 140"
+      className="h-28 w-56 text-[#2f4a38]"
+      aria-hidden="true"
+    >
+      <g fill="currentColor">
+        <path d="M36 132h16V78c0-8-4-14-8-14s-8 6-8 14v54Z" />
+        <path d="M28 102h10v8H28c-4 0-6-3-6-6s2-6 6-6h2v4h-2c-1 0-2 1-2 2s1 2 2 2Z" />
+        <path d="M60 96h10v8H60c4 0 6-3 6-6s-2-6-6-6h-2v4h2c1 0 2 1 2 2s-1 2-2 2Z" />
+        <path d="M118 132c18-28 22-52 14-78-6 8-16 18-20 32-6-10-8-22-6-36-16 18-28 44-24 82h36Z" />
+        <path d="M168 132h14V70c8-2 16-10 18-20-12 2-22 10-24 20V56c-2-10-10-18-18-20 4 12 6 24 6 34v62Z" />
+        <rect x="214" y="108" width="10" height="24" rx="3" />
+        <circle cx="219" cy="98" r="16" />
+        <circle cx="206" cy="108" r="10" />
+        <circle cx="232" cy="110" r="9" />
+      </g>
+      <path
+        d="M8 132h264"
+        stroke="currentColor"
+        strokeWidth="3"
+        opacity="0.35"
+      />
+    </svg>
+  );
+}
+
+export function LandscapingSite({ client }: { client: Client }) {
+  return (
+    <div className="flex min-h-full flex-col bg-[#f3efe4] text-[#1d241c]">
+      <header className="border-b border-[#d7d0be] bg-[#f7f3e8]/90 px-5 py-4">
+        {client.sample ? (
+          <p className="mx-auto mb-3 max-w-5xl rounded-full bg-[#2f4a38] px-4 py-1.5 text-center text-xs font-semibold tracking-wide text-[#f4efe6]">
+            Sample site — not a customer account
+          </p>
+        ) : null}
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
+          <a href={`/s/${client.slug}`} className="font-display text-lg">
+            {client.businessName}
+          </a>
+          <a
+            href={telHref(client.phone)}
+            className="text-sm font-semibold text-[#3d5a32]"
+          >
+            {client.phone}
+          </a>
+        </div>
+      </header>
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#dce8e0] to-[#f3efe4]">
+        <div className="mx-auto grid max-w-5xl items-end gap-8 px-5 pb-10 pt-16 sm:grid-cols-[1.2fr_0.8fr]">
+          <div className="py-6">
+            <p className="text-sm uppercase tracking-[0.2em] text-[#5d7a4f]">
+              {client.city}
+            </p>
+            <h1 className="mt-3 max-w-3xl font-display text-5xl leading-tight">
+              {client.tagline}
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg text-[#4a5346]">{client.about}</p>
+            <a
+              href={telHref(client.phone)}
+              className="mt-8 inline-block rounded-full bg-[#2f4a38] px-6 py-3 font-semibold text-[#f4efe6]"
+            >
+              Call {client.phone}
+            </a>
+          </div>
+          <div className="hidden justify-self-end pb-4 sm:block">
+            <DesertYardMark />
+          </div>
+        </div>
+      </section>
+      <section className="mx-auto max-w-5xl px-5 py-14">
+        <h2 className="font-display text-3xl">Yard work</h2>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {client.services.map((service) => (
+            <article
+              key={service}
+              className="rounded-2xl border border-[#d7d0be] bg-[#fbf8f0] p-5 shadow-[inset_4px_0_0_#5d7a4f]"
+            >
+              <h3 className="font-display text-xl">{service}</h3>
+            </article>
+          ))}
+        </div>
+        <p className="mt-8 text-sm text-[#4a5346]">
+          {client.hours} · {client.address}, {client.city}
+        </p>
+        <ContactBlock client={client} />
+      </section>
+      <footer className="mt-auto border-t border-[#d7d0be] px-5 py-8 text-sm text-[#4a5346]">
+        <div className="mx-auto flex max-w-5xl flex-col gap-2 sm:flex-row sm:justify-between">
+          <p>
+            {client.businessName} · {client.city}
+          </p>
+          <p>
+            {client.address} · {client.hours}
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
 export function ProfessionalSite({ client }: { client: Client }) {
   return (
     <SiteChrome client={client}>
@@ -238,6 +340,8 @@ export function renderClientSite(client: Client) {
       return <RestaurantSite client={client} />;
     case "professional":
       return <ProfessionalSite client={client} />;
+    case "landscaping":
+      return <LandscapingSite client={client} />;
     default:
       return <ContractorSite client={client} />;
   }
