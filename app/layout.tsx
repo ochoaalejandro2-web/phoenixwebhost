@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { Fraunces, Plus_Jakarta_Sans, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -10,6 +10,12 @@ const fraunces = Fraunces({
 
 const sourceSans = Source_Sans_3({
   variable: "--font-source",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin", "latin-ext"],
   display: "swap",
 });
@@ -36,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${sourceSans.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${sourceSans.variable} ${jakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-snow text-ink-black">{children}</body>
     </html>

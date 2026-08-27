@@ -1,12 +1,23 @@
-export function Logo({ className = "" }: { className?: string }) {
+export function Logo({
+  className = "",
+  tone = "light",
+}: {
+  className?: string;
+  tone?: "light" | "dark";
+}) {
+  const onDark = tone === "dark";
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <Mark size={32} />
       <span className="leading-tight">
-        <span className="block font-display text-[1.05rem] font-semibold tracking-tight text-ink-black">
+        <span
+          className={`block font-display text-[1.05rem] font-semibold tracking-tight ${onDark ? "text-white" : "text-ink-black"}`}
+        >
           Phoenixwebhost
         </span>
-        <span className="block text-[0.68rem] uppercase tracking-[0.16em] text-ink-black/55">
+        <span
+          className={`block text-[0.68rem] uppercase tracking-[0.16em] ${onDark ? "text-white/55" : "text-body"}`}
+        >
           Inc. · Phoenix, AZ
         </span>
       </span>
@@ -23,27 +34,27 @@ export function Mark({ size = 36 }: { size?: number }) {
       fill="none"
       aria-hidden="true"
     >
-      <rect width="32" height="32" rx="7" fill="#FFFFFF" />
+      <rect width="32" height="32" rx="8" fill="#FFFFFF" />
       <rect
-        x="0.7"
-        y="0.7"
-        width="30.6"
-        height="30.6"
-        rx="6.3"
-        stroke="#D4AF37"
-        strokeWidth="1.4"
+        x="0.75"
+        y="0.75"
+        width="30.5"
+        height="30.5"
+        rx="7.25"
+        stroke="#0A0A0A"
+        strokeWidth="1.2"
       />
       <path
         d="M6 22 L16 8 L26 22"
-        stroke="#D4AF37"
-        strokeWidth="2.2"
+        stroke="#00C851"
+        strokeWidth="2.4"
         strokeLinejoin="round"
         fill="none"
       />
       <path
         d="M11 22 L16 14 L21 22"
-        stroke="#5EC8FF"
-        strokeWidth="1.5"
+        stroke="#00C851"
+        strokeWidth="1.6"
         strokeLinejoin="round"
         fill="none"
       />

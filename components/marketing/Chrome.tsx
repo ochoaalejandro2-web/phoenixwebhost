@@ -3,52 +3,44 @@ import { Logo } from "@/components/brand/Logo";
 import { homePath, requestPath, t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
-export function StudioShell({
-  children,
-  grain = true,
-}: {
-  children: React.ReactNode;
-  grain?: boolean;
-}) {
+export function StudioShell({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className={`studio flex min-h-full flex-col bg-snow text-ink-black ${grain ? "grain" : ""}`}
-    >
+    <div className="studio flex min-h-full flex-col bg-snow text-ink-black">
       {children}
     </div>
   );
 }
 
-export function SiteHeader({ locale }: { locale: Locale; overlay?: boolean }) {
+export function SiteHeader({ locale }: { locale: Locale }) {
   const c = t(locale);
   const home = homePath(locale);
   return (
-    <header className="sticky top-0 z-30 border-b border-gold/25 bg-snow/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
+    <header className="sticky top-0 z-30 bg-header">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
         <Link href={home} aria-label="Phoenixwebhost home">
-          <Logo />
+          <Logo tone="dark" />
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-ink-black/70 md:flex">
-          <a href={`${home}#work`} className="hover:text-gold-deep">
+        <nav className="hidden items-center gap-7 text-sm text-white/85 md:flex">
+          <a href={`${home}#work`} className="hover:text-lime">
             {locale === "es" ? "Trabajo" : "Work"}
           </a>
-          <a href={`${home}#pricing`} className="hover:text-gold-deep">
+          <a href={`${home}#pricing`} className="hover:text-lime">
             {c.nav.pricing}
           </a>
-          <Link href={c.otherHref} className="hover:text-gold-deep">
+          <Link href={c.otherHref} className="hover:text-lime">
             {c.otherLang}
           </Link>
         </nav>
         <div className="flex items-center gap-4">
           <Link
             href="/login"
-            className="hidden text-xs text-ink-black/55 hover:text-gold-deep sm:inline"
+            className="hidden text-xs text-white/60 hover:text-lime sm:inline"
           >
             {c.nav.owner}
           </Link>
           <Link
             href={requestPath(locale)}
-            className="btn-gold rounded-full px-4 py-2 text-sm"
+            className="btn-lime rounded-full px-4 py-2 text-sm"
           >
             {c.ctaPrimary}
           </Link>
@@ -61,22 +53,22 @@ export function SiteHeader({ locale }: { locale: Locale; overlay?: boolean }) {
 export function SiteFooter({ locale }: { locale: Locale }) {
   const c = t(locale);
   return (
-    <footer className="mt-auto border-t border-gold/25 bg-mist">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-end sm:justify-between">
+    <footer className="mt-auto bg-header text-white">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-14 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-display text-lg text-ink-black">{c.footerLegal}</p>
-          <p className="mt-1 text-sm text-ink-black/65">
+          <p className="font-display text-lg text-white">{c.footerLegal}</p>
+          <p className="mt-2 text-sm text-white/60">
             Alex Ochoa · hello@phoenixwebhost.com · {c.bilingual}
           </p>
         </div>
-        <div className="flex gap-5 text-sm text-ink-black/65">
-          <Link href={homePath(locale)} className="hover:text-gold-deep">
+        <div className="flex gap-6 text-sm text-white/70">
+          <Link href={homePath(locale)} className="hover:text-lime">
             {locale === "es" ? "Inicio" : "Home"}
           </Link>
-          <Link href={requestPath(locale)} className="hover:text-gold-deep">
+          <Link href={requestPath(locale)} className="hover:text-lime">
             {c.nav.request}
           </Link>
-          <Link href="/login" className="hover:text-gold-deep">
+          <Link href="/login" className="hover:text-lime">
             {c.nav.owner}
           </Link>
         </div>

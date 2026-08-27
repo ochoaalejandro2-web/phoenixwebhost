@@ -9,7 +9,6 @@
   --sage: #3d5a4c;
   --mesa: #8b3a2a;
   --line: #e4dccf;
-  --gold: #d4af37;
 }
 
 @theme inline {
@@ -21,16 +20,14 @@
   --color-sage: var(--sage);
   --color-mesa: var(--mesa);
   --color-line: var(--line);
-  --color-gold: #d4af37;
-  --color-gold-deep: #c9a227;
   --color-snow: #ffffff;
-  --color-mist: #f4f8fc;
   --color-ink-black: #0a0a0a;
-  --color-ice: #5ec8ff;
-  --color-ice-soft: #7dd3ff;
+  --color-body: #3f3f46;
+  --color-lime: #00c851;
+  --color-lime-deep: #00b34a;
+  --color-header: #050505;
   --font-sans: var(--font-source);
   --font-display: var(--font-fraunces);
-  --color-gold-line: color-mix(in srgb, #d4af37 42%, #d7e6f2);
 }
 
 html,
@@ -48,10 +45,17 @@ body {
   font-family: var(--font-fraunces), ui-serif, Georgia, serif;
 }
 
-/* Public marketing / login / request — light web-studio showroom */
+/* Public marketing / login / request — white, black header, lime accent */
 .studio {
   color: #0a0a0a;
   background: #ffffff;
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+.studio .font-display {
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
 }
 
 .studio .field,
@@ -59,10 +63,10 @@ body {
 .field-studio {
   width: 100%;
   margin-top: 0.35rem;
-  border-radius: 0.5rem;
-  border: 1px solid color-mix(in srgb, #d4af37 45%, #d7e6f2);
+  border-radius: 0.9rem;
+  border: 1px solid #e5e7eb;
   background: #ffffff;
-  padding: 0.65rem 0.85rem;
+  padding: 0.75rem 0.95rem;
   color: #0a0a0a;
   outline: none;
 }
@@ -70,34 +74,25 @@ body {
 .studio .field:focus,
 .studio .field-studio:focus,
 .field-studio:focus {
-  border-color: #5ec8ff;
-  box-shadow:
-    0 0 0 1px #5ec8ff,
-    0 0 18px color-mix(in srgb, #5ec8ff 35%, transparent);
+  border-color: #00c851;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #00c851 22%, transparent);
 }
 
-.studio .btn-gold {
+.studio .btn-lime {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: #d4af37;
-  color: #0a0a0a;
+  background: #00c851;
+  color: #ffffff;
   font-weight: 700;
-  padding: 0.85rem 1.5rem;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, #5ec8ff 55%, transparent),
-    0 0 22px color-mix(in srgb, #5ec8ff 38%, transparent),
-    0 8px 22px color-mix(in srgb, #d4af37 28%, transparent);
-  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  padding: 0.9rem 1.6rem;
+  box-shadow: 0 10px 24px color-mix(in srgb, #00c851 28%, transparent);
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
-.studio .btn-gold:hover {
-  background: #c9a227;
-  box-shadow:
-    0 0 0 1px #7dd3ff,
-    0 0 28px color-mix(in srgb, #5ec8ff 50%, transparent),
-    0 10px 24px color-mix(in srgb, #d4af37 32%, transparent);
+.studio .btn-lime:hover {
+  background: #00b34a;
 }
 
 .studio .btn-ghost {
@@ -105,46 +100,16 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  border: 1px solid #d4af37;
+  border: 1px solid #00c851;
   color: #0a0a0a;
   font-weight: 600;
-  padding: 0.85rem 1.5rem;
-  box-shadow: 0 0 16px color-mix(in srgb, #5ec8ff 22%, transparent);
+  padding: 0.9rem 1.6rem;
 }
 
 .studio .btn-ghost:hover {
-  background: color-mix(in srgb, #5ec8ff 10%, #ffffff);
-  box-shadow: 0 0 22px color-mix(in srgb, #5ec8ff 32%, transparent);
+  background: color-mix(in srgb, #00c851 10%, #ffffff);
 }
 
-.grain {
-  background-color: #ffffff;
-  background-image:
-    radial-gradient(ellipse 70% 50% at 88% -8%, color-mix(in srgb, #5ec8ff 16%, transparent), transparent 58%),
-    radial-gradient(ellipse 55% 40% at 8% 0%, color-mix(in srgb, #d4af37 12%, transparent), transparent 55%),
-    linear-gradient(180deg, #ffffff 0%, #f4f8fc 48%, #ffffff 100%);
-}
-
-.hairline-gold {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #d4af37 18%,
-    #5ec8ff 50%,
-    #d4af37 82%,
-    transparent
-  );
-  box-shadow: 0 0 10px color-mix(in srgb, #5ec8ff 45%, transparent);
-}
-
-.price-gold {
-  color: #d4af37;
-  text-shadow: 0 0 18px color-mix(in srgb, #5ec8ff 35%, transparent);
-}
-
-.ice-glow {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, #5ec8ff 40%, transparent),
-    0 0 28px color-mix(in srgb, #5ec8ff 28%, transparent);
+.price-lime {
+  color: #00c851;
 }
