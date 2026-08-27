@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listClients, listLeads, listReviews, storageMode } from "@/lib/store";
 import { stripeConfigured } from "@/lib/config";
+import { telHref } from "@/lib/notify";
 import { stripeModeLabel } from "@/lib/stripe";
 import { resetDemoAction } from "@/app/admin/actions";
 import type { Lead } from "@/lib/types";
@@ -14,28 +15,27 @@ function fmt(iso: string | null) {
   });
 }
 
-function telHref(phone: string) {
-  const digits = phone.replace(/[^\d+]/g, "");
-  return digits ? `tel:${digits}` : "";
-}
-
 function OpenRequestCard({ lead }: { lead: Lead }) {
   const name = lead.name.trim() || "Unnamed";
   const business = lead.businessName.trim();
   const phone = lead.phone.trim();
   const email = lead.email.trim();
   const note = lead.message.trim();
-  const callHref = phone ? telHref(phone) : "";
+  const callHref = phone ? telHref(phone) : null;
 
   return (
     <li className="relative rounded-2xl border border-line bg-paper p-5 transition hover:border-clay/40">
       <p className="font-display text-xl">{name}</p>
       {business ? <p className="mt-0.5 text-sm">{business}</p> : null}
       <p className="relative z-10 mt-2 text-sm text-ink-soft">
-        {callHref ? (
-          <a href={callHref} className="hover:text-clay">
-            {phone}
-          </a>
+        {phone ? (
+          callHref ? (
+            <a href={callHref} className="hover:text-clay">
+              {phone}
+            </a>
+          ) : (
+            phone
+          )
         ) : null}
         {phone && email ? " · " : null}
         {email ? (
@@ -45,7 +45,7 @@ function OpenRequestCard({ lead }: { lead: Lead }) {
         ) : null}
         {!phone && !email ? "No phone or email" : null}
       </p>
-      <p className={`mt-3 text-sm ${note ? "" : "text-ink-soft"}`}>
+      <p className={note ? "mt-3 text-sm" : "mt-3 text-sm text-ink-soft"}>
         {note || "No note"}
       </p>
       <Link
@@ -72,9 +72,11 @@ function PayBadge({ status }: { status: string }) {
 }
 
 export default async function AdminHome() {
-  const clients = await listClients();
-  const leads = await listLeads();
-  const reviews = await listReviews();
+  const [clients, leads, reviews] = await Promise.all([
+    listClients(),
+    listLeads(),
+    listReviews(),
+  ]);
   const pendingReviews = reviews.filter((review) => review.status === "pending").length;
   const paid = clients.filter((c) => c.paymentStatus === "paid").length;
   const overdue = clients.filter((c) => c.paymentStatus === "overdue").length;
