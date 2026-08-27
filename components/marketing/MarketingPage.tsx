@@ -99,7 +99,7 @@ export function MarketingPage({ locale }: { locale: Locale }) {
                 priority
                 className="h-[22rem] w-full object-cover sm:h-[26rem]"
               />
-              <p className="absolute bottom-4 left-4 rounded-full bg-header/80 px-4 py-2 text-[11px] font-medium tracking-wide text-white backdrop-blur-sm">
+              <p className="absolute left-4 top-4 rounded-full bg-header/80 px-4 py-2 text-[11px] font-medium tracking-wide text-white backdrop-blur-sm">
                 {c.proofLine}
               </p>
             </div>
