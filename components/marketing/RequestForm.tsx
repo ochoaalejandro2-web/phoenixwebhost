@@ -58,9 +58,9 @@ export function RequestForm({ locale }: { locale: Locale }) {
 
   if (status === "done") {
     return (
-      <div className="rounded-2xl border border-gold/30 bg-snow p-6 ice-glow">
+      <div className="rounded-[1.5rem] border border-zinc-200 bg-snow p-8">
         <p className="font-display text-2xl text-ink-black">{c.formThanks}</p>
-        <p className="mt-2 text-ink-black/70">
+        <p className="mt-3 text-body">
           {locale === "es"
             ? "Si está listo para pagar el lanzamiento de $200 y el plan de $69 al mes, use el botón de abajo."
             : "If you are ready to pay the $200 launch and start $69/month, use the button below."}
@@ -69,18 +69,18 @@ export function RequestForm({ locale }: { locale: Locale }) {
           type="button"
           onClick={startCheckout}
           disabled={!canPay}
-          className="btn-gold mt-5 rounded-full px-5 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+          className="btn-lime mt-6 rounded-full px-5 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-50"
         >
           {c.formPay}
         </button>
         {!canPay && (
-          <p className="mt-3 text-sm text-ink-black/60">
+          <p className="mt-3 text-sm text-body">
             {locale === "es"
               ? "El pago con tarjeta se activa cuando Alex configura Stripe. Su solicitud ya está guardada."
               : "Card checkout turns on once Alex connects Stripe. Your request is already saved."}
           </p>
         )}
-        {payError && <p className="mt-3 text-sm text-gold-deep">{payError}</p>}
+        {payError && <p className="mt-3 text-sm text-lime-deep">{payError}</p>}
       </div>
     );
   }
@@ -88,27 +88,27 @@ export function RequestForm({ locale }: { locale: Locale }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="grid gap-4 rounded-2xl border border-gold/30 bg-snow p-6 text-ink-black ice-glow"
+      className="grid gap-4 rounded-[1.5rem] border border-zinc-200 bg-snow p-8 text-ink-black"
     >
-      <label className="text-sm">
+      <label className="text-sm text-body">
         {c.formName}
         <input name="name" required className="field-studio" />
       </label>
-      <label className="text-sm">
+      <label className="text-sm text-body">
         {c.formBusiness}
         <input name="businessName" required className="field-studio" />
       </label>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm">
+        <label className="text-sm text-body">
           {c.formEmail}
           <input name="email" type="email" required className="field-studio" />
         </label>
-        <label className="text-sm">
+        <label className="text-sm text-body">
           {c.formPhone}
           <input name="phone" required className="field-studio" />
         </label>
       </div>
-      <label className="text-sm">
+      <label className="text-sm text-body">
         {c.formCity}
         <input
           name="city"
@@ -116,19 +116,19 @@ export function RequestForm({ locale }: { locale: Locale }) {
           className="field-studio"
         />
       </label>
-      <label className="text-sm">
+      <label className="text-sm text-body">
         {c.formMessage}
         <textarea name="message" rows={4} className="field-studio" />
       </label>
       <button
         type="submit"
         disabled={status === "saving"}
-        className="btn-gold rounded-full px-5 py-2.5 text-sm disabled:opacity-60"
+        className="btn-lime rounded-full px-5 py-2.5 text-sm disabled:opacity-60"
       >
         {status === "saving" ? "…" : c.formSubmit}
       </button>
       {status === "error" && (
-        <p className="text-sm text-gold-deep">
+        <p className="text-sm text-lime-deep">
           {locale === "es"
             ? "No se pudo enviar. Intente de nuevo."
             : "Could not send. Please try again."}

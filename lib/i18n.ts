@@ -14,6 +14,8 @@ export const copy = {
     },
     heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
     heroTitle: "A straightforward website for your Arizona small business.",
+    heroAccent: "straightforward",
+    proofLine: "Arizona small-business websites · $200 launch",
     heroLead:
       "One price to launch. One price to keep it live. No unlimited-change packages, no surprise retainers — just a clean site, hosting, and small monthly care.",
     ctaPrimary: "Request a site",
@@ -107,6 +109,8 @@ export const copy = {
     },
     heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
     heroTitle: "Un sitio web claro para su negocio pequeño en Arizona.",
+    heroAccent: "claro",
+    proofLine: "Sitios para negocios pequeños en Arizona · lanzamiento $200",
     heroLead:
       "Un precio para lanzarlo. Un precio para mantenerlo en línea. Sin paquetes de cambios ilimitados ni retenedores sorpresa — un sitio limpio, hospedaje y cuidado mensual pequeño.",
     ctaPrimary: "Pedir un sitio",

@@ -32,15 +32,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="studio grain flex min-h-full flex-col items-center justify-center bg-snow px-5 py-16">
+    <div className="studio flex min-h-full flex-col items-center justify-center bg-snow px-5 py-16">
       <Logo />
       <form
         onSubmit={onSubmit}
-        className="mt-8 w-full max-w-sm rounded-2xl border border-gold/30 bg-snow p-6 ice-glow"
+        className="mt-10 w-full max-w-sm rounded-[1.5rem] border border-zinc-200 bg-snow p-8"
       >
         <h1 className="font-display text-2xl text-ink-black">Owner login</h1>
-        <p className="mt-1 text-sm text-ink-black/60">Alex Ochoa · Phoenixwebhost Inc.</p>
-        <label className="mt-6 block text-sm text-ink-black">
+        <p className="mt-1 text-sm text-body">Alex Ochoa · Phoenixwebhost Inc.</p>
+        <label className="mt-6 block text-sm text-body">
           Email
           <input
             name="email"
@@ -50,7 +50,7 @@ export default function LoginPage() {
             className="field-studio"
           />
         </label>
-        <label className="mt-4 block text-sm text-ink-black">
+        <label className="mt-4 block text-sm text-body">
           Password
           <input
             name="password"
@@ -62,11 +62,11 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={pending}
-          className="btn-gold mt-6 w-full rounded-full py-2.5 text-sm disabled:opacity-60"
+          className="btn-lime mt-6 w-full rounded-full py-2.5 text-sm disabled:opacity-60"
         >
           {pending ? "Signing in…" : "Sign in"}
         </button>
-        {error && <p className="mt-3 text-sm text-gold-deep">{error}</p>}
+        {error && <p className="mt-3 text-sm text-lime-deep">{error}</p>}
       </form>
     </div>
   );
