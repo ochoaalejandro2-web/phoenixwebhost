@@ -21,6 +21,7 @@ import {
 } from "@/lib/store";
 import { TEMPLATES } from "@/lib/config";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
+import { normalizeCustomDomain } from "@/lib/custom-domain";
 import type { Client, ReviewStatus, SiteStatus, TemplateId } from "@/lib/types";
 import { upsertTaxStaffUser, taxPortalDbReady } from "@/lib/tax-db";
 
@@ -59,7 +60,7 @@ export async function createClientAction(formData: FormData) {
       .map((s) => s.trim())
       .filter(Boolean),
     template: parseTemplateId(String(formData.get("template") || "contractor")),
-    customDomain: String(formData.get("customDomain") || "").trim() || null,
+    customDomain: normalizeCustomDomain(String(formData.get("customDomain") || "")),
     siteStatus: "live",
     paymentStatus: "unpaid",
     lastPaymentAt: null,
@@ -282,7 +283,7 @@ export async function saveClientAction(formData: FormData) {
     hours: String(formData.get("hours") || client.hours),
     tagline: String(formData.get("tagline") || client.tagline),
     about: String(formData.get("about") || client.about),
-    customDomain: String(formData.get("customDomain") || "").trim() || null,
+    customDomain: normalizeCustomDomain(String(formData.get("customDomain") || "")),
     stripeCustomerId: String(formData.get("stripeCustomerId") || "").trim() || null,
     stripeSubscriptionId:
       String(formData.get("stripeSubscriptionId") || "").trim() || null,

@@ -1,52 +1,66 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { COMPANY } from "@/lib/config";
+import {
+  clientHostDecision,
+  isPlatformHost,
+  normalizeHost,
+  subdomainSlug,
+} from "@/lib/custom-domain";
 import { getClientByDomain } from "@/lib/store";
 
-const ROOTS = new Set([
-  COMPANY.domain,
-  `www.${COMPANY.domain}`,
-  "localhost",
-  "127.0.0.1",
-]);
-
 export async function proxy(request: NextRequest) {
-  const hostHeader = request.headers.get("host") || "";
-  const host = hostHeader.split(":")[0].toLowerCase();
+  const host = normalizeHost(request.headers.get("host") || "");
   const path = request.nextUrl.pathname;
 
-  if (
-    path.startsWith("/_next") ||
-    path.startsWith("/api") ||
-    path.startsWith("/admin") ||
-    path.startsWith("/login") ||
-    path.startsWith("/s/")
-  ) {
+  if (path.startsWith("/_next") || path.startsWith("/api")) {
     return NextResponse.next();
   }
 
-  if (ROOTS.has(host) || host.endsWith(".vercel.app")) {
+  if (isPlatformHost(host, COMPANY.domain)) {
     return NextResponse.next();
   }
 
-  let slug: string | null = null;
   const root = (process.env.NEXT_PUBLIC_ROOT_DOMAIN || COMPANY.domain).toLowerCase();
-  if (host.endsWith(`.${root}`)) {
-    slug = host.slice(0, -(root.length + 1));
-  } else if (host.endsWith(".localhost")) {
-    slug = host.replace(/\.localhost$/, "");
-  } else {
+  let slug = subdomainSlug(host, root);
+  let customDomain: string | null = null;
+  let viaCustomDomain = false;
+
+  if (!slug) {
     const client = await getClientByDomain(host);
     slug = client?.slug ?? null;
+    customDomain = client?.customDomain ?? null;
+    viaCustomDomain = Boolean(client);
   }
 
-  if (!slug || slug === "www") return NextResponse.next();
+  if (!slug) return NextResponse.next();
+
+  const decision = clientHostDecision({
+    host,
+    pathname: path,
+    search: request.nextUrl.search,
+    protocol: request.nextUrl.protocol,
+    slug,
+    customDomain,
+    viaCustomDomain,
+  });
+
+  if (decision.type === "next") return NextResponse.next();
+
+  if (decision.type === "redirect") {
+    return NextResponse.redirect(decision.url, 301);
+  }
 
   const url = request.nextUrl.clone();
-  url.pathname = path === "/" ? `/s/${slug}` : `/s/${slug}${path}`;
+  url.pathname = decision.pathname;
+  url.search = decision.search;
   return NextResponse.rewrite(url);
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    "/robots.txt",
+    "/sitemap.xml",
+  ],
 };
