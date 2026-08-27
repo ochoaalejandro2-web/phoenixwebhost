@@ -2,7 +2,7 @@ import { createHmac, randomInt, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SignJWT, jwtVerify } from "jose";
-import { notifyOwnerAuthCode } from "@/lib/notify";
+import { notifyOwnerAuthCode, twoFactorProvidersReady } from "@/lib/notify";
 import { getAuthLock, updateAuthLock } from "@/lib/store";
 
 const SESSION_COOKIE = "pwh_session";
@@ -124,8 +124,20 @@ function stillLocked(until: number | null, now: number) {
 }
 
 export type AuthAttemptResult =
-  | { ok: true }
+  | { ok: true; needsCode: boolean }
   | { ok: false; status: 401 | 429; error: "invalid" | "locked" | "expired" };
+
+async function issueOwnerSession() {
+  await clearPendingCookie();
+  await updateAuthLock((next) => {
+    next.passwordFails = 0;
+    next.passwordLockedUntil = null;
+    next.codeFails = 0;
+    next.codeLockedUntil = null;
+  });
+  await setSessionCookie(await createSessionToken());
+  return { ok: true as const, needsCode: false };
+}
 
 export async function beginOwnerLogin(
   email: string,
@@ -149,13 +161,20 @@ export async function beginOwnerLogin(
     return { ok: false, status: 401, error: "invalid" };
   }
 
+  if (!twoFactorProvidersReady()) {
+    console.warn(
+      "[auth] 2FA is off until RESEND_API_KEY or complete Twilio vars are set; issuing session after password",
+    );
+    return issueOwnerSession();
+  }
+
   if (
     lock.lastCodeSentAt &&
     now - lock.lastCodeSentAt < SEND_COOLDOWN_MS
   ) {
     const jar = await cookies();
     if (jar.get(PENDING_COOKIE)?.value) {
-      return { ok: true };
+      return { ok: true, needsCode: true };
     }
     return { ok: false, status: 429, error: "locked" };
   }
@@ -174,6 +193,14 @@ export async function beginOwnerLogin(
     .sign(secret());
 
   await setPendingCookie(token);
+  const sent = await notifyOwnerAuthCode(code);
+  if (!sent.email && !sent.sms) {
+    console.error(
+      "[auth] 2FA code could not be delivered on any channel; falling back to password-only session",
+    );
+    return issueOwnerSession();
+  }
+
   await updateAuthLock((next) => {
     next.passwordFails = 0;
     next.passwordLockedUntil = null;
@@ -181,8 +208,7 @@ export async function beginOwnerLogin(
     next.codeLockedUntil = null;
     next.lastCodeSentAt = Date.now();
   });
-  await notifyOwnerAuthCode(code);
-  return { ok: true };
+  return { ok: true, needsCode: true };
 }
 
 export async function completeOwnerLogin(rawCode: string): Promise<AuthAttemptResult> {
@@ -239,5 +265,5 @@ export async function completeOwnerLogin(rawCode: string): Promise<AuthAttemptRe
   });
   await clearPendingCookie();
   await setSessionCookie(await createSessionToken());
-  return { ok: true };
+  return { ok: true, needsCode: false };
 }

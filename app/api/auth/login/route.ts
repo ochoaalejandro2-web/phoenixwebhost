@@ -7,5 +7,5 @@ export async function POST(request: Request) {
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: result.status });
   }
-  return NextResponse.json({ ok: true, needsCode: true });
+  return NextResponse.json({ ok: true, needsCode: result.needsCode });
 }

@@ -43,7 +43,12 @@ export default function LoginPage() {
       setError(failMessage(res.status, data.error));
       return;
     }
-    setStep("code");
+    if (data.needsCode) {
+      setStep("code");
+      return;
+    }
+    router.push("/admin");
+    router.refresh();
   }
 
   async function onCode(event: React.FormEvent<HTMLFormElement>) {
@@ -78,8 +83,8 @@ export default function LoginPage() {
           <h1 className="font-display text-2xl text-ink-black">Owner login</h1>
           <p className="mt-1 text-sm text-body">Alex Ochoa · Phoenixwebhost Inc.</p>
           <p className="mt-4 text-sm text-body">
-            2-step verification is on. After your password, we email and text a
-            6-digit code.
+            After your password, we email and text a 6-digit code when Resend or
+            Twilio is connected.
           </p>
           <label className="mt-6 block text-sm text-body">
             Email

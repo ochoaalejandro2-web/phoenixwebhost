@@ -157,30 +157,37 @@ async function deliverEmail(subject: string, html: string, text: string) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
     console.warn("[notify] skipping email: RESEND_API_KEY is not set");
-    return;
+    return false;
   }
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: resendFrom(),
-      to: [notifyEmail()],
-      subject,
-      html,
-      text,
-    }),
-    signal: AbortSignal.timeout(FETCH_MS),
-  });
-  if (!response.ok) {
-    const detail = await response.text();
-    console.error(
-      "[notify] Resend error",
-      response.status,
-      detail.slice(0, 500),
-    );
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: resendFrom(),
+        to: [notifyEmail()],
+        subject,
+        html,
+        text,
+      }),
+      signal: AbortSignal.timeout(FETCH_MS),
+    });
+    if (!response.ok) {
+      const detail = await response.text();
+      console.error(
+        "[notify] Resend error",
+        response.status,
+        detail.slice(0, 500),
+      );
+      return false;
+    }
+    return true;
+  } catch {
+    console.error("[notify] Resend request failed");
+    return false;
   }
 }
 
@@ -192,31 +199,38 @@ async function deliverSms(body: string) {
     console.warn(
       "[notify] skipping SMS: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM is not set",
     );
-    return;
+    return false;
   }
-  const response = await fetch(
-    `https://api.twilio.com/2010-04-01/Accounts/${encodeURIComponent(sid)}/Messages.json`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}`,
-        "Content-Type": "application/x-www-form-urlencoded",
+  try {
+    const response = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${encodeURIComponent(sid)}/Messages.json`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          To: notifyPhone(),
+          From: from,
+          Body: body,
+        }),
+        signal: AbortSignal.timeout(FETCH_MS),
       },
-      body: new URLSearchParams({
-        To: notifyPhone(),
-        From: from,
-        Body: body,
-      }),
-      signal: AbortSignal.timeout(FETCH_MS),
-    },
-  );
-  if (!response.ok) {
-    const detail = await response.text();
-    console.error(
-      "[notify] Twilio error",
-      response.status,
-      detail.slice(0, 500),
     );
+    if (!response.ok) {
+      const detail = await response.text();
+      console.error(
+        "[notify] Twilio error",
+        response.status,
+        detail.slice(0, 500),
+      );
+      return false;
+    }
+    return true;
+  } catch {
+    console.error("[notify] Twilio request failed");
+    return false;
   }
 }
 
@@ -315,18 +329,25 @@ export async function notifyOwnerAuthCode(code: string) {
   <p>If you did not try to sign in, ignore this email.</p>
 </body></html>`;
   try {
-    const results = await Promise.allSettled([
-      deliverEmail("Phoenixwebhost login code", html, text),
+    const [email, sms] = await Promise.all([
+      deliverEmail("Phoenixwebhost login code", html, text).catch(() => false),
       deliverSms(
         `Phoenixwebhost login code: ${code}. Expires in 10 minutes. Ignore if this was not you.`,
-      ),
+      ).catch(() => false),
     ]);
-    for (const result of results) {
-      if (result.status === "rejected") {
-        console.error("[notify] auth code channel failed");
-      }
-    }
+    return { email: Boolean(email), sms: Boolean(sms) };
   } catch {
     console.error("[notify] unexpected error (auth code)");
+    return { email: false, sms: false };
   }
+}
+
+export function twoFactorProvidersReady() {
+  const email = Boolean(process.env.RESEND_API_KEY?.trim());
+  const sms = Boolean(
+    process.env.TWILIO_ACCOUNT_SID?.trim() &&
+      process.env.TWILIO_AUTH_TOKEN?.trim() &&
+      process.env.TWILIO_FROM?.trim(),
+  );
+  return email || sms;
 }

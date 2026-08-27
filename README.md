@@ -58,7 +58,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 **Owner login**
 
-Use `/login`. Email is `ADMIN_EMAIL` (default `alex@phoenixwebhost.com`). Set `ADMIN_PASSWORD` in `.env.local` / Vercel — do not commit a real password. After the password, a 6-digit code is sent to `NOTIFY_EMAIL` and `NOTIFY_PHONE` (email via Resend, SMS via Twilio). `AUTH_SECRET` must be a long random string in production; it signs the login cookie.
+Use `/login`. Email is `ADMIN_EMAIL` (default `alex@phoenixwebhost.com`). Set `ADMIN_PASSWORD` in `.env.local` / Vercel — do not commit a real password. If `RESEND_API_KEY` or complete Twilio vars are set, a 6-digit code is sent to `NOTIFY_EMAIL` / `NOTIFY_PHONE` after the password. If neither provider is configured, the owner session is issued after the password (same as before). `AUTH_SECRET` must be a long random string in production; it signs the login cookie.
 
 Demo data is seeded automatically (3 clients in test mode). `Reset demo data` on the dashboard restores it.
 
@@ -131,7 +131,7 @@ When you are ready for real charges, switch the same variable names to **live** 
 - **New client** generates a site from a template (contractor, salon, restaurant, professional services)
 - Public “Request a site” form lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call them right away. Missing provider keys skip that channel; the form still succeeds.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
-- Owner login uses 2-step verification: password, then a 6-digit code emailed and texted. Public visitors are not asked for a code.
+- Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
 
 ## Generated client sites
 
