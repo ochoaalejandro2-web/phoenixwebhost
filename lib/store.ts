@@ -110,6 +110,21 @@ function emptyAuthLock(): AuthLock {
   };
 }
 
+function normalizeClient(client: Client): Client {
+  return {
+    ...client,
+    localBoost: Boolean(client.localBoost),
+    stripeBoostSubscriptionId: client.stripeBoostSubscriptionId ?? null,
+  };
+}
+
+function normalizeLead(lead: Lead): Lead {
+  return {
+    ...lead,
+    wantsLocalBoost: Boolean(lead.wantsLocalBoost),
+  };
+}
+
 function normalizeState(state: AppState): AppState {
   if (!Array.isArray(state.reviews)) state.reviews = [];
   if (!Array.isArray(state.leads)) state.leads = [];
@@ -119,6 +134,8 @@ function normalizeState(state: AppState): AppState {
   if (!Array.isArray(state.authLock.consumedNonces)) {
     state.authLock.consumedNonces = [];
   }
+  state.clients = state.clients.map(normalizeClient);
+  state.leads = state.leads.map(normalizeLead);
   return state;
 }
 
@@ -204,8 +221,11 @@ export async function getClientByStripeCustomer(customerId: string) {
 export async function getClientByStripeSubscription(subscriptionId: string) {
   const state = await getState();
   return (
-    state.clients.find((c) => c.stripeSubscriptionId === subscriptionId) ??
-    null
+    state.clients.find(
+      (c) =>
+        c.stripeSubscriptionId === subscriptionId ||
+        c.stripeBoostSubscriptionId === subscriptionId,
+    ) ?? null
   );
 }
 

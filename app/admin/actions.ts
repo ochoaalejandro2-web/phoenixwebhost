@@ -64,6 +64,8 @@ export async function createClientAction(formData: FormData) {
     nextInvoiceAt: null,
     stripeCustomerId: null,
     stripeSubscriptionId: null,
+    stripeBoostSubscriptionId: null,
+    localBoost: false,
     reminderSentAt: null,
     overdueSince: null,
     offlineAt: null,
@@ -104,6 +106,8 @@ export async function createClientFromLeadAction(formData: FormData) {
     nextInvoiceAt: null,
     stripeCustomerId: null,
     stripeSubscriptionId: null,
+    stripeBoostSubscriptionId: null,
+    localBoost: false,
     reminderSentAt: null,
     overdueSince: null,
     offlineAt: null,
@@ -112,7 +116,9 @@ export async function createClientFromLeadAction(formData: FormData) {
     notes: [
       {
         id: `note_${crypto.randomUUID()}`,
-        body: `Created from request form (${lead.locale}).`,
+        body: `Created from request form (${lead.locale})${
+          lead.wantsLocalBoost ? ". Asked for optional Local Boost." : ""
+        }.`,
         createdAt: new Date().toISOString(),
       },
     ],
@@ -252,6 +258,8 @@ export async function saveClientAction(formData: FormData) {
     stripeCustomerId: String(formData.get("stripeCustomerId") || "").trim() || null,
     stripeSubscriptionId:
       String(formData.get("stripeSubscriptionId") || "").trim() || null,
+    stripeBoostSubscriptionId:
+      String(formData.get("stripeBoostSubscriptionId") || "").trim() || null,
   };
   await upsertClient(next);
   revalidateClient(next);
@@ -296,6 +304,11 @@ export async function checkoutClientAction(formData: FormData) {
   await requireOwner();
   const client = await getClient(String(formData.get("clientId") || ""));
   if (!client) throw new Error("Client not found");
-  const url = await createCheckoutForClient(client);
+  const includeBoost = String(formData.get("includeBoost") || "") === "on";
+  const boostOnly = String(formData.get("kind") || "") === "boost";
+  const url = await createCheckoutForClient(client, {
+    includeBoost: includeBoost || boostOnly,
+    boostOnly,
+  });
   redirect(url);
 }

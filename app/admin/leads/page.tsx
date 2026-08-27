@@ -22,6 +22,7 @@ export default async function LeadsPage() {
                 <p className="text-sm text-ink-soft">
                   {lead.name} · {lead.email} · {lead.phone} · {lead.city} ·{" "}
                   {lead.locale.toUpperCase()}
+                  {lead.wantsLocalBoost ? " · Wants Local Boost" : ""}
                 </p>
                 <p className="mt-3 text-sm">{lead.message}</p>
               </div>

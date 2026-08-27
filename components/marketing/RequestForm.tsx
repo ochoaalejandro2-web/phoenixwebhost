@@ -4,7 +4,48 @@ import { useState } from "react";
 import { t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
-export function RequestForm({ locale }: { locale: Locale }) {
+function BoostToggle({
+  locale,
+  includeBoost,
+  onChange,
+  boostReady,
+}: {
+  locale: Locale;
+  includeBoost: boolean;
+  onChange: (value: boolean) => void;
+  boostReady: boolean;
+}) {
+  const c = t(locale);
+  return (
+    <div>
+      <label className="flex cursor-pointer gap-3 rounded-2xl border border-zinc-200 bg-zinc-50/80 p-4 text-sm text-body">
+        <input
+          type="checkbox"
+          checked={includeBoost}
+          onChange={(event) => onChange(event.target.checked)}
+          className="mt-1 h-4 w-4 shrink-0 accent-[#00c851]"
+        />
+        <span>
+          <span className="block font-medium text-ink-black">
+            {c.boostCheckbox}
+          </span>
+          <span className="mt-1 block">{c.boostCheckboxHelp}</span>
+        </span>
+      </label>
+      {includeBoost && !boostReady ? (
+        <p className="mt-3 text-sm text-lime-deep">{c.boostMissing}</p>
+      ) : null}
+    </div>
+  );
+}
+
+export function RequestForm({
+  locale,
+  boostReady = false,
+}: {
+  locale: Locale;
+  boostReady?: boolean;
+}) {
   const c = t(locale);
   const [status, setStatus] = useState<"idle" | "saving" | "done" | "error">(
     "idle",
@@ -12,6 +53,7 @@ export function RequestForm({ locale }: { locale: Locale }) {
   const [leadId, setLeadId] = useState<string | null>(null);
   const [payError, setPayError] = useState<string | null>(null);
   const [canPay, setCanPay] = useState(false);
+  const [includeBoost, setIncludeBoost] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,13 +70,18 @@ export function RequestForm({ locale }: { locale: Locale }) {
         city: form.get("city"),
         message: form.get("message"),
         locale,
+        wantsLocalBoost: includeBoost,
       }),
     });
     if (!res.ok) {
       setStatus("error");
       return;
     }
-    const data = (await res.json()) as { id: string; stripeReady: boolean };
+    const data = (await res.json()) as {
+      id: string;
+      stripeReady: boolean;
+      boostReady?: boolean;
+    };
     setLeadId(data.id);
     setCanPay(data.stripeReady);
     setStatus("done");
@@ -42,11 +89,15 @@ export function RequestForm({ locale }: { locale: Locale }) {
 
   async function startCheckout() {
     if (!leadId) return;
+    if (includeBoost && !boostReady) {
+      setPayError(c.boostMissing);
+      return;
+    }
     setPayError(null);
     const res = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ leadId }),
+      body: JSON.stringify({ leadId, includeBoost }),
     });
     const data = (await res.json()) as { url?: string; error?: string };
     if (!res.ok || !data.url) {
@@ -62,16 +113,24 @@ export function RequestForm({ locale }: { locale: Locale }) {
         <p className="font-display text-2xl text-ink-black">{c.formThanks}</p>
         <p className="mt-3 text-body">
           {locale === "es"
-            ? "Si está listo para pagar el lanzamiento de $200 y el plan de $69 al mes, use el botón de abajo."
-            : "If you are ready to pay the $200 launch and start $69/month, use the button below."}
+            ? "Si está listo para pagar el lanzamiento de $200 y el plan de $69 al mes, use el botón de abajo. Local Boost es opcional."
+            : "If you are ready to pay the $200 launch and start $69/month, use the button below. Local Boost is optional."}
         </p>
+        <div className="mt-6">
+          <BoostToggle
+            locale={locale}
+            includeBoost={includeBoost}
+            onChange={setIncludeBoost}
+            boostReady={boostReady}
+          />
+        </div>
         <button
           type="button"
           onClick={startCheckout}
-          disabled={!canPay}
+          disabled={!canPay || (includeBoost && !boostReady)}
           className="btn-lime mt-6 rounded-full px-5 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {c.formPay}
+          {includeBoost ? c.formPayBoost : c.formPay}
         </button>
         {!canPay && (
           <p className="mt-3 text-sm text-body">
@@ -120,6 +179,12 @@ export function RequestForm({ locale }: { locale: Locale }) {
         {c.formMessage}
         <textarea name="message" rows={4} className="field-studio" />
       </label>
+      <BoostToggle
+        locale={locale}
+        includeBoost={includeBoost}
+        onChange={setIncludeBoost}
+        boostReady={boostReady}
+      />
       <button
         type="submit"
         disabled={status === "saving"}

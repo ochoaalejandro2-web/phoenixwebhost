@@ -108,6 +108,25 @@ export function applyUnpaidPolicy(client: Client, now = new Date()): Client {
   return next;
 }
 
+export function applyLocalBoostPurchased(
+  client: Client,
+  at = new Date().toISOString(),
+): Client {
+  if (client.localBoost) return client;
+  return {
+    ...client,
+    localBoost: true,
+    notes: [
+      {
+        id: `note_${crypto.randomUUID()}`,
+        body: "Local Boost purchased: $99 Google Business Profile setup and a small local ad for their own site, plus $79/month listing and ad care.",
+        createdAt: at,
+      },
+      ...client.notes,
+    ],
+  };
+}
+
 export function markReminder(client: Client, at = new Date().toISOString()): Client {
   return {
     ...client,
