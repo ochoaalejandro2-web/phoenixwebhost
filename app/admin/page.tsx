@@ -3,6 +3,7 @@ import { listClients, listLeads, listReviews, storageMode } from "@/lib/store";
 import { stripeConfigured } from "@/lib/config";
 import { stripeModeLabel } from "@/lib/stripe";
 import { resetDemoAction } from "@/app/admin/actions";
+import type { Lead } from "@/lib/types";
 
 function fmt(iso: string | null) {
   if (!iso) return "—";
@@ -11,6 +12,49 @@ function fmt(iso: string | null) {
     day: "numeric",
     year: "numeric",
   });
+}
+
+function telHref(phone: string) {
+  const digits = phone.replace(/[^\d+]/g, "");
+  return digits ? `tel:${digits}` : "";
+}
+
+function OpenRequestCard({ lead }: { lead: Lead }) {
+  const name = lead.name.trim() || "Unnamed";
+  const business = lead.businessName.trim();
+  const phone = lead.phone.trim();
+  const email = lead.email.trim();
+  const note = lead.message.trim();
+  const callHref = phone ? telHref(phone) : "";
+
+  return (
+    <li className="relative rounded-2xl border border-line bg-paper p-5 transition hover:border-clay/40">
+      <p className="font-display text-xl">{name}</p>
+      {business ? <p className="mt-0.5 text-sm">{business}</p> : null}
+      <p className="relative z-10 mt-2 text-sm text-ink-soft">
+        {callHref ? (
+          <a href={callHref} className="hover:text-clay">
+            {phone}
+          </a>
+        ) : null}
+        {phone && email ? " · " : null}
+        {email ? (
+          <a href={`mailto:${email}`} className="hover:text-clay">
+            {email}
+          </a>
+        ) : null}
+        {!phone && !email ? "No phone or email" : null}
+      </p>
+      <p className={`mt-3 text-sm ${note ? "" : "text-ink-soft"}`}>
+        {note || "No note"}
+      </p>
+      <Link
+        href={`/admin/leads#${lead.id}`}
+        className="absolute inset-0 z-[1] rounded-2xl"
+        aria-label={`Open request from ${name}`}
+      />
+    </li>
+  );
 }
 
 function PayBadge({ status }: { status: string }) {
@@ -77,6 +121,30 @@ export default async function AdminHome() {
         </div>
       </div>
 
+      <section className="mt-8">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="font-display text-2xl">Open requests</h2>
+            <p className="mt-1 text-sm text-ink-soft">
+              Public "Request a site" leads. Name, contact, and note are here so
+              you can call without leaving the dashboard.
+            </p>
+          </div>
+          <Link href="/admin/leads" className="text-sm text-clay">
+            All requests
+          </Link>
+        </div>
+        <ul className="mt-4 space-y-3">
+          {leads.length === 0 ? (
+            <li className="rounded-2xl border border-line bg-paper p-5 text-sm text-ink-soft">
+              No open requests.
+            </li>
+          ) : (
+            leads.map((lead) => <OpenRequestCard key={lead.id} lead={lead} />)
+          )}
+        </ul>
+      </section>
+
       <div className="mt-8 overflow-x-auto rounded-2xl border border-line bg-paper">
         <table className="w-full min-w-[720px] text-left text-sm">
           <thead className="border-b border-line text-xs uppercase tracking-wider text-ink-soft">
@@ -124,12 +192,6 @@ export default async function AdminHome() {
       </div>
 
       <p className="mt-6 text-sm text-ink-soft">
-        {leads.length} open request{leads.length === 1 ? "" : "s"} from the public
-        form.{" "}
-        <Link href="/admin/leads" className="text-clay">
-          Review requests
-        </Link>
-        {" · "}
         {pendingReviews} review{pendingReviews === 1 ? "" : "s"} waiting for
         approval.{" "}
         <Link href="/admin/reviews" className="text-clay">
