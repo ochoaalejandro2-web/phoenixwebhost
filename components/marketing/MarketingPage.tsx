@@ -4,7 +4,7 @@ import { SiteFooter, SiteHeader, StudioShell } from "@/components/marketing/Chro
 import { HeroDevices, TemplatePreview } from "@/components/marketing/HeroDevices";
 import { RequestForm } from "@/components/marketing/RequestForm";
 import { ReviewsSection } from "@/components/marketing/ReviewsSection";
-import { TEMPLATES, stripeBoostConfigured } from "@/lib/config";
+import { TEMPLATES, stripeBoostConfigured, stripeEmailConfigured } from "@/lib/config";
 import { requestPath, t } from "@/lib/i18n";
 import { listPublicReviews } from "@/lib/store";
 import type { Locale } from "@/lib/types";
@@ -131,22 +131,40 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             <p className="mt-5 max-w-md leading-relaxed text-body">{c.monthBody}</p>
           </article>
         </div>
-        <article className="mx-auto max-w-6xl border-t border-zinc-200 px-6 py-14">
-          <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.boostKicker}</p>
-          <h2 className="mt-3 font-display text-3xl text-ink-black">{c.boostTitle}</h2>
-          <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.boostBody}</p>
-          <div className="mt-8 flex flex-wrap gap-10">
-            <div>
-              <p className="price-lime font-display text-4xl">$99</p>
-              <p className="text-xs text-body">{c.boostSetupHint}</p>
+        <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-2">
+          <article className="px-6 py-14 md:pr-12">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.boostKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.boostTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.boostBody}</p>
+            <div className="mt-8 flex flex-wrap gap-10">
+              <div>
+                <p className="price-lime font-display text-4xl">$99</p>
+                <p className="text-xs text-body">{c.boostSetupHint}</p>
+              </div>
+              <div className="w-px bg-zinc-200" />
+              <div>
+                <p className="price-lime font-display text-4xl">$79</p>
+                <p className="text-xs text-body">{c.boostMonthHint}</p>
+              </div>
             </div>
-            <div className="w-px bg-zinc-200" />
-            <div>
-              <p className="price-lime font-display text-4xl">$79</p>
-              <p className="text-xs text-body">{c.boostMonthHint}</p>
+          </article>
+          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-12">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.emailKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.emailTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.emailBody}</p>
+            <div className="mt-8 flex flex-wrap gap-10">
+              <div>
+                <p className="price-lime font-display text-4xl">$49</p>
+                <p className="text-xs text-body">{c.emailSetupHint}</p>
+              </div>
+              <div className="w-px bg-zinc-200" />
+              <div>
+                <p className="price-lime font-display text-4xl">$19</p>
+                <p className="text-xs text-body">{c.emailMonthHint}</p>
+              </div>
             </div>
-          </div>
-        </article>
+          </article>
+        </div>
       </section>
 
       <section id="work" className="mx-auto max-w-6xl px-6 py-24">
@@ -246,7 +264,11 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             <h3 className="mt-12 font-display text-2xl text-ink-black">{c.requestTitle}</h3>
             <p className="mt-3 text-body">{c.requestLead}</p>
           </div>
-          <RequestForm locale={locale} boostReady={stripeBoostConfigured()} />
+          <RequestForm
+            locale={locale}
+            boostReady={stripeBoostConfigured()}
+            emailReady={stripeEmailConfigured()}
+          />
         </div>
       </section>
 

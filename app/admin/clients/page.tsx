@@ -32,6 +32,7 @@ export default async function ClientsPage() {
               <p className="text-sm text-ink-soft">
                 {client.slug}.phoenixwebhost.com · {client.siteStatus} · {client.paymentStatus}
                 {client.localBoost ? " · Local Boost" : ""}
+                {client.businessEmail ? " · Business Email" : ""}
               </p>
             </div>
             <p className="text-sm text-ink-soft">

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { stripeBoostConfigured, stripeConfigured } from "@/lib/config";
+import { stripeBoostConfigured, stripeConfigured, stripeEmailConfigured } from "@/lib/config";
 import { notifyNewLead } from "@/lib/notify";
 import { addLead } from "@/lib/store";
 import type { Locale } from "@/lib/types";
@@ -14,6 +14,7 @@ export async function POST(request: Request) {
     message?: string;
     locale?: Locale;
     wantsLocalBoost?: boolean;
+    wantsBusinessEmail?: boolean;
   };
   if (!body.name || !body.businessName || !body.email) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
     message: String(body.message || "").trim(),
     locale: body.locale === "es" ? "es" : "en",
     wantsLocalBoost: Boolean(body.wantsLocalBoost),
+    wantsBusinessEmail: Boolean(body.wantsBusinessEmail),
     createdAt: new Date().toISOString(),
   });
   await notifyNewLead(lead);
@@ -35,5 +37,6 @@ export async function POST(request: Request) {
     id: lead.id,
     stripeReady: stripeConfigured(),
     boostReady: stripeBoostConfigured(),
+    emailReady: stripeEmailConfigured(),
   });
 }

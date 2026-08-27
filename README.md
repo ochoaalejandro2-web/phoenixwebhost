@@ -1,6 +1,6 @@
 # Phoenixwebhost Inc.
 
-Arizona small-business websites. **$200 to launch. $69/month to keep it live.** Optional **Local Boost** add-on: **$99 once + $79/month extra**.
+Arizona small-business websites. **$200 to launch. $69/month to keep it live.** Optional **Local Boost** add-on: **$99 once + $79/month extra**. Optional **Business Email** add-on: **$49 once + $19/month extra**.
 
 Owner: **Alex Ochoa**, Phoenix, AZ  
 Company: **Phoenixwebhost Inc.**  
@@ -15,8 +15,9 @@ This repo is only Phoenixwebhost. It is a separate business: marketing site, own
 | Launch | **$200 once** | A simple small-business website |
 | Stay live | **$69 / month** | Hosting plus limited care (not unlimited changes) |
 | Local Boost (optional) | **$99 once + $79 / month extra** | Google Business Profile setup and a small local ad to the client's own site, then ongoing listing and ad care. Not magic SEO. |
+| Business Email (optional) | **$49 once + $19 / month extra** | One professional inbox such as info@the client’s domain, then keep that inbox working. A real business email so customers take them seriously — not magic. |
 
-Buying launch and care still works with Boost unchecked. Boost is a separate add-on at signup, or later from the owner panel.
+Buying launch and care still works with Boost and Business Email unchecked. Each is a separate add-on at signup, or later from the owner panel.
 
 **$69/month includes**
 
@@ -34,6 +35,7 @@ Buying launch and care still works with Boost unchecked. Boost is a separate add
 - Shop: quoted
 - Logo: **$100–$300**
 - Ads / SEO: extra, or skip at first. Optional **Local Boost** is the local-visibility add-on (Google profile + a small ad). Not magic SEO.
+- A professional inbox: extra, or skip. Optional **Business Email** is one mailbox such as info@their domain, plus $19/month to keep it working. Not magic.
 - Unlimited changes: **never**
 
 **If a month is unpaid:** reminder → site shows “temporarily offline” → files kept **30 days** → take down.
@@ -83,6 +85,8 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `STRIPE_MONTHLY_PRICE_ID` | for payments | Recurring **$69/month** price |
 | `STRIPE_BOOST_SETUP_PRICE_ID` | for Local Boost | One-time **$99** add-on price |
 | `STRIPE_BOOST_MONTHLY_PRICE_ID` | for Local Boost | Recurring **$79/month** add-on price |
+| `STRIPE_EMAIL_SETUP_PRICE_ID` | for Business Email | One-time **$49** add-on price (`price_1U8w4XIqJ6FpMcHxzsvfy4Ox` in test) |
+| `STRIPE_EMAIL_MONTHLY_PRICE_ID` | for Business Email | Recurring **$19/month** add-on price (`price_1U8w4YIqJ6FpMcHx43X3F2gt` in test) |
 | `DATABASE_URL` | production on Vercel | Postgres (Neon). Without it, data is local-file or ephemeral |
 | `CRON_SECRET` | recommended | Protects `/api/cron/billing` |
 | `NOTIFY_EMAIL` | no | Owner alert inbox. Default `ochoa.alejandro2@gmail.com` |
@@ -106,7 +110,7 @@ Alex already has a Stripe account. Use **test mode** until checkout works end to
 node --env-file=.env.local scripts/setup-stripe.mjs
 ```
 
-That prints `STRIPE_SETUP_PRICE_ID` ($200 one-time) and `STRIPE_MONTHLY_PRICE_ID` ($69/month). Put both in `.env.local`. Local Boost uses the existing test prices `STRIPE_BOOST_SETUP_PRICE_ID` ($99) and `STRIPE_BOOST_MONTHLY_PRICE_ID` ($79/month) — set those env names on Vercel; do not create extra price IDs.
+That prints `STRIPE_SETUP_PRICE_ID` ($200 one-time) and `STRIPE_MONTHLY_PRICE_ID` ($69/month). Put both in `.env.local`. Local Boost uses the existing test prices `STRIPE_BOOST_SETUP_PRICE_ID` ($99) and `STRIPE_BOOST_MONTHLY_PRICE_ID` ($79/month). Business Email uses the existing test prices `STRIPE_EMAIL_SETUP_PRICE_ID` ($49) and `STRIPE_EMAIL_MONTHLY_PRICE_ID` ($19/month). Set those env names on Vercel; do not create extra price IDs.
 
 3. Webhook (local):
 
@@ -124,7 +128,7 @@ Paste the `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
 
 To test a failed payment / unpaid flow: card `4000 0000 0000 9995`, or in the owner panel open a client and click **Simulate unpaid** → **Apply unpaid policy** (after the 2-day grace, or it will set overdue immediately and offline when grace has passed). Mesa Street Kitchen is already overdue and offline.
 
-Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item). If the customer selects **Local Boost**, the same session also includes **$99 setup + $79/month**. Leaving Boost unchecked still charges only the base plan. If the Boost price env vars are missing, checkout fails closed with a clear error instead of charging a partial cart.
+Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item). If the customer selects **Local Boost**, the same session also includes **$99 setup + $79/month**. If they select **Business Email**, it also includes **$49 setup + $19/month**. Leaving an add-on unchecked still charges only the base plan (and any other checked add-on). If an add-on’s price env vars are missing, checkout fails closed with a clear error instead of charging a partial cart.
 
 When you are ready for real charges, switch the same variable names to **live** keys (`sk_live_...`, live price IDs, live webhook secret). Never mix test and live IDs.
 
@@ -132,8 +136,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 `/admin` after login.
 
-- Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost
-- Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, Local Boost status, pause / offline toggle. Existing clients can add Boost later from this page.
+- Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost or Business Email
+- Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, Local Boost and Business Email status, pause / offline toggle. Existing clients can add Boost or Business Email later from this page.
 - **New client** generates a site from a template (contractor, salon, restaurant, professional services, landscaping)
 - Public “Request a site” form lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call them right away. Missing provider keys skip that channel; the form still succeeds.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
@@ -145,6 +149,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Subdomain (after DNS): `https://{slug}.phoenixwebhost.com`
 
 **New client** in the panel: business name, phone, hours, copy, template → site is generated immediately.
+
+The contact form on a live `/s/{slug}` site emails the address stored on that client record, and sends a copy to the owner (`NOTIFY_EMAIL` / Resend, plus SMS via `NOTIFY_PHONE` if Twilio is set). It does not send on page views — only on a real form submit. If the client has no email, the visitor sees a clear error and is asked to call. Inquiries are stored on the client in Admin. Demo records use `.example` addresses that will not deliver until you put a real inbox on the client.
 
 Unpaid / paused sites render the “temporarily offline” page. After 30 days they are taken down.
 

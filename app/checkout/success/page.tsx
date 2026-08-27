@@ -10,8 +10,10 @@ export default function CheckoutSuccessPage() {
         <p className="mt-5 text-body">
           The $200 launch and $69/month plan are in Stripe test or live mode,
           depending on your keys. If you added Local Boost, the $99 setup and
-          $79/month extra are on the same receipt. Alex will see the client as
-          paid in the owner panel once the webhook lands.
+          $79/month extra are on the same receipt. If you added Business Email,
+          the $49 setup and $19/month extra are on the same receipt. Unchecked
+          add-ons are not charged. Alex will see the client as paid in the owner
+          panel once the webhook lands.
         </p>
         <Link href="/" className="mt-8 inline-block text-lime hover:text-lime-deep">
           Back to Phoenixwebhost

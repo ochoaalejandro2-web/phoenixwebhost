@@ -127,6 +127,25 @@ export function applyLocalBoostPurchased(
   };
 }
 
+export function applyBusinessEmailPurchased(
+  client: Client,
+  at = new Date().toISOString(),
+): Client {
+  if (client.businessEmail) return client;
+  return {
+    ...client,
+    businessEmail: true,
+    notes: [
+      {
+        id: `note_${crypto.randomUUID()}`,
+        body: "Business Email purchased: $49 setup for one professional inbox such as info@their domain, plus $19/month to keep that inbox working. Not magic, not unlimited mailboxes.",
+        createdAt: at,
+      },
+      ...client.notes,
+    ],
+  };
+}
+
 export function markReminder(client: Client, at = new Date().toISOString()): Client {
   return {
     ...client,

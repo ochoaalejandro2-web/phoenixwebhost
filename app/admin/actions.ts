@@ -66,6 +66,8 @@ export async function createClientAction(formData: FormData) {
     stripeSubscriptionId: null,
     stripeBoostSubscriptionId: null,
     localBoost: false,
+    stripeEmailSubscriptionId: null,
+    businessEmail: false,
     reminderSentAt: null,
     overdueSince: null,
     offlineAt: null,
@@ -108,6 +110,8 @@ export async function createClientFromLeadAction(formData: FormData) {
     stripeSubscriptionId: null,
     stripeBoostSubscriptionId: null,
     localBoost: false,
+    stripeEmailSubscriptionId: null,
+    businessEmail: false,
     reminderSentAt: null,
     overdueSince: null,
     offlineAt: null,
@@ -118,6 +122,8 @@ export async function createClientFromLeadAction(formData: FormData) {
         id: `note_${crypto.randomUUID()}`,
         body: `Created from request form (${lead.locale})${
           lead.wantsLocalBoost ? ". Asked for optional Local Boost." : ""
+        }${
+          lead.wantsBusinessEmail ? ". Asked for optional Business Email." : ""
         }.`,
         createdAt: new Date().toISOString(),
       },
@@ -260,6 +266,8 @@ export async function saveClientAction(formData: FormData) {
       String(formData.get("stripeSubscriptionId") || "").trim() || null,
     stripeBoostSubscriptionId:
       String(formData.get("stripeBoostSubscriptionId") || "").trim() || null,
+    stripeEmailSubscriptionId:
+      String(formData.get("stripeEmailSubscriptionId") || "").trim() || null,
   };
   await upsertClient(next);
   revalidateClient(next);
@@ -305,10 +313,14 @@ export async function checkoutClientAction(formData: FormData) {
   const client = await getClient(String(formData.get("clientId") || ""));
   if (!client) throw new Error("Client not found");
   const includeBoost = String(formData.get("includeBoost") || "") === "on";
+  const includeEmail = String(formData.get("includeEmail") || "") === "on";
   const boostOnly = String(formData.get("kind") || "") === "boost";
+  const emailOnly = String(formData.get("kind") || "") === "email";
   const url = await createCheckoutForClient(client, {
     includeBoost: includeBoost || boostOnly,
+    includeEmail: includeEmail || emailOnly,
     boostOnly,
+    emailOnly,
   });
   redirect(url);
 }

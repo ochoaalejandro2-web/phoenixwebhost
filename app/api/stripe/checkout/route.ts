@@ -7,7 +7,9 @@ export async function POST(request: Request) {
       leadId?: string;
       clientId?: string;
       includeBoost?: boolean;
+      includeEmail?: boolean;
       boostOnly?: boolean;
+      emailOnly?: boolean;
     };
     const client = await resolveCheckoutClient(body);
     if (!client) {
@@ -15,7 +17,9 @@ export async function POST(request: Request) {
     }
     const url = await createCheckoutForClient(client, {
       includeBoost: Boolean(body.includeBoost),
+      includeEmail: Boolean(body.includeEmail),
       boostOnly: Boolean(body.boostOnly),
+      emailOnly: Boolean(body.emailOnly),
     });
     return NextResponse.json({ url });
   } catch (error) {
