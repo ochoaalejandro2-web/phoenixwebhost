@@ -7,6 +7,8 @@ export type TemplateId =
   | "professional"
   | "landscaping";
 
+export type ContactNotice = "sent" | "no-email" | "send-failed" | "missing";
+
 export type PaymentStatus = "paid" | "overdue" | "unpaid" | "none";
 
 export type SiteStatus = "live" | "paused" | "offline" | "taken_down";
