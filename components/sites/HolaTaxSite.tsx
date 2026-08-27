@@ -1,5 +1,21 @@
+import Image from "next/image";
 import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
 import type { Client, ContactNotice } from "@/lib/types";
+
+const PHOTOS = {
+  office: {
+    src: "/clients/hola-tax-service/office.png",
+    alt: "A tax prep office desk with a laptop showing a spreadsheet, a notebook, and a cup of coffee, lit with a neon green accent.",
+  },
+  calculator: {
+    src: "/clients/hola-tax-service/calculator.jpg",
+    alt: "A smartphone calculator next to tax documents and a pen on a white wooden desk.",
+  },
+  desk: {
+    src: "/clients/hola-tax-service/desk.jpg",
+    alt: "Close-up of paperwork being filled out at a tax prep desk.",
+  },
+} as const;
 
 type SiteView = {
   client: Client;
@@ -8,6 +24,35 @@ type SiteView = {
 
 function telHref(phone: string) {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
+}
+
+function SiteStill({
+  src,
+  alt,
+  preload = false,
+  sizes,
+  className,
+}: {
+  src: string;
+  alt: string;
+  preload?: boolean;
+  sizes: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden border border-[#00FF66] bg-black ${className ?? ""}`}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        preload={preload}
+        className="object-cover"
+      />
+    </div>
+  );
 }
 
 function ContactNoticeBanner({
@@ -76,11 +121,32 @@ export function HolaTaxSite({ client, notice }: SiteView) {
             {client.tagline}
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-black/80">{client.about}</p>
+          <SiteStill
+            src={PHOTOS.office.src}
+            alt={PHOTOS.office.alt}
+            preload
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            className="mt-10 aspect-[3/2] w-full"
+          />
         </div>
       </section>
 
       <section className="mx-auto w-full max-w-5xl px-5 py-14">
-        <h2 className="font-display text-3xl tracking-tight text-black">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <SiteStill
+            src={PHOTOS.calculator.src}
+            alt={PHOTOS.calculator.alt}
+            sizes="(max-width: 640px) 100vw, 512px"
+            className="aspect-[3/2]"
+          />
+          <SiteStill
+            src={PHOTOS.desk.src}
+            alt={PHOTOS.desk.alt}
+            sizes="(max-width: 640px) 100vw, 512px"
+            className="aspect-[3/2]"
+          />
+        </div>
+        <h2 className="mt-10 font-display text-3xl tracking-tight text-black">
           How we help
         </h2>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
