@@ -10,9 +10,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const client = await loadLiveTaxOffice(slug);
-  if (!client) return { title: "Client documents" };
+  if (!client) return { title: { absolute: "Client documents" } };
   return {
-    title: `Client documents · ${client.businessName}`,
+    title: { absolute: `Client documents · ${client.businessName}` },
     robots: { index: false, follow: false },
   };
 }

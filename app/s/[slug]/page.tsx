@@ -1,7 +1,8 @@
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { renderClientSite } from "@/components/sites/Templates";
-import { HOLA_TAX_SLUG } from "@/lib/client-themes";
+import { clientSiteMetadata } from "@/lib/client-metadata";
 import {
   resolveSiteLocale,
   SITE_LANG_QUERY,
@@ -14,28 +15,29 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
-}) {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const client = await getClientBySlug(slug);
-  if (!client) return { title: "Site" };
+  if (!client) return { title: { absolute: "Site" } };
   if (client.siteStatus === "offline" || client.siteStatus === "paused") {
-    return { title: "Temporarily offline" };
+    return { title: { absolute: "Temporarily offline" } };
   }
   if (client.siteStatus === "taken_down") {
-    return { title: "Site unavailable" };
+    return { title: { absolute: "Site unavailable" } };
   }
-  if (client.slug === HOLA_TAX_SLUG) {
-    return {
-      title: client.businessName,
-      icons: {
-        icon: [{ url: "/clients/hola-tax-service/icon.png", type: "image/png" }],
-        apple: "/clients/hola-tax-service/icon.png",
-      },
-    };
-  }
-  return { title: client.businessName };
+  const query = await searchParams;
+  const bilingual = siteSupportsI18n(slug, client.template);
+  const locale = bilingual
+    ? resolveSiteLocale({
+        query: query[SITE_LANG_QUERY],
+        cookie: (await cookies()).get(siteLangCookieName(slug))?.value,
+      })
+    : "en";
+  return clientSiteMetadata(client, locale);
 }
 
 function contactNotice(

@@ -79,6 +79,22 @@ export const holaTaxCopy = {
   },
 } as const;
 
+export const HOLA_TAX_BRAND = "Hola Tax Service";
+export const HOLA_TAX_ICON = "/clients/hola-tax-service/icon.png";
+
+export function holaTaxSeo(locale: Locale) {
+  const copy = holaTaxCopy[locale];
+  return {
+    brand: HOLA_TAX_BRAND,
+    title:
+      locale === "es"
+        ? `${HOLA_TAX_BRAND} — Preparación de impuestos en Phoenix`
+        : `${HOLA_TAX_BRAND} — Tax preparation in Phoenix`,
+    description: copy.about,
+    icon: HOLA_TAX_ICON,
+  };
+}
+
 export function tHolaTax(locale: Locale) {
   return holaTaxCopy[locale];
 }

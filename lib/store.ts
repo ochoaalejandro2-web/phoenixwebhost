@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { neon } from "@neondatabase/serverless";
 import { createSeedState } from "@/data/seed";
+import { findClientByCustomDomain } from "@/lib/custom-domain";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
 import type {
   AppState,
@@ -223,10 +224,7 @@ export async function getClientBySlug(slug: string) {
 
 export async function getClientByDomain(host: string) {
   const state = await getState();
-  const needle = host.toLowerCase();
-  return (
-    state.clients.find((c) => c.customDomain?.toLowerCase() === needle) ?? null
-  );
+  return findClientByCustomDomain(state.clients, host);
 }
 
 export async function getClientByStripeCustomer(customerId: string) {
