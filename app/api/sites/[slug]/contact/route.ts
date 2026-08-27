@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { notifySiteContact } from "@/lib/notify";
 import { addContactMessage, getClientBySlug } from "@/lib/store";
 
 export async function POST(
@@ -14,7 +15,7 @@ export async function POST(
     return NextResponse.json({ error: "site offline" }, { status: 403 });
   }
   const form = await request.formData();
-  await addContactMessage({
+  const message = await addContactMessage({
     id: `msg_${crypto.randomUUID()}`,
     clientId: client.id,
     name: String(form.get("name") || "").trim(),
@@ -23,5 +24,6 @@ export async function POST(
     message: String(form.get("message") || "").trim(),
     createdAt: new Date().toISOString(),
   });
+  await notifySiteContact(client.businessName, message, client.id);
   return NextResponse.redirect(new URL(`/s/${slug}?sent=1`, request.url));
 }

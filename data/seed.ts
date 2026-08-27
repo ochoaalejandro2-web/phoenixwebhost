@@ -163,6 +163,7 @@ export function createSeedState(): AppState {
       },
     ],
     contactMessages: [],
+    reviews: [],
     seededAt: new Date().toISOString(),
   };
 }

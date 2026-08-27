@@ -2,7 +2,14 @@ import { promises as fs } from "fs";
 import path from "path";
 import { neon } from "@neondatabase/serverless";
 import { createSeedState } from "@/data/seed";
-import type { AppState, Client, ContactMessage, Lead } from "@/lib/types";
+import type {
+  AppState,
+  Client,
+  ContactMessage,
+  Lead,
+  Review,
+  ReviewStatus,
+} from "@/lib/types";
 
 const FILE_PATH = path.join(process.cwd(), "data", "store.json");
 const TMP_PATH = "/tmp/phoenixwebhost-store.json";
@@ -77,6 +84,14 @@ async function writePostgres(state: AppState) {
     ON CONFLICT (id) DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()`;
 }
 
+function normalizeState(state: AppState): AppState {
+  if (!Array.isArray(state.reviews)) state.reviews = [];
+  if (!Array.isArray(state.leads)) state.leads = [];
+  if (!Array.isArray(state.contactMessages)) state.contactMessages = [];
+  if (!Array.isArray(state.clients)) state.clients = [];
+  return state;
+}
+
 async function loadUnlocked(): Promise<AppState> {
   if (memory) return memory;
   const mode = storageMode();
@@ -88,8 +103,8 @@ async function loadUnlocked(): Promise<AppState> {
     if (mode === "postgres") await writePostgres(state);
     if (mode === "file") await writeFileState(state);
   }
-  memory = state;
-  return state;
+  memory = normalizeState(state);
+  return memory;
 }
 
 async function saveUnlocked(state: AppState) {
@@ -192,6 +207,53 @@ export async function listContactMessages(clientId?: string) {
   return state.contactMessages.filter((m) =>
     clientId ? m.clientId === clientId : true,
   );
+}
+
+export async function addReview(review: Review) {
+  await updateState((state) => {
+    if (!state.reviews) state.reviews = [];
+    state.reviews.unshift(review);
+  });
+  return review;
+}
+
+export async function listReviews() {
+  const state = await getState();
+  return [...(state.reviews || [])].sort((a, b) => {
+    if (a.status === "pending" && b.status !== "pending") return -1;
+    if (b.status === "pending" && a.status !== "pending") return 1;
+    return b.createdAt.localeCompare(a.createdAt);
+  });
+}
+
+export async function listPublicReviews() {
+  const state = await getState();
+  return (state.reviews || [])
+    .filter((review) => review.status === "approved")
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function getReview(id: string) {
+  const state = await getState();
+  return (state.reviews || []).find((review) => review.id === id) ?? null;
+}
+
+export async function setReviewStatus(id: string, status: ReviewStatus) {
+  await updateState((state) => {
+    if (!state.reviews) state.reviews = [];
+    const index = state.reviews.findIndex((review) => review.id === id);
+    if (index < 0) return;
+    const current = state.reviews[index];
+    state.reviews[index] = {
+      ...current,
+      status,
+      publishedAt:
+        status === "approved"
+          ? current.publishedAt || new Date().toISOString()
+          : null,
+    };
+  });
+  return getReview(id);
 }
 
 export async function resetToSeed() {

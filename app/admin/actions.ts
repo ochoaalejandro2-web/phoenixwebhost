@@ -16,9 +16,10 @@ import {
   getLead,
   listClients,
   resetToSeed,
+  setReviewStatus,
   upsertClient,
 } from "@/lib/store";
-import type { Client, SiteStatus, TemplateId } from "@/lib/types";
+import type { Client, ReviewStatus, SiteStatus, TemplateId } from "@/lib/types";
 
 function revalidateClient(client: Client) {
   revalidatePath("/admin");
@@ -254,7 +255,30 @@ export async function resetDemoAction() {
   await resetToSeed();
   revalidatePath("/admin");
   revalidatePath("/admin/clients");
+  revalidatePath("/admin/reviews");
+  revalidatePath("/");
+  revalidatePath("/es");
+  revalidatePath("/reviews");
+  revalidatePath("/es/reviews");
   redirect("/admin");
+}
+
+function revalidateReviews() {
+  revalidatePath("/admin");
+  revalidatePath("/admin/reviews");
+  revalidatePath("/");
+  revalidatePath("/es");
+  revalidatePath("/reviews");
+  revalidatePath("/es/reviews");
+}
+
+export async function setReviewStatusAction(formData: FormData) {
+  await requireOwner();
+  const id = String(formData.get("reviewId") || "");
+  const status = String(formData.get("status") || "") as ReviewStatus;
+  if (!["approved", "rejected", "pending"].includes(status)) return;
+  await setReviewStatus(id, status);
+  revalidateReviews();
 }
 
 export async function checkoutClientAction(formData: FormData) {

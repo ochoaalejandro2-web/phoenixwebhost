@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { addLead } from "@/lib/store";
 import { stripeConfigured } from "@/lib/config";
+import { notifyNewLead } from "@/lib/notify";
 import type { Locale } from "@/lib/types";
 
 export async function POST(request: Request) {
@@ -27,5 +28,6 @@ export async function POST(request: Request) {
     locale: body.locale === "es" ? "es" : "en",
     createdAt: new Date().toISOString(),
   });
+  await notifyNewLead(lead);
   return NextResponse.json({ id: lead.id, stripeReady: stripeConfigured() });
 }

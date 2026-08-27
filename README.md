@@ -80,6 +80,13 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `STRIPE_MONTHLY_PRICE_ID` | for payments | Recurring **$69/month** price |
 | `DATABASE_URL` | production on Vercel | Postgres (Neon). Without it, data is local-file or ephemeral |
 | `CRON_SECRET` | recommended | Protects `/api/cron/billing` |
+| `NOTIFY_EMAIL` | no | Owner alert inbox. Default `ochoa.alejandro2@gmail.com` |
+| `NOTIFY_PHONE` | no | Owner SMS number. Default `+14809532393` |
+| `RESEND_API_KEY` | for email alerts | Resend API key. Email is skipped if unset |
+| `RESEND_FROM` | no | From address. Default `onboarding@resend.dev` |
+| `TWILIO_ACCOUNT_SID` | for SMS alerts | Twilio account SID. SMS is skipped if any Twilio var is unset |
+| `TWILIO_AUTH_TOKEN` | for SMS alerts | Twilio auth token |
+| `TWILIO_FROM` | for SMS alerts | Twilio from number (E.164, e.g. `+1…`) |
 
 Local data is saved to `data/store.json`. On Vercel, set `DATABASE_URL` (Neon or any Postgres) so client records survive deploys. The owner panel shows a warning if that URL is missing.
 
@@ -123,7 +130,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue
 - Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, pause / offline toggle
 - **New client** generates a site from a template (contractor, salon, restaurant, professional services)
-- Public “Request a site” form lands under **Requests**
+- Public “Request a site” form lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call them right away. Missing provider keys skip that channel; the form still succeeds.
+- Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 
 ## Generated client sites
 

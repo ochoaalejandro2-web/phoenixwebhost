@@ -10,6 +10,7 @@ export const copy = {
       included: "What’s included",
       work: "How it works",
       request: "Request a site",
+      reviews: "Reviews",
       owner: "Owner login",
     },
     heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
@@ -93,6 +94,23 @@ export const copy = {
     formSubmit: "Send request",
     formPay: "Pay $200 + start $69/month",
     formThanks: "Request received. We will be in touch.",
+    reviewsTitle: "Reviews from Arizona companies",
+    reviewsLead:
+      "Notes from businesses we built for. New reviews are checked before they appear here — no fake counts, no filler quotes.",
+    reviewsEmpty: "No public reviews yet. Be the first.",
+    reviewsFormTitle: "Leave a review",
+    reviewsFormLead:
+      "Company name, your name, a star rating, and a short note. It stays private until Alex approves it.",
+    reviewsCompany: "Company name",
+    reviewsReviewer: "Your name",
+    reviewsCity: "City in Arizona (optional)",
+    reviewsRating: "Rating",
+    reviewsBody: "Short review",
+    reviewsSubmit: "Submit review",
+    reviewsThanks:
+      "Thank you. Alex will read it before it appears on the site.",
+    reviewsCta: "Leave a review",
+    reviewsSeeAll: "See all reviews",
     footerLegal: "Phoenixwebhost Inc. · Phoenix, AZ",
     bilingual: "English & Español",
   },
@@ -105,6 +123,7 @@ export const copy = {
       included: "Qué incluye",
       work: "Cómo funciona",
       request: "Pedir un sitio",
+      reviews: "Reseñas",
       owner: "Acceso del dueño",
     },
     heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
@@ -188,6 +207,23 @@ export const copy = {
     formSubmit: "Enviar solicitud",
     formPay: "Pagar $200 + empezar $69/mes",
     formThanks: "Solicitud recibida. Nos pondremos en contacto.",
+    reviewsTitle: "Reseñas de empresas de Arizona",
+    reviewsLead:
+      "Notas de negocios para los que hicimos un sitio. Las reseñas nuevas se revisan antes de publicarse — sin cifras inventadas ni citas de relleno.",
+    reviewsEmpty: "Aún no hay reseñas públicas. Sea el primero.",
+    reviewsFormTitle: "Dejar una reseña",
+    reviewsFormLead:
+      "Nombre de la empresa, su nombre, estrellas y una nota corta. Queda en privado hasta que Alex la apruebe.",
+    reviewsCompany: "Nombre de la empresa",
+    reviewsReviewer: "Su nombre",
+    reviewsCity: "Ciudad en Arizona (opcional)",
+    reviewsRating: "Calificación",
+    reviewsBody: "Reseña corta",
+    reviewsSubmit: "Enviar reseña",
+    reviewsThanks:
+      "Gracias. Alex la leerá antes de que aparezca en el sitio.",
+    reviewsCta: "Dejar una reseña",
+    reviewsSeeAll: "Ver todas las reseñas",
     footerLegal: "Phoenixwebhost Inc. · Phoenix, AZ",
     bilingual: "English & Español",
   },
@@ -203,4 +239,8 @@ export function requestPath(locale: Locale) {
 
 export function homePath(locale: Locale) {
   return locale === "es" ? "/es" : "/";
+}
+
+export function reviewsPath(locale: Locale) {
+  return locale === "es" ? "/es/reviews" : "/reviews";
 }
