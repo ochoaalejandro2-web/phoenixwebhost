@@ -1,5 +1,5 @@
-import { HolaTaxSite } from "@/components/sites/HolaTaxSite";
-import { HOLA_TAX_SLUG } from "@/lib/client-themes";
+import { TaxOfficeSite } from "@/components/sites/TaxOfficeSite";
+import { isTaxOfficeTemplate } from "@/lib/client-themes";
 import type { Client, ContactNotice } from "@/lib/types";
 
 type SiteView = {
@@ -389,8 +389,8 @@ export function renderClientSite(
   if (client.siteStatus === "offline" || client.siteStatus === "paused") {
     return <OfflineSite client={client} />;
   }
-  if (client.slug === HOLA_TAX_SLUG) {
-    return <HolaTaxSite client={client} notice={notice} />;
+  if (isTaxOfficeTemplate(client.template)) {
+    return <TaxOfficeSite client={client} notice={notice} />;
   }
   switch (client.template) {
     case "salon":

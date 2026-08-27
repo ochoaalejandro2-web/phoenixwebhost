@@ -114,14 +114,14 @@ body {
   color: #00c851;
 }
 
-/* Hola Tax Service (/s/hola-tax-service) only — white, black, neon. */
-.theme-hola-tax {
+/* Tax office template — white, black, neon. */
+.theme-tax-office {
   color: #000000;
   background: #ffffff;
   font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
-.theme-hola-tax .font-display {
+.theme-tax-office .font-display {
   font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
   letter-spacing: -0.03em;

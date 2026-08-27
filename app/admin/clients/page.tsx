@@ -30,7 +30,7 @@ export default async function ClientsPage() {
                 {client.businessName}
               </Link>
               <p className="text-sm text-ink-soft">
-                {client.slug}.phoenixwebhost.com · {client.siteStatus} · {client.paymentStatus}
+                {client.slug}.phoenixwebhost.com · {client.template} · {client.siteStatus} · {client.paymentStatus}
                 {client.localBoost ? " · Local Boost" : ""}
                 {client.businessEmail ? " · Business Email" : ""}
               </p>

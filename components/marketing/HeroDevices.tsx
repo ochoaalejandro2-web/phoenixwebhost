@@ -97,6 +97,11 @@ const previews: Record<
     screen: "bg-[#e8efe4] text-[#2f4a38]",
     title: "Yards",
   },
+  tax: {
+    bar: "bg-black text-[#00FF66]",
+    screen: "bg-white text-black",
+    title: "Tax",
+  },
 };
 
 export function TemplatePreview({ id }: { id: string }) {

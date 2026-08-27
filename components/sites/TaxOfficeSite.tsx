@@ -1,4 +1,5 @@
-import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
+import { clientThemeClass } from "@/lib/client-themes";
+import { portalPath } from "@/lib/tax-office";
 import type { Client, ContactNotice } from "@/lib/types";
 
 type SiteView = {
@@ -41,29 +42,35 @@ function ContactNoticeBanner({
 }
 
 /**
- * White / black / neon restyle for Hola Tax Service only.
- * Same professional layout: header, hero, services, hours, contact, footer.
+ * Tax office template: white / black / neon, plus a private client drop box.
  */
-export function HolaTaxSite({ client, notice }: SiteView) {
+export function TaxOfficeSite({ client, notice }: SiteView) {
+  const home = `/s/${client.slug}`;
+  const portal = portalPath(client.slug);
   return (
     <div
-      data-client-slug={HOLA_TAX_SLUG}
-      className={`${clientThemeClass(HOLA_TAX_SLUG)} flex min-h-full flex-col bg-white text-black`}
+      data-template="tax"
+      className={`${clientThemeClass("tax")} flex min-h-full flex-col bg-white text-black`}
     >
       <header className="border-b border-[#00FF66] bg-white px-5 py-4">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
-          <a
-            href={`/s/${client.slug}`}
-            className="font-display text-lg tracking-tight text-black"
-          >
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4">
+          <a href={home} className="font-display text-lg tracking-tight text-black">
             {client.businessName}
           </a>
-          <a
-            href={telHref(client.phone)}
-            className="text-sm font-semibold text-[#00E840] hover:text-[#00FF66]"
-          >
-            {client.phone}
-          </a>
+          <nav className="flex flex-wrap items-center gap-4 text-sm">
+            <a
+              href={portal}
+              className="font-semibold text-black hover:text-[#00E840]"
+            >
+              Client login / Upload documents
+            </a>
+            <a
+              href={telHref(client.phone)}
+              className="font-semibold text-[#00E840] hover:text-[#00FF66]"
+            >
+              {client.phone}
+            </a>
+          </nav>
         </div>
       </header>
 
@@ -76,6 +83,24 @@ export function HolaTaxSite({ client, notice }: SiteView) {
             {client.tagline}
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-black/80">{client.about}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={portal}
+              className="bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
+            >
+              Client login / Upload documents
+            </a>
+            <a
+              href={telHref(client.phone)}
+              className="border border-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00FF66]/10"
+            >
+              Call {client.phone}
+            </a>
+          </div>
+          <p className="mt-3 text-sm text-black/70">
+            Iniciar sesión / Subir documentos · a private folder for your W-2,
+            1099, and ID. Not tax-prep software.
+          </p>
         </div>
       </section>
 
@@ -156,6 +181,11 @@ export function HolaTaxSite({ client, notice }: SiteView) {
             {client.address} · {client.hours}
           </p>
         </div>
+        <p className="mx-auto mt-3 max-w-5xl">
+          <a href={portalPath(client.slug, "/staff/login")} className="hover:text-black">
+            Tax preparer login · Acceso del preparador
+          </a>
+        </p>
       </footer>
     </div>
   );

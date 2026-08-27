@@ -73,6 +73,15 @@ export const TEMPLATES: {
     blurb: "Desert plants, lawns, irrigation, and Phoenix-area landscape crews.",
     blurbEs: "Plantas del desierto, césped, riego y jardinería en el área de Phoenix.",
   },
+  {
+    id: "tax",
+    name: "Tax office",
+    nameEs: "Oficina de impuestos",
+    blurb:
+      "A tax-prep shop site plus a private client drop box for W-2s, 1099s, and IDs. Not tax software.",
+    blurbEs:
+      "Sitio para una oficina de impuestos y un buzón privado para W-2, 1099 e identificaciones. No es software de impuestos.",
+  },
 ];
 
 export function publicSiteUrl() {

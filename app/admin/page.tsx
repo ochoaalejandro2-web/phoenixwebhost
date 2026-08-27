@@ -83,6 +83,7 @@ export default async function AdminHome() {
             <tr>
               <th className="px-4 py-3">Client</th>
               <th className="px-4 py-3">URL</th>
+              <th className="px-4 py-3">Template</th>
               <th className="px-4 py-3">Site</th>
               <th className="px-4 py-3">Payment</th>
               <th className="px-4 py-3">Boost</th>
@@ -105,6 +106,7 @@ export default async function AdminHome() {
                     /s/{client.slug}
                   </Link>
                 </td>
+                <td className="px-4 py-3">{client.template}</td>
                 <td className="px-4 py-3">{client.siteStatus}</td>
                 <td className="px-4 py-3">
                   <PayBadge status={client.paymentStatus} />

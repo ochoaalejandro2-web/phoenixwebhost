@@ -1,7 +1,9 @@
-/** Per-client look overrides. Do not change template defaults. */
-export const HOLA_TAX_SLUG = "hola-tax-service";
+/** Per-template look. Tax office uses white / black / neon green. */
 
-export function clientThemeClass(slug: string) {
-  if (slug === HOLA_TAX_SLUG) return "theme-hola-tax";
-  return "";
+export function isTaxOfficeTemplate(template: string) {
+  return template === "tax";
+}
+
+export function clientThemeClass(template: string) {
+  return isTaxOfficeTemplate(template) ? "theme-tax-office" : "";
 }
