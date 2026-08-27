@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { renderClientSite } from "@/components/sites/Templates";
+import { HOLA_TAX_SLUG } from "@/lib/client-themes";
 import {
   resolveSiteLocale,
   SITE_LANG_QUERY,
@@ -24,6 +25,15 @@ export async function generateMetadata({
   }
   if (client.siteStatus === "taken_down") {
     return { title: "Site unavailable" };
+  }
+  if (client.slug === HOLA_TAX_SLUG) {
+    return {
+      title: client.businessName,
+      icons: {
+        icon: [{ url: "/clients/hola-tax-service/icon.png", type: "image/png" }],
+        apple: "/clients/hola-tax-service/icon.png",
+      },
+    };
   }
   return { title: client.businessName };
 }

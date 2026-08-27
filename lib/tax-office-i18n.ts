@@ -20,6 +20,7 @@ export const taxOfficeCopy = {
     langNav: "Language",
     clientLogin: "Client login / Upload documents",
     call: (phone: string) => `Call ${phone}`,
+    ctaMessage: "Send a message",
     portalHint:
       "A private folder for your W-2, 1099, and ID. Not tax-prep software.",
     servicesTitle: "How we help",
@@ -139,6 +140,7 @@ export const taxOfficeCopy = {
     langNav: "Idioma",
     clientLogin: "Iniciar sesión / Subir documentos",
     call: (phone: string) => `Llame al ${phone}`,
+    ctaMessage: "Enviar un mensaje",
     portalHint:
       "Una carpeta privada para su W-2, 1099 e identificación. No es un programa de impuestos.",
     servicesTitle: "Cómo le ayudamos",

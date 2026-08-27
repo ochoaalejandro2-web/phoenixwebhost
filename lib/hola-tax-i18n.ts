@@ -18,6 +18,9 @@ export const holaTaxCopy = {
     formMessage: "How can we help?",
     formSubmit: "Send",
     langNav: "Language",
+    logoAlt: "Hola Tax Service",
+    ctaCall: (phone: string) => `Call ${phone}`,
+    ctaMessage: "Send a message",
     noticeSent: (business: string) =>
       `Your message was emailed to ${business}.`,
     noticeNoEmail: (phone: string) =>
@@ -49,6 +52,9 @@ export const holaTaxCopy = {
     formMessage: "¿En qué le podemos ayudar?",
     formSubmit: "Enviar",
     langNav: "Idioma",
+    logoAlt: "Hola Tax Service",
+    ctaCall: (phone: string) => `Llamar al ${phone}`,
+    ctaMessage: "Enviar un mensaje",
     noticeSent: (business: string) =>
       `Su mensaje se envió por correo a ${business}.`,
     noticeNoEmail: (phone: string) =>
