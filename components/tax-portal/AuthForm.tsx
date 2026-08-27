@@ -3,19 +3,25 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { taxButtonClass, taxFieldClass } from "@/components/tax-portal/PortalChrome";
+import { withSiteLangPath } from "@/lib/site-locale";
+import { tTaxOffice } from "@/lib/tax-office-i18n";
+import type { Locale } from "@/lib/types";
 
 type Mode = "login" | "signup" | "staff";
 
 export function AuthForm({
   slug,
   mode,
+  locale,
 }: {
   slug: string;
   mode: Mode;
+  locale: Locale;
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const c = tTaxOffice(locale).auth;
 
   const endpoint =
     mode === "signup"
@@ -47,20 +53,22 @@ export function AuthForm({
     if (!res.ok) {
       setError(
         data.error === "locked"
-          ? "Too many attempts. Try again in a few minutes."
+          ? c.locked
           : data.error === "unavailable"
-            ? "This document portal is not connected yet. Call the office."
+            ? c.unavailable
             : data.error === "exists"
-              ? "An account with that email already exists for this office."
+              ? c.exists
               : data.error === "invalid"
                 ? mode === "signup"
-                  ? "Name, a real email, phone, and a password of at least 8 characters are required."
-                  : "That email or password did not match."
-                : "That email or password did not match.",
+                  ? c.signupInvalid
+                  : c.badLogin
+                : c.badLogin,
       );
       return;
     }
-    router.push(data.redirect || `/s/${slug}/portal`);
+    router.push(
+      withSiteLangPath(data.redirect || `/s/${slug}/portal`, locale),
+    );
     router.refresh();
   }
 
@@ -69,17 +77,17 @@ export function AuthForm({
       {mode === "signup" ? (
         <>
           <label className="text-sm">
-            Name / Nombre
+            {c.name}
             <input name="name" required maxLength={120} autoComplete="name" className={taxFieldClass} />
           </label>
           <label className="text-sm">
-            Phone / Teléfono
+            {c.phone}
             <input name="phone" required maxLength={40} autoComplete="tel" className={taxFieldClass} />
           </label>
         </>
       ) : null}
       <label className="text-sm">
-        Email
+        {c.email}
         <input
           name="email"
           type="email"
@@ -90,7 +98,7 @@ export function AuthForm({
         />
       </label>
       <label className="text-sm">
-        Password / Contraseña
+        {c.password}
         <input
           name="password"
           type="password"
@@ -102,10 +110,10 @@ export function AuthForm({
       </label>
       <button type="submit" disabled={pending} className={taxButtonClass}>
         {pending
-          ? "Please wait…"
+          ? c.wait
           : mode === "signup"
-            ? "Create account / Crear cuenta"
-            : "Log in / Iniciar sesión"}
+            ? c.create
+            : c.login}
       </button>
       {error ? (
         <p role="alert" className="text-sm">

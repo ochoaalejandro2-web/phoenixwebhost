@@ -1,6 +1,6 @@
 import { TaxOfficeSite } from "@/components/sites/TaxOfficeSite";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
-import type { Client, ContactNotice } from "@/lib/types";
+import type { Client, ContactNotice, Locale } from "@/lib/types";
 
 type SiteView = {
   client: Client;
@@ -384,13 +384,14 @@ export function TakenDownSite() {
 export function renderClientSite(
   client: Client,
   notice?: ContactNotice | null,
+  locale: Locale = "en",
 ) {
   if (client.siteStatus === "taken_down") return <TakenDownSite />;
   if (client.siteStatus === "offline" || client.siteStatus === "paused") {
     return <OfflineSite client={client} />;
   }
   if (isTaxOfficeTemplate(client.template)) {
-    return <TaxOfficeSite client={client} notice={notice} />;
+    return <TaxOfficeSite client={client} notice={notice} locale={locale} />;
   }
   switch (client.template) {
     case "salon":

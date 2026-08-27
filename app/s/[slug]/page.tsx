@@ -1,5 +1,12 @@
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { renderClientSite } from "@/components/sites/Templates";
+import {
+  resolveSiteLocale,
+  SITE_LANG_QUERY,
+  siteLangCookieName,
+  siteSupportsI18n,
+} from "@/lib/site-locale";
 import { getClientBySlug } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
@@ -48,5 +55,13 @@ export default async function ClientSitePage({
   const query = await searchParams;
   const client = await getClientBySlug(slug);
   if (!client) notFound();
-  return renderClientSite(client, contactNotice(query));
+  const bilingual = siteSupportsI18n(slug, client.template);
+  const cookieStore = bilingual ? await cookies() : null;
+  const locale = cookieStore
+    ? resolveSiteLocale({
+        query: query[SITE_LANG_QUERY],
+        cookie: cookieStore.get(siteLangCookieName(slug))?.value,
+      })
+    : "en";
+  return renderClientSite(client, contactNotice(query), locale);
 }

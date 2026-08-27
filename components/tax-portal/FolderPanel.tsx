@@ -3,11 +3,12 @@ import {
   PortalChrome,
 } from "@/components/tax-portal/PortalChrome";
 import { ScanUpload } from "@/components/tax-portal/ScanUpload";
-import { TAX_LABEL_COPY, type TaxDocLabel } from "@/lib/tax-office";
+import { dateLocale, tTaxOffice, taxDocLabel } from "@/lib/tax-office-i18n";
 import type { TaxFileRow } from "@/lib/tax-db";
+import type { Locale } from "@/lib/types";
 
-function fmt(iso: string) {
-  return new Date(iso).toLocaleString("en-US", {
+function fmt(iso: string, locale: Locale) {
+  return new Date(iso).toLocaleString(dateLocale(locale), {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -25,45 +26,39 @@ function formatBytes(n: number) {
 export function FileTable({
   slug,
   files,
+  locale,
 }: {
   slug: string;
   files: TaxFileRow[];
+  locale: Locale;
 }) {
+  const c = tTaxOffice(locale);
   if (files.length === 0) {
-    return (
-      <p className="text-sm text-black/70">
-        No documents in this folder yet. / Aún no hay documentos.
-      </p>
-    );
+    return <p className="text-sm text-black/70">{c.emptyFolder}</p>;
   }
   return (
     <ul className="divide-y divide-[#00FF66] border border-[#00FF66]">
-      {files.map((file) => {
-        const label = file.label as TaxDocLabel;
-        const copy = TAX_LABEL_COPY[label] || { en: file.label, es: file.label };
-        return (
-          <li
-            key={file.id}
-            className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
+      {files.map((file) => (
+        <li
+          key={file.id}
+          className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
+        >
+          <div>
+            <p className="font-semibold">
+              {taxDocLabel(file.label, locale)} · {file.filename}
+            </p>
+            <p className="text-black/70">
+              {formatBytes(file.sizeBytes)} · {fmt(file.createdAt, locale)}
+            </p>
+          </div>
+          <a
+            href={`/api/tax-portal/${slug}/files/${file.id}`}
+            className="font-semibold text-[#00E840] hover:text-[#00FF66]"
           >
-            <div>
-              <p className="font-semibold">
-                {copy.en}
-                {copy.es !== copy.en ? ` / ${copy.es}` : ""} · {file.filename}
-              </p>
-              <p className="text-black/70">
-                {formatBytes(file.sizeBytes)} · {fmt(file.createdAt)}
-              </p>
-            </div>
-            <a
-              href={`/api/tax-portal/${slug}/files/${file.id}`}
-              className="font-semibold text-[#00E840] hover:text-[#00FF66]"
-            >
-              Download / Descargar
-            </a>
-          </li>
-        );
-      })}
+            {c.download}
+          </a>
+        </li>
+      ))}
     </ul>
   );
 }
@@ -76,6 +71,7 @@ export function FolderPanel({
   files,
   storageReady,
   blobReady,
+  locale,
 }: {
   slug: string;
   clientName: string;
@@ -84,29 +80,32 @@ export function FolderPanel({
   files: TaxFileRow[];
   storageReady: boolean;
   blobReady: boolean;
+  locale: Locale;
 }) {
+  const c = tTaxOffice(locale);
   return (
     <>
-      <h1 className="font-display text-3xl tracking-tight">Your folder / Su carpeta</h1>
+      <h1 className="font-display text-3xl tracking-tight">{c.folderTitle}</h1>
       <p className="mt-2 max-w-2xl text-sm text-black/80">
-        Documents you upload here stay in a private folder at {clientName}. Only
-        you and this tax office can open them. On a phone you can scan a W-2,
-        1099, or ID with the camera; we save the pages as one PDF. This is not
-        tax-prep software — just a secure drop box.
+        {c.folderLead(clientName)}
       </p>
       {!storageReady || !blobReady ? (
         <p role="alert" className="mt-4 border border-black px-4 py-3 text-sm">
-          Document storage is not connected. This office cannot take uploads
-          yet. Call the office.
+          {c.storageDown}
         </p>
       ) : (
         <div className="mt-8">
-          <ScanUpload slug={slug} clientId={clientId} userId={userId} />
+          <ScanUpload
+            slug={slug}
+            clientId={clientId}
+            userId={userId}
+            locale={locale}
+          />
         </div>
       )}
-      <h2 className="mt-10 font-display text-xl">Files / Archivos</h2>
+      <h2 className="mt-10 font-display text-xl">{c.filesTitle}</h2>
       <div className="mt-4">
-        <FileTable slug={slug} files={files} />
+        <FileTable slug={slug} files={files} locale={locale} />
       </div>
     </>
   );

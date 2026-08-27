@@ -4,7 +4,7 @@ import { isTaxOfficeTemplate } from "@/lib/client-themes";
 export const TAX_TEMPLATE_ID = "tax" as const;
 
 /** Live first example. Used only to migrate that record onto the tax template. */
-export const HOLA_TAX_SLUG = "hola-tax-service";
+export { HOLA_TAX_SLUG } from "@/lib/client-themes";
 
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 export const MAX_SCAN_PAGES = 5;

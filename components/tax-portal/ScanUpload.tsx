@@ -12,11 +12,12 @@ import {
   MAX_SCAN_PAGES,
   MAX_UPLOAD_BYTES,
   TAX_DOC_LABELS,
-  TAX_LABEL_COPY,
   scanPdfFilename,
   taxBlobPrefix,
   type TaxDocLabel,
 } from "@/lib/tax-office";
+import { tTaxOffice, taxDocLabel } from "@/lib/tax-office-i18n";
+import type { Locale } from "@/lib/types";
 
 const MAX_IMAGE_EDGE = 1600;
 const JPEG_QUALITY = 0.85;
@@ -26,7 +27,10 @@ type ScanPage = { id: string; file: File; preview: string };
 const ghostButtonClass =
   "border border-[#00FF66] px-5 py-2 text-sm font-semibold text-black hover:bg-[#00FF66]/10 disabled:opacity-60";
 
-async function fileToJpegBytes(file: File): Promise<Uint8Array> {
+async function fileToJpegBytes(
+  file: File,
+  errors: { read: string; convert: string },
+): Promise<Uint8Array> {
   let source: CanvasImageSource;
   let width: number;
   let height: number;
@@ -41,7 +45,7 @@ async function fileToJpegBytes(file: File): Promise<Uint8Array> {
       const image = await new Promise<HTMLImageElement>((resolve, reject) => {
         const node = new Image();
         node.onload = () => resolve(node);
-        node.onerror = () => reject(new Error("Could not read that photo."));
+        node.onerror = () => reject(new Error(errors.read));
         node.src = url;
       });
       source = image;
@@ -58,7 +62,7 @@ async function fileToJpegBytes(file: File): Promise<Uint8Array> {
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Could not read that photo.");
+  if (!ctx) throw new Error(errors.read);
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, w, h);
   ctx.drawImage(source, 0, 0, w, h);
@@ -66,7 +70,7 @@ async function fileToJpegBytes(file: File): Promise<Uint8Array> {
   const blob = await new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
       (next) =>
-        next ? resolve(next) : reject(new Error("Could not convert that photo.")),
+        next ? resolve(next) : reject(new Error(errors.convert)),
       "image/jpeg",
       JPEG_QUALITY,
     );
@@ -74,10 +78,14 @@ async function fileToJpegBytes(file: File): Promise<Uint8Array> {
   return new Uint8Array(await blob.arrayBuffer());
 }
 
-async function imagesToPdf(files: File[], filename: string): Promise<File> {
+async function imagesToPdf(
+  files: File[],
+  filename: string,
+  errors: { read: string; convert: string },
+): Promise<File> {
   const pdf = await PDFDocument.create();
   for (const file of files) {
-    const jpeg = await fileToJpegBytes(file);
+    const jpeg = await fileToJpegBytes(file, errors);
     const image = await pdf.embedJpg(jpeg);
     const landscape = image.width > image.height;
     const pageWidth = landscape ? 792 : 612;
@@ -119,10 +127,12 @@ export function ScanUpload({
   slug,
   clientId,
   userId,
+  locale,
 }: {
   slug: string;
   clientId: string;
   userId: string;
+  locale: Locale;
 }) {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -226,10 +236,15 @@ export function ScanUpload({
     });
   }
 
+  const pageCount = pages.length;
+  const canAdd = pageCount < MAX_SCAN_PAGES;
+  const s = tTaxOffice(locale).scan;
+  const photoErrors = { read: s.readPhoto, convert: s.convertPhoto };
+
   async function captureLiveFrame() {
     const video = videoRef.current;
     if (!video || video.videoWidth < 2) {
-      setError("Camera is not ready yet. Wait a moment, then try again.");
+      setError(s.cameraNotReady);
       return;
     }
     if (pages.length >= MAX_SCAN_PAGES) return;
@@ -242,7 +257,7 @@ export function ScanUpload({
     const blob = await new Promise<Blob>((resolve, reject) => {
       canvas.toBlob(
         (next) =>
-          next ? resolve(next) : reject(new Error("Could not capture that page.")),
+          next ? resolve(next) : reject(new Error(s.captureFailed)),
         "image/jpeg",
         JPEG_QUALITY,
       );
@@ -260,7 +275,7 @@ export function ScanUpload({
 
   async function send(file: File) {
     if (file.size > MAX_UPLOAD_BYTES) {
-      throw new Error("That file is over 10 MB.");
+      throw new Error(s.fileTooBig);
     }
     const pathname = `${taxBlobPrefix(clientId, userId)}${crypto.randomUUID()}/${file.name.replace(/[/\\]/g, "") || "document.pdf"}`;
     const blob = await upload(pathname, file, {
@@ -284,16 +299,14 @@ export function ScanUpload({
     const data = (await res.json().catch(() => ({}))) as { error?: string };
     if (!res.ok) {
       throw new Error(
-        data.error === "unavailable"
-          ? "Document storage is not connected. This office cannot take uploads yet."
-          : "Could not save that file. Try again or call the office.",
+        data.error === "unavailable" ? s.storageDown : s.saveFailed,
       );
     }
   }
 
   async function saveScan() {
     if (pages.length < 1) {
-      setError("Take at least one photo first.");
+      setError(s.needPhoto);
       return;
     }
     setPending(true);
@@ -304,15 +317,14 @@ export function ScanUpload({
       const pdf = await imagesToPdf(
         pages.slice(0, MAX_SCAN_PAGES).map((page) => page.file),
         filename,
+        photoErrors,
       );
       await send(pdf);
-      setOk(
-        `Saved ${pages.length} page${pages.length === 1 ? "" : "s"} as a PDF. Only you and this tax office can open it.`,
-      );
+      setOk(s.saved(pages.length));
       closeScan();
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not save that scan.");
+      setError(err instanceof Error ? err.message : s.scanFailed);
     } finally {
       setPending(false);
     }
@@ -327,16 +339,16 @@ export function ScanUpload({
       const file = list[0];
       let outgoing = file;
       if (isImage(file)) {
-        outgoing = await imagesToPdf([file], scanPdfFilename(label));
+        outgoing = await imagesToPdf([file], scanPdfFilename(label), photoErrors);
       } else if (!isPdf(file)) {
-        throw new Error("Use a PDF, JPG, or PNG.");
+        throw new Error(s.usePdf);
       }
       await send(outgoing);
-      setOk("Uploaded. Only you and this tax office can open it.");
+      setOk(s.uploaded);
       if (fileRef.current) fileRef.current.value = "";
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed.");
+      setError(err instanceof Error ? err.message : s.uploadFailed);
     } finally {
       setPending(false);
     }
@@ -346,29 +358,22 @@ export function ScanUpload({
     if (!list || list.length === 0) return;
     const file = list[0];
     if (!isImage(file) && !file.type.startsWith("image/")) {
-      setError("The camera must take a photo. Try again.");
+      setError(s.cameraPhoto);
       return;
     }
     addPage(file);
     if (cameraRef.current) cameraRef.current.value = "";
   }
 
-  const pageCount = pages.length;
-  const canAdd = pageCount < MAX_SCAN_PAGES;
-
   return (
     <form
       className="grid gap-4 border border-[#00FF66] p-5"
       onSubmit={(event) => event.preventDefault()}
     >
-      <p className="font-display text-xl">Upload or scan / Subir o escanear</p>
-      <p className="text-sm text-black/70">
-        On a phone, Scan document opens the rear camera. Take 1–{MAX_SCAN_PAGES}{" "}
-        photos of a W-2, 1099, ID, or other paper. We save those pages as one
-        private PDF. On a computer, choose an existing PDF or JPG.
-      </p>
+      <p className="font-display text-xl">{s.title}</p>
+      <p className="text-sm text-black/70">{s.lead(MAX_SCAN_PAGES)}</p>
       <label className="text-sm">
-        Label / Etiqueta
+        {s.label}
         <select
           className={taxFieldClass}
           value={label}
@@ -376,10 +381,7 @@ export function ScanUpload({
         >
           {TAX_DOC_LABELS.map((item) => (
             <option key={item} value={item}>
-              {TAX_LABEL_COPY[item].en}
-              {TAX_LABEL_COPY[item].es !== TAX_LABEL_COPY[item].en
-                ? ` / ${TAX_LABEL_COPY[item].es}`
-                : ""}
+              {taxDocLabel(item, locale)}
             </option>
           ))}
         </select>
@@ -410,7 +412,7 @@ export function ScanUpload({
             disabled={pending}
             onClick={() => fileRef.current?.click()}
           >
-            {pending ? "Uploading…" : "Choose file / Elegir archivo"}
+            {pending ? s.uploading : s.chooseFile}
           </button>
           <button
             type="button"
@@ -418,13 +420,13 @@ export function ScanUpload({
             disabled={pending}
             onClick={beginScan}
           >
-            Scan document / Escanear documento
+            {s.scanDocument}
           </button>
         </div>
       ) : (
         <div className="grid gap-4 border border-[#00FF66] p-4">
           <p className="text-sm font-semibold">
-            Scan · {pageCount} of {MAX_SCAN_PAGES} pages
+            {s.scanProgress(pageCount, MAX_SCAN_PAGES)}
           </p>
           {stream ? (
             <div className="grid gap-3">
@@ -441,14 +443,11 @@ export function ScanUpload({
                 disabled={pending || !canAdd}
                 onClick={() => void captureLiveFrame()}
               >
-                {canAdd ? "Take photo / Tomar foto" : "Page limit reached"}
+                {canAdd ? s.takePhoto : s.pageLimit}
               </button>
             </div>
           ) : (
-            <p className="text-sm text-black/70">
-              Use the phone camera. After each photo you can add another page
-              or save the PDF.
-            </p>
+            <p className="text-sm text-black/70">{s.phoneHint}</p>
           )}
           {pageCount > 0 ? (
             <ul className="grid grid-cols-5 gap-2">
@@ -458,7 +457,7 @@ export function ScanUpload({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={page.preview}
-                    alt={`Page ${index + 1}`}
+                    alt={s.pageAlt(index + 1)}
                     className="aspect-[3/4] w-full object-cover"
                   />
                   <button
@@ -481,10 +480,10 @@ export function ScanUpload({
                 onClick={openNativeCamera}
               >
                 {pageCount === 0
-                  ? "Open camera / Abrir cámara"
+                  ? s.openCamera
                   : canAdd
-                    ? "Add page / Agregar página"
-                    : "Page limit reached"}
+                    ? s.addPage
+                    : s.pageLimit}
               </button>
             ) : null}
             <button
@@ -493,7 +492,7 @@ export function ScanUpload({
               disabled={pending || pageCount < 1}
               onClick={() => void saveScan()}
             >
-              {pending ? "Saving…" : "Save PDF / Guardar PDF"}
+              {pending ? s.saving : s.savePdf}
             </button>
             <button
               type="button"
@@ -501,7 +500,7 @@ export function ScanUpload({
               disabled={pending}
               onClick={closeScan}
             >
-              Cancel
+              {s.cancel}
             </button>
           </div>
         </div>
@@ -519,3 +518,4 @@ export function ScanUpload({
     </form>
   );
 }
+
