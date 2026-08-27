@@ -4,6 +4,7 @@ import { neon } from "@neondatabase/serverless";
 import { createSeedState } from "@/data/seed";
 import type {
   AppState,
+  AuthLock,
   Client,
   ContactMessage,
   Lead,
@@ -98,11 +99,26 @@ async function writePostgres(state: AppState) {
     ON CONFLICT (id) DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()`;
 }
 
+function emptyAuthLock(): AuthLock {
+  return {
+    passwordFails: 0,
+    passwordLockedUntil: null,
+    codeFails: 0,
+    codeLockedUntil: null,
+    lastCodeSentAt: null,
+    consumedNonces: [],
+  };
+}
+
 function normalizeState(state: AppState): AppState {
   if (!Array.isArray(state.reviews)) state.reviews = [];
   if (!Array.isArray(state.leads)) state.leads = [];
   if (!Array.isArray(state.contactMessages)) state.contactMessages = [];
   if (!Array.isArray(state.clients)) state.clients = [];
+  if (!state.authLock) state.authLock = emptyAuthLock();
+  if (!Array.isArray(state.authLock.consumedNonces)) {
+    state.authLock.consumedNonces = [];
+  }
   return state;
 }
 
@@ -124,9 +140,11 @@ async function loadUnlocked(): Promise<AppState> {
     bag().memory = seed;
     return seed;
   }
-  if (bag().memory) return bag().memory;
-  bag().memory = createSeedState();
-  return bag().memory;
+  const cached = bag().memory;
+  if (cached) return cached;
+  const seed = createSeedState();
+  bag().memory = seed;
+  return seed;
 }
 
 async function saveUnlocked(state: AppState) {
@@ -284,4 +302,19 @@ export async function resetToSeed() {
     await saveUnlocked(state);
   });
   return state;
+}
+
+export async function getAuthLock(): Promise<AuthLock> {
+  const state = await getState();
+  return state.authLock || emptyAuthLock();
+}
+
+export async function updateAuthLock(
+  mutator: (lock: AuthLock) => void,
+): Promise<AuthLock> {
+  const state = await updateState((current) => {
+    if (!current.authLock) current.authLock = emptyAuthLock();
+    mutator(current.authLock);
+  });
+  return state.authLock;
 }

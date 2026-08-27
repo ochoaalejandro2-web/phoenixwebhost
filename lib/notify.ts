@@ -153,13 +153,12 @@ function smsBody(alert: Alert) {
   return text.length <= 320 ? text : `${text.slice(0, 319).trimEnd()}…`;
 }
 
-async function sendEmail(alert: Alert) {
+async function deliverEmail(subject: string, html: string, text: string) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
     console.warn("[notify] skipping email: RESEND_API_KEY is not set");
     return;
   }
-  const { html, text } = emailBodies(alert);
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -169,7 +168,7 @@ async function sendEmail(alert: Alert) {
     body: JSON.stringify({
       from: resendFrom(),
       to: [notifyEmail()],
-      subject: alert.subject,
+      subject,
       html,
       text,
     }),
@@ -185,7 +184,7 @@ async function sendEmail(alert: Alert) {
   }
 }
 
-async function sendSms(alert: Alert) {
+async function deliverSms(body: string) {
   const sid = process.env.TWILIO_ACCOUNT_SID?.trim();
   const token = process.env.TWILIO_AUTH_TOKEN?.trim();
   const from = process.env.TWILIO_FROM?.trim();
@@ -195,11 +194,6 @@ async function sendSms(alert: Alert) {
     );
     return;
   }
-  const body = new URLSearchParams({
-    To: notifyPhone(),
-    From: from,
-    Body: smsBody(alert),
-  });
   const response = await fetch(
     `https://api.twilio.com/2010-04-01/Accounts/${encodeURIComponent(sid)}/Messages.json`,
     {
@@ -208,7 +202,11 @@ async function sendSms(alert: Alert) {
         Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body,
+      body: new URLSearchParams({
+        To: notifyPhone(),
+        From: from,
+        Body: body,
+      }),
       signal: AbortSignal.timeout(FETCH_MS),
     },
   );
@@ -220,6 +218,15 @@ async function sendSms(alert: Alert) {
       detail.slice(0, 500),
     );
   }
+}
+
+async function sendEmail(alert: Alert) {
+  const { html, text } = emailBodies(alert);
+  await deliverEmail(alert.subject, html, text);
+}
+
+async function sendSms(alert: Alert) {
+  await deliverSms(smsBody(alert));
 }
 
 async function sendBoth(alert: Alert) {
@@ -294,5 +301,32 @@ export async function notifyNewReview(review: Review) {
     });
   } catch (error) {
     console.error("[notify] unexpected error (review)", error);
+  }
+}
+
+export async function notifyOwnerAuthCode(code: string) {
+  const text = `Your Phoenixwebhost owner login code is ${code}. It expires in 10 minutes. If you did not try to sign in, ignore this message.`;
+  const html = `<!doctype html>
+<html><body style="font-family:Georgia,serif;background:#fff;color:#111;padding:24px">
+  <p style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#00C851;margin:0">Phoenixwebhost Inc.</p>
+  <h1 style="font-size:24px;margin:8px 0 16px">Owner login code</h1>
+  <p>Use this code to finish signing in. It expires in 10 minutes.</p>
+  <p style="font-size:28px;letter-spacing:.18em;font-weight:700">${code}</p>
+  <p>If you did not try to sign in, ignore this email.</p>
+</body></html>`;
+  try {
+    const results = await Promise.allSettled([
+      deliverEmail("Phoenixwebhost login code", html, text),
+      deliverSms(
+        `Phoenixwebhost login code: ${code}. Expires in 10 minutes. Ignore if this was not you.`,
+      ),
+    ]);
+    for (const result of results) {
+      if (result.status === "rejected") {
+        console.error("[notify] auth code channel failed");
+      }
+    }
+  } catch {
+    console.error("[notify] unexpected error (auth code)");
   }
 }

@@ -164,6 +164,14 @@ export function createSeedState(): AppState {
     ],
     contactMessages: [],
     reviews: [],
+    authLock: {
+      passwordFails: 0,
+      passwordLockedUntil: null,
+      codeFails: 0,
+      codeLockedUntil: null,
+      lastCodeSentAt: null,
+      consumedNonces: [],
+    },
     seededAt: new Date().toISOString(),
   };
 }
