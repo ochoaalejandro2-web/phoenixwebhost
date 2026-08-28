@@ -1,75 +1,27 @@
-import Image from "next/image";
-
-const WORDMARK = {
-  src: "/brand/wordmark.png",
-  width: 1113,
-  height: 322,
-} as const;
-
-const ICON = {
-  src: "/brand/icon.png",
-  width: 512,
-  height: 512,
-} as const;
-
 export function Logo({
   className = "",
   tone = "light",
   compactOnMobile = false,
-  priority = false,
 }: {
   className?: string;
   tone?: "light" | "dark";
   compactOnMobile?: boolean;
-  priority?: boolean;
 }) {
   const onDark = tone === "dark";
-
-  if (onDark) {
-    const wordmark = (
-      <Image
-        src={WORDMARK.src}
-        alt=""
-        width={WORDMARK.width}
-        height={WORDMARK.height}
-        priority={priority}
-        sizes="160px"
-        className={
-          compactOnMobile
-            ? "hidden h-9 w-auto sm:block"
-            : "h-9 w-auto"
-        }
-        style={{ width: "auto", height: 36 }}
-      />
-    );
-    if (!compactOnMobile) {
-      return <span className={`inline-flex items-center ${className}`}>{wordmark}</span>;
-    }
-    return (
-      <span className={`inline-flex items-center ${className}`}>
-        <Image
-          src={ICON.src}
-          alt=""
-          width={ICON.width}
-          height={ICON.height}
-          priority={priority}
-          sizes="32px"
-          className="h-8 w-8 sm:hidden"
-          style={{ width: 32, height: 32 }}
-        />
-        {wordmark}
-      </span>
-    );
-  }
-
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <Mark size={32} />
-      <span className="leading-tight">
-        <span className="block font-display text-[1.05rem] font-semibold tracking-tight text-ink-black">
+      <span
+        className={`leading-tight ${compactOnMobile ? "hidden sm:block" : ""}`}
+      >
+        <span
+          className={`block font-display text-[1.05rem] font-semibold tracking-tight ${onDark ? "text-white" : "text-ink-black"}`}
+        >
           Phoenixwebhost
         </span>
-        <span className="block text-[0.68rem] uppercase tracking-[0.16em] text-body">
+        <span
+          className={`block text-[0.68rem] uppercase tracking-[0.16em] ${onDark ? "text-white/55" : "text-body"}`}
+        >
           INC. · PHOENIX, AZ
         </span>
       </span>

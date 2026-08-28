@@ -61,7 +61,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
     <header className="sticky top-0 z-30 bg-header">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
         <Link href={home} aria-label="Phoenixwebhost home" className="min-w-0 shrink">
-          <Logo tone="dark" compactOnMobile priority />
+          <Logo tone="dark" compactOnMobile />
         </Link>
         <nav className="hidden items-center gap-7 text-sm text-white/85 md:flex">
           <a href={`${home}#work`} className="hover:text-lime">
