@@ -97,7 +97,12 @@ test("capped chat maps logo, color, sentence, and one extra page", () => {
     accent: "navy",
   });
   assert.equal(interpretDemoChat("add sentence Licensed in Arizona").kind, "sentence");
-  assert.equal(interpretDemoChat("add a page called Warranty").kind, "page");
+  const page = interpretDemoChat("add a page called Warranty");
+  assert.equal(page.kind, "page");
+  if (page.kind === "page") {
+    assert.equal(page.title, "Warranty");
+    assert.match(page.body, /\$75–\$150/);
+  }
   assert.equal(interpretDemoChat("unlimited AI redesign please").kind, "quote");
 });
 

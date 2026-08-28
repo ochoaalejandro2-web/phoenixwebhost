@@ -274,9 +274,13 @@ export function interpretDemoChat(raw: string): DemoChatIntent {
       quotedChunk(text) ||
       afterKeyword(text, /(?:page|página|pagina)\s+(?:called|titled|named|de|:)\s*(.+)$/i) ||
       "About";
+    const extractedBody = afterKeyword(
+      text,
+      /(?:about|sobre|body|texto)\s*[:—-]\s*(.+)$/i,
+    );
     const body =
-      afterKeyword(text, /(?:about|sobre|body|texto)\s*[:—-]\s*(.+)$/i) ||
-      text.slice(0, 800);
+      extractedBody ||
+      `This extra “${title.slice(0, 80)}” page is an idea for the live site. A real extra page is quoted at $75–$150.`;
     return {
       kind: "page",
       title: title.slice(0, 80),
