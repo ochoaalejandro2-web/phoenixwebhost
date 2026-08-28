@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://phoenixwebhost.com"),
   openGraph: {
     title: "Phoenixwebhost Inc.",
-    description: "$200 to launch a small-business website. $69/month to keep it live.",
+    description: "$200 to launch a small-business website. $69/month to keep it live. Call (480) 953-2393.",
     url: "https://phoenixwebhost.com",
     siteName: "Phoenixwebhost Inc.",
     locale: "en_US",
