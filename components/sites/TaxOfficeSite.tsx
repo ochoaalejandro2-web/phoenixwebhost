@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
+import { isPreviewClient, siteHomeHref } from "@/lib/demo";
 import { tHolaTax, withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { withSiteLangPath } from "@/lib/site-locale";
 import { portalPath } from "@/lib/tax-office";
@@ -107,7 +108,7 @@ function BrandMark({
   }
   return (
     <a href={home} className="font-display text-lg tracking-tight text-black">
-      {client.businessName}
+      {client.logoText?.trim() || client.businessName}
     </a>
   );
 }
@@ -121,7 +122,10 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
   const c = tTaxOffice(locale);
   const hola = tHolaTax(locale);
   const isHola = client.slug === HOLA_TAX_SLUG;
-  const home = withSiteLangPath(`/s/${client.slug}`, locale);
+  const preview = isPreviewClient(client);
+  const home = preview
+    ? siteHomeHref(client)
+    : withSiteLangPath(`/s/${client.slug}`, locale);
   const portal = withSiteLangPath(portalPath(client.slug), locale);
   const staff = withSiteLangPath(portalPath(client.slug, "/staff/login"), locale);
   const field =
@@ -145,12 +149,14 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               label={c.langNav}
             />
             <nav className="flex flex-wrap items-center gap-4 text-sm">
-              <a
-                href={portal}
-                className="font-semibold text-black hover:text-[#00E840]"
-              >
-                {c.clientLogin}
-              </a>
+              {preview ? null : (
+                <a
+                  href={portal}
+                  className="font-semibold text-black hover:text-[#00E840]"
+                >
+                  {c.clientLogin}
+                </a>
+              )}
               <a
                 href={telHref(client.phone)}
                 className="font-semibold text-[#00E840] hover:text-[#00FF66]"
@@ -222,12 +228,14 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               {taxOfficeAbout(client.slug, client.about, locale)}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={portal}
-                className="bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
-              >
-                {c.clientLogin}
-              </a>
+              {preview ? null : (
+                <a
+                  href={portal}
+                  className="bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
+                >
+                  {c.clientLogin}
+                </a>
+              )}
               <a
                 href={telHref(client.phone)}
                 className="border border-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00FF66]/10"
@@ -235,7 +243,9 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
                 {c.call(client.phone)}
               </a>
             </div>
-            <p className="mt-3 text-sm text-black/70">{c.portalHint}</p>
+            {preview ? null : (
+              <p className="mt-3 text-sm text-black/70">{c.portalHint}</p>
+            )}
           </div>
         </section>
       )}
@@ -334,6 +344,21 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
         <p className="mt-8 text-sm text-black/80">
           {client.hours} · {client.phone}
         </p>
+        {preview ? (
+          <div
+            id="contact"
+            className="mt-8 grid gap-3 border border-[#00FF66] bg-white p-6"
+          >
+            <p className="font-display text-xl tracking-tight text-black">
+              {c.contactTitle}
+            </p>
+            <p className="text-sm text-black/70">
+              {locale === "es"
+                ? "Esta vista no envía mensajes. En el sitio real, el formulario llega al correo del negocio."
+                : "This preview does not send messages. On the live site, this form emails the business."}
+            </p>
+          </div>
+        ) : (
         <form
           id="contact"
           action={`/api/sites/${client.slug}/contact`}
@@ -384,6 +409,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             {c.formSubmit}
           </button>
         </form>
+        )}
       </section>
 
       <footer className="mt-auto border-t border-[#00FF66] bg-white px-5 py-8 text-sm text-black/80">
@@ -395,11 +421,13 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             {client.address} · {client.hours}
           </p>
         </div>
-        <p className="mx-auto mt-3 max-w-5xl">
-          <a href={staff} className="hover:text-black">
-            {c.staffLogin}
-          </a>
-        </p>
+        {preview ? null : (
+          <p className="mx-auto mt-3 max-w-5xl">
+            <a href={staff} className="hover:text-black">
+              {c.staffLogin}
+            </a>
+          </p>
+        )}
       </footer>
     </div>
   );

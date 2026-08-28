@@ -10,6 +10,7 @@ import {
   markReminder,
 } from "@/lib/billing";
 import { createCheckoutForClient } from "@/lib/checkout";
+import { buildClientFromLead } from "@/lib/demo";
 import { monthKey, uniqueSlug } from "@/lib/slug";
 import {
   getClient,
@@ -17,6 +18,7 @@ import {
   listClients,
   resetToSeed,
   setReviewStatus,
+  updateLead,
   upsertClient,
 } from "@/lib/store";
 import { TEMPLATES } from "@/lib/config";
@@ -109,52 +111,14 @@ export async function createClientFromLeadAction(formData: FormData) {
   await requireOwner();
   const lead = await getLead(String(formData.get("leadId") || ""));
   if (!lead) throw new Error("Lead not found");
+  if (lead.clientId) {
+    const existing = await getClient(lead.clientId);
+    if (existing) redirect(`/admin/clients/${existing.id}`);
+  }
   const taken = (await listClients()).map((c) => c.slug);
-  const client: Client = {
-    id: `cli_${crypto.randomUUID()}`,
-    businessName: lead.businessName,
-    slug: uniqueSlug(lead.businessName, taken),
-    contactName: lead.name,
-    email: lead.email,
-    phone: lead.phone,
-    address: "",
-    city: lead.city || "Arizona",
-    hours: "",
-    tagline: lead.businessName,
-    about: lead.message || `${lead.businessName} is a local Arizona business.`,
-    services: [],
-    template: "professional",
-    customDomain: null,
-    siteStatus: "live",
-    paymentStatus: "unpaid",
-    lastPaymentAt: null,
-    nextInvoiceAt: null,
-    stripeCustomerId: null,
-    stripeSubscriptionId: null,
-    stripeBoostSubscriptionId: null,
-    localBoost: false,
-    stripeEmailSubscriptionId: null,
-    businessEmail: false,
-    reminderSentAt: null,
-    overdueSince: null,
-    offlineAt: null,
-    filesKeptUntil: null,
-    takenDownAt: null,
-    notes: [
-      {
-        id: `note_${crypto.randomUUID()}`,
-        body: `Created from request form (${lead.locale})${
-          lead.wantsLocalBoost ? ". Asked for optional Local Boost." : ""
-        }${
-          lead.wantsBusinessEmail ? ". Asked for optional Business Email." : ""
-        }.`,
-        createdAt: new Date().toISOString(),
-      },
-    ],
-    editRequests: [],
-    createdAt: new Date().toISOString(),
-  };
+  const client = buildClientFromLead(lead, taken, { live: true });
   await upsertClient(client);
+  await updateLead(lead.id, { clientId: client.id });
   revalidateClient(client);
   redirect(`/admin/clients/${client.id}`);
 }
@@ -305,6 +269,7 @@ export async function resetDemoAction() {
   revalidatePath("/admin");
   revalidatePath("/admin/clients");
   revalidatePath("/admin/reviews");
+  revalidatePath("/admin/leads");
   revalidatePath("/");
   revalidatePath("/es");
   revalidatePath("/reviews");

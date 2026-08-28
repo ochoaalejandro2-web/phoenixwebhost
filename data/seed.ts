@@ -271,8 +271,18 @@ export function createSeedState(): AppState {
         message:
           "Need a simple site with our phone, service list, and a form. English and Spanish if possible.",
         locale: "es",
+        template: "landscaping",
         wantsLocalBoost: true,
         wantsBusinessEmail: false,
+        purchased: false,
+        clientId: null,
+        demo: {
+          logoText: "",
+          accent: "template",
+          extraSentence: "",
+          extraPageTitle: "",
+          extraPageBody: "",
+        },
         createdAt: isoDaysFromNow(-2),
       },
     ],

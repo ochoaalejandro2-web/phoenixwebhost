@@ -40,7 +40,17 @@ Buying launch and care still works with Boost and Business Email unchecked. Each
 
 **If a month is unpaid:** reminder → site shows “temporarily offline” → files kept **30 days** → take down.
 
-## Run locally
+## Request a demo
+
+The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the six templates. That creates a **preview** at `/demo/{id}` — a mockup of their shop, not the paid live site.
+
+- The visitor gets an email with the preview link and the price: **$200 to launch + $69/month** (first payment **$269** if they pay launch and the first month together).
+- **Purchase / Go live** on the demo uses the existing Stripe Checkout for $200 + $69/month, plus optional Local Boost / Business Email.
+- A small chat on the demo can change logo text, colors, one extra sentence, or one extra page. Extra pages ($75–$150) and logos ($100–$300) stay quoted. No unlimited AI design.
+- Alex sees the lead in Admin (name, email, phone, business, notes, demo URL, purchased or not) and gets the same email + SMS alerts as before (`NOTIFY_EMAIL` / `NOTIFY_PHONE`).
+- There is **no $100-down checkout** on the site. That close happens on the phone.
+
+
 
 ```bash
 npm install
@@ -55,7 +65,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | --- | --- |
 | Marketing (EN) | `/` |
 | Marketing (ES) | `/es` |
-| Request a site | `/request` |
+| Request a demo | `/request` (also `/es/request`) |
 | Owner login | `/login` |
 | Demo contractor | `/s/desert-peak-roofing` (paid, live) |
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
@@ -143,7 +153,7 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost or Business Email
 - Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, Local Boost and Business Email status, pause / offline toggle. Existing clients can add Boost or Business Email later from this page.
 - **New client** generates a site from a template (contractor, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
-- Public “Request a site” form lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call them right away. Missing provider keys skip that channel; the form still succeeds.
+- Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the six templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 - Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
 

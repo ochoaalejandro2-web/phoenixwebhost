@@ -5,11 +5,13 @@ import { createSeedState } from "@/data/seed";
 import { findClientByCustomDomain } from "@/lib/custom-domain";
 import { withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
+import { emptyDemoTweaks, parseDemoAccent, parseTemplateId } from "@/lib/demo";
 import type {
   AppState,
   AuthLock,
   Client,
   ContactMessage,
+  DemoTweaks,
   Lead,
   Review,
   ReviewStatus,
@@ -144,10 +146,24 @@ function normalizeClient(client: Client): Client {
 }
 
 function normalizeLead(lead: Lead): Lead {
+  const template = parseTemplateId(lead.template) || "professional";
+  const demo: DemoTweaks = {
+    ...emptyDemoTweaks(),
+    ...(lead.demo || emptyDemoTweaks()),
+    accent: parseDemoAccent(lead.demo?.accent),
+    logoText: String(lead.demo?.logoText || "").trim(),
+    extraSentence: String(lead.demo?.extraSentence || "").trim(),
+    extraPageTitle: String(lead.demo?.extraPageTitle || "").trim(),
+    extraPageBody: String(lead.demo?.extraPageBody || "").trim(),
+  };
   return {
     ...lead,
+    template,
     wantsLocalBoost: Boolean(lead.wantsLocalBoost),
     wantsBusinessEmail: Boolean(lead.wantsBusinessEmail),
+    purchased: Boolean(lead.purchased),
+    clientId: lead.clientId ?? null,
+    demo,
   };
 }
 
@@ -268,14 +284,35 @@ export async function listLeads() {
 }
 
 export async function addLead(lead: Lead) {
+  const normalized = normalizeLead(lead);
   await updateState((state) => {
-    state.leads.unshift(lead);
+    state.leads.unshift(normalized);
   });
-  return lead;
+  return normalized;
 }
 
 export async function getLead(id: string) {
   const state = await getState();
+  return state.leads.find((l) => l.id === id) ?? null;
+}
+
+export async function getLeadByClientId(clientId: string) {
+  const state = await getState();
+  return state.leads.find((l) => l.clientId === clientId) ?? null;
+}
+
+export async function updateLead(
+  id: string,
+  patch: Partial<Omit<Lead, "id" | "createdAt">>,
+) {
+  const state = await updateState((current) => {
+    const index = current.leads.findIndex((l) => l.id === id);
+    if (index < 0) return;
+    current.leads[index] = normalizeLead({
+      ...current.leads[index],
+      ...patch,
+    });
+  });
   return state.leads.find((l) => l.id === id) ?? null;
 }
 

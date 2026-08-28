@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
-import { stripeBoostConfigured, stripeConfigured, stripeEmailConfigured } from "@/lib/config";
-import { notifyNewLead } from "@/lib/notify";
+import {
+  stripeBoostConfigured,
+  stripeConfigured,
+  stripeEmailConfigured,
+} from "@/lib/config";
+import { demoPath, emptyDemoTweaks, parseTemplateId } from "@/lib/demo";
+import { notifyCustomerDemo, notifyNewLead } from "@/lib/notify";
 import { addLead } from "@/lib/store";
 import type { Locale } from "@/lib/types";
 
@@ -13,11 +18,19 @@ export async function POST(request: Request) {
     city?: string;
     message?: string;
     locale?: Locale;
+    template?: string;
     wantsLocalBoost?: boolean;
     wantsBusinessEmail?: boolean;
   };
   if (!body.name || !body.businessName || !body.email) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+  }
+  const template = parseTemplateId(body.template);
+  if (!template) {
+    return NextResponse.json(
+      { error: "Choose a starting template." },
+      { status: 400 },
+    );
   }
   const lead = await addLead({
     id: `lead_${crypto.randomUUID()}`,
@@ -28,13 +41,18 @@ export async function POST(request: Request) {
     city: String(body.city || "").trim(),
     message: String(body.message || "").trim(),
     locale: body.locale === "es" ? "es" : "en",
+    template,
     wantsLocalBoost: Boolean(body.wantsLocalBoost),
     wantsBusinessEmail: Boolean(body.wantsBusinessEmail),
+    purchased: false,
+    clientId: null,
+    demo: emptyDemoTweaks(),
     createdAt: new Date().toISOString(),
   });
-  await notifyNewLead(lead);
+  await Promise.allSettled([notifyNewLead(lead), notifyCustomerDemo(lead)]);
   return NextResponse.json({
     id: lead.id,
+    demoUrl: demoPath(lead.id),
     stripeReady: stripeConfigured(),
     boostReady: stripeBoostConfigured(),
     emailReady: stripeEmailConfigured(),

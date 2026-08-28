@@ -1,4 +1,5 @@
 import { publicSiteUrl } from "@/lib/config";
+import { demoUrl, templateLabel } from "@/lib/demo";
 import type { Client, ContactMessage, Lead, Review } from "@/lib/types";
 
 export type SiteContactStatus = "sent" | "no-email" | "send-failed";
@@ -302,9 +303,11 @@ async function sendBoth(alert: Alert) {
 
 export async function notifyNewLead(lead: Lead) {
   try {
+    const preview = demoUrl(lead.id);
     await sendBoth({
-      subject: "New Phoenixwebhost site request",
-      intro: "Someone just asked for a site. Call them now if you can.",
+      subject: "New Phoenixwebhost demo request",
+      intro:
+        "Someone just asked for a live demo. Call them in the morning if they do not buy — they already saw a mockup of their shop.",
       name: lead.name,
       phone: lead.phone,
       email: lead.email,
@@ -313,12 +316,14 @@ export async function notifyNewLead(lead: Lead) {
       message: lead.message,
       extra: [
         lead.locale === "es" ? "Spanish" : "English",
+        templateLabel(lead.template, "en"),
         lead.wantsLocalBoost
           ? "Wants Local Boost ($99 + $79/mo)"
           : "No Local Boost",
         lead.wantsBusinessEmail
           ? "Wants Business Email ($49 + $19/mo)"
           : "No Business Email",
+        preview,
       ].join(" · "),
       extraLabel: "Notes",
       createdAt: lead.createdAt,
@@ -327,6 +332,61 @@ export async function notifyNewLead(lead: Lead) {
     });
   } catch (error) {
     console.error("[notify] unexpected error (lead)", error);
+  }
+}
+
+function customerDemoBodies(lead: Lead) {
+  const preview = demoUrl(lead.id);
+  const es = lead.locale === "es";
+  const trade = templateLabel(lead.template, lead.locale);
+  const subject = es
+    ? `Su demo de Phoenixwebhost para ${lead.businessName}`
+    : `Here’s your Phoenixwebhost demo for ${lead.businessName}`;
+  const intro = es
+    ? `Preparamos una idea de cómo podría verse el sitio de ${lead.businessName}, partiendo de nuestra plantilla de ${trade}. No es un diseño a medida nuevo: es una plantilla profesional llena con sus datos.`
+    : `Here is an idea of how ${lead.businessName} could look online, starting from our ${trade} template. This is not a brand-new custom design — it is a proven layout filled with your answers.`;
+  const pay = es
+    ? "Para publicarlo de verdad: $200 de lanzamiento + $69 al mes para mantenerlo en línea. El primer pago es $269 si paga el lanzamiento y el primer mes juntos."
+    : "To go live: $200 to launch + $69/month to keep it live. The first payment is $269 if you pay launch and the first month together.";
+  const extras = es
+    ? "Local Boost y Business Email son opcionales y se pueden agregar en el mismo pago. Una página extra cuesta $75–$150. Un logotipo, $100–$300. No vendemos diseño ilimitado con IA."
+    : "Local Boost and Business Email are optional and can be added in the same checkout. An extra page is $75–$150. A logo is $100–$300. We do not sell unlimited AI design.";
+  const { html, text } = emailBodies({
+    subject,
+    intro,
+    name: lead.name,
+    phone: lead.phone,
+    email: lead.email,
+    business: lead.businessName,
+    city: lead.city,
+    message: lead.message,
+    extra: `${pay} ${extras}`,
+    extraLabel: es ? "Precio" : "Price",
+    createdAt: lead.createdAt,
+    adminPath: `/demo/${lead.id}`,
+    adminLabel: es ? "Ver su demo" : "Open your demo",
+  });
+  const button = `<p style="margin-top:24px"><a href="${escapeHtml(preview)}" style="display:inline-block;background:#00C851;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:700">${es ? "Ver la demo / Comprar" : "View demo / Go live"}</a></p>`;
+  const htmlWithCta = html.replace("</body></html>", `${button}</body></html>`);
+  const textWithLink = `${text}\n\n${es ? "Demo" : "Demo"}: ${preview}\n`;
+  return { subject, html: htmlWithCta, text: textWithLink };
+}
+
+export async function notifyCustomerDemo(lead: Lead) {
+  const to = usableEmail(lead.email);
+  if (!to) {
+    console.warn("[notify] skipping customer demo email: invalid address");
+    return false;
+  }
+  try {
+    const { subject, html, text } = customerDemoBodies(lead);
+    return await deliverEmail(subject, html, text, {
+      to: [to],
+      replyTo: notifyEmail(),
+    });
+  } catch (error) {
+    console.error("[notify] unexpected error (customer demo)", error);
+    return false;
   }
 }
 

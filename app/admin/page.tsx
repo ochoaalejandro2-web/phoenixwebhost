@@ -36,14 +36,20 @@ function OpenRequestCard({ lead }: { lead: Lead }) {
           ) : (
             phone
           )
-        ) : null}
-        {phone && email ? " · " : null}
+        ) : (
+          "No phone"
+        )}
+        {" · "}
         {email ? (
           <a href={`mailto:${email}`} className="hover:text-clay">
             {email}
           </a>
-        ) : null}
-        {!phone && !email ? "No phone or email" : null}
+        ) : (
+          "No email"
+        )}
+      </p>
+      <p className="mt-2 text-xs text-ink-soft">
+        {lead.purchased ? "Purchased" : "Not purchased"} · /demo/{lead.id}
       </p>
       <p className={note ? "mt-3 text-sm" : "mt-3 text-sm text-ink-soft"}>
         {note || "No note"}
@@ -126,10 +132,10 @@ export default async function AdminHome() {
       <section className="mt-8">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="font-display text-2xl">Open requests</h2>
+            <h2 className="font-display text-2xl">Open demo requests</h2>
             <p className="mt-1 text-sm text-ink-soft">
-              Public Request a site leads. Name, contact, and note are here so
-              you can call without leaving the dashboard.
+              Public Request a Demo leads. Name, contact, notes, demo URL, and
+              whether they purchased — call next morning if they did not pay.
             </p>
           </div>
           <Link href="/admin/leads" className="text-sm text-clay">
