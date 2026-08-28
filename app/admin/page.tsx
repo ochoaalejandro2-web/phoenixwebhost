@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listClients, listLeads, listReviews, storageMode } from "@/lib/store";
+import { visitTotals } from "@/lib/visits";
 import { stripeConfigured } from "@/lib/config";
 import { telHref } from "@/lib/notify";
 import { stripeModeLabel } from "@/lib/stripe";
@@ -78,10 +79,11 @@ function PayBadge({ status }: { status: string }) {
 }
 
 export default async function AdminHome() {
-  const [clients, leads, reviews] = await Promise.all([
+  const [clients, leads, reviews, visits] = await Promise.all([
     listClients(),
     listLeads(),
     listReviews(),
+    visitTotals(),
   ]);
   const pendingReviews = reviews.filter((review) => review.status === "pending").length;
   const paid = clients.filter((c) => c.paymentStatus === "paid").length;
@@ -111,6 +113,33 @@ export default async function AdminHome() {
               Reset demo data
             </button>
           </form>
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-2xl border border-line bg-paper p-5">
+        <h2 className="font-display text-xl">Visits to phoenixwebhost.com</h2>
+        <p className="mt-1 max-w-2xl text-sm text-ink-soft">
+          How many times people opened the public site (home, Spanish, request,
+          or reviews). Shop sites such as Hola Tax are not counted. Days use
+          Phoenix time.
+        </p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-ink-soft">Today</p>
+            <p className="mt-1 font-display text-3xl">{visits.today}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-wider text-ink-soft">
+              Last 7 days
+            </p>
+            <p className="mt-1 font-display text-3xl">{visits.last7}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-wider text-ink-soft">
+              Last 30 days
+            </p>
+            <p className="mt-1 font-display text-3xl">{visits.last30}</p>
+          </div>
         </div>
       </div>
 

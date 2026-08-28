@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Fraunces, Plus_Jakarta_Sans, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
@@ -44,7 +45,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${fraunces.variable} ${sourceSans.variable} ${jakarta.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-snow text-ink-black">{children}</body>
+      <body className="min-h-full flex flex-col bg-snow text-ink-black">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

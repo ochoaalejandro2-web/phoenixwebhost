@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { VisitBeacon } from "@/components/marketing/VisitBeacon";
 import { COMPANY } from "@/lib/config";
 import { homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
@@ -49,6 +50,7 @@ export function StudioShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="studio flex min-h-full flex-col bg-snow text-ink-black">
       <CompanyJsonLd />
+      <VisitBeacon />
       {children}
     </div>
   );

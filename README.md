@@ -157,6 +157,7 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the six templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 - Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
+- **Site visits** on the dashboard (today / last 7 days / last 30 days) count public Phoenixwebhost page opens. Production also sends pageviews to [Vercel Web Analytics](https://vercel.com/docs/analytics) (`@vercel/analytics` in the root layout). Enable Analytics on the Vercel project to see the same traffic there. No Google Analytics and no cookie banner.
 
 ## Generated client sites
 
