@@ -1,10 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SiteFooter, SiteHeader, StudioShell } from "@/components/marketing/Chrome";
+import {
+  CompanyPhone,
+  SiteFooter,
+  SiteHeader,
+  StudioShell,
+} from "@/components/marketing/Chrome";
 import { HeroDevices, TemplatePreview } from "@/components/marketing/HeroDevices";
 import { RequestForm } from "@/components/marketing/RequestForm";
 import { ReviewsSection } from "@/components/marketing/ReviewsSection";
-import { TEMPLATES, stripeBoostConfigured, stripeEmailConfigured } from "@/lib/config";
+import {
+  COMPANY,
+  TEMPLATES,
+  stripeBoostConfigured,
+  stripeEmailConfigured,
+} from "@/lib/config";
 import { requestPath, t } from "@/lib/i18n";
 import { listPublicReviews } from "@/lib/store";
 import type { Locale } from "@/lib/types";
@@ -91,6 +101,13 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               </div>
             </div>
             <p className="mt-8 text-sm text-body">{c.ownerLine}</p>
+            <p className="mt-2 text-sm text-body">
+              <CompanyPhone className="font-medium text-ink-black hover:text-lime" />
+              {" · "}
+              <a href={`mailto:${COMPANY.email}`} className="hover:text-lime">
+                {COMPANY.email}
+              </a>
+            </p>
           </div>
           <div className="pb-10 lg:pb-6">
             <div className="relative overflow-hidden rounded-[2rem]">

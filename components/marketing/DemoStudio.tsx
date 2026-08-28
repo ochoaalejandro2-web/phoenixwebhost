@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AddonToggle } from "@/components/marketing/RequestForm";
+import { COMPANY } from "@/lib/config";
 import {
   DEMO_ACCENTS,
   extraDemoPath,
@@ -296,6 +297,12 @@ export function DemoBar({
         >
           Phoenixwebhost
         </Link>
+        <a
+          href={COMPANY.telHref}
+          className="hidden whitespace-nowrap text-xs text-lime hover:text-white sm:inline"
+        >
+          {COMPANY.phone}
+        </a>
         {leadHasExtraPage(lead.demo) ? (
           <Link
             href={extraDemoPath(lead.id)}

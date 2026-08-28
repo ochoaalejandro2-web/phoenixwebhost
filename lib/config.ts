@@ -4,7 +4,8 @@ export const COMPANY = {
   owner: "Alex Ochoa",
   city: "Phoenix, AZ",
   email: "hello@phoenixwebhost.com",
-  phone: "(602) 555-0140",
+  phone: "(480) 953-2393",
+  telHref: "tel:4809532393",
   domain: "phoenixwebhost.com",
 } as const;
 

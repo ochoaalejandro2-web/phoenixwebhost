@@ -1,6 +1,15 @@
-import { SiteFooter, SiteHeader, StudioShell } from "@/components/marketing/Chrome";
+import {
+  CompanyPhone,
+  SiteFooter,
+  SiteHeader,
+  StudioShell,
+} from "@/components/marketing/Chrome";
 import { RequestForm } from "@/components/marketing/RequestForm";
-import { stripeBoostConfigured, stripeEmailConfigured } from "@/lib/config";
+import {
+  COMPANY,
+  stripeBoostConfigured,
+  stripeEmailConfigured,
+} from "@/lib/config";
 import { t } from "@/lib/i18n";
 
 export const metadata = { title: "Request a demo" };
@@ -28,6 +37,11 @@ export default function RequestPage() {
             Optional Business Email: $49 once plus $19/month extra for one
             professional inbox such as info@your domain. A real business email so
             customers take you seriously — not magic.
+          </p>
+          <p className="mt-6 text-sm text-body">
+            {c.callPrompt}{" "}
+            <CompanyPhone className="font-semibold text-ink-black hover:text-lime" />
+            . {COMPANY.email}
           </p>
         </div>
         <RequestForm

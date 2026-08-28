@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { SiteFooter, SiteHeader, StudioShell } from "@/components/marketing/Chrome";
+import {
+  CompanyPhone,
+  SiteFooter,
+  SiteHeader,
+  StudioShell,
+} from "@/components/marketing/Chrome";
 
 export default function CheckoutSuccessPage() {
   return (
@@ -14,6 +19,9 @@ export default function CheckoutSuccessPage() {
           the $49 setup and $19/month extra are on the same receipt. Unchecked
           add-ons are not charged. Alex will see the client as paid in the owner
           panel once the webhook lands.
+        </p>
+        <p className="mt-5 text-sm text-body">
+          Questions? Call <CompanyPhone className="font-semibold text-ink-black hover:text-lime" />.
         </p>
         <Link href="/" className="mt-8 inline-block text-lime hover:text-lime-deep">
           Back to Phoenixwebhost

@@ -1,6 +1,7 @@
 import { ShopSite } from "@/components/sites/ShopSite";
 import { TaxOfficeSite } from "@/components/sites/TaxOfficeSite";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
+import { COMPANY } from "@/lib/config";
 import type { Client, ContactNotice, Locale } from "@/lib/types";
 
 export function OfflineSite({ client }: { client: Client }) {
@@ -20,7 +21,13 @@ export function OfflineSite({ client }: { client: Client }) {
         Este sitio está temporalmente fuera de línea. Si es suyo, escriba a
         Phoenixwebhost Inc. para restablecerlo.
       </p>
-      <p className="mt-8 text-sm text-ink-soft">hello@phoenixwebhost.com</p>
+      <p className="mt-8 text-sm text-ink-soft">
+        <a href={COMPANY.telHref} className="font-semibold text-ink hover:underline">
+          {COMPANY.phone}
+        </a>
+        {" · "}
+        <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
+      </p>
     </div>
   );
 }

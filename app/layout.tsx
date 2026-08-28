@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s · Phoenixwebhost",
   },
   description:
-    "Phoenixwebhost Inc. builds simple websites for Arizona small businesses. $200 to launch, $69/month to keep it live. Owner: Alex Ochoa, Phoenix, AZ.",
+    "Phoenixwebhost Inc. builds simple websites for Arizona small businesses. $200 to launch, $69/month to keep it live. Call (480) 953-2393. Owner: Alex Ochoa, Phoenix, AZ.",
   metadataBase: new URL("https://phoenixwebhost.com"),
   openGraph: {
     title: "Phoenixwebhost Inc.",
