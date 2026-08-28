@@ -62,6 +62,11 @@ export const copy = {
     templatesTitle: "Six professional starting points",
     templatesLead:
       "We do not invent a brand-new design for $200. We start from a proven layout and fill it with your business.",
+    searchLabel: "Search live demos",
+    searchPlaceholder: "Landscaping, salon, restaurant…",
+    searchHint: "Tap a result to open that live demo site.",
+    searchEmpty: "No matching demos.",
+    searchOpenDemo: "View live demo",
     howTitle: "How a launch works",
     howSteps: [
       {
@@ -228,6 +233,11 @@ export const copy = {
     templatesTitle: "Seis puntos de partida profesionales",
     templatesLead:
       "Con $200 no inventamos una marca nueva. Partimos de un diseño comprobado y lo llenamos con su negocio.",
+    searchLabel: "Buscar demos en vivo",
+    searchPlaceholder: "Jardinería, salón, restaurante…",
+    searchHint: "Toque un resultado para abrir esa demo en vivo.",
+    searchEmpty: "No hay demos que coincidan.",
+    searchOpenDemo: "Ver demo en vivo",
     howTitle: "Cómo es un lanzamiento",
     howSteps: [
       {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { DemoSearch } from "@/components/marketing/DemoSearch";
 import { VisitBeacon } from "@/components/marketing/VisitBeacon";
 import { COMPANY } from "@/lib/config";
 import { homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
@@ -65,7 +66,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         <Link href={home} aria-label="Phoenixwebhost home" className="min-w-0 shrink">
           <Logo tone="dark" compactOnMobile />
         </Link>
-        <nav className="hidden items-center gap-7 text-sm text-white/85 md:flex">
+        <nav className="hidden items-center gap-7 text-sm text-white/85 lg:flex">
           <a href={`${home}#work`} className="hover:text-lime">
             {locale === "es" ? "Trabajo" : "Work"}
           </a>
@@ -79,6 +80,9 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             {c.otherLang}
           </Link>
         </nav>
+        <div className="hidden min-w-[12rem] max-w-sm flex-1 md:block">
+          <DemoSearch locale={locale} variant="header" />
+        </div>
         <div className="flex items-center gap-4">
           <CompanyPhone className="hidden whitespace-nowrap text-sm font-medium text-lime hover:text-white md:inline" />
           <Link
@@ -96,7 +100,8 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         </div>
       </div>
       <div className="border-t border-white/10 px-6 py-2 md:hidden">
-        <div className="mx-auto flex max-w-6xl">
+        <div className="mx-auto flex max-w-6xl flex-col gap-2">
+          <DemoSearch locale={locale} variant="header" />
           <CompanyPhone className="text-sm font-medium text-lime hover:text-white" />
         </div>
       </div>
