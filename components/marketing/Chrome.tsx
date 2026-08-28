@@ -1,11 +1,54 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { COMPANY } from "@/lib/config";
 import { homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
+
+export function CompanyPhone({ className }: { className?: string }) {
+  return (
+    <a
+      href={COMPANY.telHref}
+      className={className}
+      aria-label={`Call Phoenixwebhost at ${COMPANY.phone}`}
+    >
+      {COMPANY.phone}
+    </a>
+  );
+}
+
+function CompanyJsonLd() {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: COMPANY.legalName,
+    url: "https://phoenixwebhost.com",
+    email: COMPANY.email,
+    telephone: `+1${COMPANY.telHref.replace("tel:", "")}`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Phoenix",
+      addressRegion: "AZ",
+      addressCountry: "US",
+    },
+    founder: {
+      "@type": "Person",
+      name: COMPANY.owner,
+    },
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+          __html: JSON.stringify(data).replace(/</g, "\\u003c"),
+        }}
+    />
+  );
+}
 
 export function StudioShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="studio flex min-h-full flex-col bg-snow text-ink-black">
+      <CompanyJsonLd />
       {children}
     </div>
   );
@@ -35,6 +78,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           </Link>
         </nav>
         <div className="flex items-center gap-4">
+          <CompanyPhone className="hidden whitespace-nowrap text-sm font-medium text-lime hover:text-white md:inline" />
           <Link
             href="/login"
             className="hidden text-xs text-white/60 hover:text-lime sm:inline"
@@ -49,6 +93,11 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           </Link>
         </div>
       </div>
+      <div className="border-t border-white/10 px-6 py-2 md:hidden">
+        <div className="mx-auto flex max-w-6xl">
+          <CompanyPhone className="text-sm font-medium text-lime hover:text-white" />
+        </div>
+      </div>
     </header>
   );
 }
@@ -61,7 +110,14 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         <div>
           <p className="font-display text-lg text-white">{c.footerLegal}</p>
           <p className="mt-2 text-sm text-white/60">
-            Alex Ochoa · hello@phoenixwebhost.com · {c.bilingual}
+            {COMPANY.owner} ·{" "}
+            <a href={`mailto:${COMPANY.email}`} className="hover:text-lime">
+              {COMPANY.email}
+            </a>
+            {" · "}
+            <CompanyPhone className="text-lime hover:text-white" />
+            {" · "}
+            {c.bilingual}
           </p>
         </div>
         <div className="flex gap-6 text-sm text-white/70">
