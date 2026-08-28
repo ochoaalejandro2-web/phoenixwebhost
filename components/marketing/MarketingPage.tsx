@@ -6,12 +6,13 @@ import {
   SiteHeader,
   StudioShell,
 } from "@/components/marketing/Chrome";
-import { HeroDevices, TemplatePreview } from "@/components/marketing/HeroDevices";
+import { DemoSearch } from "@/components/marketing/DemoSearch";
+import { HeroDevices } from "@/components/marketing/HeroDevices";
 import { RequestForm } from "@/components/marketing/RequestForm";
 import { ReviewsSection } from "@/components/marketing/ReviewsSection";
+import { StartingPoints } from "@/components/marketing/StartingPoints";
 import {
   COMPANY,
-  TEMPLATES,
   stripeBoostConfigured,
   stripeEmailConfigured,
 } from "@/lib/config";
@@ -81,6 +82,9 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             <p className="mt-6 max-w-lg text-base leading-relaxed text-body sm:text-lg">
               {c.heroLead}
             </p>
+            <div className="mt-8 max-w-lg">
+              <DemoSearch locale={locale} variant="hero" />
+            </div>
             <div className="mt-10 flex flex-wrap items-end gap-10">
               <Link
                 href={requestPath(locale)}
@@ -184,37 +188,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section id="work" className="mx-auto max-w-6xl px-6 py-24">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-lime">
-              {locale === "es" ? "Puntos de partida" : "Starting points"}
-            </p>
-            <h2 className="mt-3 font-display text-3xl text-ink-black sm:text-4xl">
-              {c.templatesTitle}
-            </h2>
-          </div>
-          <p className="max-w-md text-sm leading-relaxed text-body">{c.templatesLead}</p>
-        </div>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {TEMPLATES.map((tpl) => (
-            <article
-              key={tpl.id}
-              className="group rounded-[1.5rem] border border-zinc-200 bg-snow p-3 transition hover:border-lime/50"
-            >
-              <TemplatePreview id={tpl.id} />
-              <div className="px-2 pb-4 pt-5">
-                <h3 className="font-display text-xl text-ink-black">
-                  {locale === "es" ? tpl.nameEs : tpl.name}
-                </h3>
-                <p className="mt-2 text-sm text-body">
-                  {locale === "es" ? tpl.blurbEs : tpl.blurb}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <StartingPoints locale={locale} />
 
       <section id="included" className="border-y border-zinc-100 bg-zinc-50/80">
         <div className="mx-auto grid max-w-6xl gap-14 px-6 py-24 lg:grid-cols-[0.9fr_1.1fr]">
