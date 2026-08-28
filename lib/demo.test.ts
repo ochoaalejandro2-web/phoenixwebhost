@@ -4,6 +4,7 @@ import { PRICING } from "./config.ts";
 import {
   applyDemoPatch,
   buildClientFromLead,
+  DEMO_SAMPLE_PHONE,
   demoPath,
   demoServices,
   demoUrl,
@@ -14,7 +15,8 @@ import {
   previewLeadId,
   siteHomeHref,
 } from "./demo.ts";
-import type { Lead } from "./types.ts";
+import { SHOP_PHOTOS } from "./shop-content.ts";
+import type { Lead, TemplateId } from "./types.ts";
 
 function sampleLead(overrides: Partial<Lead> = {}): Lead {
   return {
@@ -53,8 +55,13 @@ test("trade picker only accepts the six templates, including tax", () => {
     "Personal tax preparation",
     "Small-business tax preparation",
     "ITIN applications",
+    "Bookkeeping",
     "Year-round tax support",
+    "Tax planning",
   ]);
+  assert.equal(demoServices("tax").length, 6);
+  assert.equal(demoServices("salon").length, 6);
+  assert.equal(demoServices("landscaping").length, 6);
   assert.equal(
     demoServices("tax").some((row) => /llc/i.test(row)),
     false,
@@ -74,6 +81,9 @@ test("preview client fills the chosen template and stays off the paid URL", () =
   assert.equal(client.siteStatus, "live");
   assert.equal(client.paymentStatus, "unpaid");
   assert.deepEqual(client.services, demoServices("contractor"));
+  assert.match(client.hours, /Mon/);
+  assert.match(client.address, /Broadway/);
+  assert.match(client.phone, /480/);
 });
 
 test("paid client from a demo keeps the selected template, not a default professional", () => {
@@ -135,3 +145,31 @@ test("plan price is still $200 launch + $69/month, with no $100 public down paym
   assert.equal(PRICING.logoMin, 100);
   assert.equal(PRICING.logoMax, 300);
 });
+
+test("empty phone and city still fill a Phoenix-area layout for the preview", () => {
+  const client = buildClientFromLead(
+    sampleLead({ phone: "", city: "" }),
+    [],
+    { preview: true },
+  );
+  assert.equal(client.phone, DEMO_SAMPLE_PHONE);
+  assert.match(client.city, /Phoenix/);
+  assert.match(client.address, /AZ/);
+  assert.ok(client.hours.length > 0);
+});
+
+test("each trade has a local hero photo and a four-photo gallery", () => {
+  const trades: TemplateId[] = [
+    "contractor",
+    "salon",
+    "restaurant",
+    "professional",
+    "landscaping",
+    "tax",
+  ];
+  for (const id of trades) {
+    assert.match(SHOP_PHOTOS[id].hero.src, new RegExp(`/templates/${id}/`));
+    assert.equal(SHOP_PHOTOS[id].gallery.length, 4);
+  }
+});
+

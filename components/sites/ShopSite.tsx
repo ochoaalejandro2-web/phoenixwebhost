@@ -1,0 +1,430 @@
+import Image from "next/image";
+import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
+import { isPreviewClient, siteHomeHref, displayHours, isSamplePhone } from "@/lib/demo";
+import {
+  DEMO_REVIEWS,
+  photoAlt,
+  serviceBlurb,
+  serviceName,
+  SHOP_PHOTOS,
+  SHOP_THEMES,
+  type ShopTheme,
+} from "@/lib/shop-content";
+import { tShop } from "@/lib/shop-i18n";
+import type { Client, ContactNotice, Locale, TemplateId } from "@/lib/types";
+
+function telHref(phone: string) {
+  return `tel:${phone.replace(/[^\d+]/g, "")}`;
+}
+
+function Stars({ n }: { n: number }) {
+  return (
+    <span aria-label={`${n} out of 5`} className="tracking-tight">
+      {"★★★★★".slice(0, n)}
+      <span className="opacity-30">{"★★★★★".slice(n)}</span>
+    </span>
+  );
+}
+
+function ContactNoticeBanner({
+  client,
+  notice,
+  locale,
+  className,
+}: {
+  client: Client;
+  notice?: ContactNotice | null;
+  locale: Locale;
+  className: string;
+}) {
+  if (!notice) return null;
+  const call = client.phone.trim()
+    ? locale === "es"
+      ? ` Llame al ${client.phone.trim()}.`
+      : ` Please call ${client.phone.trim()}.`
+    : "";
+  const copy =
+    notice === "sent"
+      ? locale === "es"
+        ? `Su mensaje se envió por correo a ${client.businessName}.`
+        : `Your message was emailed to ${client.businessName}.`
+      : notice === "no-email"
+        ? locale === "es"
+          ? `Este negocio no tiene correo registrado, así que no pudimos enviar su mensaje.${call}`
+          : `This business has no email on file, so we could not send your message.${call}`
+        : notice === "missing"
+          ? locale === "es"
+            ? "Se requieren el nombre, un correo real y un mensaje."
+            : "Name, a real email, and a message are required."
+          : locale === "es"
+            ? `No pudimos enviar su mensaje por correo.${call || " Intente de nuevo."}`
+            : `We could not send your message by email.${call || " Please try again."}`;
+  return (
+    <p
+      role={notice === "sent" ? "status" : "alert"}
+      className={`text-sm ${className}`}
+    >
+      {copy}
+    </p>
+  );
+}
+
+function LiveContactForm({
+  client,
+  notice,
+  locale,
+  fieldClass,
+  buttonClass,
+}: {
+  client: Client;
+  notice?: ContactNotice | null;
+  locale: Locale;
+  fieldClass: string;
+  buttonClass: string;
+}) {
+  const c = tShop(locale);
+  return (
+    <form
+      id="contact"
+      action={`/api/sites/${client.slug}/contact`}
+      method="post"
+      className="mt-8 grid gap-3"
+    >
+      <input type="hidden" name="lang" value={locale} />
+      <ContactNoticeBanner
+        client={client}
+        notice={notice}
+        locale={locale}
+        className="text-inherit"
+      />
+      <input
+        name="name"
+        required
+        maxLength={120}
+        placeholder={c.formName}
+        autoComplete="name"
+        className={fieldClass}
+      />
+      <input
+        name="email"
+        type="email"
+        required
+        maxLength={200}
+        placeholder={c.formEmail}
+        autoComplete="email"
+        className={fieldClass}
+      />
+      <input
+        name="phone"
+        maxLength={40}
+        placeholder={c.formPhone}
+        autoComplete="tel"
+        className={fieldClass}
+      />
+      <textarea
+        name="message"
+        required
+        maxLength={4000}
+        rows={4}
+        placeholder={c.formMessage}
+        className={fieldClass}
+      />
+      <button type="submit" className={buttonClass}>
+        {c.formSubmit}
+      </button>
+    </form>
+  );
+}
+
+function PhotoStill({
+  src,
+  alt,
+  sizes,
+  className,
+  priority,
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+  className?: string;
+  priority?: boolean;
+}) {
+  return (
+    <div className={`relative overflow-hidden ${className ?? ""}`}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        preload={priority}
+        className="object-cover"
+      />
+    </div>
+  );
+}
+
+export function ShopSite({
+  client,
+  notice,
+  locale,
+}: {
+  client: Client;
+  notice?: ContactNotice | null;
+  locale: Locale;
+}) {
+  const template = client.template as Exclude<TemplateId, "tax">;
+  const theme: ShopTheme = SHOP_THEMES[template] ?? SHOP_THEMES.professional;
+  const photos = SHOP_PHOTOS[client.template] ?? SHOP_PHOTOS.professional;
+  const c = tShop(locale);
+  const preview = isPreviewClient(client);
+  const home = siteHomeHref(client);
+  const displayName = client.logoText?.trim() || client.businessName;
+  const phone = client.phone.trim();
+  const hours = displayHours(client.hours, client.template, locale);
+  const reviews = preview || client.sample ? DEMO_REVIEWS[client.template] : [];
+  const callLabel = phone ? c.call(phone) : c.callShort;
+  const submitBtn = `justify-self-start rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`;
+
+  const links = [
+    { href: "#services", label: c.navServices },
+    { href: "#about", label: c.navAbout },
+    { href: "#photos", label: c.navPhotos },
+    { href: "#hours", label: c.navHours },
+    ...(reviews.length ? [{ href: "#reviews", label: c.navReviews }] : []),
+    { href: "#contact", label: c.navContact },
+  ];
+
+  return (
+    <div className={`flex min-h-full flex-col ${theme.page}`}>
+      <header
+        className={`shop-header sticky top-0 z-40 border-b backdrop-blur ${theme.header} ${theme.headerBorder}`}
+      >
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3">
+          <a href={home} className={`font-display text-lg leading-tight ${theme.name}`}>
+            {displayName}
+          </a>
+          <div className="flex items-center gap-4">
+            <nav className="hidden items-center gap-4 text-sm lg:flex">
+              {links.map((link) => (
+                <a key={link.href} href={link.href} className={theme.nav}>
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            {phone ? (
+              <a
+                href={telHref(phone)}
+                className={`site-phone site-cta inline-flex rounded-full px-4 py-2 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+              >
+                {callLabel}
+              </a>
+            ) : (
+              <a
+                href="#contact"
+                className={`inline-flex rounded-full px-4 py-2 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+              >
+                {c.message}
+              </a>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {client.sample ? (
+        <p className="bg-[#2f4a38] px-5 py-1.5 text-center text-xs font-semibold tracking-wide text-[#f4efe6]">
+          {c.sampleSite}
+        </p>
+      ) : null}
+
+      <section className="relative isolate min-h-[70vh] overflow-hidden lg:min-h-[calc(100svh-4.75rem)]">
+        <Image
+          src={photos.hero.src}
+          alt={photoAlt(photos.hero, locale)}
+          fill
+          preload
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className={`absolute inset-0 ${theme.overlay}`} aria-hidden="true" />
+        <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-5xl flex-col justify-center px-5 py-16 text-white lg:min-h-[calc(100svh-4.75rem)] lg:py-20">
+          <p className={`text-sm uppercase tracking-[0.22em] ${theme.kicker}`}>
+            {client.city}
+          </p>
+          <h1 className="mt-4 max-w-3xl font-display text-4xl leading-tight sm:text-5xl">
+            {client.tagline}
+          </h1>
+          <p className="mt-5 max-w-xl text-base text-white/90 sm:text-lg">
+            {client.about}
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            {phone ? (
+              <a
+                href={telHref(phone)}
+                className={`site-cta inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+              >
+                {callLabel}
+              </a>
+            ) : null}
+            <a
+              href="#contact"
+              className={`inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.ghostBtn}`}
+            >
+              {c.message}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" className="mx-auto w-full max-w-5xl px-5 py-16">
+        <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>
+          {c.servicesTitle(client.template)}
+        </h2>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+          {client.services.map((service) => {
+            const blurb = serviceBlurb(service, locale);
+            return (
+              <li
+                key={service}
+                className={`rounded-2xl border p-5 ${theme.card} ${theme.cardBorder}`}
+              >
+                <h3 className="font-display text-xl">{serviceName(service, locale)}</h3>
+                {blurb ? (
+                  <p className={`mt-2 text-sm leading-relaxed ${theme.muted}`}>{blurb}</p>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <section id="about" className="mx-auto grid w-full max-w-5xl gap-8 px-5 py-6 sm:grid-cols-2 sm:items-center">
+        <PhotoStill
+          src={photos.gallery[0].src}
+          alt={photoAlt(photos.gallery[0], locale)}
+          sizes="(max-width: 640px) 100vw, 512px"
+          className={`aspect-[4/3] rounded-2xl border ${theme.cardBorder}`}
+        />
+        <div>
+          <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>{c.aboutTitle}</h2>
+          <p className={`mt-4 text-lg leading-relaxed ${theme.muted}`}>{client.about}</p>
+          {phone ? (
+            <a
+              href={telHref(phone)}
+              className={`site-cta mt-6 inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+            >
+              {callLabel}
+            </a>
+          ) : null}
+        </div>
+      </section>
+
+      <section id="photos" className="mx-auto w-full max-w-5xl px-5 py-16">
+        <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>{c.photosTitle}</h2>
+        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+          {photos.gallery.map((photo) => (
+            <PhotoStill
+              key={photo.src}
+              src={photo.src}
+              alt={photoAlt(photo, locale)}
+              sizes="(max-width: 768px) 50vw, 256px"
+              className={`aspect-[4/5] rounded-xl border ${theme.cardBorder}`}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section id="hours" className="mx-auto w-full max-w-5xl px-5 py-8">
+        <div className={`grid gap-6 rounded-2xl border p-6 sm:grid-cols-2 ${theme.card} ${theme.cardBorder}`}>
+          <div>
+            <h2 className={`font-display text-2xl ${theme.sectionTitle}`}>{c.hoursTitle}</h2>
+            <p className={`mt-3 text-lg ${theme.body}`}>{hours}</p>
+            {preview ? (
+              <p className={`mt-2 text-xs ${theme.muted}`}>{c.previewHours}</p>
+            ) : null}
+          </div>
+          <div>
+            <p className={`text-lg ${theme.body}`}>
+              {client.address}
+              {client.address && client.city ? <br /> : null}
+              {client.city}
+            </p>
+            {phone ? (
+              <p className="mt-2">
+                <a href={telHref(phone)} className="site-phone font-semibold">
+                  {phone}
+                </a>
+              </p>
+            ) : null}
+            {preview ? (
+              <p className={`mt-2 text-xs ${theme.muted}`}>
+                {c.previewAddress}
+                {isSamplePhone(phone) ? ` ${c.previewPhone}` : ""}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      {reviews.length ? (
+        <section id="reviews" className="mx-auto w-full max-w-5xl px-5 py-12">
+          <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>{c.reviewsTitle}</h2>
+          {preview || client.sample ? (
+            <p className={`mt-2 text-sm ${theme.muted}`}>{c.previewReviews}</p>
+          ) : null}
+          <ul className="mt-8 grid gap-4 md:grid-cols-3">
+            {reviews.map((review) => (
+              <li
+                key={review.name}
+                className={`rounded-2xl border p-5 ${theme.card} ${theme.cardBorder}`}
+              >
+                <p className={theme.kicker}>
+                  <Stars n={review.stars} />
+                </p>
+                <p className={`mt-3 text-sm leading-relaxed ${theme.body}`}>
+                  {locale === "es" ? review.bodyEs : review.body}
+                </p>
+                <p className={`mt-4 text-sm font-semibold ${theme.body}`}>
+                  {review.name}
+                </p>
+                <p className={`text-xs ${theme.muted}`}>{review.city}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      <section className="mx-auto w-full max-w-5xl px-5 pb-16">
+        <div className={`rounded-2xl border p-6 ${theme.card} ${theme.cardBorder}`}>
+          <p className={`font-display text-2xl ${theme.sectionTitle}`}>{c.contactTitle}</p>
+          {preview ? (
+            <PreviewContactForm
+              locale={locale}
+              fieldClass={theme.field}
+              buttonClass={submitBtn}
+              noteClass={theme.muted}
+            />
+          ) : (
+            <LiveContactForm
+              client={client}
+              notice={notice}
+              locale={locale}
+              fieldClass={theme.field}
+              buttonClass={submitBtn}
+            />
+          )}
+        </div>
+      </section>
+
+      <footer className={`mt-auto border-t px-5 py-8 text-sm ${theme.footerBorder} ${theme.footer}`}>
+        <div className="mx-auto flex max-w-5xl flex-col gap-2 sm:flex-row sm:justify-between">
+          <p>
+            {client.businessName} · {client.city}
+          </p>
+          <p>
+            {client.address} · {hours}
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}

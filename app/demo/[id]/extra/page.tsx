@@ -41,15 +41,17 @@ export default async function DemoExtraPage({
   return (
     <DemoChrome lead={lead}>
       <article className="mx-auto max-w-5xl px-5 py-16">
-        <p className="text-xs uppercase tracking-[0.18em] text-lime">
-          {c.demoKicker}
+        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">
+          {lead.businessName}
         </p>
-        <h1 className="mt-3 font-display text-4xl text-ink-black">{title}</h1>
-        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-body">{body}</p>
-        <p className="mt-8 text-sm text-body">{c.demoQuoted}</p>
+        <h1 className="mt-3 font-display text-4xl text-ink">{title}</h1>
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
+          {body}
+        </p>
+        <p className="mt-8 text-sm text-ink-soft">{c.demoQuoted}</p>
         <Link
           href={demoPath(lead.id)}
-          className="mt-8 inline-block text-sm text-lime hover:text-lime-deep"
+          className="mt-8 inline-block text-sm font-semibold text-ink hover:underline"
         >
           {lead.businessName}
         </Link>

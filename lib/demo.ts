@@ -3,6 +3,7 @@ import type {
   DemoAccent,
   DemoTweaks,
   Lead,
+  Locale,
   TemplateId,
 } from "./types";
 
@@ -23,6 +24,63 @@ const TEMPLATE_LABELS: Record<TemplateId, { en: string; es: string }> = {
   landscaping: { en: "Landscaping & yards", es: "Jardinería y patios" },
   tax: { en: "Tax office", es: "Oficina de impuestos" },
 };
+
+export const DEMO_SAMPLE_PHONE = "(480) 555-0199";
+
+export const DEMO_HOURS: Record<TemplateId, string> = {
+  contractor: "Mon–Fri 7:00am–5:00pm",
+  salon: "Tue–Sat 9:00am–7:00pm",
+  restaurant: "Tue–Sun 11:00am–9:00pm",
+  professional: "Mon–Fri 8:00am–5:00pm",
+  landscaping: "Mon–Sat 7:00am–5:00pm",
+  tax: "Mon–Fri 9:00am–6:00pm · Sat 9:00am–1:00pm",
+};
+
+const DEMO_HOURS_ES: Record<TemplateId, string> = {
+  contractor: "Lun–Vie 7:00am–5:00pm",
+  salon: "Mar–Sáb 9:00am–7:00pm",
+  restaurant: "Mar–Dom 11:00am–9:00pm",
+  professional: "Lun–Vie 8:00am–5:00pm",
+  landscaping: "Lun–Sáb 7:00am–5:00pm",
+  tax: "Lun–Vie 9:00am–6:00pm · Sáb 9:00am–1:00pm",
+};
+
+const DEMO_STREET: Record<TemplateId, string> = {
+  contractor: "2140 E Broadway Rd",
+  salon: "7349 E Shea Blvd",
+  restaurant: "125 W Main St",
+  professional: "201 E Washington St",
+  landscaping: "4120 N 32nd St",
+  tax: "4550 N Central Ave",
+};
+
+export function displayHours(
+  hours: string,
+  template: TemplateId,
+  locale: Locale,
+) {
+  if (locale === "es" && hours === DEMO_HOURS[template]) {
+    return DEMO_HOURS_ES[template];
+  }
+  return hours;
+}
+
+export function demoStreetAddress(template: TemplateId, city: string) {
+  const street = DEMO_STREET[template];
+  const raw = city.trim() || "Phoenix, AZ";
+  const withState = /,\s*az\b/i.test(raw) || /\baz\b/i.test(raw)
+    ? raw
+    : `${raw}, AZ`;
+  return `${street}, ${withState}`;
+}
+
+export function demoPhoneOrSample(phone: string) {
+  return phone.trim() || DEMO_SAMPLE_PHONE;
+}
+
+export function isSamplePhone(phone: string) {
+  return phone.trim() === DEMO_SAMPLE_PHONE;
+}
 
 function uniqueSlug(base: string, taken: string[]) {
   const root =
@@ -54,26 +112,53 @@ export const DEMO_ACCENTS: {
 ];
 
 export const TEMPLATE_STARTER_SERVICES: Record<TemplateId, string[]> = {
-  contractor: ["Repairs", "Installations", "Free estimates", "Emergency calls"],
-  salon: ["Cuts", "Color", "Styling", "Appointments"],
-  restaurant: ["Lunch", "Dinner", "Catering", "Patio"],
+  contractor: [
+    "Roof repair",
+    "Roof replacement",
+    "Tile and shingle",
+    "Leak inspection",
+    "Free estimates",
+    "Emergency calls",
+  ],
+  salon: [
+    "Haircuts",
+    "Color",
+    "Blowouts",
+    "Bridal styling",
+    "Treatments",
+    "Appointments",
+  ],
+  restaurant: [
+    "Lunch plates",
+    "Dinner",
+    "Patio",
+    "Catering trays",
+    "Weekend brunch",
+    "Kids menu",
+  ],
   professional: [
     "Consultations",
     "Planning",
     "Ongoing support",
     "Local service",
+    "Bookkeeping",
+    "Paperwork",
   ],
   landscaping: [
     "Desert landscaping",
     "Lawn care",
     "Drip irrigation",
     "Cleanup",
+    "Rock and gravel yards",
+    "Tree and cactus care",
   ],
   tax: [
     "Personal tax preparation",
     "Small-business tax preparation",
     "ITIN applications",
+    "Bookkeeping",
     "Year-round tax support",
+    "Tax planning",
   ],
 };
 
@@ -155,10 +240,13 @@ export function demoTagline(lead: Pick<Lead, "businessName" | "city" | "message"
   );
 }
 
-export function demoAbout(lead: Pick<Lead, "businessName" | "city" | "message">) {
+export function demoAbout(lead: Pick<Lead, "businessName" | "city" | "message" | "locale">) {
   const story = lead.message.replace(/\s+/g, " ").trim();
   if (story) return story.slice(0, 800);
   const city = lead.city.trim() || "Arizona";
+  if (lead.locale === "es") {
+    return `${lead.businessName} es un negocio local en ${city}. Esta vista parte de una plantilla comprobada de Phoenixwebhost, llena con su nombre y ciudad — no es un diseño a medida nuevo.`;
+  }
   return `${lead.businessName} is a local ${city} business. This preview starts from a proven Phoenixwebhost template and is filled with your name and city — not a brand-new custom design.`;
 }
 
@@ -332,10 +420,10 @@ export function buildClientFromLead(
       : uniqueSlug(lead.businessName, takenSlugs),
     contactName: lead.name,
     email: lead.email,
-    phone: lead.phone,
-    address: "",
-    city: lead.city || "Arizona",
-    hours: "",
+    phone: demoPhoneOrSample(lead.phone),
+    address: demoStreetAddress(lead.template, lead.city),
+    city: lead.city || "Phoenix, AZ",
+    hours: DEMO_HOURS[lead.template],
     tagline: demoTagline(lead),
     about,
     services: demoServices(lead.template),
