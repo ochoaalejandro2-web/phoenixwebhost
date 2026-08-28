@@ -122,6 +122,10 @@ body {
   background: var(--site-accent) !important;
 }
 
+.demo-preview .shop-header {
+  top: 3.35rem;
+}
+
 /* Tax office template — white, black, neon. */
 .theme-tax-office {
   color: #000000;

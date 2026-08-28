@@ -99,9 +99,9 @@ export const copy = {
     formPayEmail: "Go live with Business Email",
     formPayBoostEmail: "Go live with Local Boost and Business Email",
     formThanks: "Your demo is ready.",
-    demoKicker: "Preview only — not the live paid site",
+    demoKicker: "This is a preview, not live yet",
     demoBanner:
-      "This is a mockup from a proven template, filled with your answers. It is an idea of how the site will look, not a custom design you build yourself.",
+      "A proven template filled with your business — not a brand-new custom design.",
     demoPrice:
       "$200 to launch + $69/month to keep it live. First payment is $269 if you pay launch and the first month together.",
     demoQuoted:
@@ -264,9 +264,9 @@ export const copy = {
     formPayEmail: "Publicar con Business Email",
     formPayBoostEmail: "Publicar con Local Boost y Business Email",
     formThanks: "Su demo está lista.",
-    demoKicker: "Solo vista previa — no es el sitio de pago",
+    demoKicker: "Esta es una vista previa, aún no está en línea",
     demoBanner:
-      "Este es un mockup desde una plantilla comprobada, lleno con sus datos. Es una idea de cómo se verá el sitio, no un diseño a medida que usted construye.",
+      "Una plantilla comprobada llena con su negocio — no un diseño a medida nuevo.",
     demoPrice:
       "$200 para lanzar + $69 al mes para mantenerlo en línea. El primer pago es $269 si paga el lanzamiento y el primer mes juntos.",
     demoQuoted:

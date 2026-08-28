@@ -1,0 +1,656 @@
+import type { Locale, TemplateId } from "./types";
+
+export type ShopPhoto = {
+  src: string;
+  alt: string;
+  altEs: string;
+};
+
+export type ShopTheme = {
+  page: string;
+  header: string;
+  headerBorder: string;
+  name: string;
+  nav: string;
+  call: string;
+  callHover: string;
+  kicker: string;
+  body: string;
+  muted: string;
+  card: string;
+  cardBorder: string;
+  sectionTitle: string;
+  overlay: string;
+  footer: string;
+  footerBorder: string;
+  field: string;
+  ghostBtn: string;
+};
+
+export const SHOP_PHOTOS: Record<TemplateId, {
+  hero: ShopPhoto;
+  gallery: ShopPhoto[];
+}> = {
+  contractor: {
+    hero: {
+      src: "/templates/contractor/hero.jpg",
+      alt: "Crew finishing a concrete pour on a job site",
+      altEs: "Cuadrilla terminando una colada de concreto en la obra",
+    },
+    gallery: [
+      {
+        src: "/templates/contractor/photo-1.jpg",
+        alt: "Framing and construction on a Phoenix-area home",
+        altEs: "Estructura y construcción en una casa del área de Phoenix",
+      },
+      {
+        src: "/templates/contractor/photo-2.jpg",
+        alt: "Tools and materials ready for the day’s work",
+        altEs: "Herramientas y materiales listos para el día",
+      },
+      {
+        src: "/templates/contractor/photo-3.jpg",
+        alt: "An active construction site",
+        altEs: "Una obra en marcha",
+      },
+      {
+        src: "/templates/contractor/photo-4.jpg",
+        alt: "A tradesperson on the job with a tool belt",
+        altEs: "Un trabajador en la obra con cinturón de herramientas",
+      },
+    ],
+  },
+  salon: {
+    hero: {
+      src: "/templates/salon/hero.jpg",
+      alt: "Stylist washing a client’s hair at the salon bowl",
+      altEs: "Estilista lavando el cabello de una clienta en el lavacabezas",
+    },
+    gallery: [
+      {
+        src: "/templates/salon/photo-1.jpg",
+        alt: "Stylist draping a client in the salon chair",
+        altEs: "Estilista colocando la capa a una clienta en el sillón",
+      },
+      {
+        src: "/templates/salon/photo-2.jpg",
+        alt: "Hair being styled in the chair",
+        altEs: "Peinado en el sillón",
+      },
+      {
+        src: "/templates/salon/photo-3.jpg",
+        alt: "Salon station with tools and product",
+        altEs: "Estación del salón con herramientas y producto",
+      },
+      {
+        src: "/templates/salon/photo-4.jpg",
+        alt: "Finished color and cut in the mirror",
+        altEs: "Color y corte terminados en el espejo",
+      },
+    ],
+  },
+  restaurant: {
+    hero: {
+      src: "/templates/restaurant/hero.jpg",
+      alt: "Server bringing plates out of the kitchen",
+      altEs: "Mesero sacando platos de la cocina",
+    },
+    gallery: [
+      {
+        src: "/templates/restaurant/photo-1.jpg",
+        alt: "A plated dish ready for the table",
+        altEs: "Un plato listo para la mesa",
+      },
+      {
+        src: "/templates/restaurant/photo-2.jpg",
+        alt: "Dining room set for guests",
+        altEs: "Comedor preparado para los invitados",
+      },
+      {
+        src: "/templates/restaurant/photo-3.jpg",
+        alt: "Evening service in the restaurant",
+        altEs: "Servicio de noche en el restaurante",
+      },
+      {
+        src: "/templates/restaurant/photo-4.jpg",
+        alt: "Kitchen plating during service",
+        altEs: "Emplatado en la cocina durante el servicio",
+      },
+    ],
+  },
+  professional: {
+    hero: {
+      src: "/templates/professional/hero.jpg",
+      alt: "A working meeting around plans and notes",
+      altEs: "Una reunión de trabajo con planes y notas",
+    },
+    gallery: [
+      {
+        src: "/templates/professional/photo-1.jpg",
+        alt: "Team conversation in the office",
+        altEs: "Conversación de equipo en la oficina",
+      },
+      {
+        src: "/templates/professional/photo-2.jpg",
+        alt: "A quiet office ready for clients",
+        altEs: "Una oficina tranquila lista para clientes",
+      },
+      {
+        src: "/templates/professional/photo-3.jpg",
+        alt: "Desk work with a laptop and papers",
+        altEs: "Trabajo de escritorio con laptop y papeles",
+      },
+      {
+        src: "/templates/professional/photo-4.jpg",
+        alt: "Clients talking through next steps",
+        altEs: "Clientes hablando de los siguientes pasos",
+      },
+    ],
+  },
+  landscaping: {
+    hero: {
+      src: "/templates/landscaping/hero.jpg",
+      alt: "Desert succulents in a rock garden",
+      altEs: "Suculentas del desierto en un jardín de piedra",
+    },
+    gallery: [
+      {
+        src: "/templates/landscaping/photo-1.jpg",
+        alt: "Front yard with a clean lawn and planting beds",
+        altEs: "Patio delantero con césped y camas de plantas",
+      },
+      {
+        src: "/templates/landscaping/photo-2.jpg",
+        alt: "Garden beds and outdoor planting",
+        altEs: "Camas de jardín y plantación exterior",
+      },
+      {
+        src: "/templates/landscaping/photo-3.jpg",
+        alt: "Lush planting around a home",
+        altEs: "Plantación abundante alrededor de una casa",
+      },
+      {
+        src: "/templates/landscaping/photo-4.jpg",
+        alt: "Curb appeal at dusk after yard work",
+        altEs: "Fachada al atardecer después del trabajo de jardín",
+      },
+    ],
+  },
+  tax: {
+    hero: {
+      src: "/templates/tax/hero.jpg",
+      alt: "Tax forms, a calculator, and a pen on the desk",
+      altEs: "Formularios de impuestos, una calculadora y un bolígrafo en el escritorio",
+    },
+    gallery: [
+      {
+        src: "/templates/tax/photo-1.jpg",
+        alt: "Tax paperwork ready for preparation",
+        altEs: "Papeles de impuestos listos para preparar",
+      },
+      {
+        src: "/templates/tax/photo-2.jpg",
+        alt: "Calculator and receipts on the desk",
+        altEs: "Calculadora y recibos en el escritorio",
+      },
+      {
+        src: "/templates/tax/photo-3.jpg",
+        alt: "Laptop, phone, and files during tax season",
+        altEs: "Laptop, teléfono y archivos en temporada de impuestos",
+      },
+      {
+        src: "/templates/tax/photo-4.jpg",
+        alt: "A tidy tax-office desk",
+        altEs: "Un escritorio ordenado de oficina de impuestos",
+      },
+    ],
+  },
+};
+
+export const SHOP_THEMES: Record<Exclude<TemplateId, "tax">, ShopTheme> = {
+  contractor: {
+    page: "bg-[#111816] text-[#f4efe6]",
+    header: "bg-[#111816]/95 text-[#f4efe6]",
+    headerBorder: "border-white/10",
+    name: "text-[#f4efe6]",
+    nav: "text-white/75 hover:text-white",
+    call: "bg-[#c45c26] text-white",
+    callHover: "hover:bg-[#a94c1e]",
+    kicker: "text-[#e8b489]",
+    body: "text-[#f4efe6]",
+    muted: "text-white/70",
+    card: "bg-[#1b2420]",
+    cardBorder: "border-white/10",
+    sectionTitle: "text-[#f4efe6]",
+    overlay: "bg-gradient-to-r from-black/80 via-black/55 to-black/20",
+    footer: "text-white/60",
+    footerBorder: "border-white/10",
+    field: "rounded-lg border border-white/15 bg-white px-3 py-2 text-ink",
+    ghostBtn: "border border-white/70 text-white hover:bg-white hover:text-[#111816]",
+  },
+  salon: {
+    page: "bg-[#fffaf6] text-[#1c1712]",
+    header: "bg-[#fffaf6]/95 text-[#1c1712]",
+    headerBorder: "border-[#eadfd4]",
+    name: "text-[#1c1712]",
+    nav: "text-[#5c534c] hover:text-[#1c1712]",
+    call: "bg-[#9c4a6a] text-white",
+    callHover: "hover:bg-[#833d59]",
+    kicker: "text-[#c4a484]",
+    body: "text-[#1c1712]",
+    muted: "text-[#5c534c]",
+    card: "bg-white",
+    cardBorder: "border-[#eadfd4]",
+    sectionTitle: "text-[#1c1712]",
+    overlay: "bg-gradient-to-r from-black/75 via-black/45 to-black/15",
+    footer: "text-[#5c534c]",
+    footerBorder: "border-[#eadfd4]",
+    field: "rounded-lg border border-[#eadfd4] bg-white px-3 py-2 text-ink",
+    ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#1c1712]",
+  },
+  restaurant: {
+    page: "bg-[#f7efe4] text-[#2a1f19]",
+    header: "bg-[#3a2a22]/95 text-[#f7efe4]",
+    headerBorder: "border-white/10",
+    name: "text-[#f7efe4]",
+    nav: "text-white/75 hover:text-white",
+    call: "bg-[#c45c26] text-white",
+    callHover: "hover:bg-[#a94c1e]",
+    kicker: "text-[#d7b48a]",
+    body: "text-[#2a1f19]",
+    muted: "text-[#5c534c]",
+    card: "bg-white",
+    cardBorder: "border-[#e4dccf]",
+    sectionTitle: "text-[#2a1f19]",
+    overlay: "bg-gradient-to-r from-black/80 via-black/50 to-black/15",
+    footer: "text-[#5c534c]",
+    footerBorder: "border-[#e4dccf]",
+    field: "rounded-lg border border-[#e4dccf] bg-white px-3 py-2 text-ink",
+    ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#3a2a22]",
+  },
+  professional: {
+    page: "bg-[#f6f8f7] text-[#1c1914]",
+    header: "bg-white/95 text-[#1c1914]",
+    headerBorder: "border-[#d8e0db]",
+    name: "text-[#1c1914]",
+    nav: "text-[#4a534c] hover:text-[#1c1914]",
+    call: "bg-[#3d5a4c] text-white",
+    callHover: "hover:bg-[#31483d]",
+    kicker: "text-[#3d5a4c]",
+    body: "text-[#1c1914]",
+    muted: "text-[#5c564c]",
+    card: "bg-white",
+    cardBorder: "border-[#d8e0db]",
+    sectionTitle: "text-[#1c1914]",
+    overlay: "bg-gradient-to-r from-black/75 via-black/45 to-black/20",
+    footer: "text-[#5c564c]",
+    footerBorder: "border-[#d8e0db]",
+    field: "rounded-lg border border-[#d8e0db] bg-white px-3 py-2 text-ink",
+    ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#1c1914]",
+  },
+  landscaping: {
+    page: "bg-[#f3efe4] text-[#1d241c]",
+    header: "bg-[#f7f3e8]/95 text-[#1d241c]",
+    headerBorder: "border-[#d7d0be]",
+    name: "text-[#1d241c]",
+    nav: "text-[#4a5346] hover:text-[#1d241c]",
+    call: "bg-[#2f4a38] text-[#f4efe6]",
+    callHover: "hover:bg-[#24382b]",
+    kicker: "text-[#d5e4c9]",
+    body: "text-[#1d241c]",
+    muted: "text-[#4a5346]",
+    card: "bg-[#fbf8f0]",
+    cardBorder: "border-[#d7d0be]",
+    sectionTitle: "text-[#1d241c]",
+    overlay: "bg-gradient-to-r from-black/75 via-black/45 to-black/15",
+    footer: "text-[#4a5346]",
+    footerBorder: "border-[#d7d0be]",
+    field: "rounded-lg border border-[#d7d0be] bg-white px-3 py-2 text-ink",
+    ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#2f4a38]",
+  },
+};
+
+export const SERVICE_BLURBS: Record<
+  string,
+  { blurb: string; blurbEs: string; nameEs: string }
+> = {
+  "Roof repair": {
+    nameEs: "Reparación de techos",
+    blurb: "Leaks, missing tile, and monsoon damage — written bids before we start.",
+    blurbEs: "Goteras, teja faltante y daño de monzón — presupuesto por escrito antes de empezar.",
+  },
+  "Roof replacement": {
+    nameEs: "Reemplazo de techos",
+    blurb: "Full tear-off and new roofs built for Arizona sun.",
+    blurbEs: "Desmonte completo y techos nuevos hechos para el sol de Arizona.",
+  },
+  "Tile and shingle": {
+    nameEs: "Teja y shingle",
+    blurb: "Clay, concrete, and shingle work matched to the house.",
+    blurbEs: "Trabajo de teja de barro, concreto y shingle acorde a la casa.",
+  },
+  "Leak inspection": {
+    nameEs: "Inspección de goteras",
+    blurb: "We find the leak, show you photos, and put the fix in writing.",
+    blurbEs: "Encontramos la gotera, le mostramos fotos y dejamos el arreglo por escrito.",
+  },
+  "Free estimates": {
+    nameEs: "Presupuestos gratis",
+    blurb: "No surprise invoices. You get a number before the crew arrives.",
+    blurbEs: "Sin facturas sorpresa. Recibe un número antes de que llegue la cuadrilla.",
+  },
+  "Emergency calls": {
+    nameEs: "Llamadas de emergencia",
+    blurb: "Storm tarps and same-week leak calls when the weather hits.",
+    blurbEs: "Lonas por tormenta y llamadas de goteras en la misma semana.",
+  },
+  Haircuts: {
+    nameEs: "Cortes",
+    blurb: "Cuts that fit the hair you have, not a catalog photo.",
+    blurbEs: "Cortes para el cabello que tiene, no para una foto de catálogo.",
+  },
+  Color: {
+    nameEs: "Color",
+    blurb: "Color, highlights, and gloss without rushing the chair.",
+    blurbEs: "Color, luces y brillo sin apurar el sillón.",
+  },
+  Blowouts: {
+    nameEs: "Peinados y blowouts",
+    blurb: "Wash, blowout, and styling for the week or a night out.",
+    blurbEs: "Lavado, blowout y peinado para la semana o una noche.",
+  },
+  "Bridal styling": {
+    nameEs: "Estilo nupcial",
+    blurb: "Trial runs and wedding-day hair, booked on the calendar.",
+    blurbEs: "Pruebas y peinado de boda, agendados en el calendario.",
+  },
+  Treatments: {
+    nameEs: "Tratamientos",
+    blurb: "Deep condition, gloss, and scalp care between color visits.",
+    blurbEs: "Tratamiento, brillo y cuidado del cuero cabelludo entre visitas de color.",
+  },
+  Appointments: {
+    nameEs: "Citas",
+    blurb: "Call to book. If we are full, we will say so.",
+    blurbEs: "Llame para agendar. Si estamos llenos, se lo decimos.",
+  },
+  "Lunch plates": {
+    nameEs: "Platos de almuerzo",
+    blurb: "A short lunch menu, cooked from scratch.",
+    blurbEs: "Un menú corto de almuerzo, cocinado desde cero.",
+  },
+  Dinner: {
+    nameEs: "Cena",
+    blurb: "Evening plates and a few specials that change with the week.",
+    blurbEs: "Platos de noche y unos especiales que cambian con la semana.",
+  },
+  Patio: {
+    nameEs: "Patio",
+    blurb: "Shade, fans, and walk-in tables after 5 when we can.",
+    blurbEs: "Sombra, ventiladores y mesas sin reserva después de las 5 cuando se puede.",
+  },
+  "Catering trays": {
+    nameEs: "Charolas para eventos",
+    blurb: "Trays for offices and family parties — call a few days ahead.",
+    blurbEs: "Charolas para oficinas y fiestas familiares — llame con unos días.",
+  },
+  "Weekend brunch": {
+    nameEs: "Brunch de fin de semana",
+    blurb: "Saturday and Sunday plates until mid-afternoon.",
+    blurbEs: "Platos de sábado y domingo hasta media tarde.",
+  },
+  "Kids menu": {
+    nameEs: "Menú infantil",
+    blurb: "Simple plates so the whole table can eat.",
+    blurbEs: "Platos sencillos para que coma toda la mesa.",
+  },
+  Consultations: {
+    nameEs: "Consultas",
+    blurb: "A first conversation about what you need, in plain language.",
+    blurbEs: "Una primera conversación sobre lo que necesita, en lenguaje claro.",
+  },
+  Planning: {
+    nameEs: "Planificación",
+    blurb: "A written plan and next steps you can keep.",
+    blurbEs: "Un plan por escrito y siguientes pasos que puede guardar.",
+  },
+  "Ongoing support": {
+    nameEs: "Apoyo continuo",
+    blurb: "Check-ins after the first meeting — not a one-and-done PDF.",
+    blurbEs: "Seguimiento después de la primera cita — no un PDF de una sola vez.",
+  },
+  "Local service": {
+    nameEs: "Servicio local",
+    blurb: "Phoenix-area clients. We pick up the phone.",
+    blurbEs: "Clientes del área de Phoenix. Contestamos el teléfono.",
+  },
+  Bookkeeping: {
+    nameEs: "Contabilidad",
+    blurb: "Monthly books so tax time is not a scramble.",
+    blurbEs: "Libros mensuales para que la temporada de impuestos no sea un apuro.",
+  },
+  Paperwork: {
+    nameEs: "Trámites",
+    blurb: "Forms, filings, and follow-up without the runaround.",
+    blurbEs: "Formularios, presentaciones y seguimiento sin vueltas.",
+  },
+  "Desert landscaping": {
+    nameEs: "Jardinería del desierto",
+    blurb: "Palo verde, cactus, and rock yards that live in this heat.",
+    blurbEs: "Palo verde, cactus y patios de piedra que viven en este calor.",
+  },
+  "Lawn care": {
+    nameEs: "Cuidado de césped",
+    blurb: "Mow, edge, and seasonal feed without wasting water.",
+    blurbEs: "Corte, orilla y abono de temporada sin desperdiciar agua.",
+  },
+  "Drip irrigation": {
+    nameEs: "Riego por goteo",
+    blurb: "Timers, drip lines, and repairs after monsoon season.",
+    blurbEs: "Temporizadores, líneas de goteo y reparaciones después del monzón.",
+  },
+  Cleanup: {
+    nameEs: "Limpieza",
+    blurb: "Debris, trimmings, and a swept walk when we leave.",
+    blurbEs: "Escombros, recortes y la banqueta barrida cuando nos vamos.",
+  },
+  "Rock and gravel yards": {
+    nameEs: "Patios de piedra y grava",
+    blurb: "Gravel, boulders, and low-water beds that stay tidy.",
+    blurbEs: "Grava, piedras y camas de bajo riego que se mantienen ordenadas.",
+  },
+  "Tree and cactus care": {
+    nameEs: "Cuidado de árboles y cactus",
+    blurb: "Trimming and staking that does not fight the desert.",
+    blurbEs: "Poda y tutorado que no pelea con el desierto.",
+  },
+  "Personal tax preparation": {
+    nameEs: "Preparación de impuestos personales",
+    blurb: "W-2, 1099, and family returns prepared in the office.",
+    blurbEs: "Declaraciones W-2, 1099 y familiares preparadas en la oficina.",
+  },
+  "Small-business tax preparation": {
+    nameEs: "Preparación de impuestos para negocios pequeños",
+    blurb: "Schedule C and small-business filings without the software maze.",
+    blurbEs: "Schedule C y declaraciones de negocio pequeño sin el laberinto de software.",
+  },
+  "ITIN applications": {
+    nameEs: "Solicitudes de ITIN",
+    blurb: "Help gathering the papers for an ITIN application.",
+    blurbEs: "Ayuda para juntar los papeles de una solicitud de ITIN.",
+  },
+  "Year-round tax support": {
+    nameEs: "Apoyo con impuestos todo el año",
+    blurb: "Questions in July, not only in April.",
+    blurbEs: "Preguntas en julio, no solo en abril.",
+  },
+  "Tax planning": {
+    nameEs: "Planificación de impuestos",
+    blurb: "A short plan for next year after this year’s return.",
+    blurbEs: "Un plan corto para el año que viene después de esta declaración.",
+  },
+};
+
+export type SampleReview = {
+  name: string;
+  city: string;
+  stars: 5 | 4;
+  body: string;
+  bodyEs: string;
+};
+
+export const DEMO_REVIEWS: Record<TemplateId, SampleReview[]> = {
+  contractor: [
+    {
+      name: "Marco D.",
+      city: "Tempe",
+      stars: 5,
+      body: "They showed up when they said, left the yard clean, and put the bid in writing. That is all I needed.",
+      bodyEs: "Llegaron cuando dijeron, dejaron el patio limpio y pusieron el presupuesto por escrito. Eso era todo lo que necesitaba.",
+    },
+    {
+      name: "Elena R.",
+      city: "Mesa",
+      stars: 5,
+      body: "Leak after the first monsoon. They found it, sent photos, and fixed it the same week.",
+      bodyEs: "Goteras después del primer monzón. La encontraron, mandaron fotos y la arreglaron la misma semana.",
+    },
+    {
+      name: "James P.",
+      city: "Chandler",
+      stars: 4,
+      body: "Straight talk on price. No fake “we’ve done 10,000 roofs” claims — just the work.",
+      bodyEs: "Precio claro. Sin pretender “10,000 techos” — solo el trabajo.",
+    },
+  ],
+  salon: [
+    {
+      name: "Sofia M.",
+      city: "Scottsdale",
+      stars: 5,
+      body: "Unhurried color and a cut that still looks like me. Booking by phone was easy.",
+      bodyEs: "Color sin prisa y un corte que sigue pareciéndose a mí. Agendar por teléfono fue fácil.",
+    },
+    {
+      name: "Priya S.",
+      city: "Phoenix",
+      stars: 5,
+      body: "They told me when they were full instead of squeezing me in. I went back.",
+      bodyEs: "Me dijeron cuando estaban llenos en vez de meterse a la fuerza. Volví.",
+    },
+    {
+      name: "Ana L.",
+      city: "Tempe",
+      stars: 4,
+      body: "Calm chairs, honest books, and they remember how I like the blowout.",
+      bodyEs: "Sillones tranquilos, agenda honesta y recuerdan cómo me gusta el blowout.",
+    },
+  ],
+  restaurant: [
+    {
+      name: "Luis G.",
+      city: "Mesa",
+      stars: 5,
+      body: "Short menu, real plates, patio fans that actually help in June.",
+      bodyEs: "Menú corto, platos de verdad, ventiladores en el patio que sí ayudan en junio.",
+    },
+    {
+      name: "Hannah K.",
+      city: "Gilbert",
+      stars: 5,
+      body: "We called about a tray for the office. They had it ready and labeled.",
+      bodyEs: "Llamamos por una charola para la oficina. La tenían lista y etiquetada.",
+    },
+    {
+      name: "Diego V.",
+      city: "Phoenix",
+      stars: 4,
+      body: "Neighborhood food, not a gimmick. Hours on the site matched the door.",
+      bodyEs: "Comida de barrio, no un truco. El horario del sitio coincidía con la puerta.",
+    },
+  ],
+  professional: [
+    {
+      name: "Rachel T.",
+      city: "Phoenix",
+      stars: 5,
+      body: "Plain answers and a follow-up email I could keep. No jargon fog.",
+      bodyEs: "Respuestas claras y un correo de seguimiento que pude guardar. Sin jerga.",
+    },
+    {
+      name: "Omar H.",
+      city: "Glendale",
+      stars: 5,
+      body: "They picked up. That alone put them ahead of the last office I tried.",
+      bodyEs: "Contestaron. Eso solo los puso adelante de la última oficina que intenté.",
+    },
+    {
+      name: "Kim B.",
+      city: "Peoria",
+      stars: 4,
+      body: "First meeting was 30 minutes and I left with next steps on paper.",
+      bodyEs: "La primera cita fue de 30 minutos y salí con los siguientes pasos en papel.",
+    },
+  ],
+  landscaping: [
+    {
+      name: "Jordan H.",
+      city: "Phoenix",
+      stars: 5,
+      body: "Desert plants that lived through July. Drip lines actually drip.",
+      bodyEs: "Plantas del desierto que sobrevivieron julio. El goteo sí gotea.",
+    },
+    {
+      name: "Maria C.",
+      city: "Ahwatukee",
+      stars: 5,
+      body: "They hauled the debris and swept the walk. Yard looks finished, not abandoned.",
+      bodyEs: "Se llevaron los escombros y barrieron. El patio se ve terminado, no abandonado.",
+    },
+    {
+      name: "Chris N.",
+      city: "Scottsdale",
+      stars: 4,
+      body: "No fake “500 projects” banner. Just a crew, a phone number, and a clean rock yard.",
+      bodyEs: "Sin un letrero falso de “500 proyectos”. Una cuadrilla, un teléfono y un patio de piedra limpio.",
+    },
+  ],
+  tax: [
+    {
+      name: "Rosa M.",
+      city: "Phoenix",
+      stars: 5,
+      body: "Brought my W-2 and ID. They told me what was missing and finished the return.",
+      bodyEs: "Llevé mi W-2 e identificación. Me dijeron qué faltaba y terminaron la declaración.",
+    },
+    {
+      name: "Andre W.",
+      city: "Maryvale",
+      stars: 5,
+      body: "Small-business return without being pushed into software I do not use.",
+      bodyEs: "Declaración de negocio pequeño sin que me empujaran a un programa que no uso.",
+    },
+    {
+      name: "Lucia F.",
+      city: "Mesa",
+      stars: 4,
+      body: "Hours on the door matched the site. I called, they answered, I went in.",
+      bodyEs: "El horario de la puerta coincidía con el sitio. Llamé, contestaron, fui.",
+    },
+  ],
+};
+
+export function photoAlt(photo: ShopPhoto, locale: Locale) {
+  return locale === "es" ? photo.altEs : photo.alt;
+}
+
+export function serviceName(name: string, locale: Locale) {
+  if (locale === "en") return name;
+  return SERVICE_BLURBS[name]?.nameEs ?? name;
+}
+
+export function serviceBlurb(name: string, locale: Locale) {
+  const row = SERVICE_BLURBS[name];
+  if (!row) return "";
+  return locale === "es" ? row.blurbEs : row.blurb;
+}

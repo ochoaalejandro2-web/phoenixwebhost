@@ -42,8 +42,9 @@ Buying launch and care still works with Boost and Business Email unchecked. Each
 
 ## Request a demo
 
-The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the six templates. That creates a **preview** at `/demo/{id}` — a mockup of their shop, not the paid live site.
+The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the six templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
 
+- Slim bar at the top: **This is a preview, not live yet**, plus **Purchase / Go live $200+$69**. Optional Local Boost / Business Email stay behind that button. Color/logo tweaks stay behind a small control. The bar is not an admin dashboard sitting on top of a wireframe.
 - The visitor gets an email with the preview link and the price: **$200 to launch + $69/month** (first payment **$269** if they pay launch and the first month together).
 - **Purchase / Go live** on the demo uses the existing Stripe Checkout for $200 + $69/month, plus optional Local Boost / Business Email.
 - A small chat on the demo can change logo text, colors, one extra sentence, or one extra page. Extra pages ($75–$150) and logos ($100–$300) stay quoted. No unlimited AI design.

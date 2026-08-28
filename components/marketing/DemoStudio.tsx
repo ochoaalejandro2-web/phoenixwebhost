@@ -28,12 +28,14 @@ export function DemoPurchase({
   stripeReady,
   boostReady,
   emailReady,
+  compact = false,
 }: {
   lead: Lead;
   locale: Locale;
   stripeReady: boolean;
   boostReady: boolean;
   emailReady: boolean;
+  compact?: boolean;
 }) {
   const c = t(locale);
   const [includeBoost, setIncludeBoost] = useState(lead.wantsLocalBoost);
@@ -90,7 +92,7 @@ export function DemoPurchase({
   }
 
   return (
-    <div className="grid gap-3">
+    <div className={compact ? "grid gap-2" : "grid gap-3"}>
       <AddonToggle
         checked={includeBoost}
         onChange={setIncludeBoost}
@@ -127,7 +129,15 @@ export function DemoPurchase({
   );
 }
 
-export function DemoChat({ lead, locale }: { lead: Lead; locale: Locale }) {
+export function DemoChat({
+  lead,
+  locale,
+  compact = false,
+}: {
+  lead: Lead;
+  locale: Locale;
+  compact?: boolean;
+}) {
   const c = t(locale);
   const router = useRouter();
   const [lines, setLines] = useState<ChatLine[]>([
@@ -169,17 +179,31 @@ export function DemoChat({ lead, locale }: { lead: Lead; locale: Locale }) {
   }
 
   return (
-    <aside className="rounded-[1.5rem] border border-zinc-200 bg-snow p-5 text-ink-black">
-      <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.demoChatTitle}</p>
-      <p className="mt-2 text-sm text-body">{c.demoQuoted}</p>
+    <aside
+      className={
+        compact
+          ? "text-white"
+          : "rounded-[1.5rem] border border-zinc-200 bg-snow p-5 text-ink-black"
+      }
+    >
+      <p className={compact ? "text-xs uppercase tracking-[0.18em] text-lime" : "text-xs uppercase tracking-[0.18em] text-lime"}>
+        {c.demoChatTitle}
+      </p>
+      <p className={compact ? "mt-2 text-sm text-white/70" : "mt-2 text-sm text-body"}>
+        {c.demoQuoted}
+      </p>
       <div className="mt-4 grid max-h-56 gap-2 overflow-y-auto text-sm">
         {lines.map((line, index) => (
           <p
             key={`${line.from}-${index}`}
             className={
               line.from === "you"
-                ? "rounded-2xl bg-header px-3 py-2 text-white"
-                : "rounded-2xl bg-zinc-50 px-3 py-2 text-body"
+                ? compact
+                  ? "rounded-2xl bg-white/10 px-3 py-2 text-white"
+                  : "rounded-2xl bg-header px-3 py-2 text-white"
+                : compact
+                  ? "rounded-2xl bg-white/5 px-3 py-2 text-white/80"
+                  : "rounded-2xl bg-zinc-50 px-3 py-2 text-body"
             }
           >
             {line.text}
@@ -193,7 +217,11 @@ export function DemoChat({ lead, locale }: { lead: Lead; locale: Locale }) {
             type="button"
             disabled={busy}
             onClick={() => send({ demo: { accent: row.id } })}
-            className="rounded-full border border-zinc-200 px-3 py-1 text-xs hover:border-lime"
+            className={
+              compact
+                ? "rounded-full border border-white/20 px-3 py-1 text-xs hover:border-lime"
+                : "rounded-full border border-zinc-200 px-3 py-1 text-xs hover:border-lime"
+            }
           >
             {locale === "es" ? row.labelEs : row.label}
           </button>
@@ -204,13 +232,17 @@ export function DemoChat({ lead, locale }: { lead: Lead; locale: Locale }) {
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
           placeholder={c.demoChatPlaceholder}
-          className="field-studio mt-0"
+          className={compact ? "field-studio mt-0 bg-white" : "field-studio mt-0"}
           maxLength={240}
         />
         <button
           type="submit"
           disabled={busy || !draft.trim()}
-          className="btn-ghost rounded-full px-4 py-2 text-sm disabled:opacity-50"
+          className={
+            compact
+              ? "inline-flex items-center justify-center rounded-full border border-lime px-4 py-2 text-sm text-white disabled:opacity-50"
+              : "btn-ghost rounded-full px-4 py-2 text-sm disabled:opacity-50"
+          }
         >
           {c.demoChatSend}
         </button>
@@ -230,29 +262,95 @@ export function DemoChat({ lead, locale }: { lead: Lead; locale: Locale }) {
 export function DemoBar({
   lead,
   locale,
+  stripeReady,
+  boostReady,
+  emailReady,
 }: {
   lead: Lead;
   locale: Locale;
+  stripeReady: boolean;
+  boostReady: boolean;
+  emailReady: boolean;
 }) {
   const c = t(locale);
+  const [panel, setPanel] = useState<"buy" | "tweak" | null>(null);
+
+  function toggle(next: "buy" | "tweak") {
+    setPanel((current) => (current === next ? null : next));
+  }
+
   return (
-    <div className="border-b border-zinc-200 bg-header text-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-lime">
+    <div className="studio sticky top-0 z-50 border-b border-white/10 bg-header text-white">
+      <div className="mx-auto flex max-w-[90rem] items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[11px] font-semibold uppercase tracking-[0.18em] text-lime">
             {c.demoKicker}
           </p>
-          <p className="mt-1 max-w-2xl text-sm text-white/80">
-            {lead.businessName} · {c.demoBanner}
+          <p className="mt-0.5 hidden truncate text-xs text-white/70 sm:block">
+            {c.demoBanner}
           </p>
         </div>
         <Link
           href={locale === "es" ? "/es/request" : "/request"}
-          className="text-xs text-white/60 hover:text-lime"
+          className="hidden text-xs text-white/50 hover:text-lime sm:inline"
         >
           Phoenixwebhost
         </Link>
+        {leadHasExtraPage(lead.demo) ? (
+          <Link
+            href={extraDemoPath(lead.id)}
+            className="hidden text-xs text-white/70 hover:text-lime md:inline"
+          >
+            {c.demoExtraNav}
+          </Link>
+        ) : null}
+        <button
+          type="button"
+          onClick={() => toggle("tweak")}
+          className="rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/80 hover:border-lime hover:text-lime"
+        >
+          {c.demoChatTitle}
+        </button>
+        {lead.purchased ? (
+          <p className="rounded-full bg-lime/15 px-3 py-1.5 text-xs text-lime">
+            {c.demoPurchased}
+          </p>
+        ) : (
+          <button
+            type="button"
+            onClick={() => toggle("buy")}
+            className="btn-lime shrink-0 rounded-full px-3 py-1.5 text-xs sm:px-4 sm:text-sm"
+          >
+            <span className="sm:hidden">{locale === "es" ? "Publicar $200+$69" : "Go live $200+$69"}</span>
+            <span className="hidden sm:inline">{c.formPay}</span>
+          </button>
+        )}
       </div>
+      {panel === "buy" && !lead.purchased ? (
+        <div className="border-t border-white/10 bg-header">
+          <div className="mx-auto grid max-w-xl gap-3 px-4 py-4 sm:px-6">
+            <p className="text-sm text-white/80">{c.demoPrice}</p>
+            <p className="text-xs text-white/55">{c.demoEmailNote}</p>
+            <div className="rounded-2xl bg-white p-4 text-ink-black">
+              <DemoPurchase
+                lead={lead}
+                locale={locale}
+                stripeReady={stripeReady}
+                boostReady={boostReady}
+                emailReady={emailReady}
+                compact
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {panel === "tweak" ? (
+        <div className="border-t border-white/10 bg-header">
+          <div className="mx-auto max-w-xl px-4 py-4 sm:px-6">
+            <DemoChat lead={lead} locale={locale} compact />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
