@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { VisitBeacon } from "@/components/marketing/VisitBeacon";
 import { COMPANY } from "@/lib/config";
 import { homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
@@ -49,6 +50,7 @@ export function StudioShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="studio flex min-h-full flex-col bg-snow text-ink-black">
       <CompanyJsonLd />
+      <VisitBeacon />
       {children}
     </div>
   );
@@ -60,8 +62,8 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   return (
     <header className="sticky top-0 z-30 bg-header">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-        <Link href={home} aria-label="Phoenixwebhost home">
-          <Logo tone="dark" />
+        <Link href={home} aria-label="Phoenixwebhost home" className="min-w-0 shrink">
+          <Logo tone="dark" compactOnMobile />
         </Link>
         <nav className="hidden items-center gap-7 text-sm text-white/85 md:flex">
           <a href={`${home}#work`} className="hover:text-lime">
@@ -108,8 +110,10 @@ export function SiteFooter({ locale }: { locale: Locale }) {
     <footer className="mt-auto bg-header text-white">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-14 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-display text-lg text-white">{c.footerLegal}</p>
-          <p className="mt-2 text-sm text-white/60">
+          <Link href={homePath(locale)} aria-label="Phoenixwebhost home">
+            <Logo tone="dark" />
+          </Link>
+          <p className="mt-3 text-sm text-white/60">
             {COMPANY.owner} ·{" "}
             <a href={`mailto:${COMPANY.email}`} className="hover:text-lime">
               {COMPANY.email}

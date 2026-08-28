@@ -1,15 +1,19 @@
 export function Logo({
   className = "",
   tone = "light",
+  compactOnMobile = false,
 }: {
   className?: string;
   tone?: "light" | "dark";
+  compactOnMobile?: boolean;
 }) {
   const onDark = tone === "dark";
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <Mark size={32} />
-      <span className="leading-tight">
+      <span
+        className={`leading-tight ${compactOnMobile ? "hidden sm:block" : ""}`}
+      >
         <span
           className={`block font-display text-[1.05rem] font-semibold tracking-tight ${onDark ? "text-white" : "text-ink-black"}`}
         >
@@ -18,7 +22,7 @@ export function Logo({
         <span
           className={`block text-[0.68rem] uppercase tracking-[0.16em] ${onDark ? "text-white/55" : "text-body"}`}
         >
-          Inc. · Phoenix, AZ
+          INC. · PHOENIX, AZ
         </span>
       </span>
     </span>
@@ -34,29 +38,20 @@ export function Mark({ size = 36 }: { size?: number }) {
       fill="none"
       aria-hidden="true"
     >
-      <rect width="32" height="32" rx="8" fill="#FFFFFF" />
       <rect
-        x="0.75"
-        y="0.75"
-        width="30.5"
-        height="30.5"
-        rx="7.25"
+        x="0.6"
+        y="0.6"
+        width="30.8"
+        height="30.8"
+        rx="7.2"
+        fill="#FFFFFF"
         stroke="#0A0A0A"
         strokeWidth="1.2"
       />
       <path
-        d="M6 22 L16 8 L26 22"
-        stroke="#00C851"
-        strokeWidth="2.4"
-        strokeLinejoin="round"
-        fill="none"
-      />
-      <path
-        d="M11 22 L16 14 L21 22"
-        stroke="#00C851"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-        fill="none"
+        fill="#00C851"
+        fillRule="evenodd"
+        d="M16 5.89 L25.6 25.28 L23.87 25.28 L20.22 21.01 L18.78 25.28 L16 17.14 L13.22 25.28 L11.78 21.01 L8.13 25.28 L6.4 25.28 Z M16 11.32 L18.5 15.2 L13.5 15.2 Z"
       />
     </svg>
   );
