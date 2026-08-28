@@ -5,9 +5,15 @@ import {
   stripeConfigured,
   stripeEmailConfigured,
 } from "@/lib/config";
+import { buildClientFromLead } from "@/lib/demo";
 import { getStripe } from "@/lib/stripe";
-import { getClient, getLead, listClients, upsertClient } from "@/lib/store";
-import { uniqueSlug } from "@/lib/slug";
+import {
+  getClient,
+  getLead,
+  listClients,
+  updateLead,
+  upsertClient,
+} from "@/lib/store";
 import type { Client } from "@/lib/types";
 
 export const CHECKOUT_KINDS = [
@@ -127,6 +133,7 @@ export async function createCheckoutForClient(
     includeEmail?: boolean;
     boostOnly?: boolean;
     emailOnly?: boolean;
+    leadId?: string;
   } = {},
 ) {
   const kind = resolveCheckoutKind({
@@ -161,6 +168,7 @@ export async function createCheckoutForClient(
     cancel_url: `${publicSiteUrl()}/checkout/cancel`,
     metadata: {
       clientId: client.id,
+      leadId: options.leadId || "",
       checkoutKind: kind,
       localBoost: includeBoost ? "true" : "false",
       businessEmail: includeEmail ? "true" : "false",
@@ -168,6 +176,7 @@ export async function createCheckoutForClient(
     subscription_data: {
       metadata: {
         clientId: client.id,
+        leadId: options.leadId || "",
         checkoutKind: kind,
         localBoost: includeBoost ? "true" : "false",
         businessEmail: includeEmail ? "true" : "false",
@@ -179,67 +188,17 @@ export async function createCheckoutForClient(
   return session.url;
 }
 
-function newClientFromLeadFields(
-  lead: NonNullable<Awaited<ReturnType<typeof getLead>>>,
-  taken: string[],
-): Client {
-  const notes: Client["notes"] = [];
-  if (lead.wantsLocalBoost) {
-    notes.push({
-      id: `note_${crypto.randomUUID()}`,
-      body: "Asked for optional Local Boost at signup (not paid until checkout completes).",
-      createdAt: new Date().toISOString(),
-    });
-  }
-  if (lead.wantsBusinessEmail) {
-    notes.push({
-      id: `note_${crypto.randomUUID()}`,
-      body: "Asked for optional Business Email at signup (not paid until checkout completes).",
-      createdAt: new Date().toISOString(),
-    });
-  }
-  return {
-    id: `cli_${crypto.randomUUID()}`,
-    businessName: lead.businessName,
-    slug: uniqueSlug(lead.businessName, taken),
-    contactName: lead.name,
-    email: lead.email,
-    phone: lead.phone,
-    address: "",
-    city: lead.city || "Arizona",
-    hours: "",
-    tagline: lead.businessName,
-    about: lead.message || `${lead.businessName} is a local Arizona business.`,
-    services: [],
-    template: "professional",
-    customDomain: null,
-    siteStatus: "paused",
-    paymentStatus: "unpaid",
-    lastPaymentAt: null,
-    nextInvoiceAt: null,
-    stripeCustomerId: null,
-    stripeSubscriptionId: null,
-    stripeBoostSubscriptionId: null,
-    localBoost: false,
-    stripeEmailSubscriptionId: null,
-    businessEmail: false,
-    reminderSentAt: null,
-    overdueSince: null,
-    offlineAt: null,
-    filesKeptUntil: null,
-    takenDownAt: null,
-    notes,
-    editRequests: [],
-    createdAt: new Date().toISOString(),
-  };
-}
-
 export async function clientFromLead(leadId: string) {
   const lead = await getLead(leadId);
   if (!lead) return null;
+  if (lead.clientId) {
+    const existing = await getClient(lead.clientId);
+    if (existing) return existing;
+  }
   const taken = (await listClients()).map((c) => c.slug);
-  const client = newClientFromLeadFields(lead, taken);
+  const client = buildClientFromLead(lead, taken);
   await upsertClient(client);
+  await updateLead(lead.id, { clientId: client.id });
   return client;
 }
 

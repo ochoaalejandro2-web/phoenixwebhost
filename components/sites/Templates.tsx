@@ -1,5 +1,6 @@
 import { TaxOfficeSite } from "@/components/sites/TaxOfficeSite";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
+import { isPreviewClient, siteHomeHref } from "@/lib/demo";
 import type { Client, ContactNotice, Locale } from "@/lib/types";
 
 type SiteView = {
@@ -27,15 +28,17 @@ export function SiteChrome({
         className={`border-b px-5 py-4 ${dark ? "border-white/10" : "border-line bg-paper/90"}`}
       >
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
-          <a href={`/s/${client.slug}`} className="font-display text-lg">
-            {client.businessName}
+          <a href={siteHomeHref(client)} className="font-display text-lg">
+            {client.logoText?.trim() || client.businessName}
           </a>
+          {client.phone.trim() ? (
           <a
             href={telHref(client.phone)}
-            className={`text-sm font-semibold ${dark ? "text-[#e8b489]" : "text-clay"}`}
+            className={`site-phone text-sm font-semibold ${dark ? "text-[#e8b489]" : "text-clay"}`}
           >
             {client.phone}
           </a>
+          ) : null}
         </div>
       </header>
       {children}
@@ -100,6 +103,20 @@ function ContactBlock({
   invert?: boolean;
   notice?: ContactNotice | null;
 }) {
+  if (isPreviewClient(client)) {
+    return (
+      <div
+        id="contact"
+        className={`mt-8 rounded-2xl p-6 ${invert ? "bg-white/8" : "border border-line bg-paper"}`}
+      >
+        <p className="font-display text-xl">Contact</p>
+        <p className={`mt-2 text-sm ${invert ? "text-white/70" : "text-ink-soft"}`}>
+          This preview does not send messages. On the live site, this form emails
+          the business.
+        </p>
+      </div>
+    );
+  }
   return (
     <form
       id="contact"
@@ -133,7 +150,7 @@ export function ContractorSite({ client, notice }: SiteView) {
         <p className="mt-5 max-w-2xl text-lg text-white/75">{client.about}</p>
         <a
           href={`tel:${client.phone.replace(/[^\d+]/g, "")}`}
-          className="mt-8 inline-block rounded-full bg-[#c45c26] px-6 py-3 font-semibold"
+          className="site-cta mt-8 inline-block rounded-full bg-[#c45c26] px-6 py-3 font-semibold"
         >
           Call {client.phone}
         </a>
@@ -254,12 +271,12 @@ export function LandscapingSite({ client, notice }: SiteView) {
           </p>
         ) : null}
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
-          <a href={`/s/${client.slug}`} className="font-display text-lg">
-            {client.businessName}
+          <a href={siteHomeHref(client)} className="font-display text-lg">
+            {client.logoText?.trim() || client.businessName}
           </a>
           <a
             href={telHref(client.phone)}
-            className="text-sm font-semibold text-[#3d5a32]"
+            className="site-phone text-sm font-semibold text-[#3d5a32]"
           >
             {client.phone}
           </a>
@@ -277,7 +294,7 @@ export function LandscapingSite({ client, notice }: SiteView) {
             <p className="mt-5 max-w-2xl text-lg text-[#4a5346]">{client.about}</p>
             <a
               href={telHref(client.phone)}
-              className="mt-8 inline-block rounded-full bg-[#2f4a38] px-6 py-3 font-semibold text-[#f4efe6]"
+              className="site-cta mt-8 inline-block rounded-full bg-[#2f4a38] px-6 py-3 font-semibold text-[#f4efe6]"
             >
               Call {client.phone}
             </a>

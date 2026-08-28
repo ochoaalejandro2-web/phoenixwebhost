@@ -63,6 +63,24 @@ export type Client = {
   editRequests: EditRequest[];
   createdAt: string;
   sample?: boolean;
+  /** Preview-only header label. Paid sites keep using businessName. */
+  logoText?: string;
+};
+
+export type DemoAccent =
+  | "template"
+  | "lime"
+  | "clay"
+  | "navy"
+  | "rose"
+  | "forest";
+
+export type DemoTweaks = {
+  logoText: string;
+  accent: DemoAccent;
+  extraSentence: string;
+  extraPageTitle: string;
+  extraPageBody: string;
 };
 
 export type Lead = {
@@ -74,8 +92,12 @@ export type Lead = {
   city: string;
   message: string;
   locale: Locale;
+  template: TemplateId;
   wantsLocalBoost: boolean;
   wantsBusinessEmail: boolean;
+  purchased: boolean;
+  clientId: string | null;
+  demo: DemoTweaks;
   createdAt: string;
 };
 

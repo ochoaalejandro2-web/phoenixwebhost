@@ -114,6 +114,14 @@ body {
   color: #00c851;
 }
 
+.demo-preview[data-accent]:not([data-accent="template"]) .site-phone {
+  color: var(--site-accent) !important;
+}
+
+.demo-preview[data-accent]:not([data-accent="template"]) .site-cta {
+  background: var(--site-accent) !important;
+}
+
 /* Tax office template — white, black, neon. */
 .theme-tax-office {
   color: #000000;

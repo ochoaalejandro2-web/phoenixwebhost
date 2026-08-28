@@ -20,6 +20,7 @@ export async function POST(request: Request) {
       includeEmail: Boolean(body.includeEmail),
       boostOnly: Boolean(body.boostOnly),
       emailOnly: Boolean(body.emailOnly),
+      leadId: body.leadId,
     });
     return NextResponse.json({ url });
   } catch (error) {

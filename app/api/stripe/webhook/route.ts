@@ -18,6 +18,9 @@ import {
   getClient,
   getClientByStripeCustomer,
   getClientByStripeSubscription,
+  getLead,
+  getLeadByClientId,
+  updateLead,
   upsertClient,
 } from "@/lib/store";
 import { getStripe } from "@/lib/stripe";
@@ -217,6 +220,13 @@ function clearAddonSubscription(client: Client, subscriptionId: string): Client 
   return withAddonNotes(next, notes);
 }
 
+async function markLeadPurchased(clientId: string, leadId?: string) {
+  const fromMeta = leadId ? await getLead(leadId) : null;
+  const lead = fromMeta || (await getLeadByClientId(clientId));
+  if (!lead) return;
+  await updateLead(lead.id, { purchased: true, clientId });
+}
+
 async function findClientFromEvent(event: Stripe.Event) {
   const object = event.data.object as {
     metadata?: { clientId?: string };
@@ -297,6 +307,9 @@ export async function POST(request: Request) {
     if (addOns.boost) next = applyLocalBoostPurchased(next);
     if (addOns.email) next = applyBusinessEmailPurchased(next);
     await upsertClient(next);
+    if (kindHasPlan(resolvedKind)) {
+      await markLeadPurchased(next.id, session.metadata?.leadId);
+    }
   }
 
   if (event.type === "invoice.paid") {
