@@ -345,12 +345,17 @@ function matchesTokens(haystack: string, tokens: string[]) {
   return tokens.every((token) => haystack.includes(token));
 }
 
+function synonymScore(demo: PublicDemo, tokens: string[]) {
+  const synonyms = normalizeSearchText(TEMPLATE_SYNONYMS[demo.template].join(" "));
+  return tokens.every((token) => synonyms.includes(token)) ? 0 : 1;
+}
+
 export function filterPublicDemos(query: string): PublicDemo[] {
   const tokens = searchTokens(query);
   if (tokens.length === 0) return PUBLIC_DEMOS;
   return PUBLIC_DEMOS.filter((demo) =>
     matchesTokens(demoSearchText(demo), tokens),
-  );
+  ).sort((a, b) => synonymScore(a, tokens) - synonymScore(b, tokens));
 }
 
 export function filterTemplates(query: string): TemplateId[] {

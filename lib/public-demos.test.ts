@@ -58,6 +58,7 @@ test("trade, city, name, and synonym queries find the matching live demo", () =>
   assert.equal(filterPublicDemos("manitas")[0]?.slug, "ironwood-handyman");
   assert.equal(filterPublicDemos("Avondale")[0]?.slug, "ironwood-handyman");
   assert.equal(filterPublicDemos("Ironwood")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("repair")[0]?.slug, "ironwood-handyman");
   assert.ok(filterPublicDemos("repair").some((row) => row.slug === "ironwood-handyman"));
 
   assert.equal(filterPublicDemos("roofing")[0]?.slug, "desert-peak-roofing");
