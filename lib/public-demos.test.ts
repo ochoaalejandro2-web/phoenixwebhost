@@ -14,6 +14,7 @@ test("public demos are the real repo starting points, not invented shops", () =>
     "casa-luna-salon",
     "desert-peak-roofing",
     "hola-tax-service",
+    "ironwood-handyman",
     "mesa-street-kitchen",
     "palo-verde-yards",
   ]);
@@ -46,6 +47,19 @@ test("trade, city, name, and synonym queries find the matching live demo", () =>
     filterPublicDemos("Phoenix").some((row) => row.slug === "palo-verde-yards"),
   );
 
+  assert.equal(filterPublicDemos("handyman")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("handy man")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("home repair")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("fixer")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("drywall")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("painting")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("odd jobs")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("reparaciones")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("manitas")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("Avondale")[0]?.slug, "ironwood-handyman");
+  assert.equal(filterPublicDemos("Ironwood")[0]?.slug, "ironwood-handyman");
+  assert.ok(filterPublicDemos("repair").some((row) => row.slug === "ironwood-handyman"));
+
   assert.equal(filterPublicDemos("roofing")[0]?.slug, "desert-peak-roofing");
   assert.equal(filterPublicDemos("Tempe")[0]?.slug, "desert-peak-roofing");
   assert.equal(filterPublicDemos("Desert Peak")[0]?.slug, "desert-peak-roofing");
@@ -69,12 +83,15 @@ test("unknown queries return no demos", () => {
 
 test("template starting points stay mapped to those live demo URLs", () => {
   assert.equal(demoForTemplate("contractor")?.href, "/s/desert-peak-roofing");
+  assert.equal(demoForTemplate("handyman")?.href, "/s/ironwood-handyman");
   assert.equal(demoForTemplate("salon")?.href, "/s/casa-luna-salon");
   assert.equal(demoForTemplate("restaurant")?.href, "/s/mesa-street-kitchen");
   assert.equal(demoForTemplate("landscaping")?.href, "/s/palo-verde-yards");
   assert.equal(demoForTemplate("tax")?.href, "/s/hola-tax-service");
   assert.equal(demoForTemplate("professional"), undefined);
   assert.ok(filterTemplates("landscaping").includes("landscaping"));
+  assert.ok(filterTemplates("handyman").includes("handyman"));
+  assert.ok(filterTemplates("manitas").includes("handyman"));
   assert.ok(filterTemplates("professional").includes("professional"));
 });
 

@@ -42,7 +42,7 @@ Buying launch and care still works with Boost and Business Email unchecked. Each
 
 ## Request a demo
 
-The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the six templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
+The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the seven templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
 
 - Slim bar at the top: **This is a preview, not live yet**, plus **Purchase / Go live $200+$69**. Optional Local Boost / Business Email stay behind that button. Color/logo tweaks stay behind a small control. The bar is not an admin dashboard sitting on top of a wireframe.
 - The visitor gets an email with the preview link and the price: **$200 to launch + $69/month** (first payment **$269** if they pay launch and the first month together).
@@ -72,6 +72,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
 | Demo restaurant | `/s/mesa-street-kitchen` (overdue, offline) |
 | Demo landscaping (sample) | `/s/palo-verde-yards` (paid, live) |
+| Demo handyman (sample) | `/s/ironwood-handyman` (paid, live) |
 | Hola Tax (tax office template) | `/s/hola-tax-service` (paid, live) · client portal `/s/hola-tax-service/portal` |
 
 **Owner login**
@@ -153,8 +154,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 - Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost or Business Email
 - Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, Local Boost and Business Email status, pause / offline toggle. Existing clients can add Boost or Business Email later from this page.
-- **New client** generates a site from a template (contractor, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
-- Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the six templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
+- **New client** generates a site from a template (contractor, handyman, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
+- Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the seven templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 - Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
 - **Site visits** on the dashboard (today / last 7 days / last 30 days) count public Phoenixwebhost page opens. Production also sends pageviews to [Vercel Web Analytics](https://vercel.com/docs/analytics) (`@vercel/analytics` in the root layout). Enable Analytics on the Vercel project to see the same traffic there. No Google Analytics and no cookie banner.

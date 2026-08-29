@@ -1,4 +1,5 @@
 import { monthKey } from "@/lib/slug";
+import { mergeMissingBySlug } from "@/lib/seed-merge";
 import type { AppState, Client } from "@/lib/types";
 
 function isoDaysFromNow(days: number) {
@@ -207,6 +208,54 @@ function demoClients(): Client[] {
       sample: true,
     },
     {
+      id: "cli_ironwood_handyman",
+      businessName: "Ironwood Handyman",
+      slug: "ironwood-handyman",
+      contactName: "Diego Morales",
+      email: "diego@ironwoodhandyman.example",
+      phone: "(623) 555-0144",
+      address: "1145 N Dysart Rd",
+      city: "Avondale, AZ",
+      hours: "Mon–Sat 7:00am–6:00pm",
+      tagline: "Home repairs, drywall, and odd jobs — written before we start.",
+      about:
+        "Sample layout for an Arizona handyman shop — not a live customer. Ironwood Handyman is the placeholder name. A real Avondale or Phoenix repair crew would put their phone, hours, and services here: home repairs, drywall, painting, fixtures, and odd jobs. No project-count claims.",
+      services: [
+        "Home repairs",
+        "Drywall",
+        "Interior painting",
+        "Fixture install",
+        "Odd jobs",
+      ],
+      template: "handyman",
+      customDomain: null,
+      siteStatus: "live",
+      paymentStatus: "paid",
+      lastPaymentAt: isoDaysFromNow(-6),
+      nextInvoiceAt: isoDaysFromNow(24),
+      stripeCustomerId: "cus_demo_ironwood",
+      stripeSubscriptionId: "sub_demo_ironwood",
+      stripeBoostSubscriptionId: null,
+      localBoost: false,
+      stripeEmailSubscriptionId: null,
+      businessEmail: false,
+      reminderSentAt: null,
+      overdueSince: null,
+      offlineAt: null,
+      filesKeptUntil: null,
+      takenDownAt: null,
+      notes: [
+        {
+          id: "note_ih_1",
+          body: "Sample handyman site for the seventh template. Paid and live like Palo Verde Yards. Not a customer account.",
+          createdAt: isoDaysFromNow(-6),
+        },
+      ],
+      editRequests: [],
+      createdAt: isoDaysFromNow(-10),
+      sample: true,
+    },
+    {
       id: "cli_hola_tax",
       businessName: "Hola Tax Service LLC",
       slug: "hola-tax-service",
@@ -255,6 +304,15 @@ function demoClients(): Client[] {
       createdAt: isoDaysFromNow(-30),
     },
   ];
+}
+
+export function mergeMissingSeedClients(state: AppState): {
+  state: AppState;
+  added: boolean;
+} {
+  const { items, added } = mergeMissingBySlug(state.clients, demoClients());
+  if (!added) return { state, added: false };
+  return { state: { ...state, clients: items }, added: true };
 }
 
 export function createSeedState(): AppState {

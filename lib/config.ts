@@ -47,6 +47,13 @@ export const TEMPLATES: {
     blurbEs: "Techados, A/C, plomería y oficios.",
   },
   {
+    id: "handyman",
+    name: "Handyman",
+    nameEs: "Manitas y reparaciones",
+    blurb: "Home repairs, drywall, painting, fixtures, and odd jobs.",
+    blurbEs: "Reparaciones del hogar, tablaroca, pintura, accesorios y trabajos varios.",
+  },
+  {
     id: "salon",
     name: "Salon & beauty",
     nameEs: "Salón y belleza",

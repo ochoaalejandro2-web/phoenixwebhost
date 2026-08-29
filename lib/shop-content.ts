@@ -60,6 +60,35 @@ export const SHOP_PHOTOS: Record<TemplateId, {
       },
     ],
   },
+  handyman: {
+    hero: {
+      src: "/templates/handyman/hero.jpg",
+      alt: "Crew cutting trim inside a Phoenix-area home",
+      altEs: "Cuadrilla cortando moldura dentro de una casa del área de Phoenix",
+    },
+    gallery: [
+      {
+        src: "/templates/handyman/photo-1.jpg",
+        alt: "Handyman on a drywall repair job",
+        altEs: "Manitas en un trabajo de tablaroca",
+      },
+      {
+        src: "/templates/handyman/photo-2.jpg",
+        alt: "Interior painting after wall prep",
+        altEs: "Pintura interior después de preparar la pared",
+      },
+      {
+        src: "/templates/handyman/photo-3.jpg",
+        alt: "Finished bathroom fixtures and tile",
+        altEs: "Accesorios y azulejo de baño terminados",
+      },
+      {
+        src: "/templates/handyman/photo-4.jpg",
+        alt: "Odd-job assembly with a drill on the floor",
+        altEs: "Armado de un trabajo varios con taladro en el piso",
+      },
+    ],
+  },
   salon: {
     hero: {
       src: "/templates/salon/hero.jpg",
@@ -228,6 +257,26 @@ export const SHOP_THEMES: Record<Exclude<TemplateId, "tax">, ShopTheme> = {
     field: "rounded-lg border border-white/15 bg-white px-3 py-2 text-ink",
     ghostBtn: "border border-white/70 text-white hover:bg-white hover:text-[#111816]",
   },
+  handyman: {
+    page: "bg-[#f6f3ec] text-[#171717]",
+    header: "bg-[#111111]/95 text-[#f6f3ec]",
+    headerBorder: "border-white/10",
+    name: "text-[#f6f3ec]",
+    nav: "text-white/70 hover:text-white",
+    call: "bg-[#00c851] text-[#111111]",
+    callHover: "hover:bg-[#00b348]",
+    kicker: "text-[#d4e8a0]",
+    body: "text-[#171717]",
+    muted: "text-[#4a4740]",
+    card: "bg-white",
+    cardBorder: "border-[#e4dfd4]",
+    sectionTitle: "text-[#171717]",
+    overlay: "bg-gradient-to-r from-black/80 via-black/50 to-black/15",
+    footer: "text-[#5c574e]",
+    footerBorder: "border-[#e4dfd4]",
+    field: "rounded-lg border border-[#e4dfd4] bg-white px-3 py-2 text-ink",
+    ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#111111]",
+  },
   salon: {
     page: "bg-[#fffaf6] text-[#1c1712]",
     header: "bg-[#fffaf6]/95 text-[#1c1712]",
@@ -343,6 +392,36 @@ export const SERVICE_BLURBS: Record<
     nameEs: "Llamadas de emergencia",
     blurb: "Storm tarps and same-week leak calls when the weather hits.",
     blurbEs: "Lonas por tormenta y llamadas de goteras en la misma semana.",
+  },
+  "Home repairs": {
+    nameEs: "Reparaciones del hogar",
+    blurb: "Doors that stick, outlets that fail, and the small jobs that pile up.",
+    blurbEs: "Puertas que traban, contactos que fallan y los trabajos chicos que se juntan.",
+  },
+  Drywall: {
+    nameEs: "Tablaroca",
+    blurb: "Holes, seams, and texture matched before paint goes on.",
+    blurbEs: "Hoyos, juntas y textura igualada antes de pintar.",
+  },
+  "Interior painting": {
+    nameEs: "Pintura interior",
+    blurb: "Rooms, trim, and clean edges — we cover floors before we roll.",
+    blurbEs: "Cuartos, molduras y orillas limpias — cubrimos el piso antes de pintar.",
+  },
+  "Fixture install": {
+    nameEs: "Instalación de accesorios",
+    blurb: "Lights, faucets, and hardware you already bought, put in right.",
+    blurbEs: "Luces, llaves y herrajes que ya compró, instalados bien.",
+  },
+  "Odd jobs": {
+    nameEs: "Trabajos varios",
+    blurb: "Mounting, assembly, and the one-off fix that is not a full remodel.",
+    blurbEs: "Colgar, armar y el arreglo suelto que no es una remodelación.",
+  },
+  "Punch-list fixes": {
+    nameEs: "Detalles y remates",
+    blurb: "A written list, then we knock it down. No mystery extras.",
+    blurbEs: "Una lista por escrito, y la vamos tachando. Sin extras misteriosos.",
   },
   Haircuts: {
     nameEs: "Cortes",
@@ -521,6 +600,29 @@ export const DEMO_REVIEWS: Record<TemplateId, SampleReview[]> = {
       stars: 4,
       body: "Straight talk on price. No fake “we’ve done 10,000 roofs” claims — just the work.",
       bodyEs: "Precio claro. Sin pretender “10,000 techos” — solo el trabajo.",
+    },
+  ],
+  handyman: [
+    {
+      name: "Teresa V.",
+      city: "Avondale",
+      stars: 5,
+      body: "Patched the drywall, painted the same week, and swept the hall. That is the job.",
+      bodyEs: "Taparon la tablaroca, pintaron la misma semana y barrieron el pasillo. Ese es el trabajo.",
+    },
+    {
+      name: "Ben K.",
+      city: "Goodyear",
+      stars: 5,
+      body: "Hung the lights I bought and left a written number. No upsell to a remodel.",
+      bodyEs: "Colgaron las luces que yo compré y dejaron un número por escrito. Sin venderme una remodelación.",
+    },
+    {
+      name: "Nia P.",
+      city: "Litchfield Park",
+      stars: 4,
+      body: "Odd jobs done in one Saturday. They answered the phone and showed up when they said.",
+      bodyEs: "Trabajos varios en un sábado. Contestaron el teléfono y llegaron cuando dijeron.",
     },
   ],
   salon: [

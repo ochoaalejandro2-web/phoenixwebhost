@@ -29,7 +29,7 @@ export const copy = {
     priceMonthHint: "per month, to stay live",
     launchTitle: "Launch — $200 once",
     launchBody:
-      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. Built for contractors, salons, restaurants, landscapers, tax offices, and local offices.",
+      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. Built for contractors, handymen, salons, restaurants, landscapers, tax offices, and local offices.",
     monthTitle: "Stay live — $69 / month",
     monthBody:
       "Keeps the site online and covers small care. This is not unlimited work.",
@@ -59,11 +59,11 @@ export const copy = {
       "We keep your files for 30 days.",
       "Then the site comes down.",
     ],
-    templatesTitle: "Six professional starting points",
+    templatesTitle: "Seven professional starting points",
     templatesLead:
       "We do not invent a brand-new design for $200. We start from a proven layout and fill it with your business.",
     searchLabel: "Search live demos",
-    searchPlaceholder: "Landscaping, salon, restaurant…",
+    searchPlaceholder: "Handyman, landscaping, salon…",
     searchHint: "Tap a result to open that live demo site.",
     searchEmpty: "No matching demos.",
     searchOpenDemo: "View live demo",
@@ -200,7 +200,7 @@ export const copy = {
     priceMonthHint: "al mes, para mantenerlo en línea",
     launchTitle: "Lanzamiento — $200 una vez",
     launchBody:
-      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Para contratistas, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
+      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Para contratistas, manitas, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
     monthTitle: "Mantenerlo en línea — $69 / mes",
     monthBody:
       "Mantiene el sitio publicado y cubre el cuidado pequeño. Esto no es trabajo ilimitado.",
@@ -230,11 +230,11 @@ export const copy = {
       "Guardamos sus archivos 30 días.",
       "Después se da de baja el sitio.",
     ],
-    templatesTitle: "Seis puntos de partida profesionales",
+    templatesTitle: "Siete puntos de partida profesionales",
     templatesLead:
       "Con $200 no inventamos una marca nueva. Partimos de un diseño comprobado y lo llenamos con su negocio.",
     searchLabel: "Buscar demos en vivo",
-    searchPlaceholder: "Jardinería, salón, restaurante…",
+    searchPlaceholder: "Manitas, jardinería, salón…",
     searchHint: "Toque un resultado para abrir esa demo en vivo.",
     searchEmpty: "No hay demos que coincidan.",
     searchOpenDemo: "Ver demo en vivo",
