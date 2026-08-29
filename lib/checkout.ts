@@ -1,9 +1,27 @@
+import { ADS_ALREADY_ACTIVE } from "@/lib/ads";
+import {
+  BOOST_NOT_CONFIGURED,
+  checkoutLineItems,
+  EMAIL_NOT_CONFIGURED,
+  kindHasBoost,
+  kindHasEmail,
+  kindHasLoud,
+  kindHasPlan,
+  kindHasTraffic,
+  LOUD_NOT_CONFIGURED,
+  resolveCheckoutKind,
+  STRIPE_NOT_CONFIGURED,
+  TRAFFIC_NOT_CONFIGURED,
+  type CheckoutKind,
+} from "@/lib/checkout-kind";
 import {
   COMPANY,
   publicSiteUrl,
   stripeBoostConfigured,
   stripeConfigured,
   stripeEmailConfigured,
+  stripeLoudConfigured,
+  stripeTrafficConfigured,
 } from "@/lib/config";
 import { buildClientFromLead } from "@/lib/demo";
 import { getStripe } from "@/lib/stripe";
@@ -16,102 +34,23 @@ import {
 } from "@/lib/store";
 import type { Client } from "@/lib/types";
 
-export const CHECKOUT_KINDS = [
-  "plan",
-  "plan_and_boost",
-  "plan_and_email",
-  "plan_and_boost_and_email",
-  "boost",
-  "email",
-  "boost_and_email",
-] as const;
-
-export type CheckoutKind = (typeof CHECKOUT_KINDS)[number];
-
-export const BOOST_NOT_CONFIGURED =
-  "Local Boost is not connected yet. Uncheck the add-on to pay for the $200 launch and $69/month plan, or try again after the Boost prices are set.";
-
-export const EMAIL_NOT_CONFIGURED =
-  "Business Email is not connected yet. Uncheck the add-on to pay for the $200 launch and $69/month plan, or try again after the Business Email prices are set.";
-
-export const STRIPE_NOT_CONFIGURED =
-  "Stripe is not configured. Add STRIPE_SECRET_KEY, STRIPE_SETUP_PRICE_ID, and STRIPE_MONTHLY_PRICE_ID.";
-
-export function isCheckoutKind(
-  value: string | undefined | null,
-): value is CheckoutKind {
-  return CHECKOUT_KINDS.includes(value as CheckoutKind);
-}
-
-export function kindHasPlan(kind: CheckoutKind) {
-  return kind === "plan" || kind.startsWith("plan_and_");
-}
-
-export function kindHasBoost(kind: CheckoutKind) {
-  return kind === "boost" || kind.includes("boost");
-}
-
-export function kindHasEmail(kind: CheckoutKind) {
-  return kind === "email" || kind.includes("email");
-}
-
-export function resolveCheckoutKind(input: {
-  includeBoost?: boolean;
-  includeEmail?: boolean;
-  boostOnly?: boolean;
-  emailOnly?: boolean;
-  alreadyPaid?: boolean;
-}): CheckoutKind {
-  const boost = Boolean(input.boostOnly || input.includeBoost);
-  const email = Boolean(input.emailOnly || input.includeEmail);
-  const addonOnly =
-    Boolean(input.boostOnly || input.emailOnly) ||
-    (Boolean(input.alreadyPaid) && (boost || email));
-
-  if (addonOnly) {
-    if (boost && email) return "boost_and_email";
-    if (boost) return "boost";
-    if (email) return "email";
-  }
-  if (boost && email) return "plan_and_boost_and_email";
-  if (boost) return "plan_and_boost";
-  if (email) return "plan_and_email";
-  return "plan";
-}
-
-function requirePrice(id: string | undefined, message: string) {
-  if (!id) throw new Error(message);
-  return { price: id, quantity: 1 };
-}
-
-export function checkoutLineItems(kind: CheckoutKind) {
-  const items: { price: string; quantity: number }[] = [];
-  if (kindHasPlan(kind)) {
-    items.push(
-      requirePrice(process.env.STRIPE_SETUP_PRICE_ID, STRIPE_NOT_CONFIGURED),
-      requirePrice(process.env.STRIPE_MONTHLY_PRICE_ID, STRIPE_NOT_CONFIGURED),
-    );
-  }
-  if (kindHasBoost(kind)) {
-    items.push(
-      requirePrice(process.env.STRIPE_BOOST_SETUP_PRICE_ID, BOOST_NOT_CONFIGURED),
-      requirePrice(
-        process.env.STRIPE_BOOST_MONTHLY_PRICE_ID,
-        BOOST_NOT_CONFIGURED,
-      ),
-    );
-  }
-  if (kindHasEmail(kind)) {
-    items.push(
-      requirePrice(process.env.STRIPE_EMAIL_SETUP_PRICE_ID, EMAIL_NOT_CONFIGURED),
-      requirePrice(
-        process.env.STRIPE_EMAIL_MONTHLY_PRICE_ID,
-        EMAIL_NOT_CONFIGURED,
-      ),
-    );
-  }
-  return items;
-}
+export {
+  BOOST_NOT_CONFIGURED,
+  CHECKOUT_KINDS,
+  checkoutLineItems,
+  EMAIL_NOT_CONFIGURED,
+  isCheckoutKind,
+  kindHasBoost,
+  kindHasEmail,
+  kindHasLoud,
+  kindHasPlan,
+  kindHasTraffic,
+  LOUD_NOT_CONFIGURED,
+  resolveCheckoutKind,
+  STRIPE_NOT_CONFIGURED,
+  TRAFFIC_NOT_CONFIGURED,
+} from "@/lib/checkout-kind";
+export type { CheckoutKind, CheckoutOptions } from "@/lib/checkout-kind";
 
 function checkoutDescription(kind: CheckoutKind, businessName: string) {
   if (kind === "email") {
@@ -120,35 +59,76 @@ function checkoutDescription(kind: CheckoutKind, businessName: string) {
   if (kind === "boost") {
     return `${COMPANY.shortName} Local Boost for ${businessName}`;
   }
-  if (kind === "boost_and_email") {
+  if (kind === "traffic") {
+    return `${COMPANY.shortName} Traffic for ${businessName}`;
+  }
+  if (kind === "loud") {
+    return `${COMPANY.shortName} Loud for ${businessName}`;
+  }
+  if (
+    kind === "boost_and_email" ||
+    kind === "traffic_and_email" ||
+    kind === "loud_and_email"
+  ) {
     return `${COMPANY.shortName} add-ons for ${businessName}`;
   }
   return `${COMPANY.shortName} hosting for ${businessName}`;
+}
+
+function assertNoAdsConflict(client: Client, kind: CheckoutKind) {
+  const buyingBoost = kindHasBoost(kind);
+  const buyingTraffic = kindHasTraffic(kind);
+  const buyingLoud = kindHasLoud(kind);
+  if (buyingBoost && (client.trafficAds || client.loudAds)) {
+    throw new Error(ADS_ALREADY_ACTIVE);
+  }
+  if (buyingTraffic && (client.localBoost || client.loudAds)) {
+    throw new Error(ADS_ALREADY_ACTIVE);
+  }
+  if (buyingLoud && (client.localBoost || client.trafficAds)) {
+    throw new Error(ADS_ALREADY_ACTIVE);
+  }
 }
 
 export async function createCheckoutForClient(
   client: Client,
   options: {
     includeBoost?: boolean;
+    includeTraffic?: boolean;
+    includeLoud?: boolean;
     includeEmail?: boolean;
     boostOnly?: boolean;
+    trafficOnly?: boolean;
+    loudOnly?: boolean;
     emailOnly?: boolean;
     leadId?: string;
   } = {},
 ) {
   const kind = resolveCheckoutKind({
     includeBoost: options.includeBoost,
+    includeTraffic: options.includeTraffic,
+    includeLoud: options.includeLoud,
     includeEmail: options.includeEmail,
     boostOnly: options.boostOnly,
+    trafficOnly: options.trafficOnly,
+    loudOnly: options.loudOnly,
     emailOnly: options.emailOnly,
     alreadyPaid: client.paymentStatus === "paid",
   });
+
+  assertNoAdsConflict(client, kind);
 
   if (kindHasPlan(kind) && !stripeConfigured()) {
     throw new Error(STRIPE_NOT_CONFIGURED);
   }
   if (kindHasBoost(kind) && !stripeBoostConfigured()) {
     throw new Error(BOOST_NOT_CONFIGURED);
+  }
+  if (kindHasTraffic(kind) && !stripeTrafficConfigured()) {
+    throw new Error(TRAFFIC_NOT_CONFIGURED);
+  }
+  if (kindHasLoud(kind) && !stripeLoudConfigured()) {
+    throw new Error(LOUD_NOT_CONFIGURED);
   }
   if (kindHasEmail(kind) && !stripeEmailConfigured()) {
     throw new Error(EMAIL_NOT_CONFIGURED);
@@ -158,6 +138,8 @@ export async function createCheckoutForClient(
   if (!stripe) throw new Error(STRIPE_NOT_CONFIGURED);
 
   const includeBoost = kindHasBoost(kind);
+  const includeTraffic = kindHasTraffic(kind);
+  const includeLoud = kindHasLoud(kind);
   const includeEmail = kindHasEmail(kind);
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
@@ -171,6 +153,8 @@ export async function createCheckoutForClient(
       leadId: options.leadId || "",
       checkoutKind: kind,
       localBoost: includeBoost ? "true" : "false",
+      trafficAds: includeTraffic ? "true" : "false",
+      loudAds: includeLoud ? "true" : "false",
       businessEmail: includeEmail ? "true" : "false",
     },
     subscription_data: {
@@ -179,6 +163,8 @@ export async function createCheckoutForClient(
         leadId: options.leadId || "",
         checkoutKind: kind,
         localBoost: includeBoost ? "true" : "false",
+        trafficAds: includeTraffic ? "true" : "false",
+        loudAds: includeLoud ? "true" : "false",
         businessEmail: includeEmail ? "true" : "false",
       },
       description: checkoutDescription(kind, client.businessName),

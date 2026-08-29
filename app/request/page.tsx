@@ -5,16 +5,24 @@ import {
   StudioShell,
 } from "@/components/marketing/Chrome";
 import { RequestForm } from "@/components/marketing/RequestForm";
+import { parseAdsTier } from "@/lib/ads";
 import {
   COMPANY,
   stripeBoostConfigured,
   stripeEmailConfigured,
+  stripeLoudConfigured,
+  stripeTrafficConfigured,
 } from "@/lib/config";
 import { t } from "@/lib/i18n";
 
 export const metadata = { title: "Request a demo" };
 
-export default function RequestPage() {
+export default async function RequestPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ads?: string }>;
+}) {
+  const { ads } = await searchParams;
   const c = t("en");
   return (
     <StudioShell>
@@ -34,6 +42,14 @@ export default function RequestPage() {
             Profile setup and a small local ad to your own site. Not magic SEO.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
+            Optional Traffic: $199/month extra for a bigger Google ad than Local
+            Boost, so more people can see the business. Not a ranking promise.
+          </p>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
+            Optional Loud: $349/month extra for the aggressive ads package. Louder
+            ads, more people seeing it. Not a ranking promise. Pick one ads level.
+          </p>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             Optional Business Email: $49 once plus $19/month extra for one
             professional inbox such as info@your domain. A real business email so
             customers take you seriously — not magic.
@@ -47,7 +63,10 @@ export default function RequestPage() {
         <RequestForm
           locale="en"
           boostReady={stripeBoostConfigured()}
+          trafficReady={stripeTrafficConfigured()}
+          loudReady={stripeLoudConfigured()}
           emailReady={stripeEmailConfigured()}
+          initialAds={parseAdsTier(ads)}
         />
       </main>
       <SiteFooter locale="en" />

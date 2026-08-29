@@ -217,7 +217,13 @@ export default async function AdminHome() {
                   <PayBadge status={client.paymentStatus} />
                 </td>
                 <td className="px-4 py-3">
-                  {client.localBoost ? "Local Boost" : "—"}
+                  {client.loudAds
+                    ? "Loud"
+                    : client.trafficAds
+                      ? "Traffic"
+                      : client.localBoost
+                        ? "Local Boost"
+                        : "—"}
                 </td>
                 <td className="px-4 py-3">
                   {client.businessEmail ? "Business Email" : "—"}

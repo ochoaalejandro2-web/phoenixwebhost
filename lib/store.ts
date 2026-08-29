@@ -141,6 +141,10 @@ function normalizeClient(client: Client): Client {
     services,
     localBoost: Boolean(client.localBoost),
     stripeBoostSubscriptionId: client.stripeBoostSubscriptionId ?? null,
+    trafficAds: Boolean(client.trafficAds),
+    stripeTrafficSubscriptionId: client.stripeTrafficSubscriptionId ?? null,
+    loudAds: Boolean(client.loudAds),
+    stripeLoudSubscriptionId: client.stripeLoudSubscriptionId ?? null,
     businessEmail: Boolean(client.businessEmail),
     stripeEmailSubscriptionId: client.stripeEmailSubscriptionId ?? null,
   };
@@ -161,6 +165,8 @@ function normalizeLead(lead: Lead): Lead {
     ...lead,
     template,
     wantsLocalBoost: Boolean(lead.wantsLocalBoost),
+    wantsTraffic: Boolean(lead.wantsTraffic),
+    wantsLoud: Boolean(lead.wantsLoud),
     wantsBusinessEmail: Boolean(lead.wantsBusinessEmail),
     purchased: Boolean(lead.purchased),
     clientId: lead.clientId ?? null,
@@ -287,6 +293,8 @@ export async function getClientByStripeSubscription(subscriptionId: string) {
       (c) =>
         c.stripeSubscriptionId === subscriptionId ||
         c.stripeBoostSubscriptionId === subscriptionId ||
+        c.stripeTrafficSubscriptionId === subscriptionId ||
+        c.stripeLoudSubscriptionId === subscriptionId ||
         c.stripeEmailSubscriptionId === subscriptionId,
     ) ?? null
   );

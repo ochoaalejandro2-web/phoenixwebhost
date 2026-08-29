@@ -29,6 +29,8 @@ export default async function LeadsPage() {
                   {lead.city} · {lead.locale.toUpperCase()} ·{" "}
                   {templateLabel(lead.template, "en")}
                   {lead.wantsLocalBoost ? " · Wants Local Boost" : ""}
+                  {lead.wantsTraffic ? " · Wants Traffic" : ""}
+                  {lead.wantsLoud ? " · Wants Loud" : ""}
                   {lead.wantsBusinessEmail ? " · Wants Business Email" : ""}
                 </p>
                 <p className="mt-2 text-sm">

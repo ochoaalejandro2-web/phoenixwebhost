@@ -1,6 +1,13 @@
 import { PRICING } from "@/lib/config";
 import type { Client } from "@/lib/types";
 
+export {
+  applyBusinessEmailPurchased,
+  applyLocalBoostPurchased,
+  applyLoudPurchased,
+  applyTrafficPurchased,
+} from "@/lib/billing-addons";
+
 function addDays(iso: string | null, days: number) {
   const base = iso ? new Date(iso) : new Date();
   return new Date(base.getTime() + days * 86_400_000).toISOString();
@@ -106,44 +113,6 @@ export function applyUnpaidPolicy(client: Client, now = new Date()): Client {
   }
 
   return next;
-}
-
-export function applyLocalBoostPurchased(
-  client: Client,
-  at = new Date().toISOString(),
-): Client {
-  if (client.localBoost) return client;
-  return {
-    ...client,
-    localBoost: true,
-    notes: [
-      {
-        id: `note_${crypto.randomUUID()}`,
-        body: "Local Boost purchased: $99 Google Business Profile setup and a small local ad for their own site, plus $79/month listing and ad care.",
-        createdAt: at,
-      },
-      ...client.notes,
-    ],
-  };
-}
-
-export function applyBusinessEmailPurchased(
-  client: Client,
-  at = new Date().toISOString(),
-): Client {
-  if (client.businessEmail) return client;
-  return {
-    ...client,
-    businessEmail: true,
-    notes: [
-      {
-        id: `note_${crypto.randomUUID()}`,
-        body: "Business Email purchased: $49 setup for one professional inbox such as info@their domain, plus $19/month to keep that inbox working. Not magic, not unlimited mailboxes.",
-        createdAt: at,
-      },
-      ...client.notes,
-    ],
-  };
 }
 
 export function markReminder(client: Client, at = new Date().toISOString()): Client {

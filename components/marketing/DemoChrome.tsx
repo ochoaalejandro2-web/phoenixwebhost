@@ -3,6 +3,8 @@ import {
   stripeBoostConfigured,
   stripeConfigured,
   stripeEmailConfigured,
+  stripeLoudConfigured,
+  stripeTrafficConfigured,
 } from "@/lib/config";
 import { accentHex } from "@/lib/demo";
 import type { Lead } from "@/lib/types";
@@ -22,6 +24,8 @@ export function DemoChrome({
         locale={lead.locale}
         stripeReady={stripeConfigured()}
         boostReady={stripeBoostConfigured()}
+        trafficReady={stripeTrafficConfigured()}
+        loudReady={stripeLoudConfigured()}
         emailReady={stripeEmailConfigured()}
       />
       <div

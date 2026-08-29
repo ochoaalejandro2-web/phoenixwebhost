@@ -12,6 +12,7 @@ import {
   sendReminderAction,
   setSiteStatusAction,
 } from "@/app/admin/actions";
+import { clientHasAdsTier } from "@/lib/ads";
 import { editsThisMonth } from "@/lib/billing";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
 import { PRICING } from "@/lib/config";
@@ -68,6 +69,12 @@ export default async function ClientDetailPage({
           Local Boost:{" "}
           <strong>{client.localBoost ? "purchased" : "not purchased"}</strong>
           {" · "}
+          Traffic:{" "}
+          <strong>{client.trafficAds ? "purchased" : "not purchased"}</strong>
+          {" · "}
+          Loud:{" "}
+          <strong>{client.loudAds ? "purchased" : "not purchased"}</strong>
+          {" · "}
           Business Email:{" "}
           <strong>{client.businessEmail ? "purchased" : "not purchased"}</strong>
         </p>
@@ -108,6 +115,10 @@ export default async function ClientDetailPage({
           <p>Subscription: {client.stripeSubscriptionId || "—"}</p>
           <p>Local Boost: {client.localBoost ? "purchased" : "not purchased"}</p>
           <p>Boost subscription: {client.stripeBoostSubscriptionId || "—"}</p>
+          <p>Traffic: {client.trafficAds ? "purchased" : "not purchased"}</p>
+          <p>Traffic subscription: {client.stripeTrafficSubscriptionId || "—"}</p>
+          <p>Loud: {client.loudAds ? "purchased" : "not purchased"}</p>
+          <p>Loud subscription: {client.stripeLoudSubscriptionId || "—"}</p>
           <p>Business Email: {client.businessEmail ? "purchased" : "not purchased"}</p>
           <p>Email subscription: {client.stripeEmailSubscriptionId || "—"}</p>
           <p>Reminder: {fmt(client.reminderSentAt)}</p>
@@ -147,24 +158,56 @@ export default async function ClientDetailPage({
               Stripe Checkout
             </button>
           </form>
-          {client.localBoost ? null : (
+          {clientHasAdsTier(client) ? null : (
             <>
               {client.paymentStatus === "paid" ? (
-                <form action={checkoutClientAction}>
-                  <input type="hidden" name="clientId" value={client.id} />
-                  <input type="hidden" name="kind" value="boost" />
-                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
-                    Add Local Boost ($99 + $79/mo)
-                  </button>
-                </form>
+                <>
+                  <form action={checkoutClientAction}>
+                    <input type="hidden" name="clientId" value={client.id} />
+                    <input type="hidden" name="kind" value="boost" />
+                    <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                      Add Local Boost ($99 + $79/mo)
+                    </button>
+                  </form>
+                  <form action={checkoutClientAction}>
+                    <input type="hidden" name="clientId" value={client.id} />
+                    <input type="hidden" name="kind" value="traffic" />
+                    <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                      Add Traffic ($199/mo)
+                    </button>
+                  </form>
+                  <form action={checkoutClientAction}>
+                    <input type="hidden" name="clientId" value={client.id} />
+                    <input type="hidden" name="kind" value="loud" />
+                    <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                      Add Loud ($349/mo)
+                    </button>
+                  </form>
+                </>
               ) : (
-                <form action={checkoutClientAction}>
-                  <input type="hidden" name="clientId" value={client.id} />
-                  <input type="hidden" name="includeBoost" value="on" />
-                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
-                    Checkout with Local Boost
-                  </button>
-                </form>
+                <>
+                  <form action={checkoutClientAction}>
+                    <input type="hidden" name="clientId" value={client.id} />
+                    <input type="hidden" name="includeBoost" value="on" />
+                    <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                      Checkout with Local Boost
+                    </button>
+                  </form>
+                  <form action={checkoutClientAction}>
+                    <input type="hidden" name="clientId" value={client.id} />
+                    <input type="hidden" name="includeTraffic" value="on" />
+                    <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                      Checkout with Traffic
+                    </button>
+                  </form>
+                  <form action={checkoutClientAction}>
+                    <input type="hidden" name="clientId" value={client.id} />
+                    <input type="hidden" name="includeLoud" value="on" />
+                    <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                      Checkout with Loud
+                    </button>
+                  </form>
+                </>
               )}
             </>
           )}
@@ -280,6 +323,22 @@ export default async function ClientDetailPage({
               <input
                 name="stripeBoostSubscriptionId"
                 defaultValue={client.stripeBoostSubscriptionId || ""}
+                className={field}
+              />
+            </label>
+            <label className="text-sm">
+              Traffic subscription ID
+              <input
+                name="stripeTrafficSubscriptionId"
+                defaultValue={client.stripeTrafficSubscriptionId || ""}
+                className={field}
+              />
+            </label>
+            <label className="text-sm">
+              Loud subscription ID
+              <input
+                name="stripeLoudSubscriptionId"
+                defaultValue={client.stripeLoudSubscriptionId || ""}
                 className={field}
               />
             </label>

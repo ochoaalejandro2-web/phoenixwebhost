@@ -1,6 +1,6 @@
 # Phoenixwebhost Inc.
 
-Arizona small-business websites. **$200 to launch. $69/month to keep it live.** Optional **Local Boost** add-on: **$99 once + $79/month extra**. Optional **Business Email** add-on: **$49 once + $19/month extra**.
+Arizona small-business websites. **$200 to launch. $69/month to keep it live.** Optional ads add-ons (pick one): **Local Boost** **$99 once + $79/month extra**, **Traffic** **$199/month extra**, or **Loud** **$349/month extra**. Optional **Business Email** add-on: **$49 once + $19/month extra**.
 
 Owner: **Alex Ochoa**, Phoenix, AZ  
 Company: **Phoenixwebhost Inc.**  
@@ -15,9 +15,11 @@ This repo is only Phoenixwebhost. It is a separate business: marketing site, own
 | Launch | **$200 once** | A simple small-business website |
 | Stay live | **$69 / month** | Hosting plus limited care (not unlimited changes) |
 | Local Boost (optional) | **$99 once + $79 / month extra** | Google Business Profile setup and a small local ad to the client's own site, then ongoing listing and ad care. Not magic SEO. |
+| Traffic (optional) | **$199 / month extra** | Managed ads add-on on top of a website plan. Bigger Google ad than Local Boost so more people can see the business. No setup fee. Not a ranking promise. |
+| Loud (optional) | **$349 / month extra** | Managed ads add-on on top of a website plan. The aggressive ads package — louder ads, more people seeing it. No setup fee. Not a ranking promise. |
 | Business Email (optional) | **$49 once + $19 / month extra** | One professional inbox such as info@the client’s domain, then keep that inbox working. A real business email so customers take them seriously — not magic. |
 
-Buying launch and care still works with Boost and Business Email unchecked. Each is a separate add-on at signup, or later from the owner panel.
+Buying launch and care still works with ads and Business Email unchecked. Local Boost, Traffic, and Loud are one ads ladder — pick one level, not two. Business Email can be added with any ads level, or alone. Each is a separate add-on at signup, or later from the owner panel.
 
 **$69/month includes**
 
@@ -34,7 +36,7 @@ Buying launch and care still works with Boost and Business Email unchecked. Each
 - Many photos: quoted
 - Shop: quoted
 - Logo: **$100–$300**
-- Ads / SEO: extra, or skip at first. Optional **Local Boost** is the local-visibility add-on (Google profile + a small ad). Not magic SEO.
+- Ads / SEO: extra, or skip at first. Optional **Local Boost** is the small local-visibility add-on (Google profile + a small ad). Optional **Traffic** ($199/month) is a bigger managed ad. Optional **Loud** ($349/month) is the aggressive ads package. Pick one ads level. Not magic SEO, and not a ranking promise. The $75 extra in sales copy is a live Instagram feed / extra page — not an ads product.
 - A professional inbox: extra, or skip. Optional **Business Email** is one mailbox such as info@their domain, plus $19/month to keep it working. Not magic.
 - Unlimited changes: **never**
 
@@ -44,9 +46,9 @@ Buying launch and care still works with Boost and Business Email unchecked. Each
 
 The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the seven templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
 
-- Slim bar at the top: **This is a preview, not live yet**, plus **Purchase / Go live $200+$69**. Optional Local Boost / Business Email stay behind that button. Color/logo tweaks stay behind a small control. The bar is not an admin dashboard sitting on top of a wireframe.
+- Slim bar at the top: **This is a preview, not live yet**, plus **Purchase / Go live $200+$69**. Optional Local Boost / Traffic / Loud (one ads level) and Business Email stay behind that button. Color/logo tweaks stay behind a small control. The bar is not an admin dashboard sitting on top of a wireframe.
 - The visitor gets an email with the preview link and the price: **$200 to launch + $69/month** (first payment **$269** if they pay launch and the first month together).
-- **Purchase / Go live** on the demo uses the existing Stripe Checkout for $200 + $69/month, plus optional Local Boost / Business Email.
+- **Purchase / Go live** on the demo uses the existing Stripe Checkout for $200 + $69/month, plus optional Local Boost / Traffic / Loud (one ads level) and Business Email.
 - A small chat on the demo can change logo text, colors, one extra sentence, or one extra page. Extra pages ($75–$150) and logos ($100–$300) stay quoted. No unlimited AI design.
 - Alex sees the lead in Admin (name, email, phone, business, notes, demo URL, purchased or not) and gets the same email + SMS alerts as before (`NOTIFY_EMAIL` / `NOTIFY_PHONE`).
 - There is **no $100-down checkout** on the site. That close happens on the phone.
@@ -98,6 +100,8 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `STRIPE_MONTHLY_PRICE_ID` | for payments | Recurring **$69/month** price |
 | `STRIPE_BOOST_SETUP_PRICE_ID` | for Local Boost | One-time **$99** add-on price |
 | `STRIPE_BOOST_MONTHLY_PRICE_ID` | for Local Boost | Recurring **$79/month** add-on price |
+| `STRIPE_TRAFFIC_MONTHLY_PRICE_ID` | for Traffic | Recurring **$199/month** add-on price. Create the Stripe Price, then set this ID. **Production still needs the live Price ID on Vercel.** Do not invent a fake live key. |
+| `STRIPE_LOUD_MONTHLY_PRICE_ID` | for Loud | Recurring **$349/month** add-on price. Create the Stripe Price, then set this ID. **Production still needs the live Price ID on Vercel.** Do not invent a fake live key. |
 | `STRIPE_EMAIL_SETUP_PRICE_ID` | for Business Email | One-time **$49** add-on price (`price_1U8w4XIqJ6FpMcHxzsvfy4Ox` in test) |
 | `STRIPE_EMAIL_MONTHLY_PRICE_ID` | for Business Email | Recurring **$19/month** add-on price (`price_1U8w4YIqJ6FpMcHx43X3F2gt` in test) |
 | `DATABASE_URL` | production on Vercel | Postgres (Neon). Without it, data is local-file or ephemeral |
@@ -126,7 +130,9 @@ Alex already has a Stripe account. Use **test mode** until checkout works end to
 node --env-file=.env.local scripts/setup-stripe.mjs
 ```
 
-That prints `STRIPE_SETUP_PRICE_ID` ($200 one-time) and `STRIPE_MONTHLY_PRICE_ID` ($69/month). Put both in `.env.local`. Local Boost uses the existing test prices `STRIPE_BOOST_SETUP_PRICE_ID` ($99) and `STRIPE_BOOST_MONTHLY_PRICE_ID` ($79/month). Business Email uses the existing test prices `STRIPE_EMAIL_SETUP_PRICE_ID` ($49) and `STRIPE_EMAIL_MONTHLY_PRICE_ID` ($19/month). Set those env names on Vercel; do not create extra price IDs.
+That prints `STRIPE_SETUP_PRICE_ID` ($200 one-time), `STRIPE_MONTHLY_PRICE_ID` ($69/month), `STRIPE_TRAFFIC_MONTHLY_PRICE_ID` ($199/month), and `STRIPE_LOUD_MONTHLY_PRICE_ID` ($349/month). Put them in `.env.local`. Local Boost uses the existing test prices `STRIPE_BOOST_SETUP_PRICE_ID` ($99) and `STRIPE_BOOST_MONTHLY_PRICE_ID` ($79/month). Business Email uses the existing test prices `STRIPE_EMAIL_SETUP_PRICE_ID` ($49) and `STRIPE_EMAIL_MONTHLY_PRICE_ID` ($19/month). Set those env names on Vercel.
+
+**Production gap:** live Stripe Price IDs for Traffic and Loud must be created in the Stripe Dashboard (or the setup script in live mode) and set on the Vercel project as `STRIPE_TRAFFIC_MONTHLY_PRICE_ID` and `STRIPE_LOUD_MONTHLY_PRICE_ID`. Checkout fails closed if those vars are missing. Do not invent fake live keys.
 
 3. Webhook (local):
 
@@ -144,7 +150,7 @@ Paste the `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
 
 To test a failed payment / unpaid flow: card `4000 0000 0000 9995`, or in the owner panel open a client and click **Simulate unpaid** → **Apply unpaid policy** (after the 2-day grace, or it will set overdue immediately and offline when grace has passed). Mesa Street Kitchen is already overdue and offline.
 
-Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item). If the customer selects **Local Boost**, the same session also includes **$99 setup + $79/month**. If they select **Business Email**, it also includes **$49 setup + $19/month**. Leaving an add-on unchecked still charges only the base plan (and any other checked add-on). If an add-on’s price env vars are missing, checkout fails closed with a clear error instead of charging a partial cart.
+Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item). If the customer selects **Local Boost**, the same session also includes **$99 setup + $79/month**. If they select **Traffic**, the same session includes **$199/month** only (no setup fee). If they select **Loud**, the same session includes **$349/month** only (no setup fee). Local Boost, Traffic, and Loud are mutually exclusive — checkout rejects two ads tiers at once. If they select **Business Email**, it also includes **$49 setup + $19/month**. Leaving an add-on unchecked still charges only the base plan (and any other checked add-on). If an add-on’s price env vars are missing, checkout fails closed with a clear error instead of charging a partial cart.
 
 When you are ready for real charges, switch the same variable names to **live** keys (`sk_live_...`, live price IDs, live webhook secret). Never mix test and live IDs.
 
@@ -152,8 +158,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 `/admin` after login.
 
-- Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost or Business Email
-- Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, Local Boost and Business Email status, pause / offline toggle. Existing clients can add Boost or Business Email later from this page.
+- Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost, Traffic, Loud, or Business Email
+- Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, Local Boost / Traffic / Loud and Business Email status, pause / offline toggle. Existing clients can add one ads level or Business Email later from this page.
 - **New client** generates a site from a template (contractor, handyman, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
 - Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the seven templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.

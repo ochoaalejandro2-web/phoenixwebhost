@@ -409,6 +409,20 @@ export function buildClientFromLead(
       createdAt: new Date().toISOString(),
     });
   }
+  if (lead.wantsTraffic) {
+    notes.push({
+      id: `note_${crypto.randomUUID()}`,
+      body: "Asked for optional Traffic ($199/month) at signup (not paid until checkout completes).",
+      createdAt: new Date().toISOString(),
+    });
+  }
+  if (lead.wantsLoud) {
+    notes.push({
+      id: `note_${crypto.randomUUID()}`,
+      body: "Asked for optional Loud ($349/month) at signup (not paid until checkout completes).",
+      createdAt: new Date().toISOString(),
+    });
+  }
   if (lead.wantsBusinessEmail) {
     notes.push({
       id: `note_${crypto.randomUUID()}`,
@@ -450,6 +464,10 @@ export function buildClientFromLead(
     stripeSubscriptionId: null,
     stripeBoostSubscriptionId: null,
     localBoost: false,
+    stripeTrafficSubscriptionId: null,
+    trafficAds: false,
+    stripeLoudSubscriptionId: null,
+    loudAds: false,
     stripeEmailSubscriptionId: null,
     businessEmail: false,
     reminderSentAt: null,

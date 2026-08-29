@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { AdsTierPicker } from "@/components/marketing/AdsTierPicker";
+import { adsFlagsFromTier, type AdsTier } from "@/lib/ads";
 import { TEMPLATES } from "@/lib/config";
 import { t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
@@ -44,15 +46,21 @@ export function AddonToggle({
 export function RequestForm({
   locale,
   boostReady = false,
+  trafficReady = false,
+  loudReady = false,
   emailReady = false,
+  initialAds = "none",
 }: {
   locale: Locale;
   boostReady?: boolean;
+  trafficReady?: boolean;
+  loudReady?: boolean;
   emailReady?: boolean;
+  initialAds?: AdsTier;
 }) {
   const c = t(locale);
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
-  const [includeBoost, setIncludeBoost] = useState(false);
+  const [adsTier, setAdsTier] = useState<AdsTier>(initialAds);
   const [includeEmail, setIncludeEmail] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -71,7 +79,7 @@ export function RequestForm({
         message: form.get("message"),
         template: form.get("template"),
         locale,
-        wantsLocalBoost: includeBoost,
+        ...adsFlagsFromTier(adsTier),
         wantsBusinessEmail: includeEmail,
       }),
     });
@@ -142,13 +150,13 @@ export function RequestForm({
         {c.formMessage}
         <textarea name="message" rows={4} className="field-studio" />
       </label>
-      <AddonToggle
-        checked={includeBoost}
-        onChange={setIncludeBoost}
-        ready={boostReady}
-        title={c.boostCheckbox}
-        help={c.boostCheckboxHelp}
-        missing={c.boostMissing}
+      <AdsTierPicker
+        value={adsTier}
+        onChange={setAdsTier}
+        boostReady={boostReady}
+        trafficReady={trafficReady}
+        loudReady={loudReady}
+        locale={locale}
       />
       <AddonToggle
         checked={includeEmail}

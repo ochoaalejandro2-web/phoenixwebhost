@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test lib/tax-access.test.ts lib/site-locale.test.ts lib/custom-domain.test.ts lib/client-metadata.test.ts lib/hola-tax-i18n.test.ts lib/demo.test.ts lib/config.test.ts lib/visits.test.ts lib/public-demos.test.ts lib/seed.test.ts",
+    "test": "node --experimental-strip-types --test lib/tax-access.test.ts lib/site-locale.test.ts lib/custom-domain.test.ts lib/client-metadata.test.ts lib/hola-tax-i18n.test.ts lib/demo.test.ts lib/config.test.ts lib/visits.test.ts lib/public-demos.test.ts lib/seed.test.ts lib/ads.test.ts lib/checkout.test.ts lib/billing.test.ts",
     "setup:stripe": "node --env-file=.env.local scripts/setup-stripe.mjs"
   },
   "dependencies": {

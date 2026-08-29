@@ -18,6 +18,10 @@ export const PRICING = {
   boostMonthlyCents: 7_900,
   boostSetupLabel: "$99",
   boostMonthlyLabel: "$79",
+  trafficMonthlyCents: 19_900,
+  trafficMonthlyLabel: "$199",
+  loudMonthlyCents: 34_900,
+  loudMonthlyLabel: "$349",
   emailSetupCents: 4_900,
   emailMonthlyCents: 1_900,
   emailSetupLabel: "$49",
@@ -134,10 +138,32 @@ export function stripeEmailConfigured() {
   );
 }
 
+export function stripeTrafficConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY && process.env.STRIPE_TRAFFIC_MONTHLY_PRICE_ID,
+  );
+}
+
+export function stripeLoudConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY && process.env.STRIPE_LOUD_MONTHLY_PRICE_ID,
+  );
+}
+
 export function boostPriceIds() {
   const setup = process.env.STRIPE_BOOST_SETUP_PRICE_ID;
   const monthly = process.env.STRIPE_BOOST_MONTHLY_PRICE_ID;
   return [setup, monthly].filter((id): id is string => Boolean(id));
+}
+
+export function trafficPriceIds() {
+  const monthly = process.env.STRIPE_TRAFFIC_MONTHLY_PRICE_ID;
+  return [monthly].filter((id): id is string => Boolean(id));
+}
+
+export function loudPriceIds() {
+  const monthly = process.env.STRIPE_LOUD_MONTHLY_PRICE_ID;
+  return [monthly].filter((id): id is string => Boolean(id));
 }
 
 export function emailPriceIds() {

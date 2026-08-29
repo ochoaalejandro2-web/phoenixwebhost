@@ -82,7 +82,7 @@ export const copy = {
       {
         n: "3",
         t: "Pay $200 to launch, then $69/month",
-        d: "First payment is $269 if you pay launch and the first month together. Optional Local Boost and Business Email can be added in the same checkout.",
+        d: "First payment is $269 if you pay launch and the first month together. Optional Local Boost, Traffic, or Loud (pick one ads level) and Business Email can be added in the same checkout.",
       },
     ],
     aboutTitle: "A Phoenix company, not a faceless host",
@@ -102,8 +102,12 @@ export const copy = {
     formSubmit: "See my demo",
     formPay: "Purchase / Go live — $200 + $69/month",
     formPayBoost: "Go live with Local Boost",
+    formPayTraffic: "Go live with Traffic",
+    formPayLoud: "Go live with Loud",
     formPayEmail: "Go live with Business Email",
     formPayBoostEmail: "Go live with Local Boost and Business Email",
+    formPayTrafficEmail: "Go live with Traffic and Business Email",
+    formPayLoudEmail: "Go live with Loud and Business Email",
     formThanks: "Your demo is ready.",
     demoKicker: "This is a preview, not live yet",
     demoBanner:
@@ -141,6 +145,29 @@ export const copy = {
       "Optional and separate. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
     boostMissing:
       "Local Boost checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
+    adsPickOne: "Pick one ads level — or none.",
+    adsLadderHelp:
+      "$79 is the small ad. $199 is the one that actually brings jobs. $349 if they want it loud.",
+    trafficKicker: "Optional add-on",
+    trafficTitle: "Traffic — $199/month extra",
+    trafficBody:
+      "A bigger Google ad than Local Boost, so more people can see the business and call. More ad money means more people see it. This is a managed ads package — not a ranking promise, and not a guaranteed first-page spot.",
+    trafficMonthHint: "per month extra, bigger ad",
+    trafficCheckbox: "Add Traffic — $199/month extra",
+    trafficCheckboxHelp:
+      "The middle ads level. More ad than Local Boost. Pick only one ads level. Optional and on top of the $200 launch and $69/month website plan.",
+    trafficMissing:
+      "Traffic checkout is not connected yet. Pick Local Boost or the website only, or wait until Alex connects it.",
+    loudKicker: "Optional add-on",
+    loudTitle: "Loud — $349/month extra",
+    loudBody:
+      "The aggressive ads package. Louder ads, more people seeing the business. This is a managed ads package — not a ranking promise.",
+    loudMonthHint: "per month extra, louder ads",
+    loudCheckbox: "Add Loud — $349/month extra",
+    loudCheckboxHelp:
+      "The loud ads level. Pick only one ads level. Optional and on top of the $200 launch and $69/month website plan.",
+    loudMissing:
+      "Loud checkout is not connected yet. Pick Local Boost or Traffic, or wait until Alex connects it.",
     emailKicker: "Optional add-on",
     emailTitle: "Business Email — $49 once + $19/month extra",
     emailBody:
@@ -253,7 +280,7 @@ export const copy = {
       {
         n: "3",
         t: "Paga $200 para lanzar, luego $69 al mes",
-        d: "El primer pago es $269 si paga el lanzamiento y el primer mes juntos. Local Boost y Business Email son opcionales y se pueden agregar en el mismo pago.",
+        d: "El primer pago es $269 si paga el lanzamiento y el primer mes juntos. Local Boost, Traffic o Loud (un solo nivel de anuncios) y Business Email son opcionales y se pueden agregar en el mismo pago.",
       },
     ],
     aboutTitle: "Una empresa en Phoenix, no un host sin cara",
@@ -273,8 +300,12 @@ export const copy = {
     formSubmit: "Ver mi demo",
     formPay: "Comprar / Publicar — $200 + $69 al mes",
     formPayBoost: "Publicar con Local Boost",
+    formPayTraffic: "Publicar con Traffic",
+    formPayLoud: "Publicar con Loud",
     formPayEmail: "Publicar con Business Email",
     formPayBoostEmail: "Publicar con Local Boost y Business Email",
+    formPayTrafficEmail: "Publicar con Traffic y Business Email",
+    formPayLoudEmail: "Publicar con Loud y Business Email",
     formThanks: "Su demo está lista.",
     demoKicker: "Esta es una vista previa, aún no está en línea",
     demoBanner:
@@ -312,6 +343,29 @@ export const copy = {
       "Opcional y aparte. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
     boostMissing:
       "El pago de Local Boost aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
+    adsPickOne: "Elija un nivel de anuncios — o ninguno.",
+    adsLadderHelp:
+      "$79 es el anuncio pequeño. $199 es el que de verdad trae trabajos. $349 si lo quieren fuerte.",
+    trafficKicker: "Complemento opcional",
+    trafficTitle: "Traffic — $199 al mes extra",
+    trafficBody:
+      "Un anuncio de Google más grande que Local Boost, para que más gente vea el negocio y llamen. Más dinero de anuncio significa que más personas lo ven. Es un paquete de anuncios administrado — no promete posiciones ni la primera página.",
+    trafficMonthHint: "al mes extra, anuncio más grande",
+    trafficCheckbox: "Agregar Traffic — $199 al mes extra",
+    trafficCheckboxHelp:
+      "El nivel de en medio. Más anuncio que Local Boost. Elija solo un nivel de anuncios. Opcional y aparte del lanzamiento de $200 y el plan de $69 al mes.",
+    trafficMissing:
+      "El pago de Traffic aún no está conectado. Elija Local Boost o el sitio solo, o espere a que Alex lo active.",
+    loudKicker: "Complemento opcional",
+    loudTitle: "Loud — $349 al mes extra",
+    loudBody:
+      "El paquete agresivo de anuncios. Anuncios más fuertes, más gente viendo el negocio. Es un paquete de anuncios administrado — no promete posiciones.",
+    loudMonthHint: "al mes extra, anuncios fuertes",
+    loudCheckbox: "Agregar Loud — $349 al mes extra",
+    loudCheckboxHelp:
+      "El nivel más fuerte. Elija solo un nivel de anuncios. Opcional y aparte del lanzamiento de $200 y el plan de $69 al mes.",
+    loudMissing:
+      "El pago de Loud aún no está conectado. Elija Local Boost o Traffic, o espere a que Alex lo active.",
     emailKicker: "Complemento opcional",
     emailTitle: "Business Email — $49 una vez + $19 al mes extra",
     emailBody:

@@ -3,7 +3,10 @@ import {
   stripeBoostConfigured,
   stripeConfigured,
   stripeEmailConfigured,
+  stripeLoudConfigured,
+  stripeTrafficConfigured,
 } from "@/lib/config";
+import { normalizeAdsFlags } from "@/lib/ads";
 import { demoPath, emptyDemoTweaks, parseTemplateId } from "@/lib/demo";
 import { notifyCustomerDemo, notifyNewLead } from "@/lib/notify";
 import { addLead } from "@/lib/store";
@@ -20,6 +23,8 @@ export async function POST(request: Request) {
     locale?: Locale;
     template?: string;
     wantsLocalBoost?: boolean;
+    wantsTraffic?: boolean;
+    wantsLoud?: boolean;
     wantsBusinessEmail?: boolean;
   };
   if (!body.name || !body.businessName || !body.email) {
@@ -42,7 +47,11 @@ export async function POST(request: Request) {
     message: String(body.message || "").trim(),
     locale: body.locale === "es" ? "es" : "en",
     template,
-    wantsLocalBoost: Boolean(body.wantsLocalBoost),
+    ...normalizeAdsFlags({
+      wantsLocalBoost: Boolean(body.wantsLocalBoost),
+      wantsTraffic: Boolean(body.wantsTraffic),
+      wantsLoud: Boolean(body.wantsLoud),
+    }),
     wantsBusinessEmail: Boolean(body.wantsBusinessEmail),
     purchased: false,
     clientId: null,
@@ -55,6 +64,8 @@ export async function POST(request: Request) {
     demoUrl: demoPath(lead.id),
     stripeReady: stripeConfigured(),
     boostReady: stripeBoostConfigured(),
+    trafficReady: stripeTrafficConfigured(),
+    loudReady: stripeLoudConfigured(),
     emailReady: stripeEmailConfigured(),
   });
 }

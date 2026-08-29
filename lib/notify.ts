@@ -317,9 +317,13 @@ export async function notifyNewLead(lead: Lead) {
       extra: [
         lead.locale === "es" ? "Spanish" : "English",
         templateLabel(lead.template, "en"),
-        lead.wantsLocalBoost
-          ? "Wants Local Boost ($99 + $79/mo)"
-          : "No Local Boost",
+        lead.wantsLoud
+          ? "Wants Loud ($349/mo)"
+          : lead.wantsTraffic
+            ? "Wants Traffic ($199/mo)"
+            : lead.wantsLocalBoost
+              ? "Wants Local Boost ($99 + $79/mo)"
+              : "No ads add-on",
         lead.wantsBusinessEmail
           ? "Wants Business Email ($49 + $19/mo)"
           : "No Business Email",
@@ -349,8 +353,8 @@ function customerDemoBodies(lead: Lead) {
     ? "Para publicarlo de verdad: $200 de lanzamiento + $69 al mes para mantenerlo en línea. El primer pago es $269 si paga el lanzamiento y el primer mes juntos."
     : "To go live: $200 to launch + $69/month to keep it live. The first payment is $269 if you pay launch and the first month together.";
   const extras = es
-    ? "Local Boost y Business Email son opcionales y se pueden agregar en el mismo pago. Una página extra cuesta $75–$150. Un logotipo, $100–$300. No vendemos diseño ilimitado con IA."
-    : "Local Boost and Business Email are optional and can be added in the same checkout. An extra page is $75–$150. A logo is $100–$300. We do not sell unlimited AI design.";
+    ? "Local Boost, Traffic o Loud (un solo nivel de anuncios) y Business Email son opcionales y se pueden agregar en el mismo pago. Una página extra cuesta $75–$150. Un logotipo, $100–$300. No vendemos diseño ilimitado con IA."
+    : "Local Boost, Traffic, or Loud (one ads level) and Business Email are optional and can be added in the same checkout. An extra page is $75–$150. A logo is $100–$300. We do not sell unlimited AI design.";
   const { html, text } = emailBodies({
     subject,
     intro,
