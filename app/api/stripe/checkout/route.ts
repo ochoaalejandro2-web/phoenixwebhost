@@ -7,8 +7,12 @@ export async function POST(request: Request) {
       leadId?: string;
       clientId?: string;
       includeBoost?: boolean;
+      includeTraffic?: boolean;
+      includeLoud?: boolean;
       includeEmail?: boolean;
       boostOnly?: boolean;
+      trafficOnly?: boolean;
+      loudOnly?: boolean;
       emailOnly?: boolean;
     };
     const client = await resolveCheckoutClient(body);
@@ -17,8 +21,12 @@ export async function POST(request: Request) {
     }
     const url = await createCheckoutForClient(client, {
       includeBoost: Boolean(body.includeBoost),
+      includeTraffic: Boolean(body.includeTraffic),
+      includeLoud: Boolean(body.includeLoud),
       includeEmail: Boolean(body.includeEmail),
       boostOnly: Boolean(body.boostOnly),
+      trafficOnly: Boolean(body.trafficOnly),
+      loudOnly: Boolean(body.loudOnly),
       emailOnly: Boolean(body.emailOnly),
       leadId: body.leadId,
     });

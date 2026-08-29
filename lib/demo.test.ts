@@ -30,6 +30,8 @@ function sampleLead(overrides: Partial<Lead> = {}): Lead {
     locale: "en",
     template: "contractor",
     wantsLocalBoost: false,
+    wantsTraffic: false,
+    wantsLoud: false,
     wantsBusinessEmail: false,
     purchased: false,
     clientId: null,
@@ -154,6 +156,11 @@ test("plan price is still $200 launch + $69/month, with no $100 public down paym
   assert.equal("downCents" in PRICING, false);
   assert.equal(PRICING.logoMin, 100);
   assert.equal(PRICING.logoMax, 300);
+  assert.equal(PRICING.boostSetupCents, 9_900);
+  assert.equal(PRICING.boostMonthlyCents, 7_900);
+  assert.equal(PRICING.trafficMonthlyCents, 19_900);
+  assert.equal(PRICING.loudMonthlyCents, 34_900);
+  assert.equal(PRICING.emailSetupCents, 4_900);
 });
 
 test("empty phone and city still fill a Phoenix-area layout for the preview", () => {

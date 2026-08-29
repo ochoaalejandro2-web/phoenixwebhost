@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { AdsTierPicker } from "@/components/marketing/AdsTierPicker";
 import { AddonToggle } from "@/components/marketing/RequestForm";
+import { adsTierFromFlags, type AdsTier } from "@/lib/ads";
 import { COMPANY } from "@/lib/config";
 import {
   DEMO_ACCENTS,
@@ -28,6 +30,8 @@ export function DemoPurchase({
   locale,
   stripeReady,
   boostReady,
+  trafficReady,
+  loudReady,
   emailReady,
   compact = false,
 }: {
@@ -35,29 +39,46 @@ export function DemoPurchase({
   locale: Locale;
   stripeReady: boolean;
   boostReady: boolean;
+  trafficReady: boolean;
+  loudReady: boolean;
   emailReady: boolean;
   compact?: boolean;
 }) {
   const c = t(locale);
-  const [includeBoost, setIncludeBoost] = useState(lead.wantsLocalBoost);
+  const [adsTier, setAdsTier] = useState<AdsTier>(adsTierFromFlags(lead));
   const [includeEmail, setIncludeEmail] = useState(lead.wantsBusinessEmail);
   const [payError, setPayError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const addonsBlocked =
-    (includeBoost && !boostReady) || (includeEmail && !emailReady);
+    (adsTier === "boost" && !boostReady) ||
+    (adsTier === "traffic" && !trafficReady) ||
+    (adsTier === "loud" && !loudReady) ||
+    (includeEmail && !emailReady);
 
   function payLabel() {
-    if (includeBoost && includeEmail) return c.formPayBoostEmail;
-    if (includeBoost) return c.formPayBoost;
+    if (adsTier === "loud" && includeEmail) return c.formPayLoudEmail;
+    if (adsTier === "traffic" && includeEmail) return c.formPayTrafficEmail;
+    if (adsTier === "boost" && includeEmail) return c.formPayBoostEmail;
+    if (adsTier === "loud") return c.formPayLoud;
+    if (adsTier === "traffic") return c.formPayTraffic;
+    if (adsTier === "boost") return c.formPayBoost;
     if (includeEmail) return c.formPayEmail;
     return c.formPay;
   }
 
   async function startCheckout() {
     if (lead.purchased) return;
-    if (includeBoost && !boostReady) {
+    if (adsTier === "boost" && !boostReady) {
       setPayError(c.boostMissing);
+      return;
+    }
+    if (adsTier === "traffic" && !trafficReady) {
+      setPayError(c.trafficMissing);
+      return;
+    }
+    if (adsTier === "loud" && !loudReady) {
+      setPayError(c.loudMissing);
       return;
     }
     if (includeEmail && !emailReady) {
@@ -71,7 +92,9 @@ export function DemoPurchase({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         leadId: lead.id,
-        includeBoost,
+        includeBoost: adsTier === "boost",
+        includeTraffic: adsTier === "traffic",
+        includeLoud: adsTier === "loud",
         includeEmail,
       }),
     });
@@ -94,13 +117,13 @@ export function DemoPurchase({
 
   return (
     <div className={compact ? "grid gap-2" : "grid gap-3"}>
-      <AddonToggle
-        checked={includeBoost}
-        onChange={setIncludeBoost}
-        ready={boostReady}
-        title={c.boostCheckbox}
-        help={c.boostCheckboxHelp}
-        missing={c.boostMissing}
+      <AdsTierPicker
+        value={adsTier}
+        onChange={setAdsTier}
+        boostReady={boostReady}
+        trafficReady={trafficReady}
+        loudReady={loudReady}
+        locale={locale}
       />
       <AddonToggle
         checked={includeEmail}
@@ -265,12 +288,16 @@ export function DemoBar({
   locale,
   stripeReady,
   boostReady,
+  trafficReady,
+  loudReady,
   emailReady,
 }: {
   lead: Lead;
   locale: Locale;
   stripeReady: boolean;
   boostReady: boolean;
+  trafficReady: boolean;
+  loudReady: boolean;
   emailReady: boolean;
 }) {
   const c = t(locale);
@@ -344,6 +371,8 @@ export function DemoBar({
                 locale={locale}
                 stripeReady={stripeReady}
                 boostReady={boostReady}
+                trafficReady={trafficReady}
+                loudReady={loudReady}
                 emailReady={emailReady}
                 compact
               />

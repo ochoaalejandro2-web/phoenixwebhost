@@ -53,6 +53,10 @@ export type Client = {
   stripeSubscriptionId: string | null;
   stripeBoostSubscriptionId: string | null;
   localBoost: boolean;
+  stripeTrafficSubscriptionId: string | null;
+  trafficAds: boolean;
+  stripeLoudSubscriptionId: string | null;
+  loudAds: boolean;
   stripeEmailSubscriptionId: string | null;
   businessEmail: boolean;
   reminderSentAt: string | null;
@@ -95,6 +99,8 @@ export type Lead = {
   locale: Locale;
   template: TemplateId;
   wantsLocalBoost: boolean;
+  wantsTraffic: boolean;
+  wantsLoud: boolean;
   wantsBusinessEmail: boolean;
   purchased: boolean;
   clientId: string | null;

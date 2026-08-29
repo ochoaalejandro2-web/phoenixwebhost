@@ -3,17 +3,27 @@ import type Stripe from "stripe";
 import {
   applyBusinessEmailPurchased,
   applyLocalBoostPurchased,
+  applyLoudPurchased,
   applyPaymentFailed,
   applyPaymentSucceeded,
+  applyTrafficPurchased,
 } from "@/lib/billing";
 import {
   isCheckoutKind,
   kindHasBoost,
   kindHasEmail,
+  kindHasLoud,
   kindHasPlan,
+  kindHasTraffic,
+  resolveCheckoutKind,
   type CheckoutKind,
-} from "@/lib/checkout";
-import { boostPriceIds, emailPriceIds } from "@/lib/config";
+} from "@/lib/checkout-kind";
+import {
+  boostPriceIds,
+  emailPriceIds,
+  loudPriceIds,
+  trafficPriceIds,
+} from "@/lib/config";
 import {
   getClient,
   getClientByStripeCustomer,
@@ -27,6 +37,13 @@ import { getStripe } from "@/lib/stripe";
 import type { Client } from "@/lib/types";
 
 export const runtime = "nodejs";
+
+type AddOns = {
+  boost: boolean;
+  traffic: boolean;
+  loud: boolean;
+  email: boolean;
+};
 
 function asId(
   value: string | { id?: string } | null | undefined,
@@ -42,6 +59,20 @@ function metadataBoost(meta?: Stripe.Metadata | null) {
   );
 }
 
+function metadataTraffic(meta?: Stripe.Metadata | null) {
+  return (
+    meta?.trafficAds === "true" ||
+    (isCheckoutKind(meta?.checkoutKind) && kindHasTraffic(meta.checkoutKind))
+  );
+}
+
+function metadataLoud(meta?: Stripe.Metadata | null) {
+  return (
+    meta?.loudAds === "true" ||
+    (isCheckoutKind(meta?.checkoutKind) && kindHasLoud(meta.checkoutKind))
+  );
+}
+
 function metadataEmail(meta?: Stripe.Metadata | null) {
   return (
     meta?.businessEmail === "true" ||
@@ -51,12 +82,16 @@ function metadataEmail(meta?: Stripe.Metadata | null) {
 
 function metadataKind(meta?: Stripe.Metadata | null): CheckoutKind {
   if (isCheckoutKind(meta?.checkoutKind)) return meta.checkoutKind;
-  const boost = metadataBoost(meta);
-  const email = metadataEmail(meta);
-  if (boost && email) return "plan_and_boost_and_email";
-  if (boost) return "plan_and_boost";
-  if (email) return "plan_and_email";
-  return "plan";
+  try {
+    return resolveCheckoutKind({
+      includeBoost: metadataBoost(meta),
+      includeTraffic: metadataTraffic(meta),
+      includeLoud: metadataLoud(meta),
+      includeEmail: metadataEmail(meta),
+    });
+  } catch {
+    return "plan";
+  }
 }
 
 function priceIdFromUnknown(value: unknown): string | undefined {
@@ -102,20 +137,24 @@ async function sessionLinePriceIds(
 async function sessionAddOns(
   stripe: Stripe,
   session: Stripe.Checkout.Session,
-) {
+): Promise<AddOns> {
   const fromMetaBoost = metadataBoost(session.metadata);
+  const fromMetaTraffic = metadataTraffic(session.metadata);
+  const fromMetaLoud = metadataLoud(session.metadata);
   const fromMetaEmail = metadataEmail(session.metadata);
-  if (fromMetaBoost && fromMetaEmail) {
-    return { boost: true, email: true };
+  if (fromMetaBoost && fromMetaEmail && !fromMetaTraffic && !fromMetaLoud) {
+    return { boost: true, traffic: false, loud: false, email: true };
   }
   const prices = await sessionLinePriceIds(stripe, session);
   return {
     boost: fromMetaBoost || idsInclude(prices, boostPriceIds()),
+    traffic: fromMetaTraffic || idsInclude(prices, trafficPriceIds()),
+    loud: fromMetaLoud || idsInclude(prices, loudPriceIds()),
     email: fromMetaEmail || idsInclude(prices, emailPriceIds()),
   };
 }
 
-function invoiceAddOns(invoice: Stripe.Invoice) {
+function invoiceAddOns(invoice: Stripe.Invoice): AddOns {
   const meta =
     invoice.metadata || invoice.parent?.subscription_details?.metadata;
   const prices = invoice.lines.data.map((line) => linePriceId(line));
@@ -124,6 +163,14 @@ function invoiceAddOns(invoice: Stripe.Invoice) {
       metadataBoost(meta) ||
       metadataBoost(invoice.metadata) ||
       idsInclude(prices, boostPriceIds()),
+    traffic:
+      metadataTraffic(meta) ||
+      metadataTraffic(invoice.metadata) ||
+      idsInclude(prices, trafficPriceIds()),
+    loud:
+      metadataLoud(meta) ||
+      metadataLoud(invoice.metadata) ||
+      idsInclude(prices, loudPriceIds()),
     email:
       metadataEmail(meta) ||
       metadataEmail(invoice.metadata) ||
@@ -142,27 +189,27 @@ function isAddonOnlySubscription(client: Client, subscriptionId?: string) {
   if (client.stripeSubscriptionId === subscriptionId) return false;
   return (
     client.stripeBoostSubscriptionId === subscriptionId ||
+    client.stripeTrafficSubscriptionId === subscriptionId ||
+    client.stripeLoudSubscriptionId === subscriptionId ||
     client.stripeEmailSubscriptionId === subscriptionId
   );
 }
 
-function invoiceKind(
-  invoice: Stripe.Invoice,
-  addOns: { boost: boolean; email: boolean },
-): CheckoutKind {
+function invoiceKind(invoice: Stripe.Invoice, addOns: AddOns): CheckoutKind {
   const hasBase = invoiceHasBaseMonthly(invoice);
-  if (hasBase) {
-    if (addOns.boost && addOns.email) return "plan_and_boost_and_email";
-    if (addOns.boost) return "plan_and_boost";
-    if (addOns.email) return "plan_and_email";
-    return "plan";
+  try {
+    return resolveCheckoutKind({
+      includeBoost: addOns.boost,
+      includeTraffic: addOns.traffic,
+      includeLoud: addOns.loud,
+      includeEmail: addOns.email,
+      alreadyPaid: !hasBase,
+    });
+  } catch {
+    return metadataKind(
+      invoice.metadata || invoice.parent?.subscription_details?.metadata,
+    );
   }
-  if (addOns.boost && addOns.email) return "boost_and_email";
-  if (addOns.boost) return "boost";
-  if (addOns.email) return "email";
-  return metadataKind(
-    invoice.metadata || invoice.parent?.subscription_details?.metadata,
-  );
 }
 
 function applyCheckoutIds(
@@ -181,6 +228,12 @@ function applyCheckoutIds(
   }
   if (kindHasBoost(kind)) {
     next.stripeBoostSubscriptionId = subscriptionId;
+  }
+  if (kindHasTraffic(kind)) {
+    next.stripeTrafficSubscriptionId = subscriptionId;
+  }
+  if (kindHasLoud(kind)) {
+    next.stripeLoudSubscriptionId = subscriptionId;
   }
   if (kindHasEmail(kind)) {
     next.stripeEmailSubscriptionId = subscriptionId;
@@ -204,6 +257,29 @@ function withAddonNotes(client: Client, bodies: string[]): Client {
   };
 }
 
+function applyPurchasedAddOns(client: Client, addOns: AddOns): Client {
+  let next = client;
+  if (addOns.boost) next = applyLocalBoostPurchased(next);
+  if (addOns.traffic) next = applyTrafficPurchased(next);
+  if (addOns.loud) next = applyLoudPurchased(next);
+  if (addOns.email) next = applyBusinessEmailPurchased(next);
+  return next;
+}
+
+function kindFromAddOns(addOns: AddOns, hasPlan: boolean): CheckoutKind {
+  try {
+    return resolveCheckoutKind({
+      includeBoost: addOns.boost,
+      includeTraffic: addOns.traffic,
+      includeLoud: addOns.loud,
+      includeEmail: addOns.email,
+      alreadyPaid: !hasPlan,
+    });
+  } catch {
+    return hasPlan ? "plan" : "email";
+  }
+}
+
 function clearAddonSubscription(client: Client, subscriptionId: string): Client {
   const next = { ...client };
   const notes: string[] = [];
@@ -212,12 +288,60 @@ function clearAddonSubscription(client: Client, subscriptionId: string): Client 
     next.stripeBoostSubscriptionId = null;
     notes.push("Local Boost subscription ended.");
   }
+  if (next.stripeTrafficSubscriptionId === subscriptionId) {
+    next.trafficAds = false;
+    next.stripeTrafficSubscriptionId = null;
+    notes.push("Traffic subscription ended.");
+  }
+  if (next.stripeLoudSubscriptionId === subscriptionId) {
+    next.loudAds = false;
+    next.stripeLoudSubscriptionId = null;
+    notes.push("Loud subscription ended.");
+  }
   if (next.stripeEmailSubscriptionId === subscriptionId) {
     next.businessEmail = false;
     next.stripeEmailSubscriptionId = null;
     notes.push("Business Email subscription ended.");
   }
   return withAddonNotes(next, notes);
+}
+
+function addonFailureNotes(
+  client: Client,
+  kind: CheckoutKind,
+  subscriptionId?: string,
+  pastDue = false,
+) {
+  const failed = pastDue ? "is past due" : "payment failed";
+  const bodies: string[] = [];
+  if (
+    kindHasBoost(kind) ||
+    client.stripeBoostSubscriptionId === subscriptionId
+  ) {
+    bodies.push(`Local Boost ${failed}. Website hosting is unchanged.`);
+  }
+  if (
+    kindHasTraffic(kind) ||
+    client.stripeTrafficSubscriptionId === subscriptionId
+  ) {
+    bodies.push(`Traffic ${failed}. Website hosting is unchanged.`);
+  }
+  if (kindHasLoud(kind) || client.stripeLoudSubscriptionId === subscriptionId) {
+    bodies.push(`Loud ${failed}. Website hosting is unchanged.`);
+  }
+  if (
+    kindHasEmail(kind) ||
+    client.stripeEmailSubscriptionId === subscriptionId
+  ) {
+    bodies.push(`Business Email ${failed}. Website hosting is unchanged.`);
+  }
+  return bodies.length
+    ? bodies
+    : [
+        pastDue
+          ? "Add-on is past due. Website hosting is unchanged."
+          : "Add-on payment failed. Website hosting is unchanged.",
+      ];
 }
 
 async function markLeadPurchased(clientId: string, leadId?: string) {
@@ -287,16 +411,7 @@ export async function POST(request: Request) {
     const subscriptionId = asId(session.subscription);
     const kind = metadataKind(session.metadata);
     const addOns = await sessionAddOns(stripe, session);
-    let resolvedKind: CheckoutKind = kind;
-    if (!kindHasPlan(kind)) {
-      resolvedKind = kind;
-    } else if (addOns.boost && addOns.email) {
-      resolvedKind = "plan_and_boost_and_email";
-    } else if (addOns.boost) {
-      resolvedKind = "plan_and_boost";
-    } else if (addOns.email) {
-      resolvedKind = "plan_and_email";
-    }
+    const resolvedKind = kindFromAddOns(addOns, kindHasPlan(kind));
     let next = applyCheckoutIds(client, resolvedKind, customerId, subscriptionId);
     if (kindHasPlan(resolvedKind)) {
       next = applyPaymentSucceeded({
@@ -304,8 +419,7 @@ export async function POST(request: Request) {
         siteStatus: client.siteStatus === "paused" ? "live" : client.siteStatus,
       });
     }
-    if (addOns.boost) next = applyLocalBoostPurchased(next);
-    if (addOns.email) next = applyBusinessEmailPurchased(next);
+    next = applyPurchasedAddOns(next, addOns);
     await upsertClient(next);
     if (kindHasPlan(resolvedKind)) {
       await markLeadPurchased(next.id, session.metadata?.leadId);
@@ -329,8 +443,7 @@ export async function POST(request: Request) {
     if (kindHasPlan(kind)) {
       next = applyPaymentSucceeded(next, new Date().toISOString(), nextInvoice);
     }
-    if (addOns.boost) next = applyLocalBoostPurchased(next);
-    if (addOns.email) next = applyBusinessEmailPurchased(next);
+    next = applyPurchasedAddOns(next, addOns);
     await upsertClient(next);
   }
 
@@ -343,22 +456,8 @@ export async function POST(request: Request) {
     const addOns = invoiceAddOns(invoice);
     const kind = invoiceKind(invoice, addOns);
     if (isAddonOnlySubscription(client, subscriptionId) || !kindHasPlan(kind)) {
-      const bodies: string[] = [];
-      if (kindHasBoost(kind) || client.stripeBoostSubscriptionId === subscriptionId) {
-        bodies.push("Local Boost payment failed. Website hosting is unchanged.");
-      }
-      if (kindHasEmail(kind) || client.stripeEmailSubscriptionId === subscriptionId) {
-        bodies.push(
-          "Business Email payment failed. Website hosting is unchanged.",
-        );
-      }
       await upsertClient(
-        withAddonNotes(
-          client,
-          bodies.length
-            ? bodies
-            : ["Add-on payment failed. Website hosting is unchanged."],
-        ),
+        withAddonNotes(client, addonFailureNotes(client, kind, subscriptionId)),
       );
     } else {
       await upsertClient(applyPaymentFailed(client));
@@ -384,23 +483,10 @@ export async function POST(request: Request) {
       isAddonOnlySubscription(client, sub.id) || !kindHasPlan(kind);
     if (sub.status === "past_due" || sub.status === "unpaid") {
       if (addonOnly) {
-        const bodies: string[] = [];
-        if (kindHasBoost(kind) || client.stripeBoostSubscriptionId === sub.id) {
-          bodies.push(
-            "Local Boost is past due. Website hosting is unchanged.",
-          );
-        }
-        if (kindHasEmail(kind) || client.stripeEmailSubscriptionId === sub.id) {
-          bodies.push(
-            "Business Email is past due. Website hosting is unchanged.",
-          );
-        }
         await upsertClient(
           withAddonNotes(
             client,
-            bodies.length
-              ? bodies
-              : ["Add-on is past due. Website hosting is unchanged."],
+            addonFailureNotes(client, kind, sub.id, true),
           ),
         );
       } else {
@@ -417,12 +503,12 @@ export async function POST(request: Request) {
       if (!addonOnly) {
         next = applyPaymentSucceeded(next);
       }
-      if (metadataBoost(sub.metadata)) {
-        next = applyLocalBoostPurchased(next);
-      }
-      if (metadataEmail(sub.metadata)) {
-        next = applyBusinessEmailPurchased(next);
-      }
+      next = applyPurchasedAddOns(next, {
+        boost: metadataBoost(sub.metadata),
+        traffic: metadataTraffic(sub.metadata),
+        loud: metadataLoud(sub.metadata),
+        email: metadataEmail(sub.metadata),
+      });
       await upsertClient(next);
     }
   }

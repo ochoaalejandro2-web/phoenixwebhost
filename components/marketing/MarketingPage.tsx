@@ -15,6 +15,8 @@ import {
   COMPANY,
   stripeBoostConfigured,
   stripeEmailConfigured,
+  stripeLoudConfigured,
+  stripeTrafficConfigured,
 } from "@/lib/config";
 import { requestPath, t } from "@/lib/i18n";
 import { listPublicReviews } from "@/lib/store";
@@ -152,8 +154,12 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             <p className="mt-5 max-w-md leading-relaxed text-body">{c.monthBody}</p>
           </article>
         </div>
-        <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-2">
-          <article className="px-6 py-14 md:pr-12">
+        <div className="mx-auto max-w-6xl border-t border-zinc-200 px-6 pt-10">
+          <p className="text-sm text-body">{c.adsLadderHelp}</p>
+          <p className="mt-2 text-xs text-body">{c.adsPickOne}</p>
+        </div>
+        <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-3">
+          <article className="px-6 py-14 md:pr-8">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.boostKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.boostTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.boostBody}</p>
@@ -168,8 +174,46 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
                 <p className="text-xs text-body">{c.boostMonthHint}</p>
               </div>
             </div>
+            <Link
+              href={`${requestPath(locale)}?ads=boost`}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.boostCheckbox}
+            </Link>
           </article>
-          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-12">
+          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:px-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.trafficKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.trafficTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.trafficBody}</p>
+            <div className="mt-8">
+              <p className="price-lime font-display text-4xl">$199</p>
+              <p className="text-xs text-body">{c.trafficMonthHint}</p>
+            </div>
+            <Link
+              href={`${requestPath(locale)}?ads=traffic`}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.trafficCheckbox}
+            </Link>
+          </article>
+          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.loudKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.loudTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.loudBody}</p>
+            <div className="mt-8">
+              <p className="price-lime font-display text-4xl">$349</p>
+              <p className="text-xs text-body">{c.loudMonthHint}</p>
+            </div>
+            <Link
+              href={`${requestPath(locale)}?ads=loud`}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.loudCheckbox}
+            </Link>
+          </article>
+        </div>
+        <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-2">
+          <article className="px-6 py-14 md:pr-12">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.emailKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.emailTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.emailBody}</p>
@@ -258,6 +302,8 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
           <RequestForm
             locale={locale}
             boostReady={stripeBoostConfigured()}
+            trafficReady={stripeTrafficConfigured()}
+            loudReady={stripeLoudConfigured()}
             emailReady={stripeEmailConfigured()}
           />
         </div>

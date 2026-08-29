@@ -32,6 +32,8 @@ export default async function ClientsPage() {
               <p className="text-sm text-ink-soft">
                 {client.slug}.phoenixwebhost.com · {client.template} · {client.siteStatus} · {client.paymentStatus}
                 {client.localBoost ? " · Local Boost" : ""}
+                {client.trafficAds ? " · Traffic" : ""}
+                {client.loudAds ? " · Loud" : ""}
                 {client.businessEmail ? " · Business Email" : ""}
               </p>
             </div>

@@ -71,6 +71,10 @@ export async function createClientAction(formData: FormData) {
     stripeSubscriptionId: null,
     stripeBoostSubscriptionId: null,
     localBoost: false,
+    stripeTrafficSubscriptionId: null,
+    trafficAds: false,
+    stripeLoudSubscriptionId: null,
+    loudAds: false,
     stripeEmailSubscriptionId: null,
     businessEmail: false,
     reminderSentAt: null,
@@ -253,6 +257,10 @@ export async function saveClientAction(formData: FormData) {
       String(formData.get("stripeSubscriptionId") || "").trim() || null,
     stripeBoostSubscriptionId:
       String(formData.get("stripeBoostSubscriptionId") || "").trim() || null,
+    stripeTrafficSubscriptionId:
+      String(formData.get("stripeTrafficSubscriptionId") || "").trim() || null,
+    stripeLoudSubscriptionId:
+      String(formData.get("stripeLoudSubscriptionId") || "").trim() || null,
     stripeEmailSubscriptionId:
       String(formData.get("stripeEmailSubscriptionId") || "").trim() || null,
   };
@@ -306,13 +314,22 @@ export async function checkoutClientAction(formData: FormData) {
   const client = await getClient(String(formData.get("clientId") || ""));
   if (!client) throw new Error("Client not found");
   const includeBoost = String(formData.get("includeBoost") || "") === "on";
+  const includeTraffic = String(formData.get("includeTraffic") || "") === "on";
+  const includeLoud = String(formData.get("includeLoud") || "") === "on";
   const includeEmail = String(formData.get("includeEmail") || "") === "on";
-  const boostOnly = String(formData.get("kind") || "") === "boost";
-  const emailOnly = String(formData.get("kind") || "") === "email";
+  const kind = String(formData.get("kind") || "");
+  const boostOnly = kind === "boost";
+  const trafficOnly = kind === "traffic";
+  const loudOnly = kind === "loud";
+  const emailOnly = kind === "email";
   const url = await createCheckoutForClient(client, {
     includeBoost: includeBoost || boostOnly,
+    includeTraffic: includeTraffic || trafficOnly,
+    includeLoud: includeLoud || loudOnly,
     includeEmail: includeEmail || emailOnly,
     boostOnly,
+    trafficOnly,
+    loudOnly,
     emailOnly,
   });
   redirect(url);

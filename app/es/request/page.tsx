@@ -5,16 +5,24 @@ import {
   StudioShell,
 } from "@/components/marketing/Chrome";
 import { RequestForm } from "@/components/marketing/RequestForm";
+import { parseAdsTier } from "@/lib/ads";
 import {
   COMPANY,
   stripeBoostConfigured,
   stripeEmailConfigured,
+  stripeLoudConfigured,
+  stripeTrafficConfigured,
 } from "@/lib/config";
 import { t } from "@/lib/i18n";
 
 export const metadata = { title: "Pedir una demo" };
 
-export default function RequestEsPage() {
+export default async function RequestEsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ads?: string }>;
+}) {
+  const { ads } = await searchParams;
   const c = t("es");
   return (
     <StudioShell>
@@ -35,6 +43,16 @@ export default function RequestEsPage() {
             es SEO mágico.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
+            Traffic opcional: $199 al mes extra para un anuncio de Google más
+            grande que Local Boost, para que más gente vea el negocio. No promete
+            posiciones.
+          </p>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
+            Loud opcional: $349 al mes extra para el paquete agresivo de anuncios.
+            Anuncios más fuertes, más gente viéndolo. No promete posiciones. Elija
+            un solo nivel de anuncios.
+          </p>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             Business Email opcional: $49 una vez más $19 al mes extra para un
             buzón profesional como info@su dominio. Un correo de negocio real para
             que lo tomen en serio — no es magia.
@@ -48,7 +66,10 @@ export default function RequestEsPage() {
         <RequestForm
           locale="es"
           boostReady={stripeBoostConfigured()}
+          trafficReady={stripeTrafficConfigured()}
+          loudReady={stripeLoudConfigured()}
           emailReady={stripeEmailConfigured()}
+          initialAds={parseAdsTier(ads)}
         />
       </main>
       <SiteFooter locale="es" />
