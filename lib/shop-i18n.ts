@@ -14,6 +14,7 @@ const shop = {
     servicesTitle: (template: TemplateId) => {
       if (template === "restaurant") return "From the kitchen";
       if (template === "landscaping") return "Yard work";
+      if (template === "handyman") return "Around the house";
       if (template === "salon") return "In the chair";
       if (template === "tax") return "How we help";
       return "Services";
@@ -52,6 +53,7 @@ const shop = {
     servicesTitle: (template: TemplateId) => {
       if (template === "restaurant") return "De la cocina";
       if (template === "landscaping") return "Trabajo de jardín";
+      if (template === "handyman") return "En la casa";
       if (template === "salon") return "En el sillón";
       if (template === "tax") return "Cómo le ayudamos";
       return "Servicios";

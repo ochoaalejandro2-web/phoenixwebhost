@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { neon } from "@neondatabase/serverless";
-import { createSeedState } from "@/data/seed";
+import { createSeedState, mergeMissingSeedClients } from "@/data/seed";
 import { findClientByCustomDomain } from "@/lib/custom-domain";
 import { withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
@@ -118,6 +118,7 @@ function emptyAuthLock(): AuthLock {
 
 const KNOWN_TEMPLATES: TemplateId[] = [
   "contractor",
+  "handyman",
   "salon",
   "restaurant",
   "professional",
@@ -181,11 +182,24 @@ function normalizeState(state: AppState): AppState {
   return state;
 }
 
+async function persistIfSeedDemosAdded(state: AppState, added: boolean) {
+  if (!added) return state;
+  const mode = storageMode();
+  if (mode === "postgres") await writePostgres(state);
+  if (mode === "file") await writeFileState(state);
+  return state;
+}
+
 async function loadUnlocked(): Promise<AppState> {
   const mode = storageMode();
   if (mode === "postgres") {
     const existing = await readPostgres();
-    if (existing) return normalizeState(existing);
+    if (existing) {
+      const { state, added } = mergeMissingSeedClients(normalizeState(existing));
+      await persistIfSeedDemosAdded(state, added);
+      bag().memory = state;
+      return state;
+    }
     const seed = createSeedState();
     await writePostgres(seed);
     bag().memory = seed;
@@ -193,14 +207,23 @@ async function loadUnlocked(): Promise<AppState> {
   }
   if (mode === "file") {
     const existing = await readFileState();
-    if (existing) return normalizeState(existing);
+    if (existing) {
+      const { state, added } = mergeMissingSeedClients(normalizeState(existing));
+      await persistIfSeedDemosAdded(state, added);
+      bag().memory = state;
+      return state;
+    }
     const seed = createSeedState();
     await writeFileState(seed);
     bag().memory = seed;
     return seed;
   }
   const cached = bag().memory;
-  if (cached) return cached;
+  if (cached) {
+    const { state } = mergeMissingSeedClients(cached);
+    bag().memory = state;
+    return state;
+  }
   const seed = createSeedState();
   bag().memory = seed;
   return seed;

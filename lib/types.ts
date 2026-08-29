@@ -2,6 +2,7 @@ export type Locale = "en" | "es";
 
 export type TemplateId =
   | "contractor"
+  | "handyman"
   | "salon"
   | "restaurant"
   | "professional"

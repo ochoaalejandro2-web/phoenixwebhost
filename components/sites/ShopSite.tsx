@@ -231,7 +231,7 @@ export function ShopSite({
       </header>
 
       {client.sample ? (
-        <p className="bg-[#2f4a38] px-5 py-1.5 text-center text-xs font-semibold tracking-wide text-[#f4efe6]">
+        <p className={`px-5 py-1.5 text-center text-xs font-semibold tracking-wide ${theme.call}`}>
           {c.sampleSite}
         </p>
       ) : null}

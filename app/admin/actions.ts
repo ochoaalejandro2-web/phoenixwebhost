@@ -278,6 +278,7 @@ export async function resetDemoAction() {
   revalidatePath("/s/casa-luna-salon");
   revalidatePath("/s/mesa-street-kitchen");
   revalidatePath("/s/palo-verde-yards");
+  revalidatePath("/s/ironwood-handyman");
   revalidatePath("/s/hola-tax-service");
   redirect("/admin");
 }

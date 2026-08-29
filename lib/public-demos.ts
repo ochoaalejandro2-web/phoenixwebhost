@@ -14,6 +14,7 @@ export type PublicDemo = {
 
 const TEMPLATE_IDS: TemplateId[] = [
   "contractor",
+  "handyman",
   "salon",
   "restaurant",
   "professional",
@@ -23,6 +24,7 @@ const TEMPLATE_IDS: TemplateId[] = [
 
 const TEMPLATE_LABELS: Record<TemplateId, { en: string; es: string }> = {
   contractor: { en: "Contractor & trades", es: "Contratista y oficios" },
+  handyman: { en: "Handyman", es: "Manitas y reparaciones" },
   salon: { en: "Salon & beauty", es: "Salón y belleza" },
   restaurant: { en: "Restaurant & cafe", es: "Restaurante y café" },
   professional: { en: "Professional services", es: "Servicios profesionales" },
@@ -40,7 +42,7 @@ function demoHost(slug: string) {
 
 /**
  * Marketing demo starting points that already exist in this repo.
- * Do not add invented shop names here — only real seed/live examples.
+ * Sample layouts (Palo Verde, Ironwood) are labeled as such on the live site.
  */
 export const PUBLIC_DEMOS: PublicDemo[] = [
   {
@@ -55,6 +57,21 @@ export const PUBLIC_DEMOS: PublicDemo[] = [
       "Leak repair",
       "Tile and shingle",
       "Free inspections",
+    ],
+  },
+  {
+    slug: "ironwood-handyman",
+    name: "Ironwood Handyman",
+    city: "Avondale, AZ",
+    template: "handyman",
+    href: demoHref("ironwood-handyman"),
+    hostLabel: demoHost("ironwood-handyman"),
+    services: [
+      "Home repairs",
+      "Drywall",
+      "Interior painting",
+      "Fixture install",
+      "Odd jobs",
     ],
   },
   {
@@ -135,6 +152,42 @@ export const TEMPLATE_SYNONYMS: Record<TemplateId, string[]> = {
     "techados",
     "plomeria",
     "plomería",
+  ],
+  handyman: [
+    "handyman",
+    "handymen",
+    "handy man",
+    "handy",
+    "repair",
+    "repairs",
+    "home repair",
+    "home repairs",
+    "fixer",
+    "fixers",
+    "drywall",
+    "painting",
+    "painter",
+    "paint",
+    "odd jobs",
+    "odd job",
+    "fixtures",
+    "fixture",
+    "punch list",
+    "manitas",
+    "manita",
+    "reparaciones",
+    "reparacion",
+    "reparación",
+    "arreglos",
+    "arreglo",
+    "tablaroca",
+    "yeso",
+    "pintura",
+    "pintor",
+    "trabajos varios",
+    "trabajo varios",
+    "mantenimiento",
+    "accesorios",
   ],
   salon: [
     "salon",
@@ -292,12 +345,17 @@ function matchesTokens(haystack: string, tokens: string[]) {
   return tokens.every((token) => haystack.includes(token));
 }
 
+function synonymScore(demo: PublicDemo, tokens: string[]) {
+  const synonyms = normalizeSearchText(TEMPLATE_SYNONYMS[demo.template].join(" "));
+  return tokens.every((token) => synonyms.includes(token)) ? 0 : 1;
+}
+
 export function filterPublicDemos(query: string): PublicDemo[] {
   const tokens = searchTokens(query);
   if (tokens.length === 0) return PUBLIC_DEMOS;
   return PUBLIC_DEMOS.filter((demo) =>
     matchesTokens(demoSearchText(demo), tokens),
-  );
+  ).sort((a, b) => synonymScore(a, tokens) - synonymScore(b, tokens));
 }
 
 export function filterTemplates(query: string): TemplateId[] {
