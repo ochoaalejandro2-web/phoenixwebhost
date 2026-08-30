@@ -38,6 +38,7 @@ import {
 } from "@/lib/site-addons";
 import { buildClientFromLead } from "@/lib/demo";
 import { getStripe } from "@/lib/stripe";
+import { ensureLiveExtraPrices } from "@/lib/stripe-extra-prices";
 import {
   getClient,
   getLead,
@@ -175,6 +176,7 @@ export async function createCheckoutForClient(
       });
 
   assertNoAdsConflict(client, kind);
+  if (extrasRequested) await ensureLiveExtraPrices();
 
   if (kindHasPlan(kind) && !stripeConfigured()) {
     throw new Error(STRIPE_NOT_CONFIGURED);

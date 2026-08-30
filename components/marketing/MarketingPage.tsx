@@ -23,6 +23,7 @@ import {
   stripeVoiceConfigured,
 } from "@/lib/config";
 import { requestPath, t } from "@/lib/i18n";
+import { ensureLiveExtraPrices } from "@/lib/stripe-extra-prices";
 import { listPublicReviews } from "@/lib/store";
 import type { Locale } from "@/lib/types";
 
@@ -70,6 +71,7 @@ function LimeCheck() {
 
 export async function MarketingPage({ locale }: { locale: Locale }) {
   const c = t(locale);
+  await ensureLiveExtraPrices();
   const reviews = await listPublicReviews();
   return (
     <StudioShell>
@@ -230,7 +232,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
           </p>
         </div>
         <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-2">
-          <article className="px-6 py-14 md:pr-12">
+          <article id="business-email" className="px-6 py-14 md:pr-12">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.emailKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.emailTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.emailBody}</p>
@@ -246,7 +248,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               </div>
             </div>
           </article>
-          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-12">
+          <article id="book-a-job" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-12">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.bookKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.bookTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.bookBody}</p>
@@ -264,7 +266,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
           </article>
         </div>
         <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-3">
-          <article className="px-6 py-14 md:pr-8">
+          <article id="missed-call" className="px-6 py-14 md:pr-8">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.missedKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.missedTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.missedBody}</p>
@@ -280,7 +282,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               </div>
             </div>
           </article>
-          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:px-8">
+          <article id="review-texts" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:px-8">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.reviewTextsKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.reviewTextsTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.reviewTextsBody}</p>
@@ -289,7 +291,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               <p className="text-xs text-body">{c.reviewTextsMonthHint}</p>
             </div>
           </article>
-          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-8">
+          <article id="voice-receptionist" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-8">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.voiceKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.voiceTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.voiceBody}</p>

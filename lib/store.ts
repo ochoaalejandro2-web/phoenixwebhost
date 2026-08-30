@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { neon } from "@neondatabase/serverless";
 import { createSeedState, mergeMissingSeedClients } from "@/data/seed";
+import { applyExtraPriceIdsToEnv } from "@/lib/stripe-extra-prices";
 import { findClientByCustomDomain } from "@/lib/custom-domain";
 import { withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
@@ -203,6 +204,7 @@ function normalizeState(state: AppState): AppState {
     conversationId: message.conversationId || undefined,
     notifiedAt: message.notifiedAt ?? null,
   }));
+  applyExtraPriceIdsToEnv(state.stripeExtraPrices);
   return state;
 }
 
