@@ -107,6 +107,29 @@ test("marketing copy presents the AI receptionist as included, not a $49 extra",
   assert.equal(studio.toLowerCase().includes("unavailable"), false);
 });
 
+test("marketing ladder keeps receptionist included and lists the paid extras", () => {
+  const en = copy.en;
+  const extras = [
+    en.bookTitle,
+    en.missedTitle,
+    en.reviewTextsTitle,
+    en.voiceTitle,
+    en.emailTitle,
+  ].join(" ");
+  assert.match(en.included.join(" "), /receptionist/i);
+  assert.match(en.includedSplit, /Included/);
+  assert.match(en.extrasSplit, /not in the \$200 \+ \$69/i);
+  assert.match(extras, /Book a job/);
+  assert.match(extras, /Missed-call/);
+  assert.match(extras, /Review texts/);
+  assert.match(extras, /Voice receptionist/);
+  assert.match(extras, /Business Email/);
+  assert.match(en.voiceBody, /Not included in the website/);
+  assert.match(en.voiceBody, /150 minutes/);
+  assert.match(en.notIncluded.join(" "), /Instagram/);
+  assert.equal(/receptionist/i.test(en.notIncluded.join(" ")), false);
+});
+
 test("fallback answers landscaping lawn questions from that site’s services", () => {
   const facts = buildClientFacts(landscaping, "en");
   assert.deepEqual(matchListedServices(facts, "do you do lawns?"), ["Lawn care"]);

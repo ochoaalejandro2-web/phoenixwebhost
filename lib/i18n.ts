@@ -46,7 +46,7 @@ export const copy = {
     ],
     notIncludedTitle: "Not included — quoted separately",
     notIncluded: [
-      "A new page: $75–$150",
+      "A new page or live Instagram feed: $75–$150",
       "Many photos: quoted",
       "A shop: quoted",
       "A logo: $100–$300",
@@ -288,7 +288,7 @@ export const copy = {
     ],
     notIncludedTitle: "No incluido — se cotiza aparte",
     notIncluded: [
-      "Una página nueva: $75–$150",
+      "Una página nueva o un feed de Instagram: $75–$150",
       "Muchas fotos: se cotiza",
       "Una tienda: se cotiza",
       "Un logotipo: $100–$300",

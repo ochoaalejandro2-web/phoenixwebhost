@@ -1,5 +1,8 @@
 import { PRICING } from "./config.ts";
+import { PUBLIC_DEMOS } from "./public-demos.ts";
 import type { Client } from "./types.ts";
+
+const WALK_IN_BOOK_SLUGS = new Set(PUBLIC_DEMOS.map((demo) => demo.slug));
 
 export const STUDIO_INBOX = "studio";
 
@@ -160,6 +163,12 @@ export function applyPaidExtras(client: Client, extras: PaidExtras): Client {
   return next;
 }
 
-export function clientShowsBookJob(client: Pick<Client, "bookAJob" | "id">) {
-  return Boolean(client.bookAJob) || client.id.startsWith("demo_");
+export function clientShowsBookJob(
+  client: Pick<Client, "bookAJob" | "id" | "slug">,
+) {
+  return (
+    Boolean(client.bookAJob) ||
+    client.id.startsWith("demo_") ||
+    WALK_IN_BOOK_SLUGS.has(client.slug)
+  );
 }

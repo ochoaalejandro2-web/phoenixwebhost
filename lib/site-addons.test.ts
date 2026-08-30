@@ -90,7 +90,24 @@ test("extras metadata round-trips and applyPaidExtras sets Book a job", () => {
 });
 
 test("public demos show Book a job; new paid clients do not until purchased", () => {
-  assert.equal(clientShowsBookJob({ id: "demo_lead_1", bookAJob: false }), true);
-  assert.equal(clientShowsBookJob({ id: "cli_paid", bookAJob: false }), false);
-  assert.equal(clientShowsBookJob({ id: "cli_paid", bookAJob: true }), true);
+  assert.equal(
+    clientShowsBookJob({ id: "demo_lead_1", slug: "demo-lead", bookAJob: false }),
+    true,
+  );
+  assert.equal(
+    clientShowsBookJob({ id: "cli_paid", slug: "a-new-shop", bookAJob: false }),
+    false,
+  );
+  assert.equal(
+    clientShowsBookJob({ id: "cli_paid", slug: "a-new-shop", bookAJob: true }),
+    true,
+  );
+  assert.equal(
+    clientShowsBookJob({
+      id: "cli_palo_verde",
+      slug: "palo-verde-yards",
+      bookAJob: false,
+    }),
+    true,
+  );
 });
