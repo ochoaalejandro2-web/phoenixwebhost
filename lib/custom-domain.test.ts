@@ -6,6 +6,7 @@ import {
   customDomainMatchesHost,
   findClientByCustomDomain,
   normalizeCustomDomain,
+  resolveDemoSubdomainSlug,
   subdomainSlug,
 } from "./custom-domain.ts";
 
@@ -166,4 +167,23 @@ test("client subdomains of the platform root still resolve a slug", () => {
   );
   assert.equal(subdomainSlug("www.phoenixwebhost.com", "phoenixwebhost.com"), null);
   assert.equal(subdomainSlug("phoenixwebhost.com", "phoenixwebhost.com"), null);
+});
+
+test("short walk-in hosts map onto the stored demo slugs", () => {
+  const slugs = [
+    "desert-peak-roofing",
+    "ironwood-handyman",
+    "casa-luna-salon",
+    "mesa-street-kitchen",
+    "palo-verde-yards",
+    "hola-tax-service",
+  ];
+  assert.equal(resolveDemoSubdomainSlug("ironwood", slugs), "ironwood-handyman");
+  assert.equal(resolveDemoSubdomainSlug("paloverde", slugs), "palo-verde-yards");
+  assert.equal(resolveDemoSubdomainSlug("desertpeak", slugs), "desert-peak-roofing");
+  assert.equal(
+    resolveDemoSubdomainSlug("ironwood-handyman", slugs),
+    "ironwood-handyman",
+  );
+  assert.equal(resolveDemoSubdomainSlug("unknown-shop", slugs), null);
 });

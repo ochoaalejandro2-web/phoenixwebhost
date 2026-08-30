@@ -84,6 +84,34 @@ export function isPlatformHost(host: string, platformDomain: string): boolean {
   );
 }
 
+export function compactHostSlug(value: string) {
+  return value.toLowerCase().replace(/-/g, "");
+}
+
+/**
+ * Map a walk-in host label (ironwood, paloverde, desertpeak) onto the
+ * stored client slug (ironwood-handyman, palo-verde-yards, …).
+ */
+export function resolveDemoSubdomainSlug(
+  hostSlug: string,
+  slugs: string[],
+): string | null {
+  const needle = hostSlug.trim().toLowerCase();
+  if (!needle) return null;
+  if (slugs.includes(needle)) return needle;
+  const compact = compactHostSlug(needle);
+  const matches = slugs.filter((slug) => {
+    const s = compactHostSlug(slug);
+    return s === compact || s.startsWith(compact);
+  });
+  if (matches.length === 1) return matches[0];
+  return (
+    matches.find((slug) => slug.startsWith(`${needle}-`)) ||
+    matches[0] ||
+    null
+  );
+}
+
 export function subdomainSlug(host: string, rootDomain: string): string | null {
   const h = normalizeHost(host);
   const root = normalizeHost(rootDomain);

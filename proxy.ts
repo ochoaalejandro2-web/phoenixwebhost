@@ -7,7 +7,7 @@ import {
   normalizeHost,
   subdomainSlug,
 } from "@/lib/custom-domain";
-import { getClientByDomain } from "@/lib/store";
+import { getClientByDomain, getClientBySlug } from "@/lib/store";
 
 export async function proxy(request: NextRequest) {
   const host = normalizeHost(request.headers.get("host") || "");
@@ -26,7 +26,10 @@ export async function proxy(request: NextRequest) {
   let customDomain: string | null = null;
   let viaCustomDomain = false;
 
-  if (!slug) {
+  if (slug) {
+    const client = await getClientBySlug(slug);
+    slug = client?.slug ?? slug;
+  } else {
     const client = await getClientByDomain(host);
     slug = client?.slug ?? null;
     customDomain = client?.customDomain ?? null;

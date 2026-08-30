@@ -3,7 +3,10 @@ import path from "path";
 import { neon } from "@neondatabase/serverless";
 import { createSeedState, mergeMissingSeedClients } from "@/data/seed";
 import { applyExtraPriceIdsToEnv } from "@/lib/stripe-extra-prices";
-import { findClientByCustomDomain } from "@/lib/custom-domain";
+import {
+  findClientByCustomDomain,
+  resolveDemoSubdomainSlug,
+} from "@/lib/custom-domain";
 import { withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
 import { emptyDemoTweaks, parseDemoAccent, parseTemplateId } from "@/lib/demo";
@@ -130,16 +133,19 @@ const KNOWN_TEMPLATES: TemplateId[] = [
 function normalizeClient(client: Client): Client {
   let template = client.template;
   let services = client.services;
+  if (!Array.isArray(services)) services = [];
   if (client.slug === HOLA_TAX_SLUG) {
     template = "tax";
-    services = withHolaTaxLlcService(client.services);
+    services = withHolaTaxLlcService(services);
   } else if (!KNOWN_TEMPLATES.includes(template)) {
     template = "professional";
   }
   return {
     ...client,
     template,
-    services,
+    services: Array.isArray(services) ? services : [],
+    notes: Array.isArray(client.notes) ? client.notes : [],
+    editRequests: Array.isArray(client.editRequests) ? client.editRequests : [],
     localBoost: Boolean(client.localBoost),
     stripeBoostSubscriptionId: client.stripeBoostSubscriptionId ?? null,
     trafficAds: Boolean(client.trafficAds),
@@ -291,7 +297,15 @@ export async function getClient(id: string) {
 
 export async function getClientBySlug(slug: string) {
   const state = await getState();
-  return state.clients.find((c) => c.slug === slug) ?? null;
+  const exact = state.clients.find((c) => c.slug === slug);
+  if (exact) return exact;
+  const resolved = resolveDemoSubdomainSlug(
+    slug,
+    state.clients.map((c) => c.slug),
+  );
+  return resolved
+    ? (state.clients.find((c) => c.slug === resolved) ?? null)
+    : null;
 }
 
 export async function getClientByDomain(host: string) {
