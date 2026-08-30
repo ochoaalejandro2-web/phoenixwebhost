@@ -174,9 +174,18 @@ export function usableEmail(value: string | undefined | null) {
 }
 
 function clientInquiryBodies(businessName: string, message: ContactMessage) {
-  const subject = `New website message for ${businessName}`;
-  const intro =
-    "Someone wrote in from your website. Reply to this email to reach them.";
+  const chat = message.source === "chat";
+  const booking = message.source === "booking";
+  const subject = chat
+    ? `New website chat for ${businessName}`
+    : booking
+      ? `New book-a-job request for ${businessName}`
+      : `New website message for ${businessName}`;
+  const intro = chat
+    ? "Someone used the receptionist on your website. Their questions are below. Call or email them if they left a number."
+    : booking
+      ? "Someone asked to book a job from your website. Call them back."
+      : "Someone wrote in from your website. Reply to this email to reach them.";
   const { html, text } = emailBodies({
     subject,
     intro,

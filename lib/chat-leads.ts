@@ -41,16 +41,24 @@ export function mergeContact(
   };
 }
 
+function isAnonymousChatName(name?: string) {
+  const trimmed = (name || "").trim();
+  return (
+    !trimmed ||
+    trimmed === "Website visitor" ||
+    trimmed === "Visitante del chat"
+  );
+}
+
 export function shouldNotifyChatLead(
   existing: ContactMessage | null,
   next: { name: string; phone: string },
 ) {
   if (!existing || !existing.notifiedAt) return true;
   const hadPhone = Boolean(existing.phone.trim());
-  const hadName = Boolean(existing.name.trim()) && existing.name !== "Website visitor";
+  const hadName = !isAnonymousChatName(existing.name);
   const gainedPhone = Boolean(next.phone) && !hadPhone;
-  const gainedName =
-    Boolean(next.name) && next.name !== "Website visitor" && !hadName;
+  const gainedName = !isAnonymousChatName(next.name) && !hadName;
   return gainedPhone || gainedName;
 }
 

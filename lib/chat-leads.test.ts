@@ -38,6 +38,14 @@ test("notifies once unless a name or phone newly appears", () => {
     shouldNotifyChatLead(existing, { name: "", phone: "(602) 555-0100" }),
     true,
   );
+  const spanish: ContactMessage = {
+    ...existing,
+    name: "Visitante del chat",
+  };
+  assert.equal(
+    shouldNotifyChatLead(spanish, { name: "Maria Lopez", phone: "" }),
+    true,
+  );
 });
 
 test("studio and preview chats go to the studio inbox, live clients keep their id", () => {
