@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import {
+  stripeBookConfigured,
   stripeBoostConfigured,
   stripeConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
+  stripeMissedCallConfigured,
+  stripeReviewTextsConfigured,
   stripeTrafficConfigured,
+  stripeVoiceConfigured,
 } from "@/lib/config";
 import { stripeModeLabel } from "@/lib/stripe";
 import { storageMode } from "@/lib/store";
@@ -19,6 +23,10 @@ export function GET() {
     trafficReady: stripeTrafficConfigured(),
     loudReady: stripeLoudConfigured(),
     emailReady: stripeEmailConfigured(),
+    bookReady: stripeBookConfigured(),
+    missedReady: stripeMissedCallConfigured(),
+    reviewsReady: stripeReviewTextsConfigured(),
+    voiceReady: stripeVoiceConfigured(),
     storage: storageMode(),
   });
 }

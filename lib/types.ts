@@ -59,6 +59,14 @@ export type Client = {
   loudAds: boolean;
   stripeEmailSubscriptionId: string | null;
   businessEmail: boolean;
+  stripeBookSubscriptionId?: string | null;
+  bookAJob?: boolean;
+  stripeMissedCallSubscriptionId?: string | null;
+  missedCallTextback?: boolean;
+  stripeReviewTextsSubscriptionId?: string | null;
+  reviewTexts?: boolean;
+  stripeVoiceSubscriptionId?: string | null;
+  voiceReceptionist?: boolean;
   reminderSentAt: string | null;
   overdueSince: string | null;
   offlineAt: string | null;
@@ -102,11 +110,17 @@ export type Lead = {
   wantsTraffic: boolean;
   wantsLoud: boolean;
   wantsBusinessEmail: boolean;
+  wantsBookAJob?: boolean;
+  wantsMissedCall?: boolean;
+  wantsReviewTexts?: boolean;
+  wantsVoice?: boolean;
   purchased: boolean;
   clientId: string | null;
   demo: DemoTweaks;
   createdAt: string;
 };
+
+export type InboxSource = "contact" | "chat" | "booking";
 
 export type ContactMessage = {
   id: string;
@@ -116,6 +130,9 @@ export type ContactMessage = {
   phone: string;
   message: string;
   createdAt: string;
+  source?: InboxSource;
+  conversationId?: string;
+  notifiedAt?: string | null;
 };
 
 export type ReviewStatus = "pending" | "approved" | "rejected";

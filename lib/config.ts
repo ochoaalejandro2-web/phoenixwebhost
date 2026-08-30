@@ -26,6 +26,22 @@ export const PRICING = {
   emailMonthlyCents: 1_900,
   emailSetupLabel: "$49",
   emailMonthlyLabel: "$19",
+  bookSetupCents: 4_900,
+  bookMonthlyCents: 1_900,
+  bookSetupLabel: "$49",
+  bookMonthlyLabel: "$19",
+  missedSetupCents: 4_900,
+  missedMonthlyCents: 2_900,
+  missedSetupLabel: "$49",
+  missedMonthlyLabel: "$29",
+  reviewMonthlyCents: 2_900,
+  reviewMonthlyLabel: "$29",
+  voiceSetupCents: 9_900,
+  voiceMonthlyCents: 7_900,
+  voiceSetupLabel: "$99",
+  voiceMonthlyLabel: "$79",
+  voiceIncludedMinutes: 150,
+  voiceExtraMinuteLabel: "$0.50",
   extraPageMin: 75,
   extraPageMax: 150,
   logoMin: 100,
@@ -170,4 +186,61 @@ export function emailPriceIds() {
   const setup = process.env.STRIPE_EMAIL_SETUP_PRICE_ID;
   const monthly = process.env.STRIPE_EMAIL_MONTHLY_PRICE_ID;
   return [setup, monthly].filter((id): id is string => Boolean(id));
+}
+
+export function stripeBookConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY &&
+      process.env.STRIPE_BOOK_SETUP_PRICE_ID &&
+      process.env.STRIPE_BOOK_MONTHLY_PRICE_ID,
+  );
+}
+
+export function stripeMissedCallConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY &&
+      process.env.STRIPE_MISSED_SETUP_PRICE_ID &&
+      process.env.STRIPE_MISSED_MONTHLY_PRICE_ID,
+  );
+}
+
+export function stripeReviewTextsConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY && process.env.STRIPE_REVIEW_MONTHLY_PRICE_ID,
+  );
+}
+
+export function stripeVoiceConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY &&
+      process.env.STRIPE_VOICE_SETUP_PRICE_ID &&
+      process.env.STRIPE_VOICE_MONTHLY_PRICE_ID,
+  );
+}
+
+export function bookPriceIds() {
+  return [
+    process.env.STRIPE_BOOK_SETUP_PRICE_ID,
+    process.env.STRIPE_BOOK_MONTHLY_PRICE_ID,
+  ].filter((id): id is string => Boolean(id));
+}
+
+export function missedCallPriceIds() {
+  return [
+    process.env.STRIPE_MISSED_SETUP_PRICE_ID,
+    process.env.STRIPE_MISSED_MONTHLY_PRICE_ID,
+  ].filter((id): id is string => Boolean(id));
+}
+
+export function reviewTextsPriceIds() {
+  return [process.env.STRIPE_REVIEW_MONTHLY_PRICE_ID].filter(
+    (id): id is string => Boolean(id),
+  );
+}
+
+export function voicePriceIds() {
+  return [
+    process.env.STRIPE_VOICE_SETUP_PRICE_ID,
+    process.env.STRIPE_VOICE_MONTHLY_PRICE_ID,
+  ].filter((id): id is string => Boolean(id));
 }

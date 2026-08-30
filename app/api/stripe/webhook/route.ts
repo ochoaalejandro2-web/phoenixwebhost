@@ -8,6 +8,7 @@ import {
   applyPaymentSucceeded,
   applyTrafficPurchased,
 } from "@/lib/billing";
+import { applyPaidExtras, extrasFromMetadata } from "@/lib/site-addons";
 import {
   isCheckoutKind,
   kindHasBoost,
@@ -191,12 +192,34 @@ function isAddonOnlySubscription(client: Client, subscriptionId?: string) {
     client.stripeBoostSubscriptionId === subscriptionId ||
     client.stripeTrafficSubscriptionId === subscriptionId ||
     client.stripeLoudSubscriptionId === subscriptionId ||
-    client.stripeEmailSubscriptionId === subscriptionId
+    client.stripeEmailSubscriptionId === subscriptionId ||
+    client.stripeBookSubscriptionId === subscriptionId ||
+    client.stripeMissedCallSubscriptionId === subscriptionId ||
+    client.stripeReviewTextsSubscriptionId === subscriptionId ||
+    client.stripeVoiceSubscriptionId === subscriptionId
   );
 }
 
 function invoiceKind(invoice: Stripe.Invoice, addOns: AddOns): CheckoutKind {
+  const meta =
+    invoice.metadata || invoice.parent?.subscription_details?.metadata;
+  const fromMeta = metadataKind(meta);
+  if (fromMeta === "addons") return "addons";
   const hasBase = invoiceHasBaseMonthly(invoice);
+  const extras = extrasFromMetadata(meta);
+  const extrasOnly =
+    !hasBase &&
+    !addOns.boost &&
+    !addOns.traffic &&
+    !addOns.loud &&
+    !addOns.email &&
+    Boolean(
+      extras.includeBook ||
+        extras.includeMissedCall ||
+        extras.includeReviews ||
+        extras.includeVoice,
+    );
+  if (extrasOnly) return "addons";
   try {
     return resolveCheckoutKind({
       includeBoost: addOns.boost,
@@ -206,9 +229,7 @@ function invoiceKind(invoice: Stripe.Invoice, addOns: AddOns): CheckoutKind {
       alreadyPaid: !hasBase,
     });
   } catch {
-    return metadataKind(
-      invoice.metadata || invoice.parent?.subscription_details?.metadata,
-    );
+    return fromMeta;
   }
 }
 
@@ -217,6 +238,7 @@ function applyCheckoutIds(
   kind: CheckoutKind,
   customerId?: string,
   subscriptionId?: string,
+  extras = extrasFromMetadata(null),
 ): Client {
   const next: Client = {
     ...client,
@@ -238,6 +260,10 @@ function applyCheckoutIds(
   if (kindHasEmail(kind)) {
     next.stripeEmailSubscriptionId = subscriptionId;
   }
+  if (extras.includeBook) next.stripeBookSubscriptionId = subscriptionId;
+  if (extras.includeMissedCall) next.stripeMissedCallSubscriptionId = subscriptionId;
+  if (extras.includeReviews) next.stripeReviewTextsSubscriptionId = subscriptionId;
+  if (extras.includeVoice) next.stripeVoiceSubscriptionId = subscriptionId;
   return next;
 }
 
@@ -257,16 +283,31 @@ function withAddonNotes(client: Client, bodies: string[]): Client {
   };
 }
 
-function applyPurchasedAddOns(client: Client, addOns: AddOns): Client {
+function applyPurchasedAddOns(
+  client: Client,
+  addOns: AddOns,
+  extras = extrasFromMetadata(null),
+): Client {
   let next = client;
   if (addOns.boost) next = applyLocalBoostPurchased(next);
   if (addOns.traffic) next = applyTrafficPurchased(next);
   if (addOns.loud) next = applyLoudPurchased(next);
   if (addOns.email) next = applyBusinessEmailPurchased(next);
-  return next;
+  return applyPaidExtras(next, extras);
 }
 
-function kindFromAddOns(addOns: AddOns, hasPlan: boolean): CheckoutKind {
+function kindFromAddOns(
+  addOns: AddOns,
+  hasPlan: boolean,
+  fallback: CheckoutKind = "plan",
+): CheckoutKind {
+  const extrasOnly =
+    !hasPlan &&
+    !addOns.boost &&
+    !addOns.traffic &&
+    !addOns.loud &&
+    !addOns.email;
+  if (extrasOnly) return fallback === "addons" ? "addons" : fallback;
   try {
     return resolveCheckoutKind({
       includeBoost: addOns.boost,
@@ -302,6 +343,26 @@ function clearAddonSubscription(client: Client, subscriptionId: string): Client 
     next.businessEmail = false;
     next.stripeEmailSubscriptionId = null;
     notes.push("Business Email subscription ended.");
+  }
+  if (next.stripeBookSubscriptionId === subscriptionId) {
+    next.bookAJob = false;
+    next.stripeBookSubscriptionId = null;
+    notes.push("Book a job subscription ended.");
+  }
+  if (next.stripeMissedCallSubscriptionId === subscriptionId) {
+    next.missedCallTextback = false;
+    next.stripeMissedCallSubscriptionId = null;
+    notes.push("Missed-call text-back subscription ended.");
+  }
+  if (next.stripeReviewTextsSubscriptionId === subscriptionId) {
+    next.reviewTexts = false;
+    next.stripeReviewTextsSubscriptionId = null;
+    notes.push("Review texts subscription ended.");
+  }
+  if (next.stripeVoiceSubscriptionId === subscriptionId) {
+    next.voiceReceptionist = false;
+    next.stripeVoiceSubscriptionId = null;
+    notes.push("Voice receptionist subscription ended.");
   }
   return withAddonNotes(next, notes);
 }
@@ -411,15 +472,22 @@ export async function POST(request: Request) {
     const subscriptionId = asId(session.subscription);
     const kind = metadataKind(session.metadata);
     const addOns = await sessionAddOns(stripe, session);
-    const resolvedKind = kindFromAddOns(addOns, kindHasPlan(kind));
-    let next = applyCheckoutIds(client, resolvedKind, customerId, subscriptionId);
+    const extras = extrasFromMetadata(session.metadata);
+    const resolvedKind = kindFromAddOns(addOns, kindHasPlan(kind), kind);
+    let next = applyCheckoutIds(
+      client,
+      resolvedKind,
+      customerId,
+      subscriptionId,
+      extras,
+    );
     if (kindHasPlan(resolvedKind)) {
       next = applyPaymentSucceeded({
         ...next,
         siteStatus: client.siteStatus === "paused" ? "live" : client.siteStatus,
       });
     }
-    next = applyPurchasedAddOns(next, addOns);
+    next = applyPurchasedAddOns(next, addOns, extras);
     await upsertClient(next);
     if (kindHasPlan(resolvedKind)) {
       await markLeadPurchased(next.id, session.metadata?.leadId);
@@ -438,12 +506,15 @@ export async function POST(request: Request) {
       ? new Date(invoice.lines.data[0].period.end * 1000).toISOString()
       : undefined;
     const addOns = invoiceAddOns(invoice);
+    const extras = extrasFromMetadata(
+      invoice.metadata || invoice.parent?.subscription_details?.metadata,
+    );
     const kind = invoiceKind(invoice, addOns);
-    let next = applyCheckoutIds(client, kind, customerId, subscriptionId);
+    let next = applyCheckoutIds(client, kind, customerId, subscriptionId, extras);
     if (kindHasPlan(kind)) {
       next = applyPaymentSucceeded(next, new Date().toISOString(), nextInvoice);
     }
-    next = applyPurchasedAddOns(next, addOns);
+    next = applyPurchasedAddOns(next, addOns, extras);
     await upsertClient(next);
   }
 
@@ -499,16 +570,21 @@ export async function POST(request: Request) {
         kind,
         asId(sub.customer),
         sub.id,
+        extrasFromMetadata(sub.metadata),
       );
       if (!addonOnly) {
         next = applyPaymentSucceeded(next);
       }
-      next = applyPurchasedAddOns(next, {
-        boost: metadataBoost(sub.metadata),
-        traffic: metadataTraffic(sub.metadata),
-        loud: metadataLoud(sub.metadata),
-        email: metadataEmail(sub.metadata),
-      });
+      next = applyPurchasedAddOns(
+        next,
+        {
+          boost: metadataBoost(sub.metadata),
+          traffic: metadataTraffic(sub.metadata),
+          loud: metadataLoud(sub.metadata),
+          email: metadataEmail(sub.metadata),
+        },
+        extrasFromMetadata(sub.metadata),
+      );
       await upsertClient(next);
     }
   }

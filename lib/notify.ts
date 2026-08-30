@@ -1,5 +1,7 @@
 import { publicSiteUrl } from "@/lib/config";
 import { demoUrl, templateLabel } from "@/lib/demo";
+import { isPreviewClient } from "@/lib/demo";
+import { STUDIO_INBOX } from "@/lib/site-addons";
 import type { Client, ContactMessage, Lead, Review } from "@/lib/types";
 
 export type SiteContactStatus = "sent" | "no-email" | "send-failed";
@@ -327,8 +329,14 @@ export async function notifyNewLead(lead: Lead) {
         lead.wantsBusinessEmail
           ? "Wants Business Email ($49 + $19/mo)"
           : "No Business Email",
+        lead.wantsBookAJob ? "Wants Book a job ($49 + $19/mo)" : "",
+        lead.wantsMissedCall ? "Wants missed-call text-back" : "",
+        lead.wantsReviewTexts ? "Wants review texts" : "",
+        lead.wantsVoice ? "Wants voice receptionist" : "",
         preview,
-      ].join(" · "),
+      ]
+        .filter(Boolean)
+        .join(" · "),
       extraLabel: "Notes",
       createdAt: lead.createdAt,
       adminPath: "/admin/leads",
@@ -455,6 +463,64 @@ export async function notifySiteContact(
     }
     return "send-failed";
   }
+}
+
+export async function notifyChatLead(input: {
+  client?: Pick<Client, "id" | "businessName" | "email"> | null;
+  inboxId: string;
+  message: ContactMessage;
+  locale?: "en" | "es";
+}) {
+  const client = input.client;
+  const studio =
+    input.inboxId === STUDIO_INBOX || !client || isPreviewClient(client);
+  if (studio) {
+    try {
+      await sendBoth({
+        subject: "New Phoenixwebhost chat lead",
+        intro:
+          "Someone used the included AI receptionist. Call or email them if they left a number.",
+        name: input.message.name || "Website visitor",
+        phone: input.message.phone,
+        email: input.message.email,
+        business: client?.businessName || "Phoenixwebhost Inc.",
+        message: input.message.message,
+        createdAt: input.message.createdAt,
+        adminPath: "/admin/leads",
+        adminLabel: "Open in Admin → Requests",
+      });
+    } catch (error) {
+      console.error("[notify] unexpected error (studio chat)", error);
+    }
+    return;
+  }
+  await notifySiteContact(client, input.message);
+}
+
+export async function notifyBookingLead(
+  client: Pick<Client, "id" | "businessName" | "email">,
+  message: ContactMessage,
+) {
+  if (isPreviewClient(client) || client.id === STUDIO_INBOX) {
+    try {
+      await sendBoth({
+        subject: `Book-a-job request for ${client.businessName}`,
+        intro: "Someone asked to book a job from a site preview.",
+        name: message.name,
+        phone: message.phone,
+        email: message.email,
+        business: client.businessName,
+        message: message.message,
+        createdAt: message.createdAt,
+        adminPath: "/admin/leads",
+        adminLabel: "Open in Admin → Requests",
+      });
+    } catch (error) {
+      console.error("[notify] unexpected error (preview booking)", error);
+    }
+    return;
+  }
+  await notifySiteContact(client, message);
 }
 
 export async function notifyNewReview(review: Review) {

@@ -14,6 +14,14 @@ export async function POST(request: Request) {
       trafficOnly?: boolean;
       loudOnly?: boolean;
       emailOnly?: boolean;
+      includeBook?: boolean;
+      includeMissedCall?: boolean;
+      includeReviews?: boolean;
+      includeVoice?: boolean;
+      bookOnly?: boolean;
+      missedOnly?: boolean;
+      reviewsOnly?: boolean;
+      voiceOnly?: boolean;
     };
     const client = await resolveCheckoutClient(body);
     if (!client) {
@@ -28,6 +36,14 @@ export async function POST(request: Request) {
       trafficOnly: Boolean(body.trafficOnly),
       loudOnly: Boolean(body.loudOnly),
       emailOnly: Boolean(body.emailOnly),
+      includeBook: Boolean(body.includeBook),
+      includeMissedCall: Boolean(body.includeMissedCall),
+      includeReviews: Boolean(body.includeReviews),
+      includeVoice: Boolean(body.includeVoice),
+      bookOnly: Boolean(body.bookOnly),
+      missedOnly: Boolean(body.missedOnly),
+      reviewsOnly: Boolean(body.reviewsOnly),
+      voiceOnly: Boolean(body.voiceOnly),
       leadId: body.leadId,
     });
     return NextResponse.json({ url });

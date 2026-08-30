@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import {
+  stripeBookConfigured,
   stripeBoostConfigured,
   stripeConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
+  stripeMissedCallConfigured,
+  stripeReviewTextsConfigured,
   stripeTrafficConfigured,
+  stripeVoiceConfigured,
 } from "@/lib/config";
 import { normalizeAdsFlags } from "@/lib/ads";
 import { demoPath, emptyDemoTweaks, parseTemplateId } from "@/lib/demo";
@@ -26,6 +30,10 @@ export async function POST(request: Request) {
     wantsTraffic?: boolean;
     wantsLoud?: boolean;
     wantsBusinessEmail?: boolean;
+    wantsBookAJob?: boolean;
+    wantsMissedCall?: boolean;
+    wantsReviewTexts?: boolean;
+    wantsVoice?: boolean;
   };
   if (!body.name || !body.businessName || !body.email) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -53,6 +61,10 @@ export async function POST(request: Request) {
       wantsLoud: Boolean(body.wantsLoud),
     }),
     wantsBusinessEmail: Boolean(body.wantsBusinessEmail),
+    wantsBookAJob: Boolean(body.wantsBookAJob),
+    wantsMissedCall: Boolean(body.wantsMissedCall),
+    wantsReviewTexts: Boolean(body.wantsReviewTexts),
+    wantsVoice: Boolean(body.wantsVoice),
     purchased: false,
     clientId: null,
     demo: emptyDemoTweaks(),
@@ -67,5 +79,9 @@ export async function POST(request: Request) {
     trafficReady: stripeTrafficConfigured(),
     loudReady: stripeLoudConfigured(),
     emailReady: stripeEmailConfigured(),
+    bookReady: stripeBookConfigured(),
+    missedReady: stripeMissedCallConfigured(),
+    reviewsReady: stripeReviewTextsConfigured(),
+    voiceReady: stripeVoiceConfigured(),
   });
 }

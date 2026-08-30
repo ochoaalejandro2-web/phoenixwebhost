@@ -263,6 +263,14 @@ export async function saveClientAction(formData: FormData) {
       String(formData.get("stripeLoudSubscriptionId") || "").trim() || null,
     stripeEmailSubscriptionId:
       String(formData.get("stripeEmailSubscriptionId") || "").trim() || null,
+    stripeBookSubscriptionId:
+      String(formData.get("stripeBookSubscriptionId") || "").trim() || null,
+    stripeMissedCallSubscriptionId:
+      String(formData.get("stripeMissedCallSubscriptionId") || "").trim() || null,
+    stripeReviewTextsSubscriptionId:
+      String(formData.get("stripeReviewTextsSubscriptionId") || "").trim() || null,
+    stripeVoiceSubscriptionId:
+      String(formData.get("stripeVoiceSubscriptionId") || "").trim() || null,
   };
   await upsertClient(next);
   if (isTaxOfficeTemplate(next.template)) {
@@ -317,20 +325,36 @@ export async function checkoutClientAction(formData: FormData) {
   const includeTraffic = String(formData.get("includeTraffic") || "") === "on";
   const includeLoud = String(formData.get("includeLoud") || "") === "on";
   const includeEmail = String(formData.get("includeEmail") || "") === "on";
+  const includeBook = String(formData.get("includeBook") || "") === "on";
+  const includeMissedCall = String(formData.get("includeMissedCall") || "") === "on";
+  const includeReviews = String(formData.get("includeReviews") || "") === "on";
+  const includeVoice = String(formData.get("includeVoice") || "") === "on";
   const kind = String(formData.get("kind") || "");
   const boostOnly = kind === "boost";
   const trafficOnly = kind === "traffic";
   const loudOnly = kind === "loud";
   const emailOnly = kind === "email";
+  const bookOnly = kind === "book";
+  const missedOnly = kind === "missed";
+  const reviewsOnly = kind === "reviews";
+  const voiceOnly = kind === "voice";
   const url = await createCheckoutForClient(client, {
     includeBoost: includeBoost || boostOnly,
     includeTraffic: includeTraffic || trafficOnly,
     includeLoud: includeLoud || loudOnly,
     includeEmail: includeEmail || emailOnly,
+    includeBook: includeBook || bookOnly,
+    includeMissedCall: includeMissedCall || missedOnly,
+    includeReviews: includeReviews || reviewsOnly,
+    includeVoice: includeVoice || voiceOnly,
     boostOnly,
     trafficOnly,
     loudOnly,
     emailOnly,
+    bookOnly,
+    missedOnly,
+    reviewsOnly,
+    voiceOnly,
   });
   redirect(url);
 }

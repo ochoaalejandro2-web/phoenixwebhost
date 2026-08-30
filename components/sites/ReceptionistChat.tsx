@@ -26,6 +26,7 @@ export function ReceptionistChat({
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [pending, setPending] = useState(false);
+  const [conversationId] = useState(() => `chat_${crypto.randomUUID()}`);
   const [lines, setLines] = useState<Line[]>([{ from: "us", text: intro }]);
 
   async function send() {
@@ -47,6 +48,7 @@ export function ReceptionistChat({
           site,
           leadId,
           locale,
+          conversationId,
           message,
           history,
         }),

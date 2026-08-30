@@ -430,6 +430,34 @@ export function buildClientFromLead(
       createdAt: new Date().toISOString(),
     });
   }
+  if (lead.wantsBookAJob) {
+    notes.push({
+      id: `note_${crypto.randomUUID()}`,
+      body: "Asked for optional Book a job at signup (not paid until checkout completes).",
+      createdAt: new Date().toISOString(),
+    });
+  }
+  if (lead.wantsMissedCall) {
+    notes.push({
+      id: `note_${crypto.randomUUID()}`,
+      body: "Asked for optional missed-call text-back at signup (not paid until checkout completes).",
+      createdAt: new Date().toISOString(),
+    });
+  }
+  if (lead.wantsReviewTexts) {
+    notes.push({
+      id: `note_${crypto.randomUUID()}`,
+      body: "Asked for optional review texts at signup (not paid until checkout completes).",
+      createdAt: new Date().toISOString(),
+    });
+  }
+  if (lead.wantsVoice) {
+    notes.push({
+      id: `note_${crypto.randomUUID()}`,
+      body: "Asked for optional voice receptionist at signup (not paid until checkout completes).",
+      createdAt: new Date().toISOString(),
+    });
+  }
   if (!preview) {
     notes.push({
       id: `note_${crypto.randomUUID()}`,
@@ -470,6 +498,10 @@ export function buildClientFromLead(
     loudAds: false,
     stripeEmailSubscriptionId: null,
     businessEmail: false,
+    bookAJob: Boolean(preview || lead.wantsBookAJob),
+    missedCallTextback: false,
+    reviewTexts: false,
+    voiceReceptionist: false,
     reminderSentAt: null,
     overdueSince: null,
     offlineAt: null,

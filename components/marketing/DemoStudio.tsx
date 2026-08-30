@@ -33,6 +33,10 @@ export function DemoPurchase({
   trafficReady,
   loudReady,
   emailReady,
+  bookReady = false,
+  missedReady = false,
+  reviewsReady = false,
+  voiceReady = false,
   compact = false,
 }: {
   lead: Lead;
@@ -42,11 +46,19 @@ export function DemoPurchase({
   trafficReady: boolean;
   loudReady: boolean;
   emailReady: boolean;
+  bookReady?: boolean;
+  missedReady?: boolean;
+  reviewsReady?: boolean;
+  voiceReady?: boolean;
   compact?: boolean;
 }) {
   const c = t(locale);
   const [adsTier, setAdsTier] = useState<AdsTier>(adsTierFromFlags(lead));
   const [includeEmail, setIncludeEmail] = useState(lead.wantsBusinessEmail);
+  const [includeBook, setIncludeBook] = useState(Boolean(lead.wantsBookAJob));
+  const [includeMissed, setIncludeMissed] = useState(Boolean(lead.wantsMissedCall));
+  const [includeReviews, setIncludeReviews] = useState(Boolean(lead.wantsReviewTexts));
+  const [includeVoice, setIncludeVoice] = useState(Boolean(lead.wantsVoice));
   const [payError, setPayError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -54,7 +66,11 @@ export function DemoPurchase({
     (adsTier === "boost" && !boostReady) ||
     (adsTier === "traffic" && !trafficReady) ||
     (adsTier === "loud" && !loudReady) ||
-    (includeEmail && !emailReady);
+    (includeEmail && !emailReady) ||
+    (includeBook && !bookReady) ||
+    (includeMissed && !missedReady) ||
+    (includeReviews && !reviewsReady) ||
+    (includeVoice && !voiceReady);
 
   function payLabel() {
     if (adsTier === "loud" && includeEmail) return c.formPayLoudEmail;
@@ -85,6 +101,22 @@ export function DemoPurchase({
       setPayError(c.emailMissing);
       return;
     }
+    if (includeBook && !bookReady) {
+      setPayError(c.bookMissing);
+      return;
+    }
+    if (includeMissed && !missedReady) {
+      setPayError(c.missedMissing);
+      return;
+    }
+    if (includeReviews && !reviewsReady) {
+      setPayError(c.reviewTextsMissing);
+      return;
+    }
+    if (includeVoice && !voiceReady) {
+      setPayError(c.voiceMissing);
+      return;
+    }
     setPayError(null);
     setBusy(true);
     const res = await fetch("/api/stripe/checkout", {
@@ -96,6 +128,10 @@ export function DemoPurchase({
         includeTraffic: adsTier === "traffic",
         includeLoud: adsTier === "loud",
         includeEmail,
+        includeBook,
+        includeMissedCall: includeMissed,
+        includeReviews,
+        includeVoice,
       }),
     });
     const data = (await res.json()) as { url?: string; error?: string };
@@ -132,6 +168,38 @@ export function DemoPurchase({
         title={c.emailCheckbox}
         help={c.emailCheckboxHelp}
         missing={c.emailMissing}
+      />
+      <AddonToggle
+        checked={includeBook}
+        onChange={setIncludeBook}
+        ready={bookReady}
+        title={c.bookCheckbox}
+        help={c.bookCheckboxHelp}
+        missing={c.bookMissing}
+      />
+      <AddonToggle
+        checked={includeMissed}
+        onChange={setIncludeMissed}
+        ready={missedReady}
+        title={c.missedCheckbox}
+        help={c.missedCheckboxHelp}
+        missing={c.missedMissing}
+      />
+      <AddonToggle
+        checked={includeReviews}
+        onChange={setIncludeReviews}
+        ready={reviewsReady}
+        title={c.reviewTextsCheckbox}
+        help={c.reviewTextsCheckboxHelp}
+        missing={c.reviewTextsMissing}
+      />
+      <AddonToggle
+        checked={includeVoice}
+        onChange={setIncludeVoice}
+        ready={voiceReady}
+        title={c.voiceCheckbox}
+        help={c.voiceCheckboxHelp}
+        missing={c.voiceMissing}
       />
       <button
         type="button"
@@ -291,6 +359,10 @@ export function DemoBar({
   trafficReady,
   loudReady,
   emailReady,
+  bookReady = false,
+  missedReady = false,
+  reviewsReady = false,
+  voiceReady = false,
 }: {
   lead: Lead;
   locale: Locale;
@@ -299,6 +371,10 @@ export function DemoBar({
   trafficReady: boolean;
   loudReady: boolean;
   emailReady: boolean;
+  bookReady?: boolean;
+  missedReady?: boolean;
+  reviewsReady?: boolean;
+  voiceReady?: boolean;
 }) {
   const c = t(locale);
   const [panel, setPanel] = useState<"buy" | "tweak" | null>(null);
@@ -374,6 +450,10 @@ export function DemoBar({
                 trafficReady={trafficReady}
                 loudReady={loudReady}
                 emailReady={emailReady}
+                bookReady={bookReady}
+                missedReady={missedReady}
+                reviewsReady={reviewsReady}
+                voiceReady={voiceReady}
                 compact
               />
             </div>

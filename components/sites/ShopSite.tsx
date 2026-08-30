@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { BookJobForm } from "@/components/sites/BookJobForm";
 import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
-import { isPreviewClient, siteHomeHref, displayHours, isSamplePhone } from "@/lib/demo";
+import { isPreviewClient, previewLeadId, siteHomeHref, displayHours, isSamplePhone } from "@/lib/demo";
+import { clientShowsBookJob } from "@/lib/site-addons";
 import {
   DEMO_REVIEWS,
   photoAlt,
@@ -413,6 +415,17 @@ export function ShopSite({
             />
           )}
         </div>
+        {clientShowsBookJob(client) ? (
+          <div className={`mt-6 rounded-2xl border p-6 ${theme.card} ${theme.cardBorder}`}>
+            <BookJobForm
+              slug={client.slug}
+              locale={locale}
+              leadId={previewLeadId(client) || undefined}
+              fieldClass={theme.field}
+              buttonClass={submitBtn}
+            />
+          </div>
+        ) : null}
       </section>
 
       <footer className={`mt-auto border-t px-5 py-8 text-sm ${theme.footerBorder} ${theme.footer}`}>
