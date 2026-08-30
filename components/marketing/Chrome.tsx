@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { DemoSearch } from "@/components/marketing/DemoSearch";
 import { VisitBeacon } from "@/components/marketing/VisitBeacon";
+import { StudioReceptionist } from "@/components/sites/ReceptionistChat";
 import { COMPANY } from "@/lib/config";
 import { homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
@@ -53,6 +54,7 @@ export function StudioShell({ children }: { children: React.ReactNode }) {
       <CompanyJsonLd />
       <VisitBeacon />
       {children}
+      <StudioReceptionist />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { monthKey } from "@/lib/slug";
-import { mergeMissingBySlug } from "@/lib/seed-merge";
+import { applySeedDemoBookJob, mergeMissingBySlug } from "@/lib/seed-merge";
 import type { AppState, Client } from "@/lib/types";
 
 function isoDaysFromNow(days: number) {
@@ -44,6 +44,7 @@ function demoClients(): Client[] {
       loudAds: false,
       stripeEmailSubscriptionId: null,
       businessEmail: false,
+      bookAJob: true,
       reminderSentAt: null,
       overdueSince: null,
       offlineAt: null,
@@ -98,6 +99,7 @@ function demoClients(): Client[] {
       loudAds: false,
       stripeEmailSubscriptionId: null,
       businessEmail: false,
+      bookAJob: true,
       reminderSentAt: null,
       overdueSince: null,
       offlineAt: null,
@@ -157,6 +159,7 @@ function demoClients(): Client[] {
       loudAds: false,
       stripeEmailSubscriptionId: null,
       businessEmail: false,
+      bookAJob: true,
       reminderSentAt: isoDaysFromNow(-9),
       overdueSince: isoDaysFromNow(-9),
       offlineAt: isoDaysFromNow(-7),
@@ -207,6 +210,7 @@ function demoClients(): Client[] {
       loudAds: false,
       stripeEmailSubscriptionId: null,
       businessEmail: false,
+      bookAJob: true,
       reminderSentAt: null,
       overdueSince: null,
       offlineAt: null,
@@ -259,6 +263,7 @@ function demoClients(): Client[] {
       loudAds: false,
       stripeEmailSubscriptionId: null,
       businessEmail: false,
+      bookAJob: true,
       reminderSentAt: null,
       overdueSince: null,
       offlineAt: null,
@@ -312,6 +317,7 @@ function demoClients(): Client[] {
       loudAds: false,
       stripeEmailSubscriptionId: null,
       businessEmail: false,
+      bookAJob: true,
       reminderSentAt: null,
       overdueSince: null,
       offlineAt: null,
@@ -334,9 +340,11 @@ export function mergeMissingSeedClients(state: AppState): {
   state: AppState;
   added: boolean;
 } {
-  const { items, added } = mergeMissingBySlug(state.clients, demoClients());
-  if (!added) return { state, added: false };
-  return { state: { ...state, clients: items }, added: true };
+  const seed = demoClients();
+  const missing = mergeMissingBySlug(state.clients, seed);
+  const flags = applySeedDemoBookJob(missing.items, seed);
+  if (!missing.added && !flags.added) return { state, added: false };
+  return { state: { ...state, clients: flags.items }, added: true };
 }
 
 export function createSeedState(): AppState {

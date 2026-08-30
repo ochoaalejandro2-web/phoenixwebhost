@@ -13,6 +13,7 @@ import {
   TRAFFIC_NOT_CONFIGURED,
   LOUD_NOT_CONFIGURED,
 } from "./checkout-kind.ts";
+import { extraLineItems } from "./site-addons.ts";
 
 test("checkout kinds include Traffic and Loud without dropping Local Boost", () => {
   assert.ok(CHECKOUT_KINDS.includes("plan_and_boost"));
@@ -76,4 +77,16 @@ test("Traffic and Loud line items are monthly only", () => {
       error instanceof Error && error.message === LOUD_NOT_CONFIGURED,
   );
   assert.match(BOOST_NOT_CONFIGURED, /Local Boost/);
+});
+
+test("addons kind has no website line items; extras append beside a plan", () => {
+  assert.ok(CHECKOUT_KINDS.includes("addons"));
+  assert.equal(kindHasPlan("addons"), false);
+  assert.deepEqual(checkoutLineItems("addons"), []);
+  process.env.STRIPE_BOOK_SETUP_PRICE_ID = "price_book_setup";
+  process.env.STRIPE_BOOK_MONTHLY_PRICE_ID = "price_book_month";
+  const extras = extraLineItems({ includeBook: true });
+  assert.equal(extras.length, 2);
+  delete process.env.STRIPE_BOOK_SETUP_PRICE_ID;
+  delete process.env.STRIPE_BOOK_MONTHLY_PRICE_ID;
 });

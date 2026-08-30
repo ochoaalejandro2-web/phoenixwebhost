@@ -1,10 +1,15 @@
 import { DemoBar } from "@/components/marketing/DemoStudio";
+import { ReceptionistChat } from "@/components/sites/ReceptionistChat";
 import {
+  stripeBookConfigured,
   stripeBoostConfigured,
   stripeConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
+  stripeMissedCallConfigured,
+  stripeReviewTextsConfigured,
   stripeTrafficConfigured,
+  stripeVoiceConfigured,
 } from "@/lib/config";
 import { accentHex } from "@/lib/demo";
 import type { Lead } from "@/lib/types";
@@ -27,6 +32,10 @@ export function DemoChrome({
         trafficReady={stripeTrafficConfigured()}
         loudReady={stripeLoudConfigured()}
         emailReady={stripeEmailConfigured()}
+        bookReady={stripeBookConfigured()}
+        missedReady={stripeMissedCallConfigured()}
+        reviewsReady={stripeReviewTextsConfigured()}
+        voiceReady={stripeVoiceConfigured()}
       />
       <div
         className="demo-preview"
@@ -35,6 +44,12 @@ export function DemoChrome({
       >
         {children}
       </div>
+      <ReceptionistChat
+        site={`demo-${lead.id}`}
+        leadId={lead.id}
+        locale={lead.locale}
+        businessName={lead.businessName}
+      />
     </div>
   );
 }

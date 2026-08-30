@@ -14,6 +14,7 @@ export const CHECKOUT_KINDS = [
   "traffic_and_email",
   "loud",
   "loud_and_email",
+  "addons",
 ] as const;
 
 export type CheckoutKind = (typeof CHECKOUT_KINDS)[number];

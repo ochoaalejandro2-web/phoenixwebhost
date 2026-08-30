@@ -8,10 +8,14 @@ import { RequestForm } from "@/components/marketing/RequestForm";
 import { parseAdsTier } from "@/lib/ads";
 import {
   COMPANY,
+  stripeBookConfigured,
   stripeBoostConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
+  stripeMissedCallConfigured,
+  stripeReviewTextsConfigured,
   stripeTrafficConfigured,
+  stripeVoiceConfigured,
 } from "@/lib/config";
 import { t } from "@/lib/i18n";
 
@@ -54,6 +58,12 @@ export default async function RequestPage({
             professional inbox such as info@your domain. A real business email so
             customers take you seriously — not magic.
           </p>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
+            The AI receptionist chat is included in $200 + $69. Optional extras:
+            Book a job $49 + $19/mo, missed-call text-back $49 + $29/mo, review
+            texts $29/mo, voice receptionist $99 + $79/mo. Those are not the
+            included chat.
+          </p>
           <p className="mt-6 text-sm text-body">
             {c.callPrompt}{" "}
             <CompanyPhone className="font-semibold text-ink-black hover:text-lime" />
@@ -66,6 +76,10 @@ export default async function RequestPage({
           trafficReady={stripeTrafficConfigured()}
           loudReady={stripeLoudConfigured()}
           emailReady={stripeEmailConfigured()}
+          bookReady={stripeBookConfigured()}
+          missedReady={stripeMissedCallConfigured()}
+          reviewsReady={stripeReviewTextsConfigured()}
+          voiceReady={stripeVoiceConfigured()}
           initialAds={parseAdsTier(ads)}
         />
       </main>

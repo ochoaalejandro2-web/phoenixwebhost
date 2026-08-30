@@ -1,7 +1,10 @@
+import type { ReactNode } from "react";
+import { ReceptionistChat } from "@/components/sites/ReceptionistChat";
 import { ShopSite } from "@/components/sites/ShopSite";
 import { TaxOfficeSite } from "@/components/sites/TaxOfficeSite";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
 import { COMPANY } from "@/lib/config";
+import { isPreviewClient } from "@/lib/demo";
 import type { Client, ContactNotice, Locale } from "@/lib/types";
 
 export function OfflineSite({ client }: { client: Client }) {
@@ -53,7 +56,29 @@ export function renderClientSite(
     return <OfflineSite client={client} />;
   }
   if (isTaxOfficeTemplate(client.template)) {
-    return <TaxOfficeSite client={client} notice={notice} locale={locale} />;
+    const site = (
+      <TaxOfficeSite client={client} notice={notice} locale={locale} />
+    );
+    return withReceptionist(client, locale, site);
   }
-  return <ShopSite client={client} notice={notice} locale={locale} />;
+  const site = <ShopSite client={client} notice={notice} locale={locale} />;
+  return withReceptionist(client, locale, site);
+}
+
+function withReceptionist(
+  client: Client,
+  locale: Locale,
+  site: ReactNode,
+) {
+  if (isPreviewClient(client)) return site;
+  return (
+    <>
+      {site}
+      <ReceptionistChat
+        site={client.slug}
+        locale={locale}
+        businessName={client.businessName}
+      />
+    </>
+  );
 }

@@ -49,6 +49,10 @@ export function RequestForm({
   trafficReady = false,
   loudReady = false,
   emailReady = false,
+  bookReady = false,
+  missedReady = false,
+  reviewsReady = false,
+  voiceReady = false,
   initialAds = "none",
 }: {
   locale: Locale;
@@ -56,12 +60,20 @@ export function RequestForm({
   trafficReady?: boolean;
   loudReady?: boolean;
   emailReady?: boolean;
+  bookReady?: boolean;
+  missedReady?: boolean;
+  reviewsReady?: boolean;
+  voiceReady?: boolean;
   initialAds?: AdsTier;
 }) {
   const c = t(locale);
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
   const [adsTier, setAdsTier] = useState<AdsTier>(initialAds);
   const [includeEmail, setIncludeEmail] = useState(false);
+  const [includeBook, setIncludeBook] = useState(false);
+  const [includeMissed, setIncludeMissed] = useState(false);
+  const [includeReviews, setIncludeReviews] = useState(false);
+  const [includeVoice, setIncludeVoice] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -81,6 +93,10 @@ export function RequestForm({
         locale,
         ...adsFlagsFromTier(adsTier),
         wantsBusinessEmail: includeEmail,
+        wantsBookAJob: includeBook,
+        wantsMissedCall: includeMissed,
+        wantsReviewTexts: includeReviews,
+        wantsVoice: includeVoice,
       }),
     });
     if (!res.ok) {
@@ -165,6 +181,38 @@ export function RequestForm({
         title={c.emailCheckbox}
         help={c.emailCheckboxHelp}
         missing={c.emailMissing}
+      />
+      <AddonToggle
+        checked={includeBook}
+        onChange={setIncludeBook}
+        ready={bookReady}
+        title={c.bookCheckbox}
+        help={c.bookCheckboxHelp}
+        missing={c.bookMissing}
+      />
+      <AddonToggle
+        checked={includeMissed}
+        onChange={setIncludeMissed}
+        ready={missedReady}
+        title={c.missedCheckbox}
+        help={c.missedCheckboxHelp}
+        missing={c.missedMissing}
+      />
+      <AddonToggle
+        checked={includeReviews}
+        onChange={setIncludeReviews}
+        ready={reviewsReady}
+        title={c.reviewTextsCheckbox}
+        help={c.reviewTextsCheckboxHelp}
+        missing={c.reviewTextsMissing}
+      />
+      <AddonToggle
+        checked={includeVoice}
+        onChange={setIncludeVoice}
+        ready={voiceReady}
+        title={c.voiceCheckbox}
+        help={c.voiceCheckboxHelp}
+        missing={c.voiceMissing}
       />
       <button
         type="submit"

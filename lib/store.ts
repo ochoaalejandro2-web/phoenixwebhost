@@ -147,6 +147,14 @@ function normalizeClient(client: Client): Client {
     stripeLoudSubscriptionId: client.stripeLoudSubscriptionId ?? null,
     businessEmail: Boolean(client.businessEmail),
     stripeEmailSubscriptionId: client.stripeEmailSubscriptionId ?? null,
+    bookAJob: Boolean(client.bookAJob),
+    stripeBookSubscriptionId: client.stripeBookSubscriptionId ?? null,
+    missedCallTextback: Boolean(client.missedCallTextback),
+    stripeMissedCallSubscriptionId: client.stripeMissedCallSubscriptionId ?? null,
+    reviewTexts: Boolean(client.reviewTexts),
+    stripeReviewTextsSubscriptionId: client.stripeReviewTextsSubscriptionId ?? null,
+    voiceReceptionist: Boolean(client.voiceReceptionist),
+    stripeVoiceSubscriptionId: client.stripeVoiceSubscriptionId ?? null,
   };
 }
 
@@ -168,6 +176,10 @@ function normalizeLead(lead: Lead): Lead {
     wantsTraffic: Boolean(lead.wantsTraffic),
     wantsLoud: Boolean(lead.wantsLoud),
     wantsBusinessEmail: Boolean(lead.wantsBusinessEmail),
+    wantsBookAJob: Boolean(lead.wantsBookAJob),
+    wantsMissedCall: Boolean(lead.wantsMissedCall),
+    wantsReviewTexts: Boolean(lead.wantsReviewTexts),
+    wantsVoice: Boolean(lead.wantsVoice),
     purchased: Boolean(lead.purchased),
     clientId: lead.clientId ?? null,
     demo,
@@ -185,6 +197,12 @@ function normalizeState(state: AppState): AppState {
   }
   state.clients = state.clients.map(normalizeClient);
   state.leads = state.leads.map(normalizeLead);
+  state.contactMessages = state.contactMessages.map((message) => ({
+    ...message,
+    source: message.source || "contact",
+    conversationId: message.conversationId || undefined,
+    notifiedAt: message.notifiedAt ?? null,
+  }));
   return state;
 }
 
@@ -295,7 +313,11 @@ export async function getClientByStripeSubscription(subscriptionId: string) {
         c.stripeBoostSubscriptionId === subscriptionId ||
         c.stripeTrafficSubscriptionId === subscriptionId ||
         c.stripeLoudSubscriptionId === subscriptionId ||
-        c.stripeEmailSubscriptionId === subscriptionId,
+        c.stripeEmailSubscriptionId === subscriptionId ||
+        c.stripeBookSubscriptionId === subscriptionId ||
+        c.stripeMissedCallSubscriptionId === subscriptionId ||
+        c.stripeReviewTextsSubscriptionId === subscriptionId ||
+        c.stripeVoiceSubscriptionId === subscriptionId,
     ) ?? null
   );
 }
@@ -350,6 +372,24 @@ export async function updateLead(
 export async function addContactMessage(message: ContactMessage) {
   await updateState((state) => {
     state.contactMessages.unshift(message);
+  });
+  return message;
+}
+
+export async function getContactByConversation(conversationId: string) {
+  if (!conversationId.trim()) return null;
+  const state = await getState();
+  return (
+    state.contactMessages.find((row) => row.conversationId === conversationId) ??
+    null
+  );
+}
+
+export async function upsertContactMessage(message: ContactMessage) {
+  await updateState((state) => {
+    const index = state.contactMessages.findIndex((row) => row.id === message.id);
+    if (index >= 0) state.contactMessages[index] = message;
+    else state.contactMessages.unshift(message);
   });
   return message;
 }

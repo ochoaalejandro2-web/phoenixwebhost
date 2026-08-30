@@ -8,10 +8,14 @@ import { RequestForm } from "@/components/marketing/RequestForm";
 import { parseAdsTier } from "@/lib/ads";
 import {
   COMPANY,
+  stripeBookConfigured,
   stripeBoostConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
+  stripeMissedCallConfigured,
+  stripeReviewTextsConfigured,
   stripeTrafficConfigured,
+  stripeVoiceConfigured,
 } from "@/lib/config";
 import { t } from "@/lib/i18n";
 
@@ -57,6 +61,12 @@ export default async function RequestEsPage({
             buzón profesional como info@su dominio. Un correo de negocio real para
             que lo tomen en serio — no es magia.
           </p>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
+            La recepcionista de IA en el chat va incluida en $200 + $69. Extras
+            opcionales: Reservar un trabajo $49 + $19 al mes, texto de llamada
+            perdida $49 + $29 al mes, textos de reseña $29 al mes, recepcionista
+            de voz $99 + $79 al mes. Eso no es el chat incluido.
+          </p>
           <p className="mt-6 text-sm text-body">
             {c.callPrompt}{" "}
             <CompanyPhone className="font-semibold text-ink-black hover:text-lime" />
@@ -69,6 +79,10 @@ export default async function RequestEsPage({
           trafficReady={stripeTrafficConfigured()}
           loudReady={stripeLoudConfigured()}
           emailReady={stripeEmailConfigured()}
+          bookReady={stripeBookConfigured()}
+          missedReady={stripeMissedCallConfigured()}
+          reviewsReady={stripeReviewTextsConfigured()}
+          voiceReady={stripeVoiceConfigured()}
           initialAds={parseAdsTier(ads)}
         />
       </main>

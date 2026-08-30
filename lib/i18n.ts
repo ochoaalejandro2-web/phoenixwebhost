@@ -29,12 +29,13 @@ export const copy = {
     priceMonthHint: "per month, to stay live",
     launchTitle: "Launch — $200 once",
     launchBody:
-      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. Built for contractors, handymen, salons, restaurants, landscapers, tax offices, and local offices.",
+      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. An AI receptionist is included — visitors can ask about your services, hours, and phone. Built for contractors, handymen, salons, restaurants, landscapers, tax offices, and local offices.",
     monthTitle: "Stay live — $69 / month",
     monthBody:
-      "Keeps the site online and covers small care. This is not unlimited work.",
+      "Keeps the site online, covers small care, and includes an AI receptionist on the site. This is not unlimited work.",
     includedTitle: "What $69/month covers",
     included: [
+      "An AI receptionist on your site — answers from your services, hours, and phone. Included, not an extra.",
       "The site stays live, with SSL",
       "Up to 30 minutes of small edits per month — or 2 small requests",
       "Hours, phone, address, prices, a sentence or two, or swapping a photo you send",
@@ -45,7 +46,7 @@ export const copy = {
     ],
     notIncludedTitle: "Not included — quoted separately",
     notIncluded: [
-      "A new page: $75–$150",
+      "A new page or live Instagram feed: $75–$150",
       "Many photos: quoted",
       "A shop: quoted",
       "A logo: $100–$300",
@@ -179,6 +180,49 @@ export const copy = {
       "Optional and separate. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
     emailMissing:
       "Business Email checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
+    includedSplit: "Included in the website",
+    extrasSplit: "Optional extras — not in the $200 + $69 website",
+    bookKicker: "Optional add-on",
+    bookTitle: "Book a job — $49 once + $19/month extra",
+    bookBody:
+      "Customers pick a day, leave a name, phone, and a short job note. You get the request by email. This is a paid add-on, not the included receptionist.",
+    bookSetupHint: "one-time, booking form on the site",
+    bookMonthHint: "per month extra, keep the booking form live",
+    bookCheckbox: "Add Book a job — $49 now + $19/month extra",
+    bookCheckboxHelp:
+      "Optional. Leave unchecked to buy only the website (which already includes the AI receptionist).",
+    bookMissing:
+      "Book a job checkout is not connected yet. Uncheck it to pay for the website, or wait until it is connected.",
+    missedKicker: "Optional add-on",
+    missedTitle: "Missed-call text-back — $49 once + $29/month extra",
+    missedBody:
+      "When a call is missed, a text goes back so they can reply. We set this up when you buy. It is not live on the demo sites yet.",
+    missedSetupHint: "one-time setup",
+    missedMonthHint: "per month extra",
+    missedCheckbox: "Add missed-call text-back — $49 now + $29/month extra",
+    missedCheckboxHelp: "Optional. We turn it on after you buy. Not on the demos yet.",
+    missedMissing:
+      "Missed-call text-back checkout is not connected yet. Uncheck it to pay for the website.",
+    reviewTextsKicker: "Optional add-on",
+    reviewTextsTitle: "Review texts after the job — $29/month extra",
+    reviewTextsBody:
+      "A short text after the job asking for a review. Sits next to Local Boost — it does not replace Boost. We set this up when you buy. Not live on the demos.",
+    reviewTextsMonthHint: "per month extra",
+    reviewTextsCheckbox: "Add review texts — $29/month extra",
+    reviewTextsCheckboxHelp: "Optional. We set this up when you buy.",
+    reviewTextsMissing:
+      "Review texts checkout is not connected yet. Uncheck it to pay for the website.",
+    voiceKicker: "Optional add-on",
+    voiceTitle: "Voice receptionist — $99 once + $79/month extra",
+    voiceBody:
+      "Not included in the website. Forward your number or we issue one. AI picks up, then texts and emails you the call. 150 minutes included; extra minutes $0.50. We set this up when you buy. Not live on the demos.",
+    voiceSetupHint: "one-time, number forward or a new number",
+    voiceMonthHint: "per month extra, 150 minutes included",
+    voiceCheckbox: "Add voice receptionist — $99 now + $79/month extra",
+    voiceCheckboxHelp:
+      "Optional paid voice line. The on-site chat receptionist stays included in $200 + $69.",
+    voiceMissing:
+      "Voice receptionist checkout is not connected yet. Uncheck it to pay for the website.",
     reviewsTitle: "Reviews from Arizona companies",
     reviewsLead:
       "Notes from businesses we built for. New reviews are checked before they appear here — no fake counts, no filler quotes.",
@@ -227,12 +271,13 @@ export const copy = {
     priceMonthHint: "al mes, para mantenerlo en línea",
     launchTitle: "Lanzamiento — $200 una vez",
     launchBody:
-      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Para contratistas, manitas, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
+      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Incluye una recepcionista de IA — los visitantes pueden preguntar por servicios, horario y teléfono. Para contratistas, manitas, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
     monthTitle: "Mantenerlo en línea — $69 / mes",
     monthBody:
-      "Mantiene el sitio publicado y cubre el cuidado pequeño. Esto no es trabajo ilimitado.",
+      "Mantiene el sitio publicado, cubre el cuidado pequeño e incluye una recepcionista de IA en el sitio. Esto no es trabajo ilimitado.",
     includedTitle: "Qué cubre el plan de $69 al mes",
     included: [
+      "Una recepcionista de IA en su sitio — responde con sus servicios, horario y teléfono. Incluida, no es un extra.",
       "El sitio permanece en línea, con SSL",
       "Hasta 30 minutos de cambios pequeños al mes — o 2 solicitudes pequeñas",
       "Horario, teléfono, dirección, precios, una o dos frases, o cambiar una foto que usted envíe",
@@ -243,7 +288,7 @@ export const copy = {
     ],
     notIncludedTitle: "No incluido — se cotiza aparte",
     notIncluded: [
-      "Una página nueva: $75–$150",
+      "Una página nueva o un feed de Instagram: $75–$150",
       "Muchas fotos: se cotiza",
       "Una tienda: se cotiza",
       "Un logotipo: $100–$300",
@@ -377,6 +422,49 @@ export const copy = {
       "Opcional y aparte. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
     emailMissing:
       "El pago de Business Email aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
+    includedSplit: "Incluido en el sitio",
+    extrasSplit: "Extras opcionales — no van en el sitio de $200 + $69",
+    bookKicker: "Complemento opcional",
+    bookTitle: "Reservar un trabajo — $49 una vez + $19 al mes extra",
+    bookBody:
+      "El cliente elige un día, deja nombre, teléfono y una nota. Usted recibe la solicitud por correo. Es un complemento de pago, no la recepcionista incluida.",
+    bookSetupHint: "un solo pago, formulario de reserva en el sitio",
+    bookMonthHint: "al mes extra, para mantener el formulario",
+    bookCheckbox: "Agregar Reservar un trabajo — $49 ahora + $19 al mes extra",
+    bookCheckboxHelp:
+      "Opcional. Si no lo marca, solo compra el sitio (que ya incluye la recepcionista de IA).",
+    bookMissing:
+      "El pago de Reservar un trabajo aún no está conectado. Desmárquelo para pagar el sitio.",
+    missedKicker: "Complemento opcional",
+    missedTitle: "Texto si no contestan — $49 una vez + $29 al mes extra",
+    missedBody:
+      "Si se pierde una llamada, sale un texto para que contesten. Lo activamos cuando lo compra. Aún no está en las demos.",
+    missedSetupHint: "un solo pago, configuración",
+    missedMonthHint: "al mes extra",
+    missedCheckbox: "Agregar texto si no contestan — $49 ahora + $29 al mes extra",
+    missedCheckboxHelp: "Opcional. Lo activamos después de la compra. Aún no está en las demos.",
+    missedMissing:
+      "El pago de texto si no contestan aún no está conectado. Desmárquelo para pagar el sitio.",
+    reviewTextsKicker: "Complemento opcional",
+    reviewTextsTitle: "Textos de reseña después del trabajo — $29 al mes extra",
+    reviewTextsBody:
+      "Un texto corto después del trabajo pidiendo una reseña. Va junto a Local Boost — no lo reemplaza. Lo activamos cuando lo compra. No está en las demos.",
+    reviewTextsMonthHint: "al mes extra",
+    reviewTextsCheckbox: "Agregar textos de reseña — $29 al mes extra",
+    reviewTextsCheckboxHelp: "Opcional. Lo activamos cuando lo compra.",
+    reviewTextsMissing:
+      "El pago de textos de reseña aún no está conectado. Desmárquelo para pagar el sitio.",
+    voiceKicker: "Complemento opcional",
+    voiceTitle: "Recepcionista de voz — $99 una vez + $79 al mes extra",
+    voiceBody:
+      "No está incluida en el sitio. Desvíe su número o le damos uno. La IA contesta, luego le manda texto y correo de la llamada. 150 minutos incluidos; minutos extra $0.50. Lo activamos cuando lo compra. No está en las demos.",
+    voiceSetupHint: "un solo pago, desvío o número nuevo",
+    voiceMonthHint: "al mes extra, 150 minutos incluidos",
+    voiceCheckbox: "Agregar recepcionista de voz — $99 ahora + $79 al mes extra",
+    voiceCheckboxHelp:
+      "Línea de voz de pago. El chat del sitio sigue incluido en $200 + $69.",
+    voiceMissing:
+      "El pago de recepcionista de voz aún no está conectado. Desmárquelo para pagar el sitio.",
     reviewsTitle: "Reseñas de empresas de Arizona",
     reviewsLead:
       "Notas de negocios para los que hicimos un sitio. Las reseñas nuevas se revisan antes de publicarse — sin cifras inventadas ni citas de relleno.",

@@ -1,8 +1,10 @@
 import Image from "next/image";
+import { BookJobForm } from "@/components/sites/BookJobForm";
 import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
-import { displayHours, isPreviewClient, isSamplePhone, siteHomeHref } from "@/lib/demo";
+import { displayHours, isPreviewClient, isSamplePhone, previewLeadId, siteHomeHref } from "@/lib/demo";
+import { clientShowsBookJob } from "@/lib/site-addons";
 import { tHolaTax, withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { DEMO_REVIEWS, photoAlt, SHOP_PHOTOS } from "@/lib/shop-content";
 import { tShop } from "@/lib/shop-i18n";
@@ -498,6 +500,17 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
           </button>
         </form>
         )}
+        {clientShowsBookJob(client) ? (
+          <div className="mt-8 border border-[#00FF66] bg-white p-6">
+            <BookJobForm
+              slug={client.slug}
+              locale={locale}
+              leadId={previewLeadId(client) || undefined}
+              fieldClass={field}
+              buttonClass="justify-self-start bg-[#00FF66] px-5 py-2 text-sm font-semibold text-black hover:bg-[#00E840]"
+            />
+          </div>
+        ) : null}
       </section>
 
       <footer className="mt-auto border-t border-[#00FF66] bg-white px-5 py-8 text-sm text-black/80">

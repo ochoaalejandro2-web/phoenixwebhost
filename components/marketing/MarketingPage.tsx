@@ -13,10 +13,14 @@ import { ReviewsSection } from "@/components/marketing/ReviewsSection";
 import { StartingPoints } from "@/components/marketing/StartingPoints";
 import {
   COMPANY,
+  stripeBookConfigured,
   stripeBoostConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
+  stripeMissedCallConfigured,
+  stripeReviewTextsConfigured,
   stripeTrafficConfigured,
+  stripeVoiceConfigured,
 } from "@/lib/config";
 import { requestPath, t } from "@/lib/i18n";
 import { listPublicReviews } from "@/lib/store";
@@ -212,6 +216,19 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             </Link>
           </article>
         </div>
+        <div className="mx-auto max-w-6xl border-t border-zinc-200 px-6 py-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime">
+            {c.includedSplit}
+          </p>
+          <p className="mt-2 text-sm text-body">
+            {locale === "es"
+              ? "Sitio a la medida y recepcionista de IA en el chat. El dueño recibe el lead por correo."
+              : "Custom site and the AI receptionist chat. The owner gets the lead by email."}
+          </p>
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-lime">
+            {c.extrasSplit}
+          </p>
+        </div>
         <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-2">
           <article className="px-6 py-14 md:pr-12">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.emailKicker}</p>
@@ -226,6 +243,65 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               <div>
                 <p className="price-lime font-display text-4xl">$19</p>
                 <p className="text-xs text-body">{c.emailMonthHint}</p>
+              </div>
+            </div>
+          </article>
+          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-12">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.bookKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.bookTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.bookBody}</p>
+            <div className="mt-8 flex flex-wrap gap-10">
+              <div>
+                <p className="price-lime font-display text-4xl">$49</p>
+                <p className="text-xs text-body">{c.bookSetupHint}</p>
+              </div>
+              <div className="w-px bg-zinc-200" />
+              <div>
+                <p className="price-lime font-display text-4xl">$19</p>
+                <p className="text-xs text-body">{c.bookMonthHint}</p>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-3">
+          <article className="px-6 py-14 md:pr-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.missedKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.missedTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.missedBody}</p>
+            <div className="mt-8 flex flex-wrap gap-10">
+              <div>
+                <p className="price-lime font-display text-4xl">$49</p>
+                <p className="text-xs text-body">{c.missedSetupHint}</p>
+              </div>
+              <div className="w-px bg-zinc-200" />
+              <div>
+                <p className="price-lime font-display text-4xl">$29</p>
+                <p className="text-xs text-body">{c.missedMonthHint}</p>
+              </div>
+            </div>
+          </article>
+          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:px-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.reviewTextsKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.reviewTextsTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.reviewTextsBody}</p>
+            <div className="mt-8">
+              <p className="price-lime font-display text-4xl">$29</p>
+              <p className="text-xs text-body">{c.reviewTextsMonthHint}</p>
+            </div>
+          </article>
+          <article className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.voiceKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.voiceTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.voiceBody}</p>
+            <div className="mt-8 flex flex-wrap gap-10">
+              <div>
+                <p className="price-lime font-display text-4xl">$99</p>
+                <p className="text-xs text-body">{c.voiceSetupHint}</p>
+              </div>
+              <div className="w-px bg-zinc-200" />
+              <div>
+                <p className="price-lime font-display text-4xl">$79</p>
+                <p className="text-xs text-body">{c.voiceMonthHint}</p>
               </div>
             </div>
           </article>
@@ -305,6 +381,10 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             trafficReady={stripeTrafficConfigured()}
             loudReady={stripeLoudConfigured()}
             emailReady={stripeEmailConfigured()}
+            bookReady={stripeBookConfigured()}
+            missedReady={stripeMissedCallConfigured()}
+            reviewsReady={stripeReviewTextsConfigured()}
+            voiceReady={stripeVoiceConfigured()}
           />
         </div>
       </section>

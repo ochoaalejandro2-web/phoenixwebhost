@@ -55,17 +55,90 @@ const loudPrice = await stripe.prices.create({
   recurring: { interval: "month" },
 });
 
+const bookProduct = await stripe.products.create({
+  name: "Phoenixwebhost — Book a job",
+  description:
+    "Optional add-on: $49 setup + $19/month for a booking form on the client site. Not the included AI receptionist.",
+});
+const bookSetup = await stripe.prices.create({
+  product: bookProduct.id,
+  currency: "usd",
+  unit_amount: 4900,
+});
+const bookMonth = await stripe.prices.create({
+  product: bookProduct.id,
+  currency: "usd",
+  unit_amount: 1900,
+  recurring: { interval: "month" },
+});
+
+const missedProduct = await stripe.products.create({
+  name: "Phoenixwebhost — Missed-call text-back",
+  description:
+    "Optional add-on: $49 setup + $29/month. We set this up when you buy. Not live on demos.",
+});
+const missedSetup = await stripe.prices.create({
+  product: missedProduct.id,
+  currency: "usd",
+  unit_amount: 4900,
+});
+const missedMonth = await stripe.prices.create({
+  product: missedProduct.id,
+  currency: "usd",
+  unit_amount: 2900,
+  recurring: { interval: "month" },
+});
+
+const reviewProduct = await stripe.products.create({
+  name: "Phoenixwebhost — Review texts",
+  description:
+    "Optional add-on: $29/month for a review text after the job. Does not replace Local Boost.",
+});
+const reviewMonth = await stripe.prices.create({
+  product: reviewProduct.id,
+  currency: "usd",
+  unit_amount: 2900,
+  recurring: { interval: "month" },
+});
+
+const voiceProduct = await stripe.products.create({
+  name: "Phoenixwebhost — Voice receptionist",
+  description:
+    "Optional add-on: $99 setup + $79/month, 150 minutes included, extra minutes $0.50. Not the included website chat.",
+});
+const voiceSetup = await stripe.prices.create({
+  product: voiceProduct.id,
+  currency: "usd",
+  unit_amount: 9900,
+});
+const voiceMonth = await stripe.prices.create({
+  product: voiceProduct.id,
+  currency: "usd",
+  unit_amount: 7900,
+  recurring: { interval: "month" },
+});
+
 console.log("");
 console.log("Add these to .env.local and to Vercel project env:");
 console.log(`STRIPE_SETUP_PRICE_ID=${setupPrice.id}`);
 console.log(`STRIPE_MONTHLY_PRICE_ID=${monthPrice.id}`);
 console.log(`STRIPE_TRAFFIC_MONTHLY_PRICE_ID=${trafficPrice.id}`);
 console.log(`STRIPE_LOUD_MONTHLY_PRICE_ID=${loudPrice.id}`);
+console.log(`STRIPE_BOOK_SETUP_PRICE_ID=${bookSetup.id}`);
+console.log(`STRIPE_BOOK_MONTHLY_PRICE_ID=${bookMonth.id}`);
+console.log(`STRIPE_MISSED_SETUP_PRICE_ID=${missedSetup.id}`);
+console.log(`STRIPE_MISSED_MONTHLY_PRICE_ID=${missedMonth.id}`);
+console.log(`STRIPE_REVIEW_MONTHLY_PRICE_ID=${reviewMonth.id}`);
+console.log(`STRIPE_VOICE_SETUP_PRICE_ID=${voiceSetup.id}`);
+console.log(`STRIPE_VOICE_MONTHLY_PRICE_ID=${voiceMonth.id}`);
 console.log("");
 console.log(
   "Local Boost still uses STRIPE_BOOST_SETUP_PRICE_ID and STRIPE_BOOST_MONTHLY_PRICE_ID.",
 );
 console.log(
-  "Production still needs live Traffic and Loud Price IDs set on Vercel. Do not invent fake live keys.",
+  "Business Email still uses STRIPE_EMAIL_SETUP_PRICE_ID and STRIPE_EMAIL_MONTHLY_PRICE_ID.",
+);
+console.log(
+  "Production still needs live Price IDs set on Vercel. Do not invent fake live keys.",
 );
 console.log("");

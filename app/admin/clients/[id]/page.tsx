@@ -77,6 +77,18 @@ export default async function ClientDetailPage({
           {" · "}
           Business Email:{" "}
           <strong>{client.businessEmail ? "purchased" : "not purchased"}</strong>
+          {" · "}
+          Book a job:{" "}
+          <strong>{client.bookAJob ? "purchased" : "not purchased"}</strong>
+          {" · "}
+          Missed-call text-back:{" "}
+          <strong>{client.missedCallTextback ? "purchased" : "not purchased"}</strong>
+          {" · "}
+          Review texts:{" "}
+          <strong>{client.reviewTexts ? "purchased" : "not purchased"}</strong>
+          {" · "}
+          Voice receptionist:{" "}
+          <strong>{client.voiceReceptionist ? "purchased" : "not purchased"}</strong>
         </p>
         <p className="mt-1 text-sm">
           Public URL:{" "}
@@ -121,6 +133,14 @@ export default async function ClientDetailPage({
           <p>Loud subscription: {client.stripeLoudSubscriptionId || "—"}</p>
           <p>Business Email: {client.businessEmail ? "purchased" : "not purchased"}</p>
           <p>Email subscription: {client.stripeEmailSubscriptionId || "—"}</p>
+          <p>Book a job: {client.bookAJob ? "purchased" : "not purchased"}</p>
+          <p>Book subscription: {client.stripeBookSubscriptionId || "—"}</p>
+          <p>Missed-call text-back: {client.missedCallTextback ? "purchased" : "not purchased"}</p>
+          <p>Missed-call subscription: {client.stripeMissedCallSubscriptionId || "—"}</p>
+          <p>Review texts: {client.reviewTexts ? "purchased" : "not purchased"}</p>
+          <p>Review texts subscription: {client.stripeReviewTextsSubscriptionId || "—"}</p>
+          <p>Voice receptionist: {client.voiceReceptionist ? "purchased" : "not purchased"}</p>
+          <p>Voice subscription: {client.stripeVoiceSubscriptionId || "—"}</p>
           <p>Reminder: {fmt(client.reminderSentAt)}</p>
           <p>Overdue since: {fmt(client.overdueSince)}</p>
           <p>Offline at: {fmt(client.offlineAt)}</p>
@@ -227,6 +247,90 @@ export default async function ClientDetailPage({
                   <input type="hidden" name="includeEmail" value="on" />
                   <button className="rounded-full border border-line px-3 py-1.5 text-sm">
                     Checkout with Business Email
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+          {client.bookAJob ? null : (
+            <>
+              {client.paymentStatus === "paid" ? (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="kind" value="book" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Add Book a job ($49 + $19/mo)
+                  </button>
+                </form>
+              ) : (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="includeBook" value="on" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Checkout with Book a job
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+          {client.missedCallTextback ? null : (
+            <>
+              {client.paymentStatus === "paid" ? (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="kind" value="missed" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Add missed-call text-back ($49 + $29/mo)
+                  </button>
+                </form>
+              ) : (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="includeMissedCall" value="on" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Checkout with missed-call text-back
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+          {client.reviewTexts ? null : (
+            <>
+              {client.paymentStatus === "paid" ? (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="kind" value="reviews" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Add review texts ($29/mo)
+                  </button>
+                </form>
+              ) : (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="includeReviews" value="on" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Checkout with review texts
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+          {client.voiceReceptionist ? null : (
+            <>
+              {client.paymentStatus === "paid" ? (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="kind" value="voice" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Add voice receptionist ($99 + $79/mo)
+                  </button>
+                </form>
+              ) : (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="includeVoice" value="on" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Checkout with voice receptionist
                   </button>
                 </form>
               )}
@@ -350,6 +454,38 @@ export default async function ClientDetailPage({
                 className={field}
               />
             </label>
+            <label className="text-sm">
+              Book subscription ID
+              <input
+                name="stripeBookSubscriptionId"
+                defaultValue={client.stripeBookSubscriptionId || ""}
+                className={field}
+              />
+            </label>
+            <label className="text-sm">
+              Missed-call subscription ID
+              <input
+                name="stripeMissedCallSubscriptionId"
+                defaultValue={client.stripeMissedCallSubscriptionId || ""}
+                className={field}
+              />
+            </label>
+            <label className="text-sm">
+              Review texts subscription ID
+              <input
+                name="stripeReviewTextsSubscriptionId"
+                defaultValue={client.stripeReviewTextsSubscriptionId || ""}
+                className={field}
+              />
+            </label>
+            <label className="text-sm">
+              Voice subscription ID
+              <input
+                name="stripeVoiceSubscriptionId"
+                defaultValue={client.stripeVoiceSubscriptionId || ""}
+                className={field}
+              />
+            </label>
           </div>
           {taxOffice ? (
             <div className="grid gap-3 rounded-xl border border-dashed border-line p-4">
@@ -452,7 +588,8 @@ export default async function ClientDetailPage({
         <section className="rounded-2xl border border-line bg-paper p-5">
           <h2 className="font-display text-xl">Site inquiries</h2>
           <p className="mt-1 text-sm text-ink-soft">
-            From this client’s public contact form. Newest first.
+            From this client’s contact form, included receptionist, and Book a
+            job form. Newest first.
           </p>
           <ul className="mt-3 space-y-3 text-sm">
             {messages.length === 0 && (
@@ -460,6 +597,13 @@ export default async function ClientDetailPage({
             )}
             {messages.map((msg) => (
               <li key={msg.id} className="rounded-lg border border-line p-3">
+                <p className="text-xs uppercase tracking-wide text-ink-soft">
+                  {msg.source === "chat"
+                    ? "Chat"
+                    : msg.source === "booking"
+                      ? "Book a job"
+                      : "Contact form"}
+                </p>
                 <p className="font-semibold">
                   {msg.name}
                   {msg.email ? ` · ${msg.email}` : ""}
