@@ -11,9 +11,13 @@ import {
   stripeVoiceConfigured,
 } from "@/lib/config";
 import { stripeModeLabel } from "@/lib/stripe";
+import { ensureLiveExtraPrices } from "@/lib/stripe-extra-prices";
 import { storageMode } from "@/lib/store";
 
-export function GET() {
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  await ensureLiveExtraPrices();
   return NextResponse.json({
     ok: true,
     company: "Phoenixwebhost Inc.",
@@ -27,6 +31,7 @@ export function GET() {
     missedReady: stripeMissedCallConfigured(),
     reviewsReady: stripeReviewTextsConfigured(),
     voiceReady: stripeVoiceConfigured(),
+    oidcReady: Boolean(process.env.VERCEL_OIDC_TOKEN),
     storage: storageMode(),
   });
 }

@@ -158,6 +158,16 @@ export type AuthLock = {
   consumedNonces: string[];
 };
 
+export type StripeExtraPriceIds = {
+  STRIPE_BOOK_SETUP_PRICE_ID?: string;
+  STRIPE_BOOK_MONTHLY_PRICE_ID?: string;
+  STRIPE_MISSED_SETUP_PRICE_ID?: string;
+  STRIPE_MISSED_MONTHLY_PRICE_ID?: string;
+  STRIPE_REVIEW_MONTHLY_PRICE_ID?: string;
+  STRIPE_VOICE_SETUP_PRICE_ID?: string;
+  STRIPE_VOICE_MONTHLY_PRICE_ID?: string;
+};
+
 export type AppState = {
   clients: Client[];
   leads: Lead[];
@@ -165,4 +175,5 @@ export type AppState = {
   reviews: Review[];
   authLock: AuthLock;
   seededAt: string;
+  stripeExtraPrices?: StripeExtraPriceIds;
 };
