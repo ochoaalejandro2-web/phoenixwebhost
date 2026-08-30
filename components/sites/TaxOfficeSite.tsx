@@ -170,7 +170,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
                   {c.clientLogin}
                 </a>
               )}
-              {phone ? (}
+              {phone ? (
               <a
                 href={telHref(client.phone)}
                 className="site-phone font-semibold text-[#00E840] hover:text-[#00FF66]"
@@ -255,7 +255,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               {taxOfficeAbout(client.slug, client.about, locale)}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              {phone ? (}
+              {phone ? (
                 <a
                   href={telHref(client.phone)}
                   className="site-cta bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
@@ -393,7 +393,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               {client.address ? <br /> : null}
               {client.city}
             </p>
-            {phone ? (}
+            {phone ? (
               <p className="mt-2">
                 <a
                   href={telHref(client.phone)}
