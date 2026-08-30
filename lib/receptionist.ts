@@ -255,7 +255,7 @@ export function buildClientFacts(
     client.slug === HOLA_TAX_SLUG
       ? holaTaxAbout(client.about, useLocale)
       : client.about;
-  const phone = client.phone.trim();
+  const phone = String(client.phone || "").trim();
   return {
     kind: "client",
     businessName: client.businessName,

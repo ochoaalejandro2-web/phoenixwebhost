@@ -7,7 +7,10 @@ import {
   normalizeHost,
   subdomainSlug,
 } from "@/lib/custom-domain";
-import { getClientByDomain, getClientBySlug } from "@/lib/store";
+import {
+  resolveKnownCustomDomain,
+  resolveWalkInHostSlug,
+} from "@/lib/walk-in-hosts";
 
 export async function proxy(request: NextRequest) {
   const host = normalizeHost(request.headers.get("host") || "");
@@ -27,13 +30,35 @@ export async function proxy(request: NextRequest) {
   let viaCustomDomain = false;
 
   if (slug) {
-    const client = await getClientBySlug(slug);
-    slug = client?.slug ?? slug;
+    const walkIn = resolveWalkInHostSlug(slug);
+    if (walkIn) {
+      slug = walkIn;
+    } else {
+      try {
+        const { getClientBySlug } = await import("@/lib/store");
+        const client = await getClientBySlug(slug);
+        slug = client?.slug ?? slug;
+      } catch {
+        // Keep the host slug. The /s/[slug] page can 404; do not 500 the proxy.
+      }
+    }
   } else {
-    const client = await getClientByDomain(host);
-    slug = client?.slug ?? null;
-    customDomain = client?.customDomain ?? null;
-    viaCustomDomain = Boolean(client);
+    const known = resolveKnownCustomDomain(host);
+    if (known) {
+      slug = known.slug;
+      customDomain = known.customDomain;
+      viaCustomDomain = true;
+    } else {
+      try {
+        const { getClientByDomain } = await import("@/lib/store");
+        const client = await getClientByDomain(host);
+        slug = client?.slug ?? null;
+        customDomain = client?.customDomain ?? null;
+        viaCustomDomain = Boolean(client);
+      } catch {
+        return NextResponse.next();
+      }
+    }
   }
 
   if (!slug) return NextResponse.next();

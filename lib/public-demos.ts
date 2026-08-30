@@ -1,4 +1,5 @@
-import type { Locale, TemplateId } from "./types";
+import { walkInDisplayHost } from "./walk-in-hosts.ts";
+import type { Locale, TemplateId } from "./types.ts";
 
 export type PublicDemo = {
   slug: string;
@@ -37,7 +38,7 @@ function demoHref(slug: string) {
 }
 
 function demoHost(slug: string) {
-  return `${slug}.phoenixwebhost.com`;
+  return walkInDisplayHost(slug, `${slug}.phoenixwebhost.com`);
 }
 
 /**

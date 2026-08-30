@@ -23,6 +23,22 @@ test("public demos are the real repo starting points, not invented shops", () =>
     assert.equal(demo.href.startsWith("/demo/"), false);
   }
   assert.equal(
+    PUBLIC_DEMOS.find((demo) => demo.slug === "ironwood-handyman")?.hostLabel,
+    "ironwood.phoenixwebhost.com",
+  );
+  assert.equal(
+    PUBLIC_DEMOS.find((demo) => demo.slug === "palo-verde-yards")?.hostLabel,
+    "paloverde.phoenixwebhost.com",
+  );
+  assert.equal(
+    PUBLIC_DEMOS.find((demo) => demo.slug === "desert-peak-roofing")?.hostLabel,
+    "desertpeak.phoenixwebhost.com",
+  );
+  assert.equal(
+    PUBLIC_DEMOS.find((demo) => demo.slug === "hola-tax-service")?.hostLabel,
+    "www.hola-tax-service.com",
+  );
+  assert.equal(
     PUBLIC_DEMOS.some((demo) => /acme|fake shop|example landscaping/i.test(demo.name)),
     false,
   );

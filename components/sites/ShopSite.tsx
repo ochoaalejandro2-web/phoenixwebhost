@@ -40,10 +40,11 @@ function ContactNoticeBanner({
   className: string;
 }) {
   if (!notice) return null;
-  const call = client.phone.trim()
+  const noticePhone = String(client.phone || "").trim();
+  const call = noticePhone
     ? locale === "es"
-      ? ` Llame al ${client.phone.trim()}.`
-      : ` Please call ${client.phone.trim()}.`
+      ? ` Llame al ${noticePhone}.`
+      : ` Please call ${noticePhone}.`
     : "";
   const copy =
     notice === "sent"
@@ -181,7 +182,8 @@ export function ShopSite({
   const preview = isPreviewClient(client);
   const home = siteHomeHref(client);
   const displayName = client.logoText?.trim() || client.businessName;
-  const phone = client.phone.trim();
+  const phone = String(client.phone || "").trim();
+  const services = Array.isArray(client.services) ? client.services : [];
   const hours = displayHours(client.hours, client.template, locale);
   const reviews = preview || client.sample ? DEMO_REVIEWS[client.template] : [];
   const callLabel = phone ? c.call(phone) : c.callShort;
@@ -282,7 +284,7 @@ export function ShopSite({
           {c.servicesTitle(client.template)}
         </h2>
         <ul className="mt-8 grid gap-4 sm:grid-cols-2">
-          {client.services.map((service) => {
+          {services.map((service) => {
             const blurb = serviceBlurb(service, locale);
             return (
               <li
