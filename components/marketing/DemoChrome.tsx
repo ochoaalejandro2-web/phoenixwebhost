@@ -1,4 +1,5 @@
 import { DemoBar } from "@/components/marketing/DemoStudio";
+import { ReceptionistChat } from "@/components/sites/ReceptionistChat";
 import {
   stripeBoostConfigured,
   stripeConfigured,
@@ -35,6 +36,12 @@ export function DemoChrome({
       >
         {children}
       </div>
+      <ReceptionistChat
+        site={`demo-${lead.id}`}
+        leadId={lead.id}
+        locale={lead.locale}
+        businessName={lead.businessName}
+      />
     </div>
   );
 }

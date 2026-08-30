@@ -24,6 +24,7 @@ Buying launch and care still works with ads and Business Email unchecked. Local 
 **$69/month includes**
 
 - Site stays live, SSL, backups, uptime watch, basic security
+- An **AI receptionist** on the site that answers from that business’s services, hours, and phone (included — not a paid add-on)
 - Up to **30 minutes** of small edits per month, **or 2 small requests**
 - Hours, phone, address, prices, a sentence or two, swap a photo they send
 - 1 contact form
@@ -172,6 +173,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Subdomain (after DNS): `https://{slug}.phoenixwebhost.com`
 
 **New client** in the panel: business name, phone, hours, copy, template → site is generated immediately.
+
+Every live client site, public demo, and new site generated from a template includes the same AI receptionist. It answers from **that** business’s listed services, hours, phone, and contact path. New clients do not need a per-site setup. On phoenixwebhost.com the same launcher speaks for the studio package ($200 + $69, receptionist included). The chat uses Vercel AI Gateway over OIDC (`VERCEL_OIDC_TOKEN`) with `minimax/minimax-m3-free`. If Gateway or OIDC is missing, answers are built from the site’s own facts — visitors never see “unavailable.”
 
 The contact form on a live `/s/{slug}` site emails the address stored on that client record, and sends a copy to the owner (`NOTIFY_EMAIL` / Resend, plus SMS via `NOTIFY_PHONE` if Twilio is set). It does not send on page views — only on a real form submit. If the client has no email, the visitor sees a clear error and is asked to call. Inquiries are stored on the client in Admin. Demo records use `.example` addresses that will not deliver until you put a real inbox on the client.
 

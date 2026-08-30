@@ -29,12 +29,13 @@ export const copy = {
     priceMonthHint: "per month, to stay live",
     launchTitle: "Launch — $200 once",
     launchBody:
-      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. Built for contractors, handymen, salons, restaurants, landscapers, tax offices, and local offices.",
+      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. An AI receptionist is included — visitors can ask about your services, hours, and phone. Built for contractors, handymen, salons, restaurants, landscapers, tax offices, and local offices.",
     monthTitle: "Stay live — $69 / month",
     monthBody:
-      "Keeps the site online and covers small care. This is not unlimited work.",
+      "Keeps the site online, covers small care, and includes an AI receptionist on the site. This is not unlimited work.",
     includedTitle: "What $69/month covers",
     included: [
+      "An AI receptionist on your site — answers from your services, hours, and phone. Included, not an extra.",
       "The site stays live, with SSL",
       "Up to 30 minutes of small edits per month — or 2 small requests",
       "Hours, phone, address, prices, a sentence or two, or swapping a photo you send",
@@ -227,12 +228,13 @@ export const copy = {
     priceMonthHint: "al mes, para mantenerlo en línea",
     launchTitle: "Lanzamiento — $200 una vez",
     launchBody:
-      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Para contratistas, manitas, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
+      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Incluye una recepcionista de IA — los visitantes pueden preguntar por servicios, horario y teléfono. Para contratistas, manitas, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
     monthTitle: "Mantenerlo en línea — $69 / mes",
     monthBody:
-      "Mantiene el sitio publicado y cubre el cuidado pequeño. Esto no es trabajo ilimitado.",
+      "Mantiene el sitio publicado, cubre el cuidado pequeño e incluye una recepcionista de IA en el sitio. Esto no es trabajo ilimitado.",
     includedTitle: "Qué cubre el plan de $69 al mes",
     included: [
+      "Una recepcionista de IA en su sitio — responde con sus servicios, horario y teléfono. Incluida, no es un extra.",
       "El sitio permanece en línea, con SSL",
       "Hasta 30 minutos de cambios pequeños al mes — o 2 solicitudes pequeñas",
       "Horario, teléfono, dirección, precios, una o dos frases, o cambiar una foto que usted envíe",
