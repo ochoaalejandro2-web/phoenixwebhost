@@ -68,7 +68,7 @@ function ContactNoticeBanner({
 }) {
   if (!notice) return null;
   const c = tTaxOffice(locale);
-  const phone = client.phone.trim();
+  const phone = String(client.phone || "").trim();
   const ok = notice === "sent";
   const copy =
     notice === "sent"
@@ -135,9 +135,11 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
   const staff = withSiteLangPath(portalPath(client.slug, "/staff/login"), locale);
   const field =
     "rounded-none border border-[#00FF66] bg-white px-3 py-2 text-black outline-none focus:shadow-[0_0_0_3px_rgba(0,255,102,0.25)]";
+  const phone = String(client.phone || "").trim();
+  const listedServices = Array.isArray(client.services) ? client.services : [];
   const services = isHola
-    ? withHolaTaxLlcService(client.services)
-    : client.services;
+    ? withHolaTaxLlcService(listedServices)
+    : listedServices;
   const shop = tShop(locale);
   const taxPhotos = SHOP_PHOTOS.tax;
   const reviews = preview ? DEMO_REVIEWS.tax : [];
@@ -168,7 +170,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
                   {c.clientLogin}
                 </a>
               )}
-              {client.phone.trim() ? (
+              {phone ? (}
               <a
                 href={telHref(client.phone)}
                 className="site-phone font-semibold text-[#00E840] hover:text-[#00FF66]"
@@ -253,7 +255,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               {taxOfficeAbout(client.slug, client.about, locale)}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              {client.phone.trim() ? (
+              {phone ? (}
                 <a
                   href={telHref(client.phone)}
                   className="site-cta bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
@@ -391,7 +393,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               {client.address ? <br /> : null}
               {client.city}
             </p>
-            {client.phone.trim() ? (
+            {phone ? (}
               <p className="mt-2">
                 <a
                   href={telHref(client.phone)}

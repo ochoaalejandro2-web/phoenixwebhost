@@ -3,10 +3,8 @@ import path from "path";
 import { neon } from "@neondatabase/serverless";
 import { createSeedState, mergeMissingSeedClients } from "@/data/seed";
 import { applyExtraPriceIdsToEnv } from "@/lib/stripe-extra-prices";
-import {
-  findClientByCustomDomain,
-  resolveDemoSubdomainSlug,
-} from "@/lib/custom-domain";
+import { findClientByCustomDomain } from "@/lib/custom-domain";
+import { pickClientBySlug } from "@/lib/walk-in-hosts";
 import { withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
 import { emptyDemoTweaks, parseDemoAccent, parseTemplateId } from "@/lib/demo";
@@ -130,6 +128,12 @@ const KNOWN_TEMPLATES: TemplateId[] = [
   "tax",
 ];
 
+function asText(value: unknown) {
+  if (typeof value === "string") return value;
+  if (value == null) return "";
+  return String(value);
+}
+
 function normalizeClient(client: Client): Client {
   let template = client.template;
   let services = client.services;
@@ -142,8 +146,18 @@ function normalizeClient(client: Client): Client {
   }
   return {
     ...client,
+    businessName: asText(client.businessName),
+    slug: asText(client.slug),
+    contactName: asText(client.contactName),
+    email: asText(client.email),
+    phone: asText(client.phone),
+    address: asText(client.address),
+    city: asText(client.city),
+    hours: asText(client.hours),
+    tagline: asText(client.tagline),
+    about: asText(client.about),
     template,
-    services: Array.isArray(services) ? services : [],
+    services: Array.isArray(services) ? services.map((row) => asText(row)) : [],
     notes: Array.isArray(client.notes) ? client.notes : [],
     editRequests: Array.isArray(client.editRequests) ? client.editRequests : [],
     localBoost: Boolean(client.localBoost),
@@ -297,15 +311,7 @@ export async function getClient(id: string) {
 
 export async function getClientBySlug(slug: string) {
   const state = await getState();
-  const exact = state.clients.find((c) => c.slug === slug);
-  if (exact) return exact;
-  const resolved = resolveDemoSubdomainSlug(
-    slug,
-    state.clients.map((c) => c.slug),
-  );
-  return resolved
-    ? (state.clients.find((c) => c.slug === resolved) ?? null)
-    : null;
+  return pickClientBySlug(state.clients, slug);
 }
 
 export async function getClientByDomain(host: string) {
