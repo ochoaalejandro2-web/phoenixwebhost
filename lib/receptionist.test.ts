@@ -130,6 +130,40 @@ test("marketing ladder keeps receptionist included and lists the paid extras", (
   assert.equal(/receptionist/i.test(en.notIncluded.join(" ")), false);
 });
 
+test("fallback answers carpentry cabinet questions from that site’s services", () => {
+  const facts = buildClientFacts(
+    client({
+      businessName: "Premium Carpentry Designs",
+      slug: "premium-carpentry-designs",
+      template: "carpentry",
+      phone: "(602) 555-0186",
+      city: "Phoenix, AZ",
+      hours: "Mon–Fri 8:00am–5:00pm",
+      tagline: "Premium Carpentry Designs",
+      about: "Walnut cabinets, built-ins, and furniture made in the shop.",
+      services: [
+        "Custom cabinets",
+        "Built-ins",
+        "Furniture",
+        "Trim and millwork",
+        "Residential",
+        "Commercial",
+      ],
+    }),
+    "en",
+  );
+  assert.deepEqual(matchListedServices(facts, "do you do cabinets?"), [
+    "Custom cabinets",
+  ]);
+  const reply = fallbackAnswer(facts, "do you do cabinets?");
+  assert.match(reply, /Custom cabinets/i);
+  assert.match(reply, /Premium Carpentry Designs/);
+  assert.match(reply, /\(602\) 555-0186/);
+  assert.equal(reply.includes(COMPANY.phone), false);
+  assert.equal(/roof/i.test(reply), false);
+  assert.equal(/unavailable/i.test(reply), false);
+});
+
 test("fallback answers landscaping lawn questions from that site’s services", () => {
   const facts = buildClientFacts(landscaping, "en");
   assert.deepEqual(matchListedServices(facts, "do you do lawns?"), ["Lawn care"]);

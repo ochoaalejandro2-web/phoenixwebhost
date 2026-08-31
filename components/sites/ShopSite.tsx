@@ -4,12 +4,12 @@ import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
 import { isPreviewClient, previewLeadId, siteHomeHref, displayHours, isSamplePhone } from "@/lib/demo";
 import { clientShowsBookJob } from "@/lib/site-addons";
 import {
-  DEMO_REVIEWS,
   photoAlt,
   serviceBlurb,
   serviceName,
   SHOP_PHOTOS,
   SHOP_THEMES,
+  shopLayoutReviews,
   type ShopTheme,
 } from "@/lib/shop-content";
 import { tShop } from "@/lib/shop-i18n";
@@ -185,9 +185,10 @@ export function ShopSite({
   const phone = String(client.phone || "").trim();
   const services = Array.isArray(client.services) ? client.services : [];
   const hours = displayHours(client.hours, client.template, locale);
-  const reviews = preview || client.sample ? DEMO_REVIEWS[client.template] : [];
+  const reviews = shopLayoutReviews(client, preview);
   const callLabel = phone ? c.call(phone) : c.callShort;
   const submitBtn = `justify-self-start rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`;
+  const showPreviewReviewNote = preview || client.sample;
 
   const links = [
     { href: "#services", label: c.navServices },
@@ -372,7 +373,7 @@ export function ShopSite({
       {reviews.length ? (
         <section id="reviews" className="mx-auto w-full max-w-5xl px-5 py-12">
           <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>{c.reviewsTitle}</h2>
-          {preview || client.sample ? (
+          {showPreviewReviewNote ? (
             <p className={`mt-2 text-sm ${theme.muted}`}>{c.previewReviews}</p>
           ) : null}
           <ul className="mt-8 grid gap-4 md:grid-cols-3">
@@ -399,7 +400,7 @@ export function ShopSite({
 
       <section className="mx-auto w-full max-w-5xl px-5 pb-16">
         <div className={`rounded-2xl border p-6 ${theme.card} ${theme.cardBorder}`}>
-          <p className={`font-display text-2xl ${theme.sectionTitle}`}>{c.contactTitle}</p>
+          <p className={`font-display text-2xl ${theme.sectionTitle}`}>{c.contactTitle(client.template)}</p>
           {preview ? (
             <PreviewContactForm
               locale={locale}

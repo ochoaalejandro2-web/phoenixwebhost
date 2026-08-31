@@ -46,6 +46,7 @@ test("i18n is on for Hola Tax and the tax-office template only", () => {
   assert.equal(siteSupportsI18n("desert-peak-roofing"), false);
   assert.equal(siteSupportsI18n("any-shop", "tax"), true);
   assert.equal(siteSupportsI18n("any-shop", "contractor"), false);
+  assert.equal(siteSupportsI18n("premium-carpentry-designs", "carpentry"), false);
 });
 
 test("withSiteLangQuery and withSiteLangPath keep lang on redirects", () => {

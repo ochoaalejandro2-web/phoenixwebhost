@@ -51,7 +51,7 @@ Buying launch and care still works with ads and extras unchecked. Local Boost, T
 
 ## Request a demo
 
-The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the seven templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
+The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the eight templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
 
 - Slim bar at the top: **This is a preview, not live yet**, plus **Purchase / Go live $200+$69**. Optional Local Boost / Traffic / Loud (one ads level), Business Email, Book a job, and the other extras stay behind that button. Color/logo tweaks stay behind a small control. The bar is not an admin dashboard sitting on top of a wireframe.
 - The visitor gets an email with the preview link and the price: **$200 to launch + $69/month** (first payment **$269** if they pay launch and the first month together).
@@ -82,6 +82,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Demo restaurant | `/s/mesa-street-kitchen` (overdue, offline) |
 | Demo landscaping (sample) | `/s/palo-verde-yards` (paid, live) |
 | Demo handyman (sample) | `/s/ironwood-handyman` (paid, live) |
+| Premium Carpentry Designs | `/s/premium-carpentry-designs` (paid, live) — shareable phone URL |
 | Hola Tax (tax office template) | `/s/hola-tax-service` (paid, live) · client portal `/s/hola-tax-service/portal` |
 
 **Owner login**
@@ -175,8 +176,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost, Traffic, Loud, Business Email, Book a job, missed-call text-back, review texts, or voice
 - Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, add-on status, pause / offline toggle. Existing clients can add one ads level, Business Email, Book a job, or the other extras later from this page.
 - **Requests** also lists chat and Book a job inbox next to demo requests. The included receptionist emails the site owner (and Alex for studio/preview chats).
-- **New client** generates a site from a template (contractor, handyman, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
-- Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the seven templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
+- **New client** generates a site from a template (contractor, handyman, carpentry & millwork, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
+- Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the eight templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 - Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
 - **Site visits** on the dashboard (today / last 7 days / last 30 days) count public Phoenixwebhost page opens. Production also sends pageviews to [Vercel Web Analytics](https://vercel.com/docs/analytics) (`@vercel/analytics` in the root layout). Enable Analytics on the Vercel project to see the same traffic there. No Google Analytics and no cookie banner.
@@ -190,7 +191,7 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 Every live client site, public demo, and new site generated from a template includes the same AI receptionist. It answers from **that** business’s listed services, hours, phone, and contact path. New clients do not need a per-site setup. On phoenixwebhost.com the same launcher speaks for the studio package ($200 + $69, receptionist included). The chat uses Vercel AI Gateway over OIDC (`VERCEL_OIDC_TOKEN`) with `minimax/minimax-m3-free`. If Gateway or OIDC is missing, answers are built from the site’s own facts — visitors never see “unavailable.”
 
-The contact form on a live `/s/{slug}` site emails the address stored on that client record, and sends a copy to the owner (`NOTIFY_EMAIL` / Resend, plus SMS via `NOTIFY_PHONE` if Twilio is set). Chat with the included receptionist uses the same inbox: name/phone if the visitor leaves them, plus the transcript. Book a job (when that add-on is on, or on public demos) emails the owner the day, name, phone, and job note. Studio chat notifies Alex the same way as a demo request. It does not send on page views — only on a real submit or chat. If the client has no email, the visitor sees a clear error and is asked to call. Inquiries are stored on the client in Admin. Demo records use `.example` addresses that will not deliver until you put a real inbox on the client.
+The contact form on a live `/s/{slug}` site emails the address stored on that client record, and sends a copy to the owner (`NOTIFY_EMAIL` / Resend, plus SMS via `NOTIFY_PHONE` if Twilio is set). Chat with the included receptionist uses the same inbox: name/phone if the visitor leaves them, plus the transcript. Book a job (when that add-on is on, or on public demos that include it) emails the owner the day, name, phone, and job note. Studio chat notifies Alex the same way as a demo request. It does not send on page views — only on a real submit or chat. If the client has no email, the visitor sees a clear error and is asked to call. Inquiries are stored on the client in Admin. Demo records use `.example` addresses that will not deliver until you put a real inbox on the client.
 
 Unpaid / paused sites render the “temporarily offline” page. After 30 days they are taken down.
 
