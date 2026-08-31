@@ -74,6 +74,13 @@ export const TEMPLATES: {
     blurbEs: "Reparaciones del hogar, tablaroca, pintura, accesorios y trabajos varios.",
   },
   {
+    id: "carpentry",
+    name: "Carpentry & millwork",
+    nameEs: "Carpintería y ebanistería",
+    blurb: "Custom cabinets, built-ins, furniture, and trim.",
+    blurbEs: "Gabinetes a medida, built-ins, muebles y molduras.",
+  },
+  {
     id: "salon",
     name: "Salon & beauty",
     nameEs: "Salón y belleza",

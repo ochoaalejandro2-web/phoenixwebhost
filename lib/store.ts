@@ -121,6 +121,7 @@ function emptyAuthLock(): AuthLock {
 const KNOWN_TEMPLATES: TemplateId[] = [
   "contractor",
   "handyman",
+  "carpentry",
   "salon",
   "restaurant",
   "professional",

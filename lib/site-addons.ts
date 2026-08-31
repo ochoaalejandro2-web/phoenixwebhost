@@ -1,8 +1,14 @@
 import { PRICING } from "./config.ts";
-import { PUBLIC_DEMOS } from "./public-demos.ts";
 import type { Client } from "./types.ts";
 
-const WALK_IN_BOOK_SLUGS = new Set(PUBLIC_DEMOS.map((demo) => demo.slug));
+const WALK_IN_BOOK_SLUGS = new Set([
+  "desert-peak-roofing",
+  "ironwood-handyman",
+  "casa-luna-salon",
+  "mesa-street-kitchen",
+  "palo-verde-yards",
+  "hola-tax-service",
+]);
 
 export const STUDIO_INBOX = "studio";
 

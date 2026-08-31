@@ -89,6 +89,35 @@ export const SHOP_PHOTOS: Record<TemplateId, {
       },
     ],
   },
+  carpentry: {
+    hero: {
+      src: "/templates/carpentry/hero.jpg",
+      alt: "Walnut kitchen cabinets and a custom dining table",
+      altEs: "Gabinetes de cocina de nogal y una mesa a medida",
+    },
+    gallery: [
+      {
+        src: "/templates/carpentry/photo-1.jpg",
+        alt: "Custom built-in breakfast nook and millwork",
+        altEs: "Rincón de desayuno a medida y millwork",
+      },
+      {
+        src: "/templates/carpentry/photo-2.jpg",
+        alt: "Built-in bookcases and a custom credenza",
+        altEs: "Libreros empotrados y una credenza a medida",
+      },
+      {
+        src: "/templates/carpentry/photo-3.jpg",
+        alt: "Shop craft — drilling millwork on the bench",
+        altEs: "Trabajo de taller — taladrando millwork en el banco",
+      },
+      {
+        src: "/templates/carpentry/photo-4.jpg",
+        alt: "Walnut wall millwork in a finished bedroom",
+        altEs: "Millwork de nogal en un recámara terminada",
+      },
+    ],
+  },
   salon: {
     hero: {
       src: "/templates/salon/hero.jpg",
@@ -277,6 +306,26 @@ export const SHOP_THEMES: Record<Exclude<TemplateId, "tax">, ShopTheme> = {
     field: "rounded-lg border border-[#e4dfd4] bg-white px-3 py-2 text-ink",
     ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#111111]",
   },
+  carpentry: {
+    page: "bg-[#f7f5f0] text-[#111111]",
+    header: "bg-[#111111]/95 text-[#f7f5f0]",
+    headerBorder: "border-white/10",
+    name: "text-[#f7f5f0]",
+    nav: "text-white/70 hover:text-white",
+    call: "bg-[#00c851] text-[#111111]",
+    callHover: "hover:bg-[#00b348]",
+    kicker: "text-[#c8f0c0]",
+    body: "text-[#111111]",
+    muted: "text-[#4a4740]",
+    card: "bg-white",
+    cardBorder: "border-[#e6e1d6]",
+    sectionTitle: "text-[#111111]",
+    overlay: "bg-gradient-to-r from-black/80 via-black/50 to-black/15",
+    footer: "text-[#5c574e]",
+    footerBorder: "border-[#e6e1d6]",
+    field: "rounded-lg border border-[#e6e1d6] bg-white px-3 py-2 text-ink",
+    ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#111111]",
+  },
   salon: {
     page: "bg-[#fffaf6] text-[#1c1712]",
     header: "bg-[#fffaf6]/95 text-[#1c1712]",
@@ -422,6 +471,36 @@ export const SERVICE_BLURBS: Record<
     nameEs: "Detalles y remates",
     blurb: "A written list, then we knock it down. No mystery extras.",
     blurbEs: "Una lista por escrito, y la vamos tachando. Sin extras misteriosos.",
+  },
+  "Custom cabinets": {
+    nameEs: "Gabinetes a medida",
+    blurb: "Walnut, white oak, and painted cabinets fitted to the room — not catalog boxes.",
+    blurbEs: "Gabinetes de nogal, roble blanco y pintados, a la medida del cuarto — no cajas de catálogo.",
+  },
+  "Built-ins": {
+    nameEs: "Muebles empotrados",
+    blurb: "Bookcases, benches, and wall units scribed to the plaster and the floor.",
+    blurbEs: "Libreros, bancas y muros empotrados ajustados al yeso y al piso.",
+  },
+  Furniture: {
+    nameEs: "Muebles",
+    blurb: "Tables, desks, and pieces made in the shop for one house.",
+    blurbEs: "Mesas, escritorios y piezas hechas en el taller para una casa.",
+  },
+  "Trim and millwork": {
+    nameEs: "Molduras y millwork",
+    blurb: "Doors, casing, and finish millwork that matches the rest of the room.",
+    blurbEs: "Puertas, marcos y millwork de acabado que coinciden con el resto del cuarto.",
+  },
+  Residential: {
+    nameEs: "Residencial",
+    blurb: "Kitchens, closets, and rooms in Phoenix-area homes.",
+    blurbEs: "Cocinas, closets y cuartos en casas del área de Phoenix.",
+  },
+  Commercial: {
+    nameEs: "Comercial",
+    blurb: "Offices, restaurants, and shops that need real millwork, not laminate kits.",
+    blurbEs: "Oficinas, restaurantes y tiendas que necesitan millwork de verdad, no kits de laminado.",
   },
   Haircuts: {
     nameEs: "Cortes",
@@ -625,6 +704,29 @@ export const DEMO_REVIEWS: Record<TemplateId, SampleReview[]> = {
       bodyEs: "Trabajos varios en un sábado. Contestaron el teléfono y llegaron cuando dijeron.",
     },
   ],
+  carpentry: [
+    {
+      name: "Maya S.",
+      city: "Phoenix",
+      stars: 5,
+      body: "Walnut cabinets that actually fit the wall. They measured twice, left the shop clean, and put the bid in writing.",
+      bodyEs: "Gabinetes de nogal que sí caben en la pared. Midieron dos veces, dejaron el taller limpio y pusieron el presupuesto por escrito.",
+    },
+    {
+      name: "David R.",
+      city: "Arcadia",
+      stars: 5,
+      body: "Built-ins for the living room, scribed to the floor. No catalog boxes. That is the work.",
+      bodyEs: "Empotrados para la sala, ajustados al piso. Sin cajas de catálogo. Ese es el trabajo.",
+    },
+    {
+      name: "Elena K.",
+      city: "Central Phoenix",
+      stars: 4,
+      body: "Straight talk on lead time. The table they made is the one we sit at every night.",
+      bodyEs: "Tiempos claros. La mesa que hicieron es la que usamos cada noche.",
+    },
+  ],
   salon: [
     {
       name: "Sofia M.",
@@ -744,6 +846,19 @@ export const DEMO_REVIEWS: Record<TemplateId, SampleReview[]> = {
 
 export function photoAlt(photo: ShopPhoto, locale: Locale) {
   return locale === "es" ? photo.altEs : photo.alt;
+}
+
+/** Walk-in prospect preview that should look finished, including neighbor quotes. */
+export const PREMIUM_CARPENTRY_SLUG = "premium-carpentry-designs";
+
+export function shopLayoutReviews(
+  client: { slug: string; template: TemplateId; sample?: boolean },
+  preview: boolean,
+) {
+  if (preview || client.sample || client.slug === PREMIUM_CARPENTRY_SLUG) {
+    return DEMO_REVIEWS[client.template] ?? [];
+  }
+  return [];
 }
 
 export function serviceName(name: string, locale: Locale) {

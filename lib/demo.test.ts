@@ -47,9 +47,10 @@ test("demo URL is a preview path, not a paid /s/ site", () => {
   assert.equal(demoUrl("lead_abc").includes("/s/"), false);
 });
 
-test("trade picker only accepts the seven templates, including handyman and tax", () => {
+test("trade picker only accepts the eight templates, including carpentry, handyman, and tax", () => {
   assert.equal(parseTemplateId("contractor"), "contractor");
   assert.equal(parseTemplateId("handyman"), "handyman");
+  assert.equal(parseTemplateId("carpentry"), "carpentry");
   assert.equal(parseTemplateId("tax"), "tax");
   assert.equal(parseTemplateId("salon"), "salon");
   assert.equal(parseTemplateId("hola-tax-service"), null);
@@ -63,6 +64,15 @@ test("trade picker only accepts the seven templates, including handyman and tax"
     "Punch-list fixes",
   ]);
   assert.equal(demoServices("handyman").length, 6);
+  assert.deepEqual(demoServices("carpentry"), [
+    "Custom cabinets",
+    "Built-ins",
+    "Furniture",
+    "Trim and millwork",
+    "Residential",
+    "Commercial",
+  ]);
+  assert.equal(demoServices("carpentry").length, 6);
   assert.deepEqual(demoServices("tax"), [
     "Personal tax preparation",
     "Small-business tax preparation",
@@ -179,6 +189,7 @@ test("each trade has a local hero photo and a four-photo gallery", () => {
   const trades: TemplateId[] = [
     "contractor",
     "handyman",
+    "carpentry",
     "salon",
     "restaurant",
     "professional",

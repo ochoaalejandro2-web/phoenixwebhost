@@ -10,6 +10,7 @@ import type {
 const TEMPLATE_IDS: TemplateId[] = [
   "contractor",
   "handyman",
+  "carpentry",
   "salon",
   "restaurant",
   "professional",
@@ -20,6 +21,7 @@ const TEMPLATE_IDS: TemplateId[] = [
 const TEMPLATE_LABELS: Record<TemplateId, { en: string; es: string }> = {
   contractor: { en: "Contractor & trades", es: "Contratista y oficios" },
   handyman: { en: "Handyman", es: "Manitas y reparaciones" },
+  carpentry: { en: "Carpentry & millwork", es: "Carpintería y ebanistería" },
   salon: { en: "Salon & beauty", es: "Salón y belleza" },
   restaurant: { en: "Restaurant & cafe", es: "Restaurante y café" },
   professional: { en: "Professional services", es: "Servicios profesionales" },
@@ -32,6 +34,7 @@ export const DEMO_SAMPLE_PHONE = "(480) 555-0199";
 export const DEMO_HOURS: Record<TemplateId, string> = {
   contractor: "Mon–Fri 7:00am–5:00pm",
   handyman: "Mon–Sat 7:00am–6:00pm",
+  carpentry: "Mon–Fri 8:00am–5:00pm",
   salon: "Tue–Sat 9:00am–7:00pm",
   restaurant: "Tue–Sun 11:00am–9:00pm",
   professional: "Mon–Fri 8:00am–5:00pm",
@@ -42,6 +45,7 @@ export const DEMO_HOURS: Record<TemplateId, string> = {
 const DEMO_HOURS_ES: Record<TemplateId, string> = {
   contractor: "Lun–Vie 7:00am–5:00pm",
   handyman: "Lun–Sáb 7:00am–6:00pm",
+  carpentry: "Lun–Vie 8:00am–5:00pm",
   salon: "Mar–Sáb 9:00am–7:00pm",
   restaurant: "Mar–Dom 11:00am–9:00pm",
   professional: "Lun–Vie 8:00am–5:00pm",
@@ -52,6 +56,7 @@ const DEMO_HOURS_ES: Record<TemplateId, string> = {
 const DEMO_STREET: Record<TemplateId, string> = {
   contractor: "2140 E Broadway Rd",
   handyman: "1145 N Dysart Rd",
+  carpentry: "2710 N 16th St",
   salon: "7349 E Shea Blvd",
   restaurant: "125 W Main St",
   professional: "201 E Washington St",
@@ -132,6 +137,14 @@ export const TEMPLATE_STARTER_SERVICES: Record<TemplateId, string[]> = {
     "Fixture install",
     "Odd jobs",
     "Punch-list fixes",
+  ],
+  carpentry: [
+    "Custom cabinets",
+    "Built-ins",
+    "Furniture",
+    "Trim and millwork",
+    "Residential",
+    "Commercial",
   ],
   salon: [
     "Haircuts",

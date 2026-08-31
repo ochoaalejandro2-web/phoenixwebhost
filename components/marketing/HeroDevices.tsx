@@ -82,6 +82,11 @@ const previews: Record<
     screen: "bg-[#f6f3ec] text-[#171717]",
     title: "Handyman",
   },
+  carpentry: {
+    bar: "bg-[#111111] text-[#00c851]",
+    screen: "bg-[#f7f5f0] text-[#111111]",
+    title: "Millwork",
+  },
   salon: {
     bar: "bg-[#f6efe8] text-[#8a5a38]",
     screen: "bg-[#fffaf3] text-[#1c1712]",

@@ -15,6 +15,7 @@ const shop = {
       if (template === "restaurant") return "From the kitchen";
       if (template === "landscaping") return "Yard work";
       if (template === "handyman") return "Around the house";
+      if (template === "carpentry") return "From the shop";
       if (template === "salon") return "In the chair";
       if (template === "tax") return "How we help";
       return "Services";
@@ -23,7 +24,8 @@ const shop = {
     photosTitle: "Recent work",
     hoursTitle: "Hours & location",
     reviewsTitle: "What neighbors say",
-    contactTitle: "Contact",
+    contactTitle: (template: TemplateId) =>
+      template === "carpentry" ? "Request a quote" : "Contact",
     formName: "Name",
     formEmail: "Email",
     formPhone: "Phone",
@@ -54,6 +56,7 @@ const shop = {
       if (template === "restaurant") return "De la cocina";
       if (template === "landscaping") return "Trabajo de jardín";
       if (template === "handyman") return "En la casa";
+      if (template === "carpentry") return "Del taller";
       if (template === "salon") return "En el sillón";
       if (template === "tax") return "Cómo le ayudamos";
       return "Servicios";
@@ -62,7 +65,8 @@ const shop = {
     photosTitle: "Trabajo reciente",
     hoursTitle: "Horario y ubicación",
     reviewsTitle: "Lo que dicen los vecinos",
-    contactTitle: "Contacto",
+    contactTitle: (template: TemplateId) =>
+      template === "carpentry" ? "Pedir una cotización" : "Contacto",
     formName: "Nombre",
     formEmail: "Correo",
     formPhone: "Teléfono",

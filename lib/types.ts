@@ -3,6 +3,7 @@ export type Locale = "en" | "es";
 export type TemplateId =
   | "contractor"
   | "handyman"
+  | "carpentry"
   | "salon"
   | "restaurant"
   | "professional"

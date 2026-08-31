@@ -110,4 +110,12 @@ test("public demos show Book a job; new paid clients do not until purchased", ()
     }),
     true,
   );
+  assert.equal(
+    clientShowsBookJob({
+      id: "cli_premium_carpentry",
+      slug: "premium-carpentry-designs",
+      bookAJob: false,
+    }),
+    false,
+  );
 });
