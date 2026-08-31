@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { COMPANY } from "@/lib/config";
 import {
+  CLOSER_COOKIE,
+  CLOSER_QUERY,
+  closerCookieOptions,
+  closerHomePath,
+  parseCloserFromPath,
+  sanitizeCloserCode,
+} from "@/lib/closers";
+import {
   clientHostDecision,
   isPlatformHost,
   normalizeHost,
@@ -21,6 +29,32 @@ export async function proxy(request: NextRequest) {
   }
 
   if (isPlatformHost(host, COMPANY.domain)) {
+    const pathCloser = parseCloserFromPath(path);
+    const queryCloser = sanitizeCloserCode(
+      request.nextUrl.searchParams.get(CLOSER_QUERY),
+    );
+    const code = pathCloser?.code || queryCloser;
+    if (pathCloser) {
+      const dest = request.nextUrl.clone();
+      dest.pathname = closerHomePath(pathCloser.locale);
+      dest.search = "";
+      const response = NextResponse.redirect(dest);
+      response.cookies.set(
+        CLOSER_COOKIE,
+        pathCloser.code,
+        closerCookieOptions(request.nextUrl.protocol === "https:"),
+      );
+      return response;
+    }
+    if (code) {
+      const response = NextResponse.next();
+      response.cookies.set(
+        CLOSER_COOKIE,
+        code,
+        closerCookieOptions(request.nextUrl.protocol === "https:"),
+      );
+      return response;
+    }
     return NextResponse.next();
   }
 

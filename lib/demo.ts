@@ -471,6 +471,20 @@ export function buildClientFromLead(
       createdAt: new Date().toISOString(),
     });
   }
+  if (lead.wantsDomain) {
+    notes.push({
+      id: `note_${crypto.randomUUID()}`,
+      body: "Asked to register a .com (about $20 first year) at signup (not paid until checkout completes). Domain stays in their name.",
+      createdAt: new Date().toISOString(),
+    });
+  }
+  if (lead.closerCode) {
+    notes.push({
+      id: `note_${crypto.randomUUID()}`,
+      body: `Closer code ${lead.closerCode}. Pay them the $200 launch only after Stripe succeeds. Alex keeps $69/month and add-ons.`,
+      createdAt: new Date().toISOString(),
+    });
+  }
   if (!preview) {
     notes.push({
       id: `note_${crypto.randomUUID()}`,
@@ -515,6 +529,8 @@ export function buildClientFromLead(
     missedCallTextback: false,
     reviewTexts: false,
     voiceReceptionist: false,
+    domainRegister: false,
+    closerCode: lead.closerCode || null,
     reminderSentAt: null,
     overdueSince: null,
     offlineAt: null,

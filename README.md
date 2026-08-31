@@ -1,6 +1,6 @@
 # Phoenixwebhost Inc.
 
-Arizona small-business websites. **$200 to launch. $69/month to keep it live.** The **AI receptionist** is included. Optional ads add-ons (pick one): **Local Boost** **$99 once + $79/month extra**, **Traffic** **$199/month extra**, or **Loud** **$349/month extra**. Optional extras: **Business Email** **$49 + $19/month**, **Book a job** **$49 + $19/month**, **Missed-call text-back** **$49 + $29/month**, **Review texts** **$29/month**, **Voice receptionist** **$99 + $79/month**.
+Arizona small-business websites. **$200 to launch. $69/month to keep it live.** The **AI receptionist** is included. Optional ads add-ons (pick one): **Local Boost** **$99 once + $79/month extra**, **Traffic** **$199/month extra**, or **Loud** **$349/month extra**. Optional extras: **Domain** **about $20/year for a .com (first year)**, **Business Email** **$49 + $19/month**, **Book a job** **$49 + $19/month**, **Missed-call text-back** **$49 + $29/month**, **Review texts** **$29/month**, **Voice receptionist** **$99 + $79/month**.
 
 Owner: **Alex Ochoa**, Phoenix, AZ  
 Company: **Phoenixwebhost Inc.**  
@@ -22,8 +22,9 @@ This repo is only Phoenixwebhost. It is a separate business: marketing site, own
 | Missed-call text-back (optional) | **$49 once + $29 / month extra** | Sold here; we set it up after purchase. Not live on demos. |
 | Review texts (optional) | **$29 / month extra** | A review text after the job. Sits next to Local Boost — does not replace it. Sold here; we set it up after purchase. |
 | Voice receptionist (optional) | **$99 once + $79 / month extra** | Phone line, 150 minutes included, extra minutes $0.50. Not included in the website. Sold here; we set it up after purchase. |
+| Domain (optional) | **about $20 / year** for a .com (first year) | We register a .com for you. The domain stays in the customer’s name. They keep the login. Skip if they already have a domain. Phoenixwebhost only points DNS. Not a domain supermarket cart. |
 
-Buying launch and care still works with ads and extras unchecked. Local Boost, Traffic, and Loud are one ads ladder — pick one level, not two. Business Email, Book a job, missed-call text-back, review texts, and voice can be added with any ads level, or alone. Each is a separate add-on at signup, or later from the owner panel. The on-site chat receptionist stays in the $200 + $69 website.
+Buying launch and care still works with ads and extras unchecked. Local Boost, Traffic, and Loud are one ads ladder — pick one level, not two. Domain, Business Email, Book a job, missed-call text-back, review texts, and voice can be added with any ads level, or alone. Each is a separate add-on at signup, or later from the owner panel. The on-site chat receptionist stays in the $200 + $69 website.
 
 **$69/month includes**
 
@@ -45,6 +46,7 @@ Buying launch and care still works with ads and extras unchecked. Local Boost, T
 - A professional inbox: extra, or skip. Optional **Business Email** is one mailbox such as info@their domain, plus $19/month to keep it working. Not magic.
 - Book a job form: extra, or skip. Optional **Book a job** is $49 + $19/month. The included receptionist is still free with the website.
 - Missed-call text-back, review texts, and a voice phone line: extra, sold here, set up after purchase. Not live on the demos.
+- A .com domain: extra, about $20 for the first year. We register it in their name. They keep the login. Skip if they already have one.
 - Unlimited changes: **never**
 
 **If a month is unpaid:** reminder → site shows “temporarily offline” → files kept **30 days** → take down.
@@ -76,6 +78,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Marketing (EN) | `/` |
 | Marketing (ES) | `/es` |
 | Request a demo | `/request` (also `/es/request`) |
+| Affiliates / sell with us | `/affiliates` (also `/es/affiliates`) |
 | Owner login | `/login` |
 | Demo contractor | `/s/desert-peak-roofing` (paid, live) |
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
@@ -119,6 +122,7 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `STRIPE_REVIEW_MONTHLY_PRICE_ID` | for review texts | Recurring **$29/month** add-on price |
 | `STRIPE_VOICE_SETUP_PRICE_ID` | for voice receptionist | One-time **$99** add-on price. Not the included chat. |
 | `STRIPE_VOICE_MONTHLY_PRICE_ID` | for voice receptionist | Recurring **$79/month** add-on price |
+| `STRIPE_DOMAIN_YEARLY_PRICE_ID` | for domain register | One-time **~$20** first-year .com price. Create the Stripe Price, then set this ID. **Production still needs the live Price ID on Vercel.** Do not invent a fake live key. |
 | `DATABASE_URL` | production on Vercel | Postgres (Neon). Without it, data is local-file or ephemeral |
 | `CRON_SECRET` | recommended | Protects `/api/cron/billing` |
 | `NOTIFY_EMAIL` | no | Owner alert inbox. Default `ochoa.alejandro2@gmail.com` |
@@ -145,9 +149,9 @@ Alex already has a Stripe account. Use **test mode** until checkout works end to
 node --env-file=.env.local scripts/setup-stripe.mjs
 ```
 
-That prints `STRIPE_SETUP_PRICE_ID` ($200 one-time), `STRIPE_MONTHLY_PRICE_ID` ($69/month), `STRIPE_TRAFFIC_MONTHLY_PRICE_ID` ($199/month), `STRIPE_LOUD_MONTHLY_PRICE_ID` ($349/month), and the Book / missed-call / review / voice add-on Price IDs. Put them in `.env.local`. Local Boost uses the existing test prices `STRIPE_BOOST_SETUP_PRICE_ID` ($99) and `STRIPE_BOOST_MONTHLY_PRICE_ID` ($79/month). Business Email uses the existing test prices `STRIPE_EMAIL_SETUP_PRICE_ID` ($49) and `STRIPE_EMAIL_MONTHLY_PRICE_ID` ($19/month). Set those env names on Vercel.
+That prints `STRIPE_SETUP_PRICE_ID` ($200 one-time), `STRIPE_MONTHLY_PRICE_ID` ($69/month), `STRIPE_TRAFFIC_MONTHLY_PRICE_ID` ($199/month), `STRIPE_LOUD_MONTHLY_PRICE_ID` ($349/month), and the Book / missed-call / review / voice / domain add-on Price IDs. Put them in `.env.local`. Local Boost uses the existing test prices `STRIPE_BOOST_SETUP_PRICE_ID` ($99) and `STRIPE_BOOST_MONTHLY_PRICE_ID` ($79/month). Business Email uses the existing test prices `STRIPE_EMAIL_SETUP_PRICE_ID` ($49) and `STRIPE_EMAIL_MONTHLY_PRICE_ID` ($19/month). Set those env names on Vercel.
 
-**Production gap:** live Stripe Price IDs for Traffic, Loud, Book a job, missed-call text-back, review texts, and voice receptionist must be created in the Stripe Dashboard (or the setup script in live mode) and set on the Vercel project. Checkout fails closed if those vars are missing. Do not invent fake live keys.
+**Production gap:** live Stripe Price IDs for Traffic, Loud, Book a job, missed-call text-back, review texts, voice receptionist, and domain register must be created in the Stripe Dashboard (or the setup script in live mode) and set on the Vercel project. Checkout fails closed if those vars are missing. Do not invent fake live keys.
 
 3. Webhook (local):
 
@@ -165,7 +169,7 @@ Paste the `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
 
 To test a failed payment / unpaid flow: card `4000 0000 0000 9995`, or in the owner panel open a client and click **Simulate unpaid** → **Apply unpaid policy** (after the 2-day grace, or it will set overdue immediately and offline when grace has passed). Mesa Street Kitchen is already overdue and offline.
 
-Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item). If the customer selects **Local Boost**, the same session also includes **$99 setup + $79/month**. If they select **Traffic**, the same session includes **$199/month** only (no setup fee). If they select **Loud**, the same session includes **$349/month** only (no setup fee). Local Boost, Traffic, and Loud are mutually exclusive — checkout rejects two ads tiers at once. If they select **Business Email**, it also includes **$49 setup + $19/month**. Book a job, missed-call text-back, review texts, and voice receptionist are extra line items on the same session when checked. Leaving an add-on unchecked still charges only the base plan (and any other checked add-on). If an add-on’s price env vars are missing, checkout fails closed with a clear error instead of charging a partial cart.
+Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item). If the customer selects **Local Boost**, the same session also includes **$99 setup + $79/month**. If they select **Traffic**, the same session includes **$199/month** only (no setup fee). If they select **Loud**, the same session includes **$349/month** only (no setup fee). Local Boost, Traffic, and Loud are mutually exclusive — checkout rejects two ads tiers at once. If they select **Business Email**, it also includes **$49 setup + $19/month**. Book a job, missed-call text-back, review texts, voice receptionist, and domain register are extra line items on the same session when checked. Leaving an add-on unchecked still charges only the base plan (and any other checked add-on). If an add-on’s price env vars are missing, checkout fails closed with a clear error instead of charging a partial cart.
 
 When you are ready for real charges, switch the same variable names to **live** keys (`sk_live_...`, live price IDs, live webhook secret). Never mix test and live IDs.
 
@@ -173,8 +177,9 @@ When you are ready for real charges, switch the same variable names to **live** 
 
 `/admin` after login.
 
-- Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost, Traffic, Loud, Business Email, Book a job, missed-call text-back, review texts, or voice
-- Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, add-on status, pause / offline toggle. Existing clients can add one ads level, Business Email, Book a job, or the other extras later from this page.
+- Every client: name, URL, live/offline, last payment, next invoice, paid vs overdue, whether they bought Local Boost, Traffic, Loud, Business Email, Book a job, missed-call text-back, review texts, voice, or a domain
+- Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, add-on status, pause / offline toggle. Existing clients can add one ads level, Business Email, Book a job, the other extras, or a domain later from this page.
+- **Affiliates** lets Alex add closer codes and unique sell links (`/r/{code}` or `?ref=`). Demo requests and paid checkouts keep that code so Alex can pay the closer the $200 launch after Stripe succeeds. There is no automatic Stripe payout. The public **Sell with us** page (`/affiliates`, also `/es/affiliates`) explains the pitch.
 - **Requests** also lists chat and Book a job inbox next to demo requests. The included receptionist emails the site owner (and Alex for studio/preview chats).
 - **New client** generates a site from a template (contractor, handyman, carpentry & millwork, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
 - Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the eight templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.

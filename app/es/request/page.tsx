@@ -10,6 +10,7 @@ import {
   COMPANY,
   stripeBookConfigured,
   stripeBoostConfigured,
+  stripeDomainConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
   stripeMissedCallConfigured,
@@ -17,6 +18,7 @@ import {
   stripeTrafficConfigured,
   stripeVoiceConfigured,
 } from "@/lib/config";
+import { parseExtraPicks } from "@/lib/extra-picks";
 import { t } from "@/lib/i18n";
 
 export const metadata = { title: "Pedir una demo" };
@@ -24,9 +26,9 @@ export const metadata = { title: "Pedir una demo" };
 export default async function RequestEsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ ads?: string }>;
+  searchParams: Promise<{ ads?: string; extra?: string | string[] }>;
 }) {
-  const { ads } = await searchParams;
+  const { ads, extra } = await searchParams;
   const c = t("es");
   return (
     <StudioShell>
@@ -63,9 +65,10 @@ export default async function RequestEsPage({
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             La recepcionista de IA en el chat va incluida en $200 + $69. Extras
-            opcionales: Reservar un trabajo $49 + $19 al mes, texto de llamada
-            perdida $49 + $29 al mes, textos de reseña $29 al mes, recepcionista
-            de voz $99 + $79 al mes. Eso no es el chat incluido.
+            opcionales: registrar un .com (unos $20 el primer año), Reservar un
+            trabajo $49 + $19 al mes, texto de llamada perdida $49 + $29 al mes,
+            textos de reseña $29 al mes, recepcionista de voz $99 + $79 al mes.
+            Eso no es el chat incluido. Si ya tiene un dominio, omita el registro.
           </p>
           <p className="mt-6 text-sm text-body">
             {c.callPrompt}{" "}
@@ -83,7 +86,9 @@ export default async function RequestEsPage({
           missedReady={stripeMissedCallConfigured()}
           reviewsReady={stripeReviewTextsConfigured()}
           voiceReady={stripeVoiceConfigured()}
+          domainReady={stripeDomainConfigured()}
           initialAds={parseAdsTier(ads)}
+          initialExtras={parseExtraPicks(extra)}
         />
       </main>
       <SiteFooter locale="es" />

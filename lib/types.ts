@@ -68,6 +68,8 @@ export type Client = {
   reviewTexts?: boolean;
   stripeVoiceSubscriptionId?: string | null;
   voiceReceptionist?: boolean;
+  domainRegister?: boolean;
+  closerCode?: string | null;
   reminderSentAt: string | null;
   overdueSince: string | null;
   offlineAt: string | null;
@@ -115,6 +117,8 @@ export type Lead = {
   wantsMissedCall?: boolean;
   wantsReviewTexts?: boolean;
   wantsVoice?: boolean;
+  wantsDomain?: boolean;
+  closerCode?: string | null;
   purchased: boolean;
   clientId: string | null;
   demo: DemoTweaks;
@@ -159,6 +163,14 @@ export type AuthLock = {
   consumedNonces: string[];
 };
 
+export type Closer = {
+  id: string;
+  code: string;
+  name: string;
+  email: string;
+  createdAt: string;
+};
+
 export type StripeExtraPriceIds = {
   STRIPE_BOOK_SETUP_PRICE_ID?: string;
   STRIPE_BOOK_MONTHLY_PRICE_ID?: string;
@@ -167,11 +179,13 @@ export type StripeExtraPriceIds = {
   STRIPE_REVIEW_MONTHLY_PRICE_ID?: string;
   STRIPE_VOICE_SETUP_PRICE_ID?: string;
   STRIPE_VOICE_MONTHLY_PRICE_ID?: string;
+  STRIPE_DOMAIN_YEARLY_PRICE_ID?: string;
 };
 
 export type AppState = {
   clients: Client[];
   leads: Lead[];
+  closers: Closer[];
   contactMessages: ContactMessage[];
   reviews: Review[];
   authLock: AuthLock;

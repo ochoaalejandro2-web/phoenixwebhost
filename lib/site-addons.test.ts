@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   BOOK_NOT_CONFIGURED,
+  DOMAIN_NOT_CONFIGURED,
   applyPaidExtras,
   clientShowsBookJob,
   extraLineItems,
@@ -83,10 +84,29 @@ test("extras metadata round-trips and applyPaidExtras sets Book a job", () => {
     includeMissedCall: false,
     includeReviews: false,
     includeVoice: true,
+    includeDomain: false,
   });
   const next = applyPaidExtras(client(), { includeBook: true });
   assert.equal(next.bookAJob, true);
   assert.ok(next.notes[0]?.body.includes("Book a job"));
+});
+
+test("domain extra is a first-year .com line item and stays optional", () => {
+  delete process.env.STRIPE_DOMAIN_YEARLY_PRICE_ID;
+  assert.throws(
+    () => extraLineItems({ includeDomain: true }),
+    (error: unknown) =>
+      error instanceof Error && error.message === DOMAIN_NOT_CONFIGURED,
+  );
+  process.env.STRIPE_DOMAIN_YEARLY_PRICE_ID = "price_domain_year";
+  assert.deepEqual(extraLineItems({ includeDomain: true }), [
+    { price: "price_domain_year", quantity: 1 },
+  ]);
+  const next = applyPaidExtras(client(), { includeDomain: true });
+  assert.equal(next.domainRegister, true);
+  assert.match(next.notes[0]?.body || "", /\.com/);
+  assert.match(next.notes[0]?.body || "", /keep the login/i);
+  delete process.env.STRIPE_DOMAIN_YEARLY_PRICE_ID;
 });
 
 test("public demos show Book a job; new paid clients do not until purchased", () => {

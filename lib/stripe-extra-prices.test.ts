@@ -18,6 +18,7 @@ const KEYS: ExtraPriceEnvKey[] = [
   "STRIPE_REVIEW_MONTHLY_PRICE_ID",
   "STRIPE_VOICE_SETUP_PRICE_ID",
   "STRIPE_VOICE_MONTHLY_PRICE_ID",
+  "STRIPE_DOMAIN_YEARLY_PRICE_ID",
 ];
 
 function clearExtraEnv() {
@@ -114,6 +115,8 @@ test("resolveExtraPricesFromStripe reuses matching products and creates only mis
   assert.ok(createdProducts.includes("Phoenixwebhost — Missed-call text-back"));
   assert.ok(createdProducts.includes("Phoenixwebhost — Review texts"));
   assert.ok(createdProducts.includes("Phoenixwebhost — Voice receptionist"));
+  assert.ok(createdProducts.includes("Phoenixwebhost — Domain (.com first year)"));
   assert.ok(ids.STRIPE_REVIEW_MONTHLY_PRICE_ID.startsWith("price_new_"));
+  assert.ok(ids.STRIPE_DOMAIN_YEARLY_PRICE_ID.startsWith("price_new_"));
   assert.equal(extraPricesComplete(ids), true);
 });

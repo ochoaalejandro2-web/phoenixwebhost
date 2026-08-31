@@ -89,6 +89,10 @@ export default async function ClientDetailPage({
           {" · "}
           Voice receptionist:{" "}
           <strong>{client.voiceReceptionist ? "purchased" : "not purchased"}</strong>
+          {" · "}
+          Domain:{" "}
+          <strong>{client.domainRegister ? "purchased" : "not purchased"}</strong>
+          {client.closerCode ? ` · Sold by ${client.closerCode}` : ""}
         </p>
         <p className="mt-1 text-sm">
           Public URL:{" "}
@@ -141,6 +145,8 @@ export default async function ClientDetailPage({
           <p>Review texts subscription: {client.stripeReviewTextsSubscriptionId || "—"}</p>
           <p>Voice receptionist: {client.voiceReceptionist ? "purchased" : "not purchased"}</p>
           <p>Voice subscription: {client.stripeVoiceSubscriptionId || "—"}</p>
+          <p>Domain register: {client.domainRegister ? "purchased" : "not purchased"}</p>
+          <p>Closer: {client.closerCode || "—"}</p>
           <p>Reminder: {fmt(client.reminderSentAt)}</p>
           <p>Overdue since: {fmt(client.overdueSince)}</p>
           <p>Offline at: {fmt(client.offlineAt)}</p>
@@ -331,6 +337,27 @@ export default async function ClientDetailPage({
                   <input type="hidden" name="includeVoice" value="on" />
                   <button className="rounded-full border border-line px-3 py-1.5 text-sm">
                     Checkout with voice receptionist
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+          {client.domainRegister ? null : (
+            <>
+              {client.paymentStatus === "paid" ? (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="kind" value="domain" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Add domain (.com ~$20 first year)
+                  </button>
+                </form>
+              ) : (
+                <form action={checkoutClientAction}>
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <input type="hidden" name="includeDomain" value="on" />
+                  <button className="rounded-full border border-line px-3 py-1.5 text-sm">
+                    Checkout with domain
                   </button>
                 </form>
               )}

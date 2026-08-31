@@ -26,6 +26,7 @@ import {
   stripeReviewTextsConfigured,
   stripeTrafficConfigured,
   stripeVoiceConfigured,
+  stripeDomainConfigured,
 } from "@/lib/config";
 import {
   BOOK_NOT_CONFIGURED,
@@ -34,6 +35,7 @@ import {
   MISSED_NOT_CONFIGURED,
   REVIEWS_NOT_CONFIGURED,
   VOICE_NOT_CONFIGURED,
+  DOMAIN_NOT_CONFIGURED,
   type PaidExtras,
 } from "@/lib/site-addons";
 import { buildClientFromLead } from "@/lib/demo";
@@ -122,11 +124,14 @@ export async function createCheckoutForClient(
     includeMissedCall?: boolean;
     includeReviews?: boolean;
     includeVoice?: boolean;
+    includeDomain?: boolean;
     bookOnly?: boolean;
     missedOnly?: boolean;
     reviewsOnly?: boolean;
     voiceOnly?: boolean;
+    domainOnly?: boolean;
     leadId?: string;
+    closerCode?: string;
   } = {},
 ) {
   const extras: PaidExtras = {
@@ -134,6 +139,7 @@ export async function createCheckoutForClient(
     includeMissedCall: Boolean(options.includeMissedCall || options.missedOnly),
     includeReviews: Boolean(options.includeReviews || options.reviewsOnly),
     includeVoice: Boolean(options.includeVoice || options.voiceOnly),
+    includeDomain: Boolean(options.includeDomain || options.domainOnly),
   };
   const buyingClassicAddon = Boolean(
     options.includeBoost ||
@@ -149,7 +155,8 @@ export async function createCheckoutForClient(
     extras.includeBook ||
       extras.includeMissedCall ||
       extras.includeReviews ||
-      extras.includeVoice,
+      extras.includeVoice ||
+      extras.includeDomain,
   );
   const extrasOnly =
     extrasRequested &&
@@ -159,7 +166,8 @@ export async function createCheckoutForClient(
         options.bookOnly ||
           options.missedOnly ||
           options.reviewsOnly ||
-          options.voiceOnly,
+          options.voiceOnly ||
+          options.domainOnly,
       ));
   const kind = extrasOnly
     ? "addons"
@@ -205,6 +213,9 @@ export async function createCheckoutForClient(
   if (extras.includeVoice && !stripeVoiceConfigured()) {
     throw new Error(VOICE_NOT_CONFIGURED);
   }
+  if (extras.includeDomain && !stripeDomainConfigured()) {
+    throw new Error(DOMAIN_NOT_CONFIGURED);
+  }
 
   const stripe = getStripe();
   if (!stripe) throw new Error(STRIPE_NOT_CONFIGURED);
@@ -214,6 +225,7 @@ export async function createCheckoutForClient(
   const includeLoud = kindHasLoud(kind);
   const includeEmail = kindHasEmail(kind);
   const extraMeta = extrasMetadata(extras);
+  const closerCode = (options.closerCode || client.closerCode || "").trim();
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     customer_email: client.stripeCustomerId ? undefined : client.email || undefined,
@@ -229,6 +241,7 @@ export async function createCheckoutForClient(
       trafficAds: includeTraffic ? "true" : "false",
       loudAds: includeLoud ? "true" : "false",
       businessEmail: includeEmail ? "true" : "false",
+      closerCode,
       ...extraMeta,
     },
     subscription_data: {
@@ -240,6 +253,7 @@ export async function createCheckoutForClient(
         trafficAds: includeTraffic ? "true" : "false",
         loudAds: includeLoud ? "true" : "false",
         businessEmail: includeEmail ? "true" : "false",
+        closerCode,
         ...extraMeta,
       },
       description: checkoutDescription(kind, client.businessName),

@@ -20,12 +20,15 @@ export const REVIEWS_NOT_CONFIGURED =
   "Review texts checkout is not connected yet. Uncheck it to pay for the website, or wait until that price is set.";
 export const VOICE_NOT_CONFIGURED =
   "Voice receptionist checkout is not connected yet. Uncheck it to pay for the website, or wait until those prices are set.";
+export const DOMAIN_NOT_CONFIGURED =
+  "Domain checkout is not connected yet. Uncheck it to pay for the website, or wait until the .com price is set.";
 
 export type PaidExtras = {
   includeBook?: boolean;
   includeMissedCall?: boolean;
   includeReviews?: boolean;
   includeVoice?: boolean;
+  includeDomain?: boolean;
 };
 
 function requirePrice(id: string | undefined, message: string) {
@@ -64,6 +67,11 @@ export function extraLineItems(extras: PaidExtras) {
       requirePrice(process.env.STRIPE_VOICE_MONTHLY_PRICE_ID, VOICE_NOT_CONFIGURED),
     );
   }
+  if (extras.includeDomain) {
+    items.push(
+      requirePrice(process.env.STRIPE_DOMAIN_YEARLY_PRICE_ID, DOMAIN_NOT_CONFIGURED),
+    );
+  }
   return items;
 }
 
@@ -73,6 +81,7 @@ export function extrasMetadata(extras: PaidExtras) {
     missedCallTextback: extras.includeMissedCall ? "true" : "false",
     reviewTexts: extras.includeReviews ? "true" : "false",
     voiceReceptionist: extras.includeVoice ? "true" : "false",
+    domainRegister: extras.includeDomain ? "true" : "false",
   };
 }
 
@@ -81,12 +90,14 @@ export function extrasFromMetadata(meta?: {
   missedCallTextback?: string;
   reviewTexts?: string;
   voiceReceptionist?: string;
+  domainRegister?: string;
 } | null): PaidExtras {
   return {
     includeBook: meta?.bookAJob === "true",
     includeMissedCall: meta?.missedCallTextback === "true",
     includeReviews: meta?.reviewTexts === "true",
     includeVoice: meta?.voiceReceptionist === "true",
+    includeDomain: meta?.domainRegister === "true",
   };
 }
 
@@ -160,12 +171,31 @@ export function applyVoicePurchased(client: Client, at = new Date().toISOString(
   };
 }
 
+export function applyDomainPurchased(
+  client: Client,
+  at = new Date().toISOString(),
+): Client {
+  if (client.domainRegister) return client;
+  return {
+    ...client,
+    domainRegister: true,
+    notes: [
+      note(
+        `Domain register purchased: about ${PRICING.domainYearlyLabel} for a .com first year. We register it in the customer’s name. They keep the login. Phoenixwebhost only points DNS.`,
+        at,
+      ),
+      ...client.notes,
+    ],
+  };
+}
+
 export function applyPaidExtras(client: Client, extras: PaidExtras): Client {
   let next = client;
   if (extras.includeBook) next = applyBookPurchased(next);
   if (extras.includeMissedCall) next = applyMissedCallPurchased(next);
   if (extras.includeReviews) next = applyReviewTextsPurchased(next);
   if (extras.includeVoice) next = applyVoicePurchased(next);
+  if (extras.includeDomain) next = applyDomainPurchased(next);
   return next;
 }
 

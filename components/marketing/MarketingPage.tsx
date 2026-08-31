@@ -15,6 +15,7 @@ import {
   COMPANY,
   stripeBookConfigured,
   stripeBoostConfigured,
+  stripeDomainConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
   stripeMissedCallConfigured,
@@ -22,6 +23,7 @@ import {
   stripeTrafficConfigured,
   stripeVoiceConfigured,
 } from "@/lib/config";
+import { requestWithExtra } from "@/lib/extra-picks";
 import { requestPath, t } from "@/lib/i18n";
 import { ensureLiveExtraPrices } from "@/lib/stripe-extra-prices";
 import { listPublicReviews } from "@/lib/store";
@@ -218,7 +220,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             </Link>
           </article>
         </div>
-        <div className="mx-auto max-w-6xl border-t border-zinc-200 px-6 py-8">
+        <div className="mx-auto max-w-6xl border-t border-zinc-200 px-6 pt-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime">
             {c.includedSplit}
           </p>
@@ -227,12 +229,33 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               ? "Sitio a la medida y recepcionista de IA en el chat. El dueño recibe el lead por correo."
               : "Custom site and the AI receptionist chat. The owner gets the lead by email."}
           </p>
-          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-lime">
+        </div>
+        <div id="extras" className="mx-auto max-w-6xl border-t border-zinc-200 px-6 py-10 scroll-mt-24">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime">
             {c.extrasSplit}
           </p>
+          <h2 className="mt-3 font-display text-3xl text-ink-black">{c.extrasMenuTitle}</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-body">
+            {c.extrasMenuLead}
+          </p>
         </div>
-        <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-2">
-          <article id="business-email" className="px-6 py-14 md:pr-12">
+        <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-3">
+          <article id="domain" className="px-6 py-14 md:pr-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.domainKicker}</p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.domainTitle}</h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.domainBody}</p>
+            <div className="mt-8">
+              <p className="price-lime font-display text-4xl">$20</p>
+              <p className="text-xs text-body">{c.domainYearHint}</p>
+            </div>
+            <Link
+              href={requestWithExtra(locale, "domain")}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.domainCheckbox}
+            </Link>
+          </article>
+          <article id="business-email" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:px-8">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.emailKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.emailTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.emailBody}</p>
@@ -247,8 +270,14 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
                 <p className="text-xs text-body">{c.emailMonthHint}</p>
               </div>
             </div>
+            <Link
+              href={requestWithExtra(locale, "email")}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.emailCheckbox}
+            </Link>
           </article>
-          <article id="book-a-job" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-12">
+          <article id="book-a-job" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-8">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.bookKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.bookTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.bookBody}</p>
@@ -263,6 +292,12 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
                 <p className="text-xs text-body">{c.bookMonthHint}</p>
               </div>
             </div>
+            <Link
+              href={requestWithExtra(locale, "book")}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.bookCheckbox}
+            </Link>
           </article>
         </div>
         <div className="mx-auto grid max-w-6xl gap-px border-t border-zinc-200 md:grid-cols-3">
@@ -281,6 +316,12 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
                 <p className="text-xs text-body">{c.missedMonthHint}</p>
               </div>
             </div>
+            <Link
+              href={requestWithExtra(locale, "missed")}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.missedCheckbox}
+            </Link>
           </article>
           <article id="review-texts" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:px-8">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.reviewTextsKicker}</p>
@@ -290,6 +331,12 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               <p className="price-lime font-display text-4xl">$29</p>
               <p className="text-xs text-body">{c.reviewTextsMonthHint}</p>
             </div>
+            <Link
+              href={requestWithExtra(locale, "reviews")}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.reviewTextsCheckbox}
+            </Link>
           </article>
           <article id="voice-receptionist" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-8">
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.voiceKicker}</p>
@@ -306,6 +353,12 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
                 <p className="text-xs text-body">{c.voiceMonthHint}</p>
               </div>
             </div>
+            <Link
+              href={requestWithExtra(locale, "voice")}
+              className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
+            >
+              {c.voiceCheckbox}
+            </Link>
           </article>
         </div>
       </section>
@@ -387,6 +440,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             missedReady={stripeMissedCallConfigured()}
             reviewsReady={stripeReviewTextsConfigured()}
             voiceReady={stripeVoiceConfigured()}
+            domainReady={stripeDomainConfigured()}
           />
         </div>
       </section>

@@ -4,7 +4,7 @@ import { DemoSearch } from "@/components/marketing/DemoSearch";
 import { VisitBeacon } from "@/components/marketing/VisitBeacon";
 import { StudioReceptionist } from "@/components/sites/ReceptionistChat";
 import { COMPANY } from "@/lib/config";
-import { homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
+import { affiliatesPath, homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
 export function CompanyPhone({ className }: { className?: string }) {
@@ -78,6 +78,9 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <a href={`${home}#pricing`} className="hover:text-lime">
             {c.nav.pricing}
           </a>
+          <a href={`${home}#extras`} className="hover:text-lime">
+            {c.nav.extras}
+          </a>
           <Link href={c.otherHref} className="hover:text-lime">
             {c.otherLang}
           </Link>
@@ -137,6 +140,12 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </Link>
           <Link href={reviewsPath(locale)} className="hover:text-lime">
             {c.nav.reviews}
+          </Link>
+          <Link href={`${homePath(locale)}#extras`} className="hover:text-lime">
+            {c.nav.extras}
+          </Link>
+          <Link href={affiliatesPath(locale)} className="hover:text-lime">
+            {c.nav.affiliates}
           </Link>
           <Link href={requestPath(locale)} className="hover:text-lime">
             {c.nav.request}

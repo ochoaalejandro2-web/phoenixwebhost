@@ -31,9 +31,11 @@ import {
   getClientByStripeSubscription,
   getLead,
   getLeadByClientId,
+  getCloserByCode,
   updateLead,
   upsertClient,
 } from "@/lib/store";
+import { sanitizeCloserCode, launchSoldNote } from "@/lib/closers";
 import { getStripe } from "@/lib/stripe";
 import type { Client } from "@/lib/types";
 
@@ -217,7 +219,8 @@ function invoiceKind(invoice: Stripe.Invoice, addOns: AddOns): CheckoutKind {
       extras.includeBook ||
         extras.includeMissedCall ||
         extras.includeReviews ||
-        extras.includeVoice,
+        extras.includeVoice ||
+        extras.includeDomain,
     );
   if (extrasOnly) return "addons";
   try {
@@ -412,6 +415,36 @@ async function markLeadPurchased(clientId: string, leadId?: string) {
   await updateLead(lead.id, { purchased: true, clientId });
 }
 
+async function applyCloserSold(
+  client: Client,
+  code: string | undefined,
+): Promise<Client> {
+  const closerCode = sanitizeCloserCode(code) || sanitizeCloserCode(client.closerCode);
+  if (!closerCode) return client;
+  if (client.closerCode === closerCode) {
+    if (client.notes.some((row) => row.body.includes("Pay them the $200 launch"))) {
+      return client;
+    }
+  }
+  const closer = await getCloserByCode(closerCode);
+  const label = closer ? `${closer.name} (${closer.code})` : closerCode;
+  if (client.notes.some((row) => row.body.includes(`Sold by ${label}`))) {
+    return { ...client, closerCode };
+  }
+  return {
+    ...client,
+    closerCode,
+    notes: [
+      {
+        id: `note_${crypto.randomUUID()}`,
+        body: launchSoldNote(label),
+        createdAt: new Date().toISOString(),
+      },
+      ...client.notes,
+    ],
+  };
+}
+
 async function findClientFromEvent(event: Stripe.Event) {
   const object = event.data.object as {
     metadata?: { clientId?: string };
@@ -488,6 +521,15 @@ export async function POST(request: Request) {
       });
     }
     next = applyPurchasedAddOns(next, addOns, extras);
+    if (kindHasPlan(resolvedKind)) {
+      const leadForCloser = session.metadata?.leadId
+        ? await getLead(session.metadata.leadId)
+        : null;
+      next = await applyCloserSold(
+        next,
+        session.metadata?.closerCode || leadForCloser?.closerCode || undefined,
+      );
+    }
     await upsertClient(next);
     if (kindHasPlan(resolvedKind)) {
       await markLeadPurchased(next.id, session.metadata?.leadId);

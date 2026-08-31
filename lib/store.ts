@@ -7,11 +7,13 @@ import { findClientByCustomDomain } from "@/lib/custom-domain";
 import { pickClientBySlug } from "@/lib/walk-in-hosts";
 import { withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
+import { closerFromName, sanitizeCloserCode } from "@/lib/closers";
 import { emptyDemoTweaks, parseDemoAccent, parseTemplateId } from "@/lib/demo";
 import type {
   AppState,
   AuthLock,
   Client,
+  Closer,
   ContactMessage,
   DemoTweaks,
   Lead,
@@ -177,6 +179,8 @@ function normalizeClient(client: Client): Client {
     stripeReviewTextsSubscriptionId: client.stripeReviewTextsSubscriptionId ?? null,
     voiceReceptionist: Boolean(client.voiceReceptionist),
     stripeVoiceSubscriptionId: client.stripeVoiceSubscriptionId ?? null,
+    domainRegister: Boolean(client.domainRegister),
+    closerCode: client.closerCode || null,
   };
 }
 
@@ -202,6 +206,8 @@ function normalizeLead(lead: Lead): Lead {
     wantsMissedCall: Boolean(lead.wantsMissedCall),
     wantsReviewTexts: Boolean(lead.wantsReviewTexts),
     wantsVoice: Boolean(lead.wantsVoice),
+    wantsDomain: Boolean(lead.wantsDomain),
+    closerCode: lead.closerCode || null,
     purchased: Boolean(lead.purchased),
     clientId: lead.clientId ?? null,
     demo,
@@ -211,6 +217,7 @@ function normalizeLead(lead: Lead): Lead {
 function normalizeState(state: AppState): AppState {
   if (!Array.isArray(state.reviews)) state.reviews = [];
   if (!Array.isArray(state.leads)) state.leads = [];
+  if (!Array.isArray(state.closers)) state.closers = [];
   if (!Array.isArray(state.contactMessages)) state.contactMessages = [];
   if (!Array.isArray(state.clients)) state.clients = [];
   if (!state.authLock) state.authLock = emptyAuthLock();
@@ -227,6 +234,48 @@ function normalizeState(state: AppState): AppState {
   }));
   applyExtraPriceIdsToEnv(state.stripeExtraPrices);
   return state;
+}
+
+export async function listClosers() {
+  const state = await getState();
+  return [...(state.closers || [])].sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
+}
+
+export async function getCloserByCode(code: string) {
+  const clean = sanitizeCloserCode(code);
+  if (!clean) return null;
+  const state = await getState();
+  return (state.closers || []).find((row) => row.code === clean) ?? null;
+}
+
+export async function addCloser(input: {
+  name: string;
+  email: string;
+  code?: string;
+}): Promise<Closer> {
+  const name = input.name.trim();
+  if (!name) throw new Error("Name is required");
+  const code = sanitizeCloserCode(input.code) || closerFromName(name);
+  if (!code) {
+    throw new Error("Need a short code (letters, numbers, hyphens).");
+  }
+  const closer: Closer = {
+    id: `closer_${crypto.randomUUID()}`,
+    code,
+    name,
+    email: input.email.trim(),
+    createdAt: new Date().toISOString(),
+  };
+  await updateState((state) => {
+    if (!state.closers) state.closers = [];
+    if (state.closers.some((row) => row.code === code)) {
+      throw new Error("That code is already in use.");
+    }
+    state.closers.unshift(closer);
+  });
+  return closer;
 }
 
 async function persistIfSeedDemosAdded(state: AppState, added: boolean) {
