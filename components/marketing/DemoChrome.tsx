@@ -10,6 +10,7 @@ import {
   stripeReviewTextsConfigured,
   stripeTrafficConfigured,
   stripeVoiceConfigured,
+  stripeDomainConfigured,
 } from "@/lib/config";
 import { accentHex } from "@/lib/demo";
 import type { Lead } from "@/lib/types";
@@ -36,6 +37,7 @@ export function DemoChrome({
         missedReady={stripeMissedCallConfigured()}
         reviewsReady={stripeReviewTextsConfigured()}
         voiceReady={stripeVoiceConfigured()}
+        domainReady={stripeDomainConfigured()}
       />
       <div
         className="demo-preview"

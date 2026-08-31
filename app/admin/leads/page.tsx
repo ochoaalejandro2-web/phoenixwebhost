@@ -51,6 +51,8 @@ export default async function LeadsPage() {
                   {lead.wantsMissedCall ? " · Wants missed-call text-back" : ""}
                   {lead.wantsReviewTexts ? " · Wants review texts" : ""}
                   {lead.wantsVoice ? " · Wants voice receptionist" : ""}
+                  {lead.wantsDomain ? " · Wants domain register" : ""}
+                  {lead.closerCode ? ` · Closer ${lead.closerCode}` : ""}
                 </p>
                 <p className="mt-2 text-sm">
                   Demo:{" "}

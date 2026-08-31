@@ -26,5 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "https://phoenixwebhost.com/es/request", lastModified: new Date() },
     { url: "https://phoenixwebhost.com/reviews", lastModified: new Date() },
     { url: "https://phoenixwebhost.com/es/reviews", lastModified: new Date() },
+    { url: "https://phoenixwebhost.com/affiliates", lastModified: new Date() },
+    { url: "https://phoenixwebhost.com/es/affiliates", lastModified: new Date() },
   ];
 }

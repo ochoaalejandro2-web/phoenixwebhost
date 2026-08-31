@@ -8,6 +8,7 @@ export const EXTRA_PRICE_ENV_KEYS = [
   "STRIPE_REVIEW_MONTHLY_PRICE_ID",
   "STRIPE_VOICE_SETUP_PRICE_ID",
   "STRIPE_VOICE_MONTHLY_PRICE_ID",
+  "STRIPE_DOMAIN_YEARLY_PRICE_ID",
 ] as const;
 
 export type ExtraPriceEnvKey = (typeof EXTRA_PRICE_ENV_KEYS)[number];
@@ -70,6 +71,19 @@ const EXTRA_PRODUCTS: {
     prices: [
       { env: "STRIPE_VOICE_SETUP_PRICE_ID", unitAmount: 9900, recurring: false },
       { env: "STRIPE_VOICE_MONTHLY_PRICE_ID", unitAmount: 7900, recurring: true },
+    ],
+  },
+  {
+    sku: "domain_com",
+    name: "Phoenixwebhost — Domain (.com first year)",
+    description:
+      "Optional add-on: about $20 for the first year of a .com. We register it in the customer’s name. They keep the login. Skip if they already have a domain.",
+    prices: [
+      {
+        env: "STRIPE_DOMAIN_YEARLY_PRICE_ID",
+        unitAmount: 2000,
+        recurring: false,
+      },
     ],
   },
 ];

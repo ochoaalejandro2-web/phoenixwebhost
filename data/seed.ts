@@ -433,6 +433,7 @@ export function createSeedState(): AppState {
     ],
     contactMessages: [],
     reviews: [],
+    closers: [],
     authLock: {
       passwordFails: 0,
       passwordLockedUntil: null,

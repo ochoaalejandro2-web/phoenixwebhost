@@ -77,6 +77,8 @@ export async function createClientAction(formData: FormData) {
     loudAds: false,
     stripeEmailSubscriptionId: null,
     businessEmail: false,
+    domainRegister: false,
+    closerCode: null,
     reminderSentAt: null,
     overdueSince: null,
     offlineAt: null,
@@ -330,6 +332,7 @@ export async function checkoutClientAction(formData: FormData) {
   const includeMissedCall = String(formData.get("includeMissedCall") || "") === "on";
   const includeReviews = String(formData.get("includeReviews") || "") === "on";
   const includeVoice = String(formData.get("includeVoice") || "") === "on";
+  const includeDomain = String(formData.get("includeDomain") || "") === "on";
   const kind = String(formData.get("kind") || "");
   const boostOnly = kind === "boost";
   const trafficOnly = kind === "traffic";
@@ -339,6 +342,7 @@ export async function checkoutClientAction(formData: FormData) {
   const missedOnly = kind === "missed";
   const reviewsOnly = kind === "reviews";
   const voiceOnly = kind === "voice";
+  const domainOnly = kind === "domain";
   const url = await createCheckoutForClient(client, {
     includeBoost: includeBoost || boostOnly,
     includeTraffic: includeTraffic || trafficOnly,
@@ -348,6 +352,7 @@ export async function checkoutClientAction(formData: FormData) {
     includeMissedCall: includeMissedCall || missedOnly,
     includeReviews: includeReviews || reviewsOnly,
     includeVoice: includeVoice || voiceOnly,
+    includeDomain: includeDomain || domainOnly,
     boostOnly,
     trafficOnly,
     loudOnly,
@@ -356,6 +361,7 @@ export async function checkoutClientAction(formData: FormData) {
     missedOnly,
     reviewsOnly,
     voiceOnly,
+    domainOnly,
   });
   redirect(url);
 }

@@ -1,8 +1,10 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import {
   stripeBookConfigured,
   stripeBoostConfigured,
   stripeConfigured,
+  stripeDomainConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
   stripeMissedCallConfigured,
@@ -11,6 +13,7 @@ import {
   stripeVoiceConfigured,
 } from "@/lib/config";
 import { normalizeAdsFlags } from "@/lib/ads";
+import { CLOSER_COOKIE, sanitizeCloserCode } from "@/lib/closers";
 import { demoPath, emptyDemoTweaks, parseTemplateId } from "@/lib/demo";
 import { notifyCustomerDemo, notifyNewLead } from "@/lib/notify";
 import { addLead } from "@/lib/store";
@@ -34,6 +37,8 @@ export async function POST(request: Request) {
     wantsMissedCall?: boolean;
     wantsReviewTexts?: boolean;
     wantsVoice?: boolean;
+    wantsDomain?: boolean;
+    closerCode?: string;
   };
   if (!body.name || !body.businessName || !body.email) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -45,6 +50,10 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+  const cookieStore = await cookies();
+  const closerCode =
+    sanitizeCloserCode(cookieStore.get(CLOSER_COOKIE)?.value) ||
+    sanitizeCloserCode(body.closerCode);
   const lead = await addLead({
     id: `lead_${crypto.randomUUID()}`,
     name: String(body.name).trim(),
@@ -65,6 +74,8 @@ export async function POST(request: Request) {
     wantsMissedCall: Boolean(body.wantsMissedCall),
     wantsReviewTexts: Boolean(body.wantsReviewTexts),
     wantsVoice: Boolean(body.wantsVoice),
+    wantsDomain: Boolean(body.wantsDomain),
+    closerCode: closerCode || null,
     purchased: false,
     clientId: null,
     demo: emptyDemoTweaks(),
@@ -83,5 +94,6 @@ export async function POST(request: Request) {
     missedReady: stripeMissedCallConfigured(),
     reviewsReady: stripeReviewTextsConfigured(),
     voiceReady: stripeVoiceConfigured(),
+    domainReady: stripeDomainConfigured(),
   });
 }

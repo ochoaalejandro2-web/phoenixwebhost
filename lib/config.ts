@@ -42,6 +42,8 @@ export const PRICING = {
   voiceMonthlyLabel: "$79",
   voiceIncludedMinutes: 150,
   voiceExtraMinuteLabel: "$0.50",
+  domainYearlyCents: 2_000,
+  domainYearlyLabel: "$20",
   extraPageMin: 75,
   extraPageMax: 150,
   logoMin: 100,
@@ -250,4 +252,16 @@ export function voicePriceIds() {
     process.env.STRIPE_VOICE_SETUP_PRICE_ID,
     process.env.STRIPE_VOICE_MONTHLY_PRICE_ID,
   ].filter((id): id is string => Boolean(id));
+}
+
+export function stripeDomainConfigured() {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY && process.env.STRIPE_DOMAIN_YEARLY_PRICE_ID,
+  );
+}
+
+export function domainPriceIds() {
+  return [process.env.STRIPE_DOMAIN_YEARLY_PRICE_ID].filter(
+    (id): id is string => Boolean(id),
+  );
 }

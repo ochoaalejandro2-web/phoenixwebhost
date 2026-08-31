@@ -10,6 +10,7 @@ import {
   COMPANY,
   stripeBookConfigured,
   stripeBoostConfigured,
+  stripeDomainConfigured,
   stripeEmailConfigured,
   stripeLoudConfigured,
   stripeMissedCallConfigured,
@@ -17,6 +18,7 @@ import {
   stripeTrafficConfigured,
   stripeVoiceConfigured,
 } from "@/lib/config";
+import { parseExtraPicks } from "@/lib/extra-picks";
 import { t } from "@/lib/i18n";
 
 export const metadata = { title: "Request a demo" };
@@ -24,9 +26,9 @@ export const metadata = { title: "Request a demo" };
 export default async function RequestPage({
   searchParams,
 }: {
-  searchParams: Promise<{ ads?: string }>;
+  searchParams: Promise<{ ads?: string; extra?: string | string[] }>;
 }) {
-  const { ads } = await searchParams;
+  const { ads, extra } = await searchParams;
   const c = t("en");
   return (
     <StudioShell>
@@ -60,9 +62,10 @@ export default async function RequestPage({
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             The AI receptionist chat is included in $200 + $69. Optional extras:
-            Book a job $49 + $19/mo, missed-call text-back $49 + $29/mo, review
-            texts $29/mo, voice receptionist $99 + $79/mo. Those are not the
-            included chat.
+            register a .com (~$20 first year), Book a job $49 + $19/mo,
+            missed-call text-back $49 + $29/mo, review texts $29/mo, voice
+            receptionist $99 + $79/mo. Those are not the included chat. If you
+            already have a domain, skip domain register.
           </p>
           <p className="mt-6 text-sm text-body">
             {c.callPrompt}{" "}
@@ -80,7 +83,9 @@ export default async function RequestPage({
           missedReady={stripeMissedCallConfigured()}
           reviewsReady={stripeReviewTextsConfigured()}
           voiceReady={stripeVoiceConfigured()}
+          domainReady={stripeDomainConfigured()}
           initialAds={parseAdsTier(ads)}
+          initialExtras={parseExtraPicks(extra)}
         />
       </main>
       <SiteFooter locale="en" />

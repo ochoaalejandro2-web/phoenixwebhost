@@ -37,6 +37,7 @@ export function DemoPurchase({
   missedReady = false,
   reviewsReady = false,
   voiceReady = false,
+  domainReady = false,
   compact = false,
 }: {
   lead: Lead;
@@ -50,6 +51,7 @@ export function DemoPurchase({
   missedReady?: boolean;
   reviewsReady?: boolean;
   voiceReady?: boolean;
+  domainReady?: boolean;
   compact?: boolean;
 }) {
   const c = t(locale);
@@ -59,6 +61,7 @@ export function DemoPurchase({
   const [includeMissed, setIncludeMissed] = useState(Boolean(lead.wantsMissedCall));
   const [includeReviews, setIncludeReviews] = useState(Boolean(lead.wantsReviewTexts));
   const [includeVoice, setIncludeVoice] = useState(Boolean(lead.wantsVoice));
+  const [includeDomain, setIncludeDomain] = useState(Boolean(lead.wantsDomain));
   const [payError, setPayError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -70,7 +73,8 @@ export function DemoPurchase({
     (includeBook && !bookReady) ||
     (includeMissed && !missedReady) ||
     (includeReviews && !reviewsReady) ||
-    (includeVoice && !voiceReady);
+    (includeVoice && !voiceReady) ||
+    (includeDomain && !domainReady);
 
   function payLabel() {
     if (adsTier === "loud" && includeEmail) return c.formPayLoudEmail;
@@ -117,6 +121,10 @@ export function DemoPurchase({
       setPayError(c.voiceMissing);
       return;
     }
+    if (includeDomain && !domainReady) {
+      setPayError(c.domainMissing);
+      return;
+    }
     setPayError(null);
     setBusy(true);
     const res = await fetch("/api/stripe/checkout", {
@@ -132,6 +140,7 @@ export function DemoPurchase({
         includeMissedCall: includeMissed,
         includeReviews,
         includeVoice,
+        includeDomain,
       }),
     });
     const data = (await res.json()) as { url?: string; error?: string };
@@ -160,6 +169,14 @@ export function DemoPurchase({
         trafficReady={trafficReady}
         loudReady={loudReady}
         locale={locale}
+      />
+      <AddonToggle
+        checked={includeDomain}
+        onChange={setIncludeDomain}
+        ready={domainReady}
+        title={c.domainCheckbox}
+        help={c.domainCheckboxHelp}
+        missing={c.domainMissing}
       />
       <AddonToggle
         checked={includeEmail}
@@ -363,6 +380,7 @@ export function DemoBar({
   missedReady = false,
   reviewsReady = false,
   voiceReady = false,
+  domainReady = false,
 }: {
   lead: Lead;
   locale: Locale;
@@ -375,6 +393,7 @@ export function DemoBar({
   missedReady?: boolean;
   reviewsReady?: boolean;
   voiceReady?: boolean;
+  domainReady?: boolean;
 }) {
   const c = t(locale);
   const [panel, setPanel] = useState<"buy" | "tweak" | null>(null);
@@ -454,6 +473,7 @@ export function DemoBar({
                 missedReady={missedReady}
                 reviewsReady={reviewsReady}
                 voiceReady={voiceReady}
+                domainReady={domainReady}
                 compact
               />
             </div>

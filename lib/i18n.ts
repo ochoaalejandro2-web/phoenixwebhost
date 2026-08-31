@@ -7,10 +7,12 @@ export const copy = {
     otherHref: "/es",
     nav: {
       pricing: "Pricing",
+      extras: "Extras",
       included: "What’s included",
       work: "How it works",
       request: "Request a demo",
       reviews: "Reviews",
+      affiliates: "Sell with us",
       owner: "Owner login",
     },
     heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
@@ -223,6 +225,30 @@ export const copy = {
       "Optional paid voice line. The on-site chat receptionist stays included in $200 + $69.",
     voiceMissing:
       "Voice receptionist checkout is not connected yet. Uncheck it to pay for the website.",
+    domainKicker: "Optional add-on",
+    domainTitle: "Register a domain — about $20/year for a .com (first year)",
+    domainBody:
+      "We register a .com for you. The domain stays in your name. You keep the login. If you already have a domain, skip this. Phoenixwebhost only points DNS after that.",
+    domainYearHint: "first year, .com",
+    domainCheckbox: "Register a .com for me — about $20 for the first year",
+    domainCheckboxHelp:
+      "Optional. Skip if you already have a domain. Not required for the $200 launch and $69/month website.",
+    domainMissing:
+      "Domain checkout is not connected yet. Uncheck it to pay for the website, or wait until it is connected.",
+    extrasMenuTitle: "Optional extras you can pick",
+    extrasMenuLead:
+      "The $200 launch and $69/month site stand alone. Pick only what you need.",
+    extrasPick: "Pick this extra",
+    affiliatesTitle: "Sell Phoenixwebhost",
+    affiliatesLead:
+      "If you send a customer who pays, Alex pays you the $200 launch. He keeps the $69/month and any add-ons.",
+    affiliatesPayTitle: "How it pays",
+    affiliatesPayBody:
+      "You get the $200 launch fee only after Stripe payment succeeds. There is no automatic payout from Stripe. Alex records who sold it and pays you. Monthly hosting and extras stay with Phoenixwebhost.",
+    affiliatesLinkTitle: "How to get a link",
+    affiliatesLinkBody:
+      "Call or email Alex. He adds you in the owner panel and gives you a unique URL. Anyone who opens that link is tied to you for the demo request and the paid checkout.",
+    affiliatesCta: "Call Alex for a sell link",
     reviewsTitle: "Reviews from Arizona companies",
     reviewsLead:
       "Notes from businesses we built for. New reviews are checked before they appear here — no fake counts, no filler quotes.",
@@ -249,10 +275,12 @@ export const copy = {
     otherHref: "/",
     nav: {
       pricing: "Precios",
+      extras: "Extras",
       included: "Qué incluye",
       work: "Cómo funciona",
       request: "Pedir una demo",
       reviews: "Reseñas",
+      affiliates: "Venda con nosotros",
       owner: "Acceso del dueño",
     },
     heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
@@ -465,6 +493,30 @@ export const copy = {
       "Línea de voz de pago. El chat del sitio sigue incluido en $200 + $69.",
     voiceMissing:
       "El pago de recepcionista de voz aún no está conectado. Desmárquelo para pagar el sitio.",
+    domainKicker: "Complemento opcional",
+    domainTitle: "Registrar un dominio — unos $20 al año por un .com (primer año)",
+    domainBody:
+      "Registramos un .com por usted. El dominio queda a su nombre. Usted guarda el acceso. Si ya tiene un dominio, omita esto. Phoenixwebhost solo apunta el DNS después.",
+    domainYearHint: "primer año, .com",
+    domainCheckbox: "Regístrenme un .com — unos $20 el primer año",
+    domainCheckboxHelp:
+      "Opcional. Omítalo si ya tiene un dominio. No es obligatorio para el lanzamiento de $200 y el sitio de $69 al mes.",
+    domainMissing:
+      "El pago del dominio aún no está conectado. Desmárquelo para pagar el sitio.",
+    extrasMenuTitle: "Extras opcionales que puede elegir",
+    extrasMenuLead:
+      "El lanzamiento de $200 y el sitio de $69 al mes van solos. Elija solo lo que necesite.",
+    extrasPick: "Elegir este extra",
+    affiliatesTitle: "Venda Phoenixwebhost",
+    affiliatesLead:
+      "Si manda un cliente que paga, Alex le paga el lanzamiento de $200. Él se queda con los $69 al mes y los extras.",
+    affiliatesPayTitle: "Cómo se paga",
+    affiliatesPayBody:
+      "Recibe los $200 del lanzamiento solo después de que Stripe cobre. No hay pago automático desde Stripe. Alex anota quién lo vendió y le paga. El hospedaje mensual y los extras se quedan con Phoenixwebhost.",
+    affiliatesLinkTitle: "Cómo obtener un enlace",
+    affiliatesLinkBody:
+      "Llame o escriba a Alex. Él lo agrega en el panel y le da una URL única. Quien abra ese enlace queda ligado a usted en la demo y en el pago.",
+    affiliatesCta: "Llame a Alex por un enlace",
     reviewsTitle: "Reseñas de empresas de Arizona",
     reviewsLead:
       "Notas de negocios para los que hicimos un sitio. Las reseñas nuevas se revisan antes de publicarse — sin cifras inventadas ni citas de relleno.",
@@ -501,4 +553,8 @@ export function homePath(locale: Locale) {
 
 export function reviewsPath(locale: Locale) {
   return locale === "es" ? "/es/reviews" : "/reviews";
+}
+
+export function affiliatesPath(locale: Locale) {
+  return locale === "es" ? "/es/affiliates" : "/affiliates";
 }

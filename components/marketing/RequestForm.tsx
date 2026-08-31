@@ -5,6 +5,7 @@ import { AdsTierPicker } from "@/components/marketing/AdsTierPicker";
 import { adsFlagsFromTier, type AdsTier } from "@/lib/ads";
 import { TEMPLATES } from "@/lib/config";
 import { t } from "@/lib/i18n";
+import { extraFlagsFromPicks, type ExtraPick } from "@/lib/extra-picks";
 import type { Locale } from "@/lib/types";
 
 export function AddonToggle({
@@ -53,7 +54,9 @@ export function RequestForm({
   missedReady = false,
   reviewsReady = false,
   voiceReady = false,
+  domainReady = false,
   initialAds = "none",
+  initialExtras = [],
 }: {
   locale: Locale;
   boostReady?: boolean;
@@ -64,16 +67,20 @@ export function RequestForm({
   missedReady?: boolean;
   reviewsReady?: boolean;
   voiceReady?: boolean;
+  domainReady?: boolean;
   initialAds?: AdsTier;
+  initialExtras?: ExtraPick[];
 }) {
   const c = t(locale);
+  const initial = extraFlagsFromPicks(initialExtras);
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
   const [adsTier, setAdsTier] = useState<AdsTier>(initialAds);
-  const [includeEmail, setIncludeEmail] = useState(false);
-  const [includeBook, setIncludeBook] = useState(false);
-  const [includeMissed, setIncludeMissed] = useState(false);
-  const [includeReviews, setIncludeReviews] = useState(false);
-  const [includeVoice, setIncludeVoice] = useState(false);
+  const [includeEmail, setIncludeEmail] = useState(initial.includeEmail);
+  const [includeBook, setIncludeBook] = useState(initial.includeBook);
+  const [includeMissed, setIncludeMissed] = useState(initial.includeMissed);
+  const [includeReviews, setIncludeReviews] = useState(initial.includeReviews);
+  const [includeVoice, setIncludeVoice] = useState(initial.includeVoice);
+  const [includeDomain, setIncludeDomain] = useState(initial.includeDomain);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -97,6 +104,7 @@ export function RequestForm({
         wantsMissedCall: includeMissed,
         wantsReviewTexts: includeReviews,
         wantsVoice: includeVoice,
+        wantsDomain: includeDomain,
       }),
     });
     if (!res.ok) {
@@ -173,6 +181,20 @@ export function RequestForm({
         trafficReady={trafficReady}
         loudReady={loudReady}
         locale={locale}
+      />
+      <div className="rounded-2xl border border-zinc-200 bg-white p-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime">
+          {c.extrasSplit}
+        </p>
+        <p className="mt-2 text-sm text-body">{c.extrasMenuLead}</p>
+      </div>
+      <AddonToggle
+        checked={includeDomain}
+        onChange={setIncludeDomain}
+        ready={domainReady}
+        title={c.domainCheckbox}
+        help={c.domainCheckboxHelp}
+        missing={c.domainMissing}
       />
       <AddonToggle
         checked={includeEmail}

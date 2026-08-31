@@ -118,6 +118,17 @@ const voiceMonth = await stripe.prices.create({
   recurring: { interval: "month" },
 });
 
+const domainProduct = await stripe.products.create({
+  name: "Phoenixwebhost — Domain (.com first year)",
+  description:
+    "Optional add-on: about $20 for the first year of a .com. We register it in the customer’s name. They keep the login. Skip if they already have a domain.",
+});
+const domainYear = await stripe.prices.create({
+  product: domainProduct.id,
+  currency: "usd",
+  unit_amount: 2000,
+});
+
 console.log("");
 console.log("Add these to .env.local and to Vercel project env:");
 console.log(`STRIPE_SETUP_PRICE_ID=${setupPrice.id}`);
@@ -131,6 +142,7 @@ console.log(`STRIPE_MISSED_MONTHLY_PRICE_ID=${missedMonth.id}`);
 console.log(`STRIPE_REVIEW_MONTHLY_PRICE_ID=${reviewMonth.id}`);
 console.log(`STRIPE_VOICE_SETUP_PRICE_ID=${voiceSetup.id}`);
 console.log(`STRIPE_VOICE_MONTHLY_PRICE_ID=${voiceMonth.id}`);
+console.log(`STRIPE_DOMAIN_YEARLY_PRICE_ID=${domainYear.id}`);
 console.log("");
 console.log(
   "Local Boost still uses STRIPE_BOOST_SETUP_PRICE_ID and STRIPE_BOOST_MONTHLY_PRICE_ID.",

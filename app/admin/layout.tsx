@@ -41,6 +41,9 @@ export default async function AdminLayout({
           <Link className="rounded-lg px-3 py-2 hover:bg-white/10" href="/admin/leads">
             Requests
           </Link>
+          <Link className="rounded-lg px-3 py-2 hover:bg-white/10" href="/admin/affiliates">
+            Affiliates
+          </Link>
           <Link className="rounded-lg px-3 py-2 hover:bg-white/10" href="/admin/reviews">
             Reviews
           </Link>
@@ -61,6 +64,7 @@ export default async function AdminLayout({
             <Link href="/admin">Home</Link>
             <Link href="/admin/clients">Clients</Link>
             <Link href="/admin/leads">Requests</Link>
+            <Link href="/admin/affiliates">Affiliates</Link>
             <Link href="/admin/reviews">Reviews</Link>
             <a href="/api/auth/logout">Out</a>
           </nav>

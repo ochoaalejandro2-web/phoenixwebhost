@@ -342,6 +342,8 @@ export async function notifyNewLead(lead: Lead) {
         lead.wantsMissedCall ? "Wants missed-call text-back" : "",
         lead.wantsReviewTexts ? "Wants review texts" : "",
         lead.wantsVoice ? "Wants voice receptionist" : "",
+        lead.wantsDomain ? "Wants domain register (~$20/year .com)" : "",
+        lead.closerCode ? `Closer ${lead.closerCode}` : "",
         preview,
       ]
         .filter(Boolean)
