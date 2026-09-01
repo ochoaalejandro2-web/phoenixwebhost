@@ -6,6 +6,7 @@ import {
   demoForTemplate,
   filterPublicDemos,
   filterTemplates,
+  isAlwaysLiveWalkInDemo,
 } from "./public-demos.ts";
 
 test("public demos are the real repo starting points, not invented shops", () => {
@@ -139,4 +140,15 @@ test("template starting points stay mapped to those live demo URLs", () => {
 test("plan copy on the public site is still $200 launch + $69/month", () => {
   assert.equal(PRICING.setupLabel, "$200");
   assert.equal(PRICING.monthlyLabel, "$69");
+});
+
+test("walk-in template demos stay live; Hola Tax can still go unpaid", () => {
+  assert.equal(isAlwaysLiveWalkInDemo("mesa-street-kitchen"), true);
+  assert.equal(isAlwaysLiveWalkInDemo("desert-peak-roofing"), true);
+  assert.equal(isAlwaysLiveWalkInDemo("ironwood-handyman"), true);
+  assert.equal(isAlwaysLiveWalkInDemo("casa-luna-salon"), true);
+  assert.equal(isAlwaysLiveWalkInDemo("palo-verde-yards"), true);
+  assert.equal(isAlwaysLiveWalkInDemo("premium-carpentry-designs"), true);
+  assert.equal(isAlwaysLiveWalkInDemo("hola-tax-service"), false);
+  assert.equal(isAlwaysLiveWalkInDemo("a-real-unpaid-shop"), false);
 });

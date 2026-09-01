@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { bookJobMessage, parseBookJob } from "@/lib/book-job";
 import { buildClientFromLead, isPreviewClient } from "@/lib/demo";
 import { notifyBookingLead } from "@/lib/notify";
+import { isAlwaysLiveWalkInDemo } from "@/lib/public-demos";
 import { clientShowsBookJob } from "@/lib/site-addons";
 import { addContactMessage, getClientBySlug, getLead } from "@/lib/store";
 
@@ -35,7 +36,10 @@ export async function POST(
   if (!clientShowsBookJob(client)) {
     return NextResponse.json({ error: "not offered" }, { status: 403 });
   }
-  if (client.siteStatus === "taken_down") {
+  if (
+    client.siteStatus === "taken_down" &&
+    !isAlwaysLiveWalkInDemo(client.slug)
+  ) {
     return NextResponse.json({ error: "site offline" }, { status: 403 });
   }
 

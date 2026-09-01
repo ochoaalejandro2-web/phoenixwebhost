@@ -9,6 +9,7 @@ import {
   siteLangCookieName,
   siteSupportsI18n,
 } from "@/lib/site-locale";
+import { isAlwaysLiveWalkInDemo } from "@/lib/public-demos";
 import { getClientBySlug } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
@@ -23,11 +24,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const client = await getClientBySlug(slug);
   if (!client) return { title: { absolute: "Site" } };
-  if (client.siteStatus === "offline" || client.siteStatus === "paused") {
-    return { title: { absolute: "Temporarily offline" } };
-  }
-  if (client.siteStatus === "taken_down") {
-    return { title: { absolute: "Site unavailable" } };
+  if (!isAlwaysLiveWalkInDemo(client.slug)) {
+    if (client.siteStatus === "offline" || client.siteStatus === "paused") {
+      return { title: { absolute: "Temporarily offline" } };
+    }
+    if (client.siteStatus === "taken_down") {
+      return { title: { absolute: "Site unavailable" } };
+    }
   }
   const query = await searchParams;
   const bilingual = siteSupportsI18n(slug, client.template);

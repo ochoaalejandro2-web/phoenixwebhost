@@ -1,5 +1,9 @@
 import { monthKey } from "@/lib/slug";
-import { applySeedDemoBookJob, mergeMissingBySlug } from "@/lib/seed-merge";
+import {
+  applySeedDemoBookJob,
+  mergeMissingBySlug,
+  restoreSeedWalkInDemos,
+} from "@/lib/seed-merge";
 import type { AppState, Client } from "@/lib/types";
 
 function isoDaysFromNow(days: number) {
@@ -145,10 +149,10 @@ function demoClients(): Client[] {
       services: ["Lunch plates", "Dinner", "Patio", "Catering trays"],
       template: "restaurant",
       customDomain: null,
-      siteStatus: "offline",
-      paymentStatus: "overdue",
-      lastPaymentAt: isoDaysFromNow(-41),
-      nextInvoiceAt: isoDaysFromNow(-11),
+      siteStatus: "live",
+      paymentStatus: "paid",
+      lastPaymentAt: isoDaysFromNow(-5),
+      nextInvoiceAt: isoDaysFromNow(25),
       stripeCustomerId: "cus_demo_mesastreet",
       stripeSubscriptionId: "sub_demo_mesastreet",
       stripeBoostSubscriptionId: null,
@@ -160,20 +164,21 @@ function demoClients(): Client[] {
       stripeEmailSubscriptionId: null,
       businessEmail: false,
       bookAJob: true,
-      reminderSentAt: isoDaysFromNow(-9),
-      overdueSince: isoDaysFromNow(-9),
-      offlineAt: isoDaysFromNow(-7),
-      filesKeptUntil: isoDaysFromNow(21),
+      reminderSentAt: null,
+      overdueSince: null,
+      offlineAt: null,
+      filesKeptUntil: null,
       takenDownAt: null,
       notes: [
         {
           id: "note_ms_1",
-          body: "Card failed. Reminder emailed. Site set to temporarily offline after grace period.",
-          createdAt: isoDaysFromNow(-7),
+          body: "Sample restaurant site for the restaurant template. Paid and live like Ironwood Handyman. Not a customer account.",
+          createdAt: isoDaysFromNow(-5),
         },
       ],
       editRequests: [],
       createdAt: isoDaysFromNow(-120),
+      sample: true,
     },
     {
       id: "cli_palo_verde",
@@ -396,8 +401,11 @@ export function mergeMissingSeedClients(state: AppState): {
   const seed = demoClients();
   const missing = mergeMissingBySlug(state.clients, seed);
   const flags = applySeedDemoBookJob(missing.items, seed);
-  if (!missing.added && !flags.added) return { state, added: false };
-  return { state: { ...state, clients: flags.items }, added: true };
+  const restored = restoreSeedWalkInDemos(flags.items, seed);
+  if (!missing.added && !flags.added && !restored.added) {
+    return { state, added: false };
+  }
+  return { state: { ...state, clients: restored.items }, added: true };
 }
 
 export function createSeedState(): AppState {
