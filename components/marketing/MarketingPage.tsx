@@ -126,8 +126,8 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
           <div className="pb-10 lg:pb-6">
             <div className="relative overflow-hidden rounded-[2rem]">
               <Image
-                src="/luxury-interior.png"
-                alt="Sunlit modern interior with glass and pale stone"
+                src="/luxury-night-hero.png"
+                alt="Night view of a modern glass house overlooking a desert city valley"
                 width={1536}
                 height={1024}
                 priority
