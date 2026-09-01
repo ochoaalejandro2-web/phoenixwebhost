@@ -255,10 +255,10 @@ export function ShopSite({
           <p className={`text-sm uppercase tracking-[0.22em] ${theme.kicker}`}>
             {client.city}
           </p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl leading-tight sm:text-5xl">
+          <h1 className={`mt-4 max-w-3xl font-display text-4xl leading-tight sm:text-5xl ${theme.heroTitle ?? "text-white"}`}>
             {client.tagline}
           </h1>
-          <p className="mt-5 max-w-xl text-base text-white/90 sm:text-lg">
+          <p className={`mt-5 max-w-xl text-base sm:text-lg ${theme.heroLead ?? "text-white/90"}`}>
             {client.about}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">

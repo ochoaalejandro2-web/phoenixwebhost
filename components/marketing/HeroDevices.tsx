@@ -10,23 +10,23 @@ export function HeroDevices() {
             desertpeak.phoenixwebhost.com
           </span>
         </div>
-        <div className="overflow-hidden rounded-xl bg-[#111816] text-[#f4efe6]">
-          <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+        <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white text-ink-black">
+          <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3">
             <span className="text-sm font-semibold">Desert Peak Roofing</span>
-            <span className="text-[11px] text-[#e8b489]">(480) 555-0142</span>
+            <span className="text-[11px] font-semibold text-lime">(480) 555-0142</span>
           </div>
           <div className="grid gap-4 p-5 sm:grid-cols-[1.2fr_0.8fr]">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e8b489]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-lime">
                 Tempe, AZ
               </p>
               <p className="mt-2 font-display text-2xl leading-tight">
                 Roofs that hold up to Arizona sun.
               </p>
-              <p className="mt-2 text-[11px] leading-relaxed text-white/65">
+              <p className="mt-2 text-[11px] leading-relaxed text-body">
                 Written bids. Clean job sites. A site that answers the phone.
               </p>
-              <div className="mt-4 inline-block rounded-full bg-[#c45c26] px-3 py-1.5 text-[11px] font-semibold">
+              <div className="mt-4 inline-block rounded-full bg-lime px-3 py-1.5 text-[11px] font-semibold text-white">
                 Call now
               </div>
             </div>
@@ -34,7 +34,7 @@ export function HeroDevices() {
               {["Replacement", "Leak repair", "Tile", "Inspection"].map((item) => (
                 <div
                   key={item}
-                  className="rounded-md border border-white/10 px-2 py-3 text-[11px]"
+                  className="rounded-md border border-zinc-200 bg-white px-2 py-3 text-[11px] text-ink-black"
                 >
                   {item}
                 </div>
@@ -73,8 +73,8 @@ const previews: Record<
   { bar: string; screen: string; title: string }
 > = {
   contractor: {
-    bar: "bg-[#111816] text-[#e8b489]",
-    screen: "bg-[#1b2420] text-white",
+    bar: "bg-white text-lime",
+    screen: "bg-white text-ink-black",
     title: "Trades",
   },
   handyman: {

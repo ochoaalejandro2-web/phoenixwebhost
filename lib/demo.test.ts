@@ -15,7 +15,7 @@ import {
   previewLeadId,
   siteHomeHref,
 } from "./demo.ts";
-import { SHOP_PHOTOS } from "./shop-content.ts";
+import { SHOP_PHOTOS, SHOP_THEMES } from "./shop-content.ts";
 import type { Lead, TemplateId } from "./types.ts";
 
 function sampleLead(overrides: Partial<Lead> = {}): Lead {
@@ -183,6 +183,19 @@ test("empty phone and city still fill a Phoenix-area layout for the preview", ()
   assert.match(client.city, /Phoenix/);
   assert.match(client.address, /AZ/);
   assert.ok(client.hours.length > 0);
+});
+
+test("contractor theme is sun-bright like the marketing site, not a dark cave", () => {
+  const theme = SHOP_THEMES.contractor;
+  assert.match(theme.page, /bg-white|bg-snow/);
+  assert.match(theme.header, /bg-white/);
+  assert.match(theme.call, /lime|#00c851/i);
+  assert.match(theme.kicker, /lime|#00c851/i);
+  assert.match(theme.overlay, /from-white/);
+  assert.match(theme.heroTitle ?? "", /ink-black|#0a0a0a/);
+  assert.doesNotMatch(theme.page, /#111816|#1b2420/);
+  assert.doesNotMatch(theme.overlay, /from-black/);
+  assert.doesNotMatch(theme.call, /#c45c26/);
 });
 
 test("each trade has a local hero photo and a four-photo gallery", () => {
