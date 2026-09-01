@@ -138,3 +138,183 @@ body {
   font-weight: 600;
   letter-spacing: -0.03em;
 }
+
+/* Marketing homepage first-visit flare — lime/gold, not a game overlay. */
+.studio-flare {
+  --flare-x: 50%;
+  --flare-y: 40%;
+  display: none;
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .studio-flare {
+    --flare-x: 72%;
+    --flare-y: 34%;
+  }
+}
+
+html[data-studio-flare="play"] .studio-flare {
+  display: block;
+  animation: studio-flare-hold 1.7s linear forwards;
+}
+
+.studio-flare-veil,
+.studio-flare-burst,
+.studio-flare-ring,
+.studio-flare-core {
+  position: absolute;
+  inset: 0;
+}
+
+.studio-flare-veil {
+  background: #050505;
+  animation: studio-flare-veil 1.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.studio-flare-burst {
+  background:
+    radial-gradient(
+      circle at var(--flare-x) var(--flare-y),
+      #fff6d4 0 4%,
+      #f5d76e 8%,
+      #00c851 18%,
+      rgba(0, 200, 81, 0.35) 32%,
+      transparent 58%
+    );
+  mix-blend-mode: screen;
+  transform: translateZ(0) scale(0.08);
+  transform-origin: var(--flare-x) var(--flare-y);
+  animation: studio-flare-burst 1.7s cubic-bezier(0.14, 0.9, 0.22, 1) forwards;
+}
+
+.studio-flare-ring {
+  background: radial-gradient(
+    circle at var(--flare-x) var(--flare-y),
+    transparent 0 16%,
+    rgba(245, 215, 110, 0.95) 18%,
+    rgba(0, 200, 81, 0.55) 22%,
+    transparent 28%
+  );
+  mix-blend-mode: screen;
+  transform: translateZ(0) scale(0.12);
+  transform-origin: var(--flare-x) var(--flare-y);
+  animation: studio-flare-ring 1.7s cubic-bezier(0.16, 0.84, 0.28, 1) forwards;
+}
+
+.studio-flare-core {
+  background: radial-gradient(
+    circle at var(--flare-x) var(--flare-y),
+    #ffffff 0 2%,
+    #f5d76e 5%,
+    transparent 14%
+  );
+  mix-blend-mode: screen;
+  animation: studio-flare-core 1.7s ease-out forwards;
+}
+
+html[data-studio-flare="play"] .studio-hero-photo {
+  animation: studio-hero-wake 1.7s ease-out forwards;
+}
+
+@keyframes studio-flare-hold {
+  0%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes studio-flare-veil {
+  0% {
+    opacity: 0.96;
+  }
+  28% {
+    opacity: 0.72;
+  }
+  58% {
+    opacity: 0.28;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes studio-flare-burst {
+  0% {
+    opacity: 0.4;
+    transform: translateZ(0) scale(0.08);
+  }
+  18% {
+    opacity: 1;
+    transform: translateZ(0) scale(0.55);
+  }
+  42% {
+    opacity: 0.95;
+    transform: translateZ(0) scale(1.55);
+  }
+  100% {
+    opacity: 0;
+    transform: translateZ(0) scale(2.35);
+  }
+}
+
+@keyframes studio-flare-ring {
+  0% {
+    opacity: 0;
+    transform: translateZ(0) scale(0.12);
+  }
+  16% {
+    opacity: 0.9;
+    transform: translateZ(0) scale(0.45);
+  }
+  100% {
+    opacity: 0;
+    transform: translateZ(0) scale(2.8);
+  }
+}
+
+@keyframes studio-flare-core {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  32% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes studio-hero-wake {
+  0% {
+    filter: brightness(0.28) saturate(0.75);
+  }
+  32% {
+    filter: brightness(1.28) saturate(1.12);
+  }
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studio-flare {
+    display: none !important;
+    animation: none !important;
+  }
+
+  html[data-studio-flare="play"] .studio-hero-photo {
+    animation: none !important;
+    filter: none !important;
+  }
+}

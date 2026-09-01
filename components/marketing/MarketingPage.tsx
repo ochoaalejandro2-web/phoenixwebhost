@@ -8,6 +8,7 @@ import {
 } from "@/components/marketing/Chrome";
 import { DemoSearch } from "@/components/marketing/DemoSearch";
 import { HeroDevices } from "@/components/marketing/HeroDevices";
+import { StudioFlare } from "@/components/marketing/StudioFlare";
 import { RequestForm } from "@/components/marketing/RequestForm";
 import { ReviewsSection } from "@/components/marketing/ReviewsSection";
 import { StartingPoints } from "@/components/marketing/StartingPoints";
@@ -77,6 +78,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
   const reviews = await listPublicReviews();
   return (
     <StudioShell>
+      <StudioFlare />
       <SiteHeader locale={locale} />
       <section className="relative bg-snow">
         <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-16 px-6 pb-28 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:pb-32 lg:pt-24">
@@ -131,7 +133,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
                 width={1536}
                 height={1024}
                 preload
-                className="h-[22rem] w-full object-cover sm:h-[26rem]"
+                className="studio-hero-photo h-[22rem] w-full object-cover sm:h-[26rem]"
               />
               <p className="absolute left-4 top-4 rounded-full bg-header/80 px-4 py-2 text-[11px] font-medium tracking-wide text-white backdrop-blur-sm">
                 {c.proofLine}
