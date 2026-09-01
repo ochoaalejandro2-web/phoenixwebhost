@@ -8,6 +8,7 @@ import {
 } from "@/components/marketing/Chrome";
 import { DemoSearch } from "@/components/marketing/DemoSearch";
 import { HeroDevices } from "@/components/marketing/HeroDevices";
+import { StudioFlare } from "@/components/marketing/StudioFlare";
 import { RequestForm } from "@/components/marketing/RequestForm";
 import { ReviewsSection } from "@/components/marketing/ReviewsSection";
 import { StartingPoints } from "@/components/marketing/StartingPoints";
@@ -77,6 +78,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
   const reviews = await listPublicReviews();
   return (
     <StudioShell>
+      <StudioFlare />
       <SiteHeader locale={locale} />
       <section className="relative bg-snow">
         <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-16 px-6 pb-28 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:pb-32 lg:pt-24">
@@ -126,12 +128,12 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
           <div className="pb-10 lg:pb-6">
             <div className="relative overflow-hidden rounded-[2rem]">
               <Image
-                src="/luxury-interior.png"
-                alt="Sunlit modern interior with glass and pale stone"
+                src="/luxury-night-hero.png"
+                alt="Night view of a modern glass house overlooking a desert city valley"
                 width={1536}
                 height={1024}
-                priority
-                className="h-[22rem] w-full object-cover sm:h-[26rem]"
+                preload
+                className="studio-hero-photo h-[22rem] w-full object-cover sm:h-[26rem]"
               />
               <p className="absolute left-4 top-4 rounded-full bg-header/80 px-4 py-2 text-[11px] font-medium tracking-wide text-white backdrop-blur-sm">
                 {c.proofLine}
