@@ -172,7 +172,13 @@ html[data-studio-flare="play"] .studio-flare {
 }
 
 .studio-flare-veil {
-  background: #050505;
+  background:
+    radial-gradient(
+      circle at var(--flare-x) var(--flare-y),
+      #2a220c 0%,
+      #050505 42%,
+      #000000 100%
+    );
   animation: studio-flare-veil 1.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -180,13 +186,13 @@ html[data-studio-flare="play"] .studio-flare {
   background:
     radial-gradient(
       circle at var(--flare-x) var(--flare-y),
-      #fff6d4 0 4%,
-      #f5d76e 8%,
-      #00c851 18%,
-      rgba(0, 200, 81, 0.35) 32%,
-      transparent 58%
+      #fff8e1 0 3%,
+      #f5d76e 7%,
+      #e8c547 12%,
+      #00c851 20%,
+      rgba(0, 200, 81, 0.42) 34%,
+      transparent 56%
     );
-  mix-blend-mode: screen;
   transform: translateZ(0) scale(0.08);
   transform-origin: var(--flare-x) var(--flare-y);
   animation: studio-flare-burst 1.7s cubic-bezier(0.14, 0.9, 0.22, 1) forwards;
@@ -195,12 +201,11 @@ html[data-studio-flare="play"] .studio-flare {
 .studio-flare-ring {
   background: radial-gradient(
     circle at var(--flare-x) var(--flare-y),
-    transparent 0 16%,
-    rgba(245, 215, 110, 0.95) 18%,
-    rgba(0, 200, 81, 0.55) 22%,
-    transparent 28%
+    transparent 0 15%,
+    rgba(245, 215, 110, 0.9) 17%,
+    rgba(0, 200, 81, 0.5) 21%,
+    transparent 27%
   );
-  mix-blend-mode: screen;
   transform: translateZ(0) scale(0.12);
   transform-origin: var(--flare-x) var(--flare-y);
   animation: studio-flare-ring 1.7s cubic-bezier(0.16, 0.84, 0.28, 1) forwards;
@@ -211,9 +216,8 @@ html[data-studio-flare="play"] .studio-flare {
     circle at var(--flare-x) var(--flare-y),
     #ffffff 0 2%,
     #f5d76e 5%,
-    transparent 14%
+    transparent 13%
   );
-  mix-blend-mode: screen;
   animation: studio-flare-core 1.7s ease-out forwards;
 }
 
