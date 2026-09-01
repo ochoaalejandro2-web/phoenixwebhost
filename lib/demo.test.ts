@@ -191,7 +191,10 @@ test("contractor theme is sun-bright like the marketing site, not a dark cave", 
   assert.match(theme.header, /bg-white/);
   assert.match(theme.call, /lime|#00c851/i);
   assert.match(theme.kicker, /lime|#00c851/i);
+  assert.match(theme.overlay, /from-white/);
+  assert.match(theme.heroTitle ?? "", /ink-black|#0a0a0a/);
   assert.doesNotMatch(theme.page, /#111816|#1b2420/);
+  assert.doesNotMatch(theme.overlay, /from-black/);
   assert.doesNotMatch(theme.call, /#c45c26/);
 });
 

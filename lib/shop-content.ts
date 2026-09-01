@@ -21,6 +21,8 @@ export type ShopTheme = {
   cardBorder: string;
   sectionTitle: string;
   overlay: string;
+  heroTitle?: string;
+  heroLead?: string;
   footer: string;
   footerBorder: string;
   field: string;
@@ -280,11 +282,13 @@ export const SHOP_THEMES: Record<Exclude<TemplateId, "tax">, ShopTheme> = {
     card: "bg-white",
     cardBorder: "border-zinc-200",
     sectionTitle: "text-ink-black",
-    overlay: "bg-gradient-to-r from-black/60 via-black/35 to-black/10",
+    overlay: "bg-gradient-to-r from-white via-white/85 to-white/25",
+    heroTitle: "text-ink-black",
+    heroLead: "text-body",
     footer: "text-body",
     footerBorder: "border-zinc-200",
     field: "rounded-lg border border-zinc-200 bg-white px-3 py-2 text-ink-black",
-    ghostBtn: "border border-white/85 text-white hover:bg-white hover:text-ink-black",
+    ghostBtn: "border border-zinc-300 text-ink-black hover:bg-zinc-50",
   },
   handyman: {
     page: "bg-[#f6f3ec] text-[#171717]",
