@@ -39,6 +39,9 @@ yarn-error.log*
 /data/visits.json
 /data/sign-files/
 
+# pdf.js worker is copied from pdfjs-dist on install
+/public/pdf.worker.min.mjs
+
 # vercel
 .vercel
 

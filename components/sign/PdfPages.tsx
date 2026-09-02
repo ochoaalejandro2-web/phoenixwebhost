@@ -143,13 +143,17 @@ export function PdfPages({
     if ((event.target as HTMLElement).closest("button")) return;
     event.preventDefault();
     event.stopPropagation();
-    event.currentTarget.setPointerCapture(event.pointerId);
     const at = fractionAt(pageEl, event.clientX, event.clientY);
     drag.current = {
       id: box.id,
       dx: at.x - box.x,
       dy: at.y - box.y,
     };
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      /* synthetic pointer events */
+    }
   }
 
   function onBoxPointerMove(
