@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { listClients, listLeads, listReviews, storageMode } from "@/lib/store";
+import { listClients, listLeads, listReviews, listSignDocuments, storageMode } from "@/lib/store";
 import { visitTotals } from "@/lib/visits";
 import { stripeConfigured } from "@/lib/config";
 import { telHref } from "@/lib/notify";
 import { stripeModeLabel } from "@/lib/stripe";
 import { resetDemoAction } from "@/app/admin/actions";
 import type { Lead } from "@/lib/types";
+import { publicSignStatus } from "@/lib/sign";
 
 function fmt(iso: string | null) {
   if (!iso) return "—";
@@ -79,13 +80,15 @@ function PayBadge({ status }: { status: string }) {
 }
 
 export default async function AdminHome() {
-  const [clients, leads, reviews, visits] = await Promise.all([
+  const [clients, leads, reviews, visits, signDocs] = await Promise.all([
     listClients(),
     listLeads(),
     listReviews(),
     visitTotals(),
+    listSignDocuments(),
   ]);
   const pendingReviews = reviews.filter((review) => review.status === "pending").length;
+  const pendingSigns = signDocs.filter((doc) => publicSignStatus(doc) === "pending").length;
   const paid = clients.filter((c) => c.paymentStatus === "paid").length;
   const overdue = clients.filter((c) => c.paymentStatus === "overdue").length;
   const live = clients.filter((c) => c.siteStatus === "live").length;
@@ -241,6 +244,12 @@ export default async function AdminHome() {
         approval.{" "}
         <Link href="/admin/reviews" className="text-clay">
           Moderate reviews
+        </Link>
+        {" · "}
+        {pendingSigns} PDF{pendingSigns === 1 ? "" : "s"} waiting for a
+        signature.{" "}
+        <Link href="/admin/sign" className="text-clay">
+          Sign a PDF
         </Link>
       </p>
     </div>

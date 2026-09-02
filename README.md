@@ -80,6 +80,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Request a demo | `/request` (also `/es/request`) |
 | Affiliates / sell with us | `/affiliates` (also `/es/affiliates`) |
 | Owner login | `/login` |
+| Sign a PDF (customer, no login) | `/sign` |
 | Demo contractor | `/s/desert-peak-roofing` (paid, live) |
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
 | Demo restaurant | `/s/mesa-street-kitchen` (overdue, offline) |
@@ -132,7 +133,7 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `TWILIO_ACCOUNT_SID` | for SMS alerts | Twilio account SID. SMS is skipped if any Twilio var is unset |
 | `TWILIO_AUTH_TOKEN` | for SMS alerts | Twilio auth token |
 | `TWILIO_FROM` | for SMS alerts | Twilio from number (E.164, e.g. `+1…`) |
-| `BLOB_READ_WRITE_TOKEN` | for tax portal uploads | Vercel Blob token. Private files only. Uploads fail closed if missing |
+| `BLOB_READ_WRITE_TOKEN` | for tax portal uploads and Admin Sign a PDF | Vercel Blob token. Private files only. Uploads fail closed on Vercel if missing |
 | `HOLA_TAX_STAFF_EMAIL` | no | Staff email bootstrap for Hola Tax Service. Default `ochoa.alejandro2@gmail.com` |
 | `HOLA_TAX_STAFF_PASSWORD` | for Hola Tax staff login | Staff password for that one shop. Separate from `ADMIN_PASSWORD`. Other tax-office clients set staff in Admin |
 
@@ -185,6 +186,7 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the eight templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 - Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
+- **Sign a PDF** (`/admin/sign`): upload one PDF, get a short unguessable code to text. The customer opens `/sign` (or `/sign/K7M2-P9QX`) with no account, sees that PDF, types a name or draws on their phone, and submits. After it is signed, that code will not accept another signature. Download the signed PDF from the same Admin page. Files go to private Vercel Blob (or `data/sign-files/` locally) — not a public folder.
 - **Site visits** on the dashboard (today / last 7 days / last 30 days) count public Phoenixwebhost page opens. Production also sends pageviews to [Vercel Web Analytics](https://vercel.com/docs/analytics) (`@vercel/analytics` in the root layout). Enable Analytics on the Vercel project to see the same traffic there. No Google Analytics and no cookie banner.
 
 ## Generated client sites

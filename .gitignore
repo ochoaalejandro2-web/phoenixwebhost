@@ -37,6 +37,7 @@ yarn-error.log*
 # local data store
 /data/store.json
 /data/visits.json
+/data/sign-files/
 
 # vercel
 .vercel

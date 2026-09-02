@@ -182,12 +182,30 @@ export type StripeExtraPriceIds = {
   STRIPE_DOMAIN_YEARLY_PRICE_ID?: string;
 };
 
+export type SignDocStatus = "pending" | "signed";
+
+export type SignDocument = {
+  id: string;
+  code: string;
+  filename: string;
+  originalPath: string;
+  signedPath: string | null;
+  status: SignDocStatus;
+  createdAt: string;
+  expiresAt: string;
+  signedAt: string | null;
+  signerName: string | null;
+  acknowledged: boolean;
+  sizeBytes: number;
+};
+
 export type AppState = {
   clients: Client[];
   leads: Lead[];
   closers: Closer[];
   contactMessages: ContactMessage[];
   reviews: Review[];
+  signDocuments: SignDocument[];
   authLock: AuthLock;
   seededAt: string;
   stripeExtraPrices?: StripeExtraPriceIds;

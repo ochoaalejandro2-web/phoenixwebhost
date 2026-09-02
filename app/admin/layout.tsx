@@ -47,6 +47,9 @@ export default async function AdminLayout({
           <Link className="rounded-lg px-3 py-2 hover:bg-white/10" href="/admin/reviews">
             Reviews
           </Link>
+          <Link className="rounded-lg px-3 py-2 hover:bg-white/10" href="/admin/sign">
+            Sign a PDF
+          </Link>
         </nav>
         <div className="mt-auto px-5 py-5 text-xs text-white/70">
           <p>Alex Ochoa</p>
@@ -66,6 +69,7 @@ export default async function AdminLayout({
             <Link href="/admin/leads">Requests</Link>
             <Link href="/admin/affiliates">Affiliates</Link>
             <Link href="/admin/reviews">Reviews</Link>
+            <Link href="/admin/sign">Sign</Link>
             <a href="/api/auth/logout">Out</a>
           </nav>
         </header>

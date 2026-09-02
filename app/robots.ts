@@ -18,14 +18,18 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
         rules: {
           userAgent: "*",
           allow: "/",
-          disallow: ["/admin", "/login", "/api", "/portal", "/demo"],
+          disallow: ["/admin", "/login", "/api", "/portal", "/demo", "/sign"],
         },
         sitemap: `https://${canonical}/sitemap.xml`,
       };
     }
   }
   return {
-        rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/login", "/api", "/demo"] },
+        rules: {
+          userAgent: "*",
+          allow: "/",
+          disallow: ["/admin", "/login", "/api", "/demo", "/sign"],
+        },
     sitemap: "https://phoenixwebhost.com/sitemap.xml",
   };
 }

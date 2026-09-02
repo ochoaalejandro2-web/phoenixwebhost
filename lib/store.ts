@@ -19,8 +19,15 @@ import type {
   Lead,
   Review,
   ReviewStatus,
+  SignDocument,
   TemplateId,
 } from "@/lib/types";
+import {
+  SIGN_TTL_MS,
+  generateSignCode,
+  publicSignStatus,
+  signCodeLookupKey,
+} from "@/lib/sign";
 
 const FILE_PATH = path.join(process.cwd(), "data", "store.json");
 const TMP_PATH = "/tmp/phoenixwebhost-store.json";
@@ -214,11 +221,29 @@ function normalizeLead(lead: Lead): Lead {
   };
 }
 
+function normalizeSignDocument(doc: SignDocument): SignDocument {
+  return {
+    id: asText(doc.id),
+    code: asText(doc.code).toUpperCase(),
+    filename: asText(doc.filename),
+    originalPath: asText(doc.originalPath),
+    signedPath: doc.signedPath ? asText(doc.signedPath) : null,
+    status: doc.status === "signed" ? "signed" : "pending",
+    createdAt: asText(doc.createdAt),
+    expiresAt: asText(doc.expiresAt),
+    signedAt: doc.signedAt ? asText(doc.signedAt) : null,
+    signerName: doc.signerName ? asText(doc.signerName) : null,
+    acknowledged: Boolean(doc.acknowledged),
+    sizeBytes: typeof doc.sizeBytes === "number" ? doc.sizeBytes : 0,
+  };
+}
+
 function normalizeState(state: AppState): AppState {
   if (!Array.isArray(state.reviews)) state.reviews = [];
   if (!Array.isArray(state.leads)) state.leads = [];
   if (!Array.isArray(state.closers)) state.closers = [];
   if (!Array.isArray(state.contactMessages)) state.contactMessages = [];
+  if (!Array.isArray(state.signDocuments)) state.signDocuments = [];
   if (!Array.isArray(state.clients)) state.clients = [];
   if (!state.authLock) state.authLock = emptyAuthLock();
   if (!Array.isArray(state.authLock.consumedNonces)) {
@@ -226,6 +251,7 @@ function normalizeState(state: AppState): AppState {
   }
   state.clients = state.clients.map(normalizeClient);
   state.leads = state.leads.map(normalizeLead);
+  state.signDocuments = state.signDocuments.map(normalizeSignDocument);
   state.contactMessages = state.contactMessages.map((message) => ({
     ...message,
     source: message.source || "contact",
@@ -541,4 +567,110 @@ export async function updateAuthLock(
     mutator(current.authLock);
   });
   return state.authLock;
+}
+
+export async function listSignDocuments() {
+  const state = await getState();
+  return [...(state.signDocuments || [])].sort((a, b) =>
+    b.createdAt.localeCompare(a.createdAt),
+  );
+}
+
+export async function getSignDocument(id: string) {
+  const state = await getState();
+  return (state.signDocuments || []).find((row) => row.id === id) ?? null;
+}
+
+export async function getSignDocumentByCode(raw: string) {
+  const key = signCodeLookupKey(raw);
+  if (!key) return null;
+  const state = await getState();
+  return (state.signDocuments || []).find((row) => row.code === key) ?? null;
+}
+
+export async function createSignDocument(input: {
+  filename: string;
+  originalPath: string;
+  sizeBytes: number;
+}): Promise<SignDocument> {
+  const box: { doc: SignDocument | null } = { doc: null };
+  await updateState((state) => {
+    if (!state.signDocuments) state.signDocuments = [];
+    const existing = state.signDocuments.find(
+      (row) => row.originalPath === input.originalPath,
+    );
+    if (existing) {
+      box.doc = existing;
+      return;
+    }
+    const used = new Set(state.signDocuments.map((row) => row.code));
+    let code = generateSignCode();
+    for (let i = 0; i < 24 && used.has(code); i += 1) {
+      code = generateSignCode();
+    }
+    const now = new Date();
+    const doc: SignDocument = {
+      id: `sign_${crypto.randomUUID()}`,
+      code,
+      filename: input.filename,
+      originalPath: input.originalPath,
+      signedPath: null,
+      status: "pending",
+      createdAt: now.toISOString(),
+      expiresAt: new Date(now.getTime() + SIGN_TTL_MS).toISOString(),
+      signedAt: null,
+      signerName: null,
+      acknowledged: false,
+      sizeBytes: input.sizeBytes,
+    };
+    state.signDocuments.unshift(doc);
+    box.doc = doc;
+  });
+  if (!box.doc) throw new Error("Could not save document");
+  return box.doc;
+}
+
+export async function markSignDocumentSigned(input: {
+  code: string;
+  signerName: string;
+  acknowledged: boolean;
+  signedPath: string;
+  now?: Date;
+}): Promise<
+  | { ok: true; doc: SignDocument }
+  | { ok: false; error: "invalid" | "expired" | "signed" }
+> {
+  const key = signCodeLookupKey(input.code);
+  if (!key) return { ok: false, error: "invalid" };
+  let result:
+    | { ok: true; doc: SignDocument }
+    | { ok: false; error: "invalid" | "expired" | "signed" } = {
+    ok: false,
+    error: "invalid",
+  };
+  await updateState((state) => {
+    if (!state.signDocuments) state.signDocuments = [];
+    const index = state.signDocuments.findIndex((row) => row.code === key);
+    if (index < 0) {
+      result = { ok: false, error: "invalid" };
+      return;
+    }
+    const current = state.signDocuments[index];
+    const status = publicSignStatus(current, (input.now ?? new Date()).getTime());
+    if (status !== "pending") {
+      result = { ok: false, error: status };
+      return;
+    }
+    const next: SignDocument = {
+      ...current,
+      status: "signed",
+      signedAt: (input.now ?? new Date()).toISOString(),
+      signerName: input.signerName,
+      acknowledged: input.acknowledged,
+      signedPath: input.signedPath,
+    };
+    state.signDocuments[index] = next;
+    result = { ok: true, doc: next };
+  });
+  return result;
 }
