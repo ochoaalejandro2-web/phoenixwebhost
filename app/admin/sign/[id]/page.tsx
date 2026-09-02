@@ -31,7 +31,13 @@ export default async function AdminSignDocumentPage({
       <Link className="text-sm text-clay" href="/admin/sign">
         ← Sign a PDF
       </Link>
-      <h1 className="mt-3 font-display text-3xl">Sign here boxes</h1>
+      <h1 className="mt-3 font-display text-3xl">Mark Sign here spots</h1>
+      {pending ? (
+        <p className="mt-2 max-w-2xl text-sm text-ink-soft">
+          Click the preview to drop spots. The customer signs once. Copy the
+          code after the spots save.
+        </p>
+      ) : null}
       {pending ? (
         <SignHereEditor
           id={doc.id}
@@ -44,7 +50,7 @@ export default async function AdminSignDocumentPage({
         <div className="mt-4">
           <p className="font-display text-2xl tracking-wide">{code}</p>
           <p className="mt-2 text-sm text-ink-soft">
-            This document is already signed. Boxes cannot be moved.
+            This document is already signed. Spots cannot be moved.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <CopyButton value={code} label="Copy code" />

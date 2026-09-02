@@ -180,6 +180,10 @@ export function SignDocument({
       </a>
       {hasBoxes ? (
         <div className="mt-4">
+          <p className="mb-2 text-sm text-body">
+            Green boxes are marks only. Do not sign on the page — sign once
+            below.
+          </p>
           <PdfPages url={pdfUrl} boxes={boxes} mode="view" />
         </div>
       ) : (
@@ -199,7 +203,11 @@ export function SignDocument({
           placeholder="Your name"
         />
       </label>
-      <p className="mt-5 text-sm text-body">Or draw your signature</p>
+      <p className="mt-5 text-sm text-body">
+        {hasBoxes
+          ? "Sign once here (type a name or draw). That one signature goes on every green box."
+          : "Or draw your signature"}
+      </p>
       <div className="mt-2 overflow-hidden rounded-2xl border border-zinc-200 bg-white">
         <canvas
           ref={canvasRef}

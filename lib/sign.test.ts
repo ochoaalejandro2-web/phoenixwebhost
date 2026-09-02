@@ -168,3 +168,39 @@ test("stamping with sign-here boxes keeps the extra signature page", async () =>
   const loaded = await PDFDocument.load(signed);
   assert.equal(loaded.getPageCount(), 2);
 });
+
+test("one signature is stamped onto every sign-here spot, including later pages", async () => {
+  const source = await PDFDocument.create();
+  source.addPage([612, 792]);
+  source.addPage([612, 792]);
+  const original = await source.save();
+  const png = pngFromDataUrl(
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+  );
+  assert.ok(png);
+  const signed = await stampSignedPdf({
+    original,
+    signerName: "Alex Test",
+    acknowledged: true,
+    signaturePng: png,
+    signedAt: new Date("2026-03-02T20:04:00.000Z"),
+    boxes: [
+      { id: "ok_box_1", page: 0, x: 0.1, y: 0.8, w: 0.4, h: 0.08 },
+      { id: "ok_box_2", page: 1, x: 0.5, y: 0.7, w: 0.35, h: 0.1 },
+    ],
+  });
+  const loaded = await PDFDocument.load(signed);
+  assert.equal(loaded.getPageCount(), 3);
+  const named = await stampSignedPdf({
+    original,
+    signerName: "Alex Test",
+    acknowledged: true,
+    signedAt: new Date("2026-03-02T20:04:00.000Z"),
+    boxes: [
+      { id: "ok_box_1", page: 0, x: 0.1, y: 0.8, w: 0.4, h: 0.08 },
+      { id: "ok_box_2", page: 1, x: 0.5, y: 0.7, w: 0.35, h: 0.1 },
+    ],
+  });
+  const namedPdf = await PDFDocument.load(named);
+  assert.equal(namedPdf.getPageCount(), 3);
+});

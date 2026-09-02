@@ -51,25 +51,25 @@ export function SignHereEditor({
     return () => window.clearTimeout(timer);
   }, [boxes, id]);
 
+  const saveLabel =
+    status === "saving"
+      ? "Saving spots…"
+      : status === "error"
+        ? "Could not save. Click a spot again."
+        : boxes.length === 0
+          ? "No spots yet · saved. Skip if they can sign under the PDF."
+          : `${boxes.length} spot${boxes.length === 1 ? "" : "s"} saved`;
+
   return (
     <div>
       <p className="text-sm text-ink-soft">{filename}</p>
-      <p className="mt-1 font-display text-2xl tracking-wide">{code}</p>
-      <div className="mt-3 flex flex-wrap gap-2">
-        <CopyButton value={code} label="Copy code" />
-        <CopyButton value={text} label="Copy text" />
-      </div>
-      <p className="mt-5 text-sm text-ink">
-        Click the page to drop a Sign here box. Drag to move. × deletes.
-        Skip this if they can just sign under the PDF.
+      <p className="mt-4 text-sm text-ink">
+        Click the PDF to drop a Sign here spot. Click again for the next one,
+        on any page. × removes a miss. Spots save as you click. The customer
+        signs once — that signature is stamped on every spot.
       </p>
       <p className="mt-2 text-sm text-ink-soft">
-        {boxes.length}/{MAX_SIGN_BOXES} boxes
-        {status === "saving"
-          ? " · Saving…"
-          : status === "error"
-            ? " · Could not save. Try again."
-            : " · Saved"}
+        {boxes.length}/{MAX_SIGN_BOXES} spots · {saveLabel}
       </p>
       <div className="mt-4 max-w-3xl">
         <PdfPages
@@ -78,6 +78,17 @@ export function SignHereEditor({
           mode="place"
           onBoxesChange={setBoxes}
         />
+      </div>
+      <div className="mt-6 rounded-2xl border border-line bg-paper p-4">
+        <p className="font-display text-2xl tracking-wide">{code}</p>
+        <p className="mt-2 text-sm text-ink-soft">
+          Copy the code after the spots are saved (or skip spots). Then text
+          it. One code is this one document.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <CopyButton value={code} label="Copy code" />
+          <CopyButton value={text} label="Copy text" />
+        </div>
       </div>
     </div>
   );

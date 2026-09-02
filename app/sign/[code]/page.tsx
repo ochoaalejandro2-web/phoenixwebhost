@@ -38,7 +38,7 @@ export default async function SignByCodePage({
           <h1 className="font-display text-3xl text-ink-black">Sign this PDF</h1>
           <p className="mt-2 text-sm text-body">
             {doc.boxes?.length
-              ? "The green boxes are where to sign. Draw with your finger or type your name."
+              ? "Green boxes mark where your signature will go. Sign once below — type your name or draw. That one signature is placed on every marked spot."
               : "Read the document, then type your name or draw on your phone."}
           </p>
           <SignDocument

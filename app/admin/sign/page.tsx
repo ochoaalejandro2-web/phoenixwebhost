@@ -69,8 +69,8 @@ function SignCard({
                 href={`/admin/sign/${doc.id}`}
               >
                 {doc.boxes?.length
-                  ? `Sign here boxes (${doc.boxes.length})`
-                  : "Sign here boxes"}
+                  ? `Sign here spots (${doc.boxes.length})`
+                  : "Mark Sign here spots"}
               </a>
             </>
           ) : null}
@@ -107,14 +107,15 @@ export default async function AdminSignPage() {
     <div>
       <h1 className="font-display text-3xl">Sign a PDF</h1>
       <p className="mt-2 max-w-2xl text-ink-soft">
-        Upload one PDF, text the short code, and download the signed file.
-        Customers open{" "}
+        Upload one PDF. Click the pages to drop Sign here spots, then text
+        the short code. Customers open{" "}
         <Link className="text-clay" href="/sign">
           /sign
         </Link>{" "}
-        with no account. One code is one document. After it is signed, that
-        code cannot be used again. Optional: drop Sign here boxes on the PDF
-        so they know where to sign. Delete removes the PDFs and the code.
+        with no account and sign once (type a name or draw). That one
+        signature is stamped on every spot. One code is one document. After
+        it is signed, that code cannot be used again. Skip spots if they can
+        just sign under the PDF. Delete removes the PDFs and the code.
       </p>
       {mode === "none" ? (
         <p className="mt-4 rounded-xl bg-[#f6e2c8] px-4 py-3 text-sm">

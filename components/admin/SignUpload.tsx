@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
-import { CopyButton } from "@/components/admin/CopyButton";
+import { SignHereEditor } from "@/components/admin/SignHereEditor";
 import { MAX_SIGN_PDF_BYTES, signBlobPath } from "@/lib/sign";
 
 export function SignUpload({ blobReady }: { blobReady: boolean }) {
@@ -14,9 +14,16 @@ export function SignUpload({ blobReady }: { blobReady: boolean }) {
     id: string;
     code: string;
     filename: string;
-    path: string;
     text: string;
   } | null>(null);
+
+  useEffect(() => {
+    if (!created) return;
+    document.getElementById("sign-here-preview")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [created]);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -89,14 +96,13 @@ export function SignUpload({ blobReady }: { blobReady: boolean }) {
         }
         throw new Error("Could not save that PDF.");
       }
-      if (!payload.code || !payload.path || !payload.text || !payload.id) {
+      if (!payload.code || !payload.text || !payload.id) {
         throw new Error("Could not save that PDF.");
       }
       setCreated({
         id: payload.id,
         code: payload.code,
         filename: payload.filename || file.name,
-        path: payload.path,
         text: payload.text,
       });
       form.reset();
@@ -109,60 +115,58 @@ export function SignUpload({ blobReady }: { blobReady: boolean }) {
   }
 
   return (
-    <form
-      onSubmit={(event) => void onSubmit(event)}
-      className="rounded-2xl border border-line bg-paper p-5"
-    >
-      <p className="font-display text-xl">Upload a PDF</p>
-      <p className="mt-1 text-sm text-ink-soft">
-        You get a short code to text. After upload you can drop Sign here
-        boxes on the PDF. The customer signs at /sign with no login.
-      </p>
-      <label className="mt-4 block text-sm">
-        PDF
-        <input
-          name="file"
-          type="file"
-          accept="application/pdf,.pdf"
-          required
-          disabled={pending}
-          className="mt-1 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm"
-        />
-      </label>
-      <button
-        type="submit"
-        disabled={pending}
-        className="mt-4 rounded-full bg-sage px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+    <div>
+      <form
+        onSubmit={(event) => void onSubmit(event)}
+        className="rounded-2xl border border-line bg-paper p-5"
       >
-        {pending ? "Uploading…" : "Upload and get code"}
-      </button>
-      {error ? (
-        <p role="alert" className="mt-3 text-sm text-mesa">
-          {error}
+        <p className="font-display text-xl">Upload a PDF</p>
+        <p className="mt-1 text-sm text-ink-soft">
+          After upload you see the pages. Click to drop Sign here spots, then
+          copy the code. The customer signs once at /sign — no login. That
+          one signature is stamped on every spot.
         </p>
-      ) : null}
-      {created ? (
-        <div className="mt-4 rounded-xl border border-line bg-sand px-4 py-3">
-          <p className="text-sm text-ink-soft">{created.filename}</p>
-          <p className="mt-1 font-display text-2xl tracking-wide">{created.code}</p>
-          <p className="mt-1 text-sm">
-            Customer page:{" "}
-            <a className="text-clay" href={created.path} target="_blank" rel="noreferrer">
-              {created.path}
-            </a>
+        <label className="mt-4 block text-sm">
+          PDF
+          <input
+            name="file"
+            type="file"
+            accept="application/pdf,.pdf"
+            required
+            disabled={pending}
+            className="mt-1 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm"
+          />
+        </label>
+        <button
+          type="submit"
+          disabled={pending}
+          className="mt-4 rounded-full bg-sage px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+        >
+          {pending ? "Uploading…" : "Upload and mark spots"}
+        </button>
+        {error ? (
+          <p role="alert" className="mt-3 text-sm text-mesa">
+            {error}
           </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <CopyButton value={created.code} label="Copy code" />
-            <CopyButton value={created.text} label="Copy text" />
-            <a
-              className="rounded-full bg-sage px-3 py-1.5 text-sm font-semibold text-white"
-              href={`/admin/sign/${created.id}`}
-            >
-              Sign here boxes
-            </a>
+        ) : null}
+      </form>
+      {created ? (
+        <div
+          id="sign-here-preview"
+          className="mt-4 rounded-2xl border border-line bg-paper p-5"
+        >
+          <p className="font-display text-xl">Mark Sign here spots</p>
+          <div className="mt-4">
+            <SignHereEditor
+              id={created.id}
+              filename={created.filename}
+              code={created.code}
+              text={created.text}
+              initialBoxes={[]}
+            />
           </div>
         </div>
       ) : null}
-    </form>
+    </div>
   );
 }
