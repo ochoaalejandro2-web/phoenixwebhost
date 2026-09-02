@@ -64,9 +64,10 @@ export function SignHereEditor({
     <div>
       <p className="text-sm text-ink-soft">{filename}</p>
       <p className="mt-4 text-sm text-ink">
-        Click the PDF to drop a Sign here spot. Click again for the next one,
-        on any page. × removes a miss. Spots save as you click. The customer
-        signs once — that signature is stamped on every spot.
+        Click the PDF to drop a Sign here spot. Drag to move. Pull a corner to
+        resize so it fits the signature line. × removes a miss. Spots save as
+        you click. The customer signs once — that signature is scaled to each
+        box.
       </p>
       <p className="mt-2 text-sm text-ink-soft">
         {boxes.length}/{MAX_SIGN_BOXES} spots · {saveLabel}

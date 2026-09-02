@@ -21,6 +21,9 @@ import {
   normalizeSignBox,
   signBoxPdfRect,
   newSignBox,
+  resizeSignBox,
+  MIN_SIGN_BOX_W,
+  MIN_SIGN_BOX_H,
 } from "./sign.ts";
 import { pngFromDataUrl, stampSignedPdf } from "./sign-pdf.ts";
 
@@ -152,6 +155,47 @@ test("sign-here boxes stay on one page as fractions and map to PDF coordinates",
   const dropped = newSignBox(1, 0.5, 0.5);
   assert.equal(dropped.page, 1);
   assert.ok(dropped.x >= 0 && dropped.x + dropped.w <= 1);
+  const tiny = normalizeSignBox({
+    id: "ok_small",
+    page: 0,
+    x: 0.2,
+    y: 0.8,
+    w: 0.07,
+    h: 0.025,
+  });
+  assert.ok(tiny);
+  assert.ok(tiny.w >= MIN_SIGN_BOX_W);
+  assert.ok(tiny.h >= MIN_SIGN_BOX_H);
+});
+
+test("resize handles shrink or grow a box without leaving the page", () => {
+  const start = {
+    id: "ok_box_1",
+    page: 0,
+    x: 0.2,
+    y: 0.4,
+    w: 0.36,
+    h: 0.08,
+  };
+  const se = resizeSignBox(start, "se", 0.2 + 0.12, 0.4 + 0.03);
+  assert.ok(Math.abs(se.w - 0.12) < 0.0001);
+  assert.ok(Math.abs(se.h - 0.03) < 0.0001);
+  assert.equal(se.x, 0.2);
+  assert.equal(se.y, 0.4);
+  const nw = resizeSignBox(start, "nw", 0.1, 0.35);
+  assert.ok(Math.abs(nw.x - 0.1) < 0.0001);
+  assert.ok(Math.abs(nw.w - 0.46) < 0.0001);
+  const floor = resizeSignBox(start, "se", 0.201, 0.401);
+  assert.equal(floor.w, MIN_SIGN_BOX_W);
+  assert.equal(floor.h, MIN_SIGN_BOX_H);
+  const edge = resizeSignBox(
+    { ...start, x: 0.9, y: 0.9, w: 0.08, h: 0.08 },
+    "se",
+    1.4,
+    1.4,
+  );
+  assert.ok(edge.x + edge.w <= 1 + 1e-9);
+  assert.ok(edge.y + edge.h <= 1 + 1e-9);
 });
 
 test("stamping with sign-here boxes keeps the extra signature page", async () => {
@@ -203,4 +247,40 @@ test("one signature is stamped onto every sign-here spot, including later pages"
   });
   const namedPdf = await PDFDocument.load(named);
   assert.equal(namedPdf.getPageCount(), 3);
+});
+
+test("a small sign-here box stamps inside that smaller area", async () => {
+  const source = await PDFDocument.create();
+  source.addPage([612, 792]);
+  const original = await source.save();
+  const small = {
+    id: "ok_box_1",
+    page: 0,
+    x: 0.55,
+    y: 0.88,
+    w: 0.18,
+    h: 0.025,
+  };
+  const large = {
+    id: "ok_box_2",
+    page: 0,
+    x: 0.1,
+    y: 0.2,
+    w: 0.5,
+    h: 0.12,
+  };
+  const smallRect = signBoxPdfRect(small, 612, 792);
+  const largeRect = signBoxPdfRect(large, 612, 792);
+  assert.ok(smallRect.w < largeRect.w);
+  assert.ok(smallRect.h < largeRect.h);
+  assert.ok(smallRect.w < 120);
+  const signed = await stampSignedPdf({
+    original,
+    signerName: "M Lopez",
+    acknowledged: true,
+    signedAt: new Date("2026-03-02T20:04:00.000Z"),
+    boxes: [small, large],
+  });
+  const loaded = await PDFDocument.load(signed);
+  assert.equal(loaded.getPageCount(), 2);
 });

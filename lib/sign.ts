@@ -137,6 +137,12 @@ export function formatPhoenixStamp(date: Date) {
 export const MAX_SIGN_BOXES = 8;
 export const DEFAULT_SIGN_BOX_W = 0.36;
 export const DEFAULT_SIGN_BOX_H = 0.08;
+export const MIN_SIGN_BOX_W = 0.06;
+export const MIN_SIGN_BOX_H = 0.022;
+export const MAX_SIGN_BOX_W = 0.95;
+export const MAX_SIGN_BOX_H = 0.5;
+
+export type SignBoxCorner = "nw" | "ne" | "sw" | "se";
 
 export type SignHereBox = {
   id: string;
@@ -176,8 +182,8 @@ export function normalizeSignBox(raw: unknown): SignHereBox | null {
   const rawX = Number(row.x);
   const rawY = Number(row.y);
   if (![rawW, rawH, rawX, rawY].every(Number.isFinite)) return null;
-  const w = clamp(rawW, 0.08, 0.9);
-  const h = clamp(rawH, 0.04, 0.45);
+  const w = clamp(rawW, MIN_SIGN_BOX_W, MAX_SIGN_BOX_W);
+  const h = clamp(rawH, MIN_SIGN_BOX_H, MAX_SIGN_BOX_H);
   const x = clamp(rawX, 0, 1 - w);
   const y = clamp(rawY, 0, 1 - h);
   const idRaw = typeof row.id === "string" ? row.id.replace(/[^a-zA-Z0-9_-]/g, "") : "";
@@ -199,6 +205,46 @@ export function normalizeSignBoxes(raw: unknown): SignHereBox[] {
     if (out.length >= MAX_SIGN_BOXES) break;
   }
   return out;
+}
+
+export function resizeSignBox(
+  box: SignHereBox,
+  corner: SignBoxCorner,
+  pointerX: number,
+  pointerY: number,
+): SignHereBox {
+  const px = clamp(pointerX, 0, 1);
+  const py = clamp(pointerY, 0, 1);
+  const right = box.x + box.w;
+  const bottom = box.y + box.h;
+  let x = box.x;
+  let y = box.y;
+  let w = box.w;
+  let h = box.h;
+
+  if (corner === "se" || corner === "ne") {
+    w = clamp(px - box.x, MIN_SIGN_BOX_W, Math.min(MAX_SIGN_BOX_W, 1 - box.x));
+  } else {
+    x = clamp(px, 0, right - MIN_SIGN_BOX_W);
+    w = right - x;
+    if (w > MAX_SIGN_BOX_W) {
+      x = right - MAX_SIGN_BOX_W;
+      w = MAX_SIGN_BOX_W;
+    }
+  }
+
+  if (corner === "se" || corner === "sw") {
+    h = clamp(py - box.y, MIN_SIGN_BOX_H, Math.min(MAX_SIGN_BOX_H, 1 - box.y));
+  } else {
+    y = clamp(py, 0, bottom - MIN_SIGN_BOX_H);
+    h = bottom - y;
+    if (h > MAX_SIGN_BOX_H) {
+      y = bottom - MAX_SIGN_BOX_H;
+      h = MAX_SIGN_BOX_H;
+    }
+  }
+
+  return { ...box, x, y, w, h };
 }
 
 /** HTML top-left fractions → PDF bottom-left points. */

@@ -16,7 +16,8 @@ export function pngFromDataUrl(dataUrl: string) {
 
 function fitTextSize(font: PDFFont, text: string, maxWidth: number, maxSize: number) {
   let size = maxSize;
-  while (size > 7 && font.widthOfTextAtSize(text, size) > maxWidth) {
+  const floor = Math.max(3, Math.min(7, maxSize));
+  while (size > floor && font.widthOfTextAtSize(text, size) > maxWidth) {
     size -= 0.5;
   }
   return size;
@@ -30,12 +31,18 @@ function stampNameInBox(
 ) {
   const { width, height } = page.getSize();
   const rect = signBoxPdfRect(box, width, height);
-  if (rect.w < 8 || rect.h < 8) return;
-  const size = fitTextSize(italic, name, rect.w - 8, Math.min(22, rect.h * 0.55));
+  if (rect.w < 6 || rect.h < 6) return;
+  const inset = Math.min(4, rect.w * 0.08, rect.h * 0.12);
+  const size = fitTextSize(
+    italic,
+    name,
+    Math.max(4, rect.w - inset * 2),
+    Math.min(22, rect.h * 0.7),
+  );
   const textWidth = italic.widthOfTextAtSize(name, size);
   page.drawText(name, {
-    x: rect.x + Math.max(4, (rect.w - textWidth) / 2),
-    y: rect.y + (rect.h - size) / 2,
+    x: rect.x + Math.max(inset, (rect.w - textWidth) / 2),
+    y: rect.y + Math.max(1, (rect.h - size) / 2),
     size,
     font: italic,
     color: rgb(0, 0, 0),
@@ -68,8 +75,11 @@ export async function stampSignedPdf(input: {
     if (embedded) {
       const { width, height } = page.getSize();
       const rect = signBoxPdfRect(box, width, height);
-      if (rect.w < 8 || rect.h < 8) continue;
-      const scale = Math.min(rect.w / embedded.width, rect.h / embedded.height);
+      if (rect.w < 6 || rect.h < 6) continue;
+      const inset = Math.min(3, rect.w * 0.06, rect.h * 0.1);
+      const availW = Math.max(4, rect.w - inset * 2);
+      const availH = Math.max(4, rect.h - inset * 2);
+      const scale = Math.min(availW / embedded.width, availH / embedded.height);
       const w = embedded.width * scale;
       const h = embedded.height * scale;
       page.drawImage(embedded, {

@@ -34,8 +34,8 @@ export default async function AdminSignDocumentPage({
       <h1 className="mt-3 font-display text-3xl">Mark Sign here spots</h1>
       {pending ? (
         <p className="mt-2 max-w-2xl text-sm text-ink-soft">
-          Click the preview to drop spots. The customer signs once. Copy the
-          code after the spots save.
+          Click the preview to drop spots. Pull a corner to resize. The
+          customer signs once. Copy the code after the spots save.
         </p>
       ) : null}
       {pending ? (
