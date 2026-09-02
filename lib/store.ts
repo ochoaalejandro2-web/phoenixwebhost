@@ -674,3 +674,15 @@ export async function markSignDocumentSigned(input: {
   });
   return result;
 }
+
+export async function deleteSignDocument(id: string): Promise<SignDocument | null> {
+  const box: { doc: SignDocument | null } = { doc: null };
+  await updateState((state) => {
+    if (!state.signDocuments) state.signDocuments = [];
+    const index = state.signDocuments.findIndex((row) => row.id === id);
+    if (index < 0) return;
+    box.doc = state.signDocuments[index];
+    state.signDocuments.splice(index, 1);
+  });
+  return box.doc;
+}

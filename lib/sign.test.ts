@@ -10,9 +10,12 @@ import {
   publicSignStatus,
   safePdfFilename,
   signBlobPath,
+  signCleanupPaths,
+  signCleanupPrefixes,
   signCodeLookupKey,
   signPathAllowed,
   signPublicPath,
+  signStoragePrefix,
   signedDownloadName,
 } from "./sign.ts";
 import { pngFromDataUrl, stampSignedPdf } from "./sign-pdf.ts";
@@ -78,6 +81,28 @@ test("file paths stay under the private sign-docs prefix, not a public folder", 
   assert.equal(signPathAllowed("/public/file.pdf"), false);
   assert.equal(safePdfFilename("a/b\\c.pdf"), "abc.pdf");
   assert.equal(signedDownloadName("Job.pdf"), "Job-signed.pdf");
+});
+
+test("cleanup prefixes are per-document folders, not the whole sign-docs tree", () => {
+  const original = "sign-docs/aaaa-bbbb/original-xyz.pdf";
+  const signed = signBlobPath("sign_cccc", "signed");
+  assert.equal(signStoragePrefix(original), "sign-docs/aaaa-bbbb/");
+  assert.equal(signStoragePrefix(signed), "sign-docs/sign_cccc/");
+  assert.equal(signStoragePrefix("sign-docs/orphan.pdf"), null);
+  assert.equal(signStoragePrefix("sign-docs/"), null);
+  assert.equal(signStoragePrefix("public/file.pdf"), null);
+  const prefixes = signCleanupPrefixes([
+    original,
+    signed,
+    null,
+    "sign-docs/../secret.pdf",
+  ]);
+  assert.deepEqual(prefixes.sort(), [
+    "sign-docs/aaaa-bbbb/",
+    "sign-docs/sign_cccc/",
+  ]);
+  assert.equal(prefixes.includes("sign-docs/"), false);
+  assert.deepEqual(signCleanupPaths([original, null, "nope.pdf"]), [original]);
 });
 
 test("stamping a signed PDF adds a signature page with name and timestamp", async () => {

@@ -60,6 +60,34 @@ export function signPathAllowed(pathname: string) {
   );
 }
 
+/** Folder under sign-docs/ for one stored PDF. Never the whole tree. */
+export function signStoragePrefix(pathname: string): string | null {
+  if (!signPathAllowed(pathname)) return null;
+  const trimmed = pathname.replace(/\/+$/, "");
+  const slash = trimmed.lastIndexOf("/");
+  if (slash < SIGN_BLOB_PREFIX.length) return null;
+  const prefix = `${trimmed.slice(0, slash)}/`;
+  if (prefix === SIGN_BLOB_PREFIX || !signPathAllowed(prefix)) return null;
+  return prefix;
+}
+
+export function signCleanupPaths(paths: Array<string | null | undefined>) {
+  const allowed = new Set<string>();
+  for (const pathname of paths) {
+    if (pathname && signPathAllowed(pathname)) allowed.add(pathname);
+  }
+  return [...allowed];
+}
+
+export function signCleanupPrefixes(paths: Array<string | null | undefined>) {
+  const prefixes = new Set<string>();
+  for (const pathname of paths) {
+    const prefix = pathname ? signStoragePrefix(pathname) : null;
+    if (prefix) prefixes.add(prefix);
+  }
+  return [...prefixes];
+}
+
 export function safePdfFilename(name: string) {
   const trimmed = name.trim().replace(/[/\\]/g, "").slice(0, 120);
   if (!trimmed) return "document.pdf";

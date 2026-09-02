@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CopyButton } from "@/components/admin/CopyButton";
+import { SignDeleteButton } from "@/components/admin/SignDeleteButton";
 import { SignUpload } from "@/components/admin/SignUpload";
 import { publicSiteUrl } from "@/lib/config";
 import {
@@ -79,6 +80,7 @@ function SignCard({
           >
             Original
           </a>
+          <SignDeleteButton id={doc.id} filename={doc.filename} />
         </div>
       </div>
     </li>
@@ -103,7 +105,7 @@ export default async function AdminSignPage() {
           /sign
         </Link>{" "}
         with no account. One code is one document. After it is signed, that
-        code cannot be used again.
+        code cannot be used again. Delete removes the PDFs and the code.
       </p>
       {mode === "none" ? (
         <p className="mt-4 rounded-xl bg-[#f6e2c8] px-4 py-3 text-sm">

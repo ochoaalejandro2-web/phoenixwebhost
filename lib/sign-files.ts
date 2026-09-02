@@ -1,7 +1,13 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { get, put } from "@vercel/blob";
-import { SIGN_BLOB_PREFIX, signPathAllowed } from "@/lib/sign";
+import { del, get, list, put } from "@vercel/blob";
+import {
+  SIGN_BLOB_PREFIX,
+  signBlobPath,
+  signCleanupPaths,
+  signCleanupPrefixes,
+  signPathAllowed,
+} from "@/lib/sign";
 
 const LOCAL_ROOT = path.join(process.cwd(), "data", "sign-files");
 const TMP_ROOT = path.join("/tmp", "phoenixwebhost-sign-files");
@@ -26,13 +32,21 @@ function localRoot() {
   return process.env.VERCEL ? TMP_ROOT : LOCAL_ROOT;
 }
 
+function signLocalRoot() {
+  return path.resolve(localRoot(), SIGN_BLOB_PREFIX);
+}
+
+function insideSignRoot(full: string) {
+  const root = signLocalRoot();
+  return full === root || full.startsWith(root + path.sep);
+}
+
 function localFullPath(pathname: string) {
   if (!signPathAllowed(pathname)) {
     throw new Error("Invalid sign file path");
   }
   const full = path.resolve(localRoot(), pathname);
-  const root = path.resolve(localRoot(), SIGN_BLOB_PREFIX);
-  if (!full.startsWith(root)) {
+  if (!insideSignRoot(full)) {
     throw new Error("Invalid sign file path");
   }
   return full;
@@ -82,4 +96,90 @@ export async function getSignFileBytes(pathname: string) {
     }
   }
   return null;
+}
+
+async function listBlobPathnames(prefix: string) {
+  if (!signPathAllowed(prefix) || prefix === SIGN_BLOB_PREFIX) return [];
+  const pathnames: string[] = [];
+  let cursor: string | undefined;
+  do {
+    const result = await list({ prefix, limit: 1000, cursor });
+    for (const blob of result.blobs) {
+      if (signPathAllowed(blob.pathname)) pathnames.push(blob.pathname);
+    }
+    cursor = result.hasMore ? result.cursor : undefined;
+  } while (cursor);
+  return pathnames;
+}
+
+async function deleteLocalPrefix(prefix: string) {
+  if (!signPathAllowed(prefix) || prefix === SIGN_BLOB_PREFIX) return;
+  const dir = path.resolve(localRoot(), prefix);
+  if (!insideSignRoot(dir) || dir === signLocalRoot()) return;
+  let entries: string[];
+  try {
+    entries = await fs.readdir(dir);
+  } catch {
+    return;
+  }
+  await Promise.all(
+    entries.map(async (entry) => {
+      const full = path.join(dir, entry);
+      if (!insideSignRoot(full)) return;
+      try {
+        const stat = await fs.lstat(full);
+        if (stat.isFile() || stat.isSymbolicLink()) await fs.unlink(full);
+      } catch {
+        /* already gone */
+      }
+    }),
+  );
+  try {
+    await fs.rmdir(dir);
+  } catch {
+    /* not empty or already gone */
+  }
+}
+
+export async function deleteSignFiles(doc: {
+  id: string;
+  originalPath: string;
+  signedPath: string | null;
+}) {
+  const known = signCleanupPaths([
+    doc.originalPath,
+    doc.signedPath,
+    signBlobPath(doc.id, "signed"),
+  ]);
+  const prefixes = signCleanupPrefixes([
+    doc.originalPath,
+    doc.signedPath,
+    signBlobPath(doc.id, "signed"),
+  ]);
+  const mode = signFilesMode();
+  if (mode === "blob") {
+    const leftovers: string[] = [];
+    for (const prefix of prefixes) {
+      try {
+        leftovers.push(...(await listBlobPathnames(prefix)));
+      } catch (error) {
+        console.error("[sign] blob list failed", prefix, error);
+      }
+    }
+    const all = [...new Set([...known, ...leftovers])].filter(signPathAllowed);
+    if (all.length > 0) await del(all);
+    return;
+  }
+  if (mode === "local") {
+    await Promise.all(
+      known.map(async (pathname) => {
+        try {
+          await fs.unlink(localFullPath(pathname));
+        } catch {
+          /* already gone */
+        }
+      }),
+    );
+    await Promise.all(prefixes.map((prefix) => deleteLocalPrefix(prefix)));
+  }
 }
