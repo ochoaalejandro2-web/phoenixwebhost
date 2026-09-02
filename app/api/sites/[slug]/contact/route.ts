@@ -6,6 +6,7 @@ import {
   type SiteContactStatus,
 } from "@/lib/notify";
 import { parseSiteLocale, withSiteLangQuery } from "@/lib/site-locale";
+import { isAlwaysLiveWalkInDemo } from "@/lib/public-demos";
 import { addContactMessage, getClientBySlug } from "@/lib/store";
 import type { Locale } from "@/lib/types";
 
@@ -93,7 +94,7 @@ export async function POST(
   if (!client) {
     return NextResponse.json({ error: "not found" }, { status: 404 });
   }
-  if (client.siteStatus !== "live") {
+  if (client.siteStatus !== "live" && !isAlwaysLiveWalkInDemo(client.slug)) {
     return NextResponse.json({ error: "site offline" }, { status: 403 });
   }
 

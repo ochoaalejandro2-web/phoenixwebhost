@@ -1,3 +1,4 @@
+import { HOLA_TAX_SLUG } from "./client-themes.ts";
 import { walkInDisplayHost } from "./walk-in-hosts.ts";
 import type { Locale, TemplateId } from "./types.ts";
 
@@ -423,6 +424,16 @@ export function filterTemplates(query: string): TemplateId[] {
 
 export function demoForTemplate(template: TemplateId): PublicDemo | undefined {
   return PUBLIC_DEMOS.find((demo) => demo.template === template);
+}
+
+/**
+ * Homepage / walk-in template samples. These are not billed customer
+ * accounts, so the unpaid “temporarily offline” page must never replace them.
+ * Hola Tax is a real shop listed next to the demos — it can still go offline.
+ */
+export function isAlwaysLiveWalkInDemo(slug: string) {
+  if (slug === HOLA_TAX_SLUG) return false;
+  return PUBLIC_DEMOS.some((demo) => demo.slug === slug);
 }
 
 export function templateLabelForDemo(demo: PublicDemo, locale: Locale) {

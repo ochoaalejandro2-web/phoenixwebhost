@@ -83,7 +83,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Sign a PDF (customer, no login) | `/sign` |
 | Demo contractor | `/s/desert-peak-roofing` (paid, live) |
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
-| Demo restaurant | `/s/mesa-street-kitchen` (overdue, offline) |
+| Demo restaurant (sample) | `/s/mesa-street-kitchen` (paid, live) |
 | Demo landscaping (sample) | `/s/palo-verde-yards` (paid, live) |
 | Demo handyman (sample) | `/s/ironwood-handyman` (paid, live) |
 | Premium Carpentry Designs | `/s/premium-carpentry-designs` (paid, live) — shareable phone URL |
@@ -168,7 +168,7 @@ Paste the `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
 
 **Test card:** `4242 4242 4242 4242`, any future expiry, any CVC, any ZIP.
 
-To test a failed payment / unpaid flow: card `4000 0000 0000 9995`, or in the owner panel open a client and click **Simulate unpaid** → **Apply unpaid policy** (after the 2-day grace, or it will set overdue immediately and offline when grace has passed). Mesa Street Kitchen is already overdue and offline.
+To test a failed payment / unpaid flow: card `4000 0000 0000 9995`, or in the owner panel open a **real client** (not a walk-in template demo) and click **Simulate unpaid** → **Apply unpaid policy** (after the 2-day grace, or it will set overdue immediately and offline when grace has passed). Template demos such as Mesa Street Kitchen stay live so walk-in owners can tap them.
 
 Checkout charges **$200 launch + $69/month** in one Stripe Checkout session (subscription mode with a one-time line item). If the customer selects **Local Boost**, the same session also includes **$99 setup + $79/month**. If they select **Traffic**, the same session includes **$199/month** only (no setup fee). If they select **Loud**, the same session includes **$349/month** only (no setup fee). Local Boost, Traffic, and Loud are mutually exclusive — checkout rejects two ads tiers at once. If they select **Business Email**, it also includes **$49 setup + $19/month**. Book a job, missed-call text-back, review texts, voice receptionist, and domain register are extra line items on the same session when checked. Leaving an add-on unchecked still charges only the base plan (and any other checked add-on). If an add-on’s price env vars are missing, checkout fails closed with a clear error instead of charging a partial cart.
 

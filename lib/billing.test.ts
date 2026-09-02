@@ -5,6 +5,7 @@ import {
   applyLoudPurchased,
   applyTrafficPurchased,
 } from "./billing-addons.ts";
+import { applyUnpaidPolicy } from "./billing.ts";
 import type { Client } from "./types.ts";
 
 function sampleClient(overrides: Partial<Client> = {}): Client {
@@ -72,4 +73,34 @@ test("Traffic and Loud purchase notes are honest managed-ads copy", () => {
   assert.match(loud.notes[0].body, /managed ads/);
   assert.match(loud.notes[0].body, /Not a ranking promise/);
   assert.doesNotMatch(loud.notes[0].body, /guaranteed first page|magic SEO/i);
+});
+
+test("unpaid policy still offlines a real overdue client after grace", () => {
+  const now = new Date("2026-09-01T12:00:00.000Z");
+  const next = applyUnpaidPolicy(
+    sampleClient({
+      slug: "valley-plumbing",
+      paymentStatus: "overdue",
+      overdueSince: "2026-08-20T00:00:00.000Z",
+      reminderSentAt: "2026-08-20T00:00:00.000Z",
+    }),
+    now,
+  );
+  assert.equal(next.siteStatus, "offline");
+  assert.equal(next.offlineAt, now.toISOString());
+});
+
+test("unpaid policy leaves walk-in template demos live", () => {
+  const now = new Date("2026-09-01T12:00:00.000Z");
+  const next = applyUnpaidPolicy(
+    sampleClient({
+      slug: "mesa-street-kitchen",
+      paymentStatus: "overdue",
+      overdueSince: "2026-08-20T00:00:00.000Z",
+      reminderSentAt: "2026-08-20T00:00:00.000Z",
+    }),
+    now,
+  );
+  assert.equal(next.siteStatus, "live");
+  assert.equal(next.offlineAt, null);
 });

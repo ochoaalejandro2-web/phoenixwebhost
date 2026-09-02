@@ -5,6 +5,7 @@ import { TaxOfficeSite } from "@/components/sites/TaxOfficeSite";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
 import { COMPANY } from "@/lib/config";
 import { isPreviewClient } from "@/lib/demo";
+import { isAlwaysLiveWalkInDemo } from "@/lib/public-demos";
 import type { Client, ContactNotice, Locale } from "@/lib/types";
 
 export function OfflineSite({ client }: { client: Client }) {
@@ -51,9 +52,11 @@ export function renderClientSite(
   notice?: ContactNotice | null,
   locale: Locale = "en",
 ) {
-  if (client.siteStatus === "taken_down") return <TakenDownSite />;
-  if (client.siteStatus === "offline" || client.siteStatus === "paused") {
-    return <OfflineSite client={client} />;
+  if (!isAlwaysLiveWalkInDemo(client.slug)) {
+    if (client.siteStatus === "taken_down") return <TakenDownSite />;
+    if (client.siteStatus === "offline" || client.siteStatus === "paused") {
+      return <OfflineSite client={client} />;
+    }
   }
   if (isTaxOfficeTemplate(client.template)) {
     const site = (

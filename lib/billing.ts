@@ -1,12 +1,13 @@
-import { PRICING } from "@/lib/config";
-import type { Client } from "@/lib/types";
+import { PRICING } from "./config.ts";
+import { isAlwaysLiveWalkInDemo } from "./public-demos.ts";
+import type { Client } from "./types.ts";
 
 export {
   applyBusinessEmailPurchased,
   applyLocalBoostPurchased,
   applyLoudPurchased,
   applyTrafficPurchased,
-} from "@/lib/billing-addons";
+} from "./billing-addons.ts";
 
 function addDays(iso: string | null, days: number) {
   const base = iso ? new Date(iso) : new Date();
@@ -56,6 +57,9 @@ export function applyPaymentFailed(
 }
 
 export function applyUnpaidPolicy(client: Client, now = new Date()): Client {
+  if (isAlwaysLiveWalkInDemo(client.slug) || client.sample) {
+    return client;
+  }
   if (client.paymentStatus === "paid" || client.paymentStatus === "none") {
     return client;
   }
