@@ -1,13 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import type { SignHereBox } from "@/lib/sign";
+
+const PdfPages = dynamic(
+  () => import("@/components/sign/PdfPages").then((mod) => mod.PdfPages),
+  { ssr: false },
+);
 
 export function SignDocument({
   code,
   filename,
+  boxes = [],
 }: {
   code: string;
   filename: string;
+  boxes?: SignHereBox[];
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawing = useRef(false);
@@ -17,6 +26,7 @@ export function SignDocument({
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const hasBoxes = boxes.length > 0;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,7 +59,14 @@ export function SignDocument({
 
     size();
     window.addEventListener("resize", size);
-    return () => window.removeEventListener("resize", size);
+    const block = (event: TouchEvent) => {
+      event.preventDefault();
+    };
+    canvas.addEventListener("touchmove", block, { passive: false });
+    return () => {
+      window.removeEventListener("resize", size);
+      canvas.removeEventListener("touchmove", block);
+    };
   }, []);
 
   function point(event: React.PointerEvent<HTMLCanvasElement>) {
@@ -129,7 +146,9 @@ export function SignDocument({
       }
       setDone(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not save that signature.");
+      setError(
+        err instanceof Error ? err.message : "Could not save that signature.",
+      );
     } finally {
       setPending(false);
     }
@@ -159,11 +178,17 @@ export function SignDocument({
       >
         Open PDF
       </a>
-      <iframe
-        title="Document to sign"
-        src={pdfUrl}
-        className="mt-4 h-[48vh] w-full rounded-2xl border border-zinc-200 bg-zinc-50"
-      />
+      {hasBoxes ? (
+        <div className="mt-4">
+          <PdfPages url={pdfUrl} boxes={boxes} mode="view" />
+        </div>
+      ) : (
+        <iframe
+          title="Document to sign"
+          src={pdfUrl}
+          className="mt-4 h-[48vh] w-full rounded-2xl border border-zinc-200 bg-zinc-50"
+        />
+      )}
       <label className="mt-6 block text-sm text-body">
         Type your name
         <input

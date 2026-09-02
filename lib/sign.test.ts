@@ -17,6 +17,10 @@ import {
   signPublicPath,
   signStoragePrefix,
   signedDownloadName,
+  normalizeSignBoxes,
+  normalizeSignBox,
+  signBoxPdfRect,
+  newSignBox,
 } from "./sign.ts";
 import { pngFromDataUrl, stampSignedPdf } from "./sign-pdf.ts";
 
@@ -123,4 +127,44 @@ test("stamping a signed PDF adds a signature page with name and timestamp", asyn
       "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
     ),
   );
+});
+
+test("sign-here boxes stay on one page as fractions and map to PDF coordinates", () => {
+  const junk = normalizeSignBoxes([
+    { id: "ok_box_1", page: 0, x: 0.1, y: 0.2, w: 0.3, h: 0.1 },
+    { page: -1, x: 0, y: 0, w: 0.2, h: 0.1 },
+    { id: "ok_box_1", page: 0, x: 0.5, y: 0.5, w: 0.2, h: 0.1 },
+    null,
+    { page: 0, x: "nope", y: 0, w: 0.2, h: 0.1 },
+  ]);
+  assert.equal(junk.length, 2);
+  assert.equal(junk[0].page, 0);
+  assert.equal(normalizeSignBox({ page: 0, x: -2, y: 0, w: 0.3, h: 0.1 })?.x, 0);
+  const rect = signBoxPdfRect(
+    { id: "a", page: 0, x: 0, y: 0, w: 1, h: 0.1 },
+    612,
+    792,
+  );
+  assert.equal(rect.x, 0);
+  assert.equal(rect.w, 612);
+  assert.ok(Math.abs(rect.h - 79.2) < 0.01);
+  assert.ok(Math.abs(rect.y - (792 - 79.2)) < 0.01);
+  const dropped = newSignBox(1, 0.5, 0.5);
+  assert.equal(dropped.page, 1);
+  assert.ok(dropped.x >= 0 && dropped.x + dropped.w <= 1);
+});
+
+test("stamping with sign-here boxes keeps the extra signature page", async () => {
+  const source = await PDFDocument.create();
+  source.addPage([612, 792]);
+  const original = await source.save();
+  const signed = await stampSignedPdf({
+    original,
+    signerName: "Jane Doe",
+    acknowledged: true,
+    signedAt: new Date("2026-03-02T20:04:00.000Z"),
+    boxes: [{ id: "ok_box_1", page: 0, x: 0.1, y: 0.8, w: 0.4, h: 0.08 }],
+  });
+  const loaded = await PDFDocument.load(signed);
+  assert.equal(loaded.getPageCount(), 2);
 });

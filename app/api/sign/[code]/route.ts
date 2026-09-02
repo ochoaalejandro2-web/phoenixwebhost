@@ -85,6 +85,7 @@ export async function POST(
       acknowledged,
       signaturePng: png,
       signedAt,
+      boxes: doc.boxes,
     });
     const stored = await putSignFile(
       signBlobPath(doc.id, "signed"),

@@ -184,6 +184,15 @@ export type StripeExtraPriceIds = {
 
 export type SignDocStatus = "pending" | "signed";
 
+export type SignHereBox = {
+  id: string;
+  page: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
+
 export type SignDocument = {
   id: string;
   code: string;
@@ -197,6 +206,7 @@ export type SignDocument = {
   signerName: string | null;
   acknowledged: boolean;
   sizeBytes: number;
+  boxes: SignHereBox[];
 };
 
 export type AppState = {

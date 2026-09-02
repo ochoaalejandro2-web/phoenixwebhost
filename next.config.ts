@@ -12,6 +12,7 @@ const WALK_IN_HOST_REWRITES: Array<{ host: string; slug: string }> = [
 ];
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["pdfjs-dist"],
   async rewrites() {
     return WALK_IN_HOST_REWRITES.flatMap(({ host, slug }) => [
       {

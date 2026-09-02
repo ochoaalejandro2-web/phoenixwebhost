@@ -64,6 +64,14 @@ function SignCard({
             <>
               <CopyButton value={code} label="Copy code" />
               <CopyButton value={signTextMessage(doc.code, root)} label="Copy text" />
+              <a
+                className="rounded-full border border-line px-3 py-1.5 text-sm"
+                href={`/admin/sign/${doc.id}`}
+              >
+                {doc.boxes?.length
+                  ? `Sign here boxes (${doc.boxes.length})`
+                  : "Sign here boxes"}
+              </a>
             </>
           ) : null}
           {doc.status === "signed" ? (
@@ -105,7 +113,8 @@ export default async function AdminSignPage() {
           /sign
         </Link>{" "}
         with no account. One code is one document. After it is signed, that
-        code cannot be used again. Delete removes the PDFs and the code.
+        code cannot be used again. Optional: drop Sign here boxes on the PDF
+        so they know where to sign. Delete removes the PDFs and the code.
       </p>
       {mode === "none" ? (
         <p className="mt-4 rounded-xl bg-[#f6e2c8] px-4 py-3 text-sm">

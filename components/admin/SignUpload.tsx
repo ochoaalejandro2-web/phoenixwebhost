@@ -11,6 +11,7 @@ export function SignUpload({ blobReady }: { blobReady: boolean }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [created, setCreated] = useState<{
+    id: string;
     code: string;
     filename: string;
     path: string;
@@ -73,6 +74,7 @@ export function SignUpload({ blobReady }: { blobReady: boolean }) {
         res = await fetch("/api/admin/sign", { method: "POST", body: data });
       }
       const payload = (await res.json().catch(() => ({}))) as {
+        id?: string;
         code?: string;
         filename?: string;
         path?: string;
@@ -87,10 +89,11 @@ export function SignUpload({ blobReady }: { blobReady: boolean }) {
         }
         throw new Error("Could not save that PDF.");
       }
-      if (!payload.code || !payload.path || !payload.text) {
+      if (!payload.code || !payload.path || !payload.text || !payload.id) {
         throw new Error("Could not save that PDF.");
       }
       setCreated({
+        id: payload.id,
         code: payload.code,
         filename: payload.filename || file.name,
         path: payload.path,
@@ -112,8 +115,8 @@ export function SignUpload({ blobReady }: { blobReady: boolean }) {
     >
       <p className="font-display text-xl">Upload a PDF</p>
       <p className="mt-1 text-sm text-ink-soft">
-        You get a short code to text. The customer signs at /sign with no
-        login.
+        You get a short code to text. After upload you can drop Sign here
+        boxes on the PDF. The customer signs at /sign with no login.
       </p>
       <label className="mt-4 block text-sm">
         PDF
@@ -151,6 +154,12 @@ export function SignUpload({ blobReady }: { blobReady: boolean }) {
           <div className="mt-3 flex flex-wrap gap-2">
             <CopyButton value={created.code} label="Copy code" />
             <CopyButton value={created.text} label="Copy text" />
+            <a
+              className="rounded-full bg-sage px-3 py-1.5 text-sm font-semibold text-white"
+              href={`/admin/sign/${created.id}`}
+            >
+              Sign here boxes
+            </a>
           </div>
         </div>
       ) : null}

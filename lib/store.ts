@@ -20,11 +20,13 @@ import type {
   Review,
   ReviewStatus,
   SignDocument,
+  SignHereBox,
   TemplateId,
 } from "@/lib/types";
 import {
   SIGN_TTL_MS,
   generateSignCode,
+  normalizeSignBoxes,
   publicSignStatus,
   signCodeLookupKey,
 } from "@/lib/sign";
@@ -235,6 +237,7 @@ function normalizeSignDocument(doc: SignDocument): SignDocument {
     signerName: doc.signerName ? asText(doc.signerName) : null,
     acknowledged: Boolean(doc.acknowledged),
     sizeBytes: typeof doc.sizeBytes === "number" ? doc.sizeBytes : 0,
+    boxes: normalizeSignBoxes(doc.boxes),
   };
 }
 
@@ -622,6 +625,7 @@ export async function createSignDocument(input: {
       signerName: null,
       acknowledged: false,
       sizeBytes: input.sizeBytes,
+      boxes: [],
     };
     state.signDocuments.unshift(doc);
     box.doc = doc;
@@ -668,6 +672,42 @@ export async function markSignDocumentSigned(input: {
       signerName: input.signerName,
       acknowledged: input.acknowledged,
       signedPath: input.signedPath,
+    };
+    state.signDocuments[index] = next;
+    result = { ok: true, doc: next };
+  });
+  return result;
+}
+
+export async function updateSignDocumentBoxes(
+  id: string,
+  boxes: SignHereBox[],
+): Promise<
+  | { ok: true; doc: SignDocument }
+  | { ok: false; error: "notfound" | "signed" }
+> {
+  let result:
+    | { ok: true; doc: SignDocument }
+    | { ok: false; error: "notfound" | "signed" } = {
+    ok: false,
+    error: "notfound",
+  };
+  const nextBoxes = normalizeSignBoxes(boxes);
+  await updateState((state) => {
+    if (!state.signDocuments) state.signDocuments = [];
+    const index = state.signDocuments.findIndex((row) => row.id === id);
+    if (index < 0) {
+      result = { ok: false, error: "notfound" };
+      return;
+    }
+    const current = state.signDocuments[index];
+    if (current.status === "signed") {
+      result = { ok: false, error: "signed" };
+      return;
+    }
+    const next: SignDocument = {
+      ...current,
+      boxes: nextBoxes,
     };
     state.signDocuments[index] = next;
     result = { ok: true, doc: next };

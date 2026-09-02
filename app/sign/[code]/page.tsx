@@ -37,9 +37,15 @@ export default async function SignByCodePage({
         <div className="mt-8 w-full max-w-lg">
           <h1 className="font-display text-3xl text-ink-black">Sign this PDF</h1>
           <p className="mt-2 text-sm text-body">
-            Read the document, then type your name or draw on your phone.
+            {doc.boxes?.length
+              ? "The green boxes are where to sign. Draw with your finger or type your name."
+              : "Read the document, then type your name or draw on your phone."}
           </p>
-          <SignDocument code={formatSignCode(doc.code)} filename={doc.filename} />
+          <SignDocument
+            code={formatSignCode(doc.code)}
+            filename={doc.filename}
+            boxes={doc.boxes || []}
+          />
         </div>
       ) : (
         <div className="mt-10 w-full max-w-sm text-center">
