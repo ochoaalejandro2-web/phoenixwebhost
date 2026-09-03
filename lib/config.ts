@@ -6,6 +6,7 @@ export const COMPANY = {
   email: "hello@phoenixwebhost.com",
   phone: "(480) 953-2393",
   telHref: "tel:4809532393",
+  smsHref: "sms:+14809532393",
   domain: "phoenixwebhost.com",
 } as const;
 
@@ -46,8 +47,15 @@ export const PRICING = {
   domainYearlyLabel: "$20",
   extraPageMin: 75,
   extraPageMax: 150,
+  extraPageLabel: "$75–$150",
   logoMin: 100,
   logoMax: 300,
+  orderSetupMinCents: 29_900,
+  orderSetupMaxCents: 49_900,
+  orderMonthlyCents: 14_900,
+  orderSetupLabel: "$299–$499",
+  orderMonthlyLabel: "$149",
+  orderFeeNote: "~3%",
   includedEditMinutes: 30,
   includedEditRequests: 2,
   unpaidGraceDays: 2,

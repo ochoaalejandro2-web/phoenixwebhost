@@ -6,8 +6,8 @@ import {
   SiteHeader,
   StudioShell,
 } from "@/components/marketing/Chrome";
-import { DemoSearch } from "@/components/marketing/DemoSearch";
 import { HeroDevices } from "@/components/marketing/HeroDevices";
+import { SeeYourSiteForm } from "@/components/marketing/SeeYourSiteForm";
 import { StudioFlare } from "@/components/marketing/StudioFlare";
 import { RequestForm } from "@/components/marketing/RequestForm";
 import { ReviewsSection } from "@/components/marketing/ReviewsSection";
@@ -95,7 +95,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               {c.heroLead}
             </p>
             <div className="mt-8 max-w-lg">
-              <DemoSearch locale={locale} variant="hero" />
+              <SeeYourSiteForm locale={locale} variant="hero" />
             </div>
             <div className="mt-10 flex flex-wrap items-end gap-10">
               <Link

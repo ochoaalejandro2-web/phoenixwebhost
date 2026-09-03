@@ -6,7 +6,8 @@ import { adsFlagsFromTier, type AdsTier } from "@/lib/ads";
 import { TEMPLATES } from "@/lib/config";
 import { t } from "@/lib/i18n";
 import { extraFlagsFromPicks, type ExtraPick } from "@/lib/extra-picks";
-import type { Locale } from "@/lib/types";
+import type { Locale, TemplateId } from "@/lib/types";
+import { quotedMessageNote, type QuotedPick } from "@/lib/walk-in-preview";
 
 export function AddonToggle({
   checked,
@@ -57,6 +58,9 @@ export function RequestForm({
   domainReady = false,
   initialAds = "none",
   initialExtras = [],
+  initialBusiness = "",
+  initialTemplate = "",
+  initialQuoted = [],
 }: {
   locale: Locale;
   boostReady?: boolean;
@@ -70,9 +74,13 @@ export function RequestForm({
   domainReady?: boolean;
   initialAds?: AdsTier;
   initialExtras?: ExtraPick[];
+  initialBusiness?: string;
+  initialTemplate?: TemplateId | "";
+  initialQuoted?: QuotedPick[];
 }) {
   const c = t(locale);
   const initial = extraFlagsFromPicks(initialExtras);
+  const quotedNote = quotedMessageNote(initialQuoted, locale);
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
   const [adsTier, setAdsTier] = useState<AdsTier>(initialAds);
   const [includeEmail, setIncludeEmail] = useState(initial.includeEmail);
@@ -95,7 +103,7 @@ export function RequestForm({
         email: form.get("email"),
         phone: form.get("phone"),
         city: form.get("city"),
-        message: form.get("message"),
+        message: [form.get("message"), quotedNote].filter(Boolean).join(" "),
         template: form.get("template"),
         locale,
         ...adsFlagsFromTier(adsTier),
@@ -130,7 +138,12 @@ export function RequestForm({
       </label>
       <label className="text-sm text-body">
         {c.formBusiness}
-        <input name="businessName" required className="field-studio" />
+        <input
+          name="businessName"
+          required
+          defaultValue={initialBusiness}
+          className="field-studio"
+        />
       </label>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="text-sm text-body">
@@ -159,7 +172,12 @@ export function RequestForm({
       </label>
       <label className="text-sm text-body">
         {c.formTemplate}
-        <select name="template" required defaultValue="" className="field-studio">
+        <select
+          name="template"
+          required
+          defaultValue={initialTemplate}
+          className="field-studio"
+        >
           <option value="" disabled>
             {locale === "es" ? "Elija una plantilla" : "Choose a starting point"}
           </option>

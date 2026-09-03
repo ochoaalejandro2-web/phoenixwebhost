@@ -11,6 +11,7 @@ export const copy = {
       included: "What’s included",
       work: "How it works",
       request: "Request a demo",
+      seeSite: "See your site",
       reviews: "Reviews",
       affiliates: "Sell with us",
       owner: "Owner login",
@@ -268,6 +269,51 @@ export const copy = {
     reviewsSeeAll: "See all reviews",
     footerLegal: "Phoenixwebhost Inc. · Phoenix, AZ",
     bilingual: "English & Español",
+    seeSiteKicker: "Walk-in preview",
+    seeSiteTitle: "See your site with your name on it.",
+    seeSiteLead:
+      "Type your business name, pick a type, and we fill a real Phoenixwebhost template. No email needed for this preview.",
+    seeSiteNameLabel: "Your business name",
+    seeSiteNamePlaceholder: "Reggie’s Barber Shop",
+    seeSiteTypeLabel: "What kind of business?",
+    seeSiteNext: "See my site",
+    seeSiteChange: "Try another name",
+    seeSiteNameNeeded: "Type a business name first.",
+    seeSiteTypeNeeded: "Pick a business type.",
+    seeSitePreviewKicker: "Preview — not live yet",
+    seeSitePreviewNote:
+      "A proven template with your name on it. The phone is a placeholder until you give us yours.",
+    seeSitePriceTitle: "Clear pricing — no hidden fees",
+    seeSiteBaseLabel: "Website",
+    seeSiteBaseHelp: "$200 to launch + $69/month. Always on this quote.",
+    seeSiteDueNow: "Due to launch",
+    seeSitePerMonth: "Then every month",
+    seeSiteFirstPay: "First payment if you pay launch + first month together",
+    seeSiteYearly: "Domain, first year",
+    seeSiteQuotedTitle: "Quoted separately — not in the number above",
+    seeSiteCustomNote:
+      "Need something custom? Upon request we can customize it to what you want — that costs more (quoted).",
+    seeSiteCtaCall: "Call",
+    seeSiteCtaText: "Text",
+    seeSiteCtaRequest: "Request a demo",
+    seeSiteNoFees: "No hidden fees. The $200 launch and $69/month stay on screen.",
+    seeSiteTypeSalon: "Barber / salon",
+    seeSiteTypeRestaurant: "Restaurant",
+    seeSiteTypeHandyman: "Handyman",
+    seeSiteTypeContractor: "Contractor",
+    seeSiteTypeCleaning: "Cleaning",
+    seeSiteTypeShop: "General shop",
+    seeSiteOrderTitle: "Pickup ordering (Stripe)",
+    seeSiteOrderHelp:
+      "Restaurant pickup add-on. Setup $299–$499 + $149/month. Card fees about 3%. Not delivery, not a full online shop.",
+    seeSiteExtraPage: "Extra page",
+    seeSiteExtraPageHelp: "$75–$150 per page. Quoted — not in the running total.",
+    seeSitePhotos: "Custom photos",
+    seeSitePhotosHelp: "Quoted. We use photos you send, or we quote a shoot.",
+    seeSiteSpanish: "Spanish on the site",
+    seeSiteSpanishHelp:
+      "Quoted. This marketing site already toggles English / Español.",
+    seeSiteAdsNone: "No ads package",
   },
   es: {
     langName: "Español",
@@ -279,6 +325,7 @@ export const copy = {
       included: "Qué incluye",
       work: "Cómo funciona",
       request: "Pedir una demo",
+      seeSite: "Vea su sitio",
       reviews: "Reseñas",
       affiliates: "Venda con nosotros",
       owner: "Acceso del dueño",
@@ -536,6 +583,51 @@ export const copy = {
     reviewsSeeAll: "Ver todas las reseñas",
     footerLegal: "Phoenixwebhost Inc. · Phoenix, AZ",
     bilingual: "English & Español",
+    seeSiteKicker: "Vista para ventas",
+    seeSiteTitle: "Vea su sitio con su nombre.",
+    seeSiteLead:
+      "Escriba el nombre del negocio, elija el tipo y llenamos una plantilla real de Phoenixwebhost. No hace falta correo para esta vista.",
+    seeSiteNameLabel: "Nombre de su negocio",
+    seeSiteNamePlaceholder: "Reggie’s Barber Shop",
+    seeSiteTypeLabel: "¿Qué tipo de negocio?",
+    seeSiteNext: "Ver mi sitio",
+    seeSiteChange: "Probar otro nombre",
+    seeSiteNameNeeded: "Escriba primero el nombre del negocio.",
+    seeSiteTypeNeeded: "Elija un tipo de negocio.",
+    seeSitePreviewKicker: "Vista previa — aún no está en línea",
+    seeSitePreviewNote:
+      "Una plantilla comprobada con su nombre. El teléfono es de muestra hasta que nos dé el suyo.",
+    seeSitePriceTitle: "Precios claros — sin cargos ocultos",
+    seeSiteBaseLabel: "Sitio web",
+    seeSiteBaseHelp: "$200 para lanzar + $69 al mes. Siempre en esta cotización.",
+    seeSiteDueNow: "Para lanzar",
+    seeSitePerMonth: "Luego cada mes",
+    seeSiteFirstPay: "Primer pago si paga el lanzamiento y el primer mes juntos",
+    seeSiteYearly: "Dominio, primer año",
+    seeSiteQuotedTitle: "Se cotiza aparte — no va en el número de arriba",
+    seeSiteCustomNote:
+      "¿Necesita algo a medida? Si lo pide, lo podemos personalizar — eso cuesta más (se cotiza).",
+    seeSiteCtaCall: "Llamar",
+    seeSiteCtaText: "Texto",
+    seeSiteCtaRequest: "Pedir una demo",
+    seeSiteNoFees: "Sin cargos ocultos. El lanzamiento de $200 y los $69 al mes se quedan en pantalla.",
+    seeSiteTypeSalon: "Barbería / salón",
+    seeSiteTypeRestaurant: "Restaurante",
+    seeSiteTypeHandyman: "Manitas",
+    seeSiteTypeContractor: "Contratista",
+    seeSiteTypeCleaning: "Limpieza",
+    seeSiteTypeShop: "Tienda general",
+    seeSiteOrderTitle: "Pedidos para recoger (Stripe)",
+    seeSiteOrderHelp:
+      "Complemento de pedidos para recoger. Setup $299–$499 + $149 al mes. Comisiones de tarjeta unos 3%. No es delivery ni una tienda en línea completa.",
+    seeSiteExtraPage: "Página extra",
+    seeSiteExtraPageHelp: "$75–$150 por página. Se cotiza — no va en el total de arriba.",
+    seeSitePhotos: "Fotos a medida",
+    seeSitePhotosHelp: "Se cotiza. Usamos las fotos que envíe, o cotizamos una sesión.",
+    seeSiteSpanish: "Español en el sitio",
+    seeSiteSpanishHelp:
+      "Se cotiza. Este sitio de marketing ya cambia entre English / Español.",
+    seeSiteAdsNone: "Sin paquete de anuncios",
   },
 } as const;
 
@@ -557,4 +649,8 @@ export function reviewsPath(locale: Locale) {
 
 export function affiliatesPath(locale: Locale) {
   return locale === "es" ? "/es/affiliates" : "/affiliates";
+}
+
+export function previewPath(locale: Locale) {
+  return locale === "es" ? "/es/preview" : "/preview";
 }

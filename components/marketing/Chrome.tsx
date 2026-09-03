@@ -4,7 +4,14 @@ import { DemoSearch } from "@/components/marketing/DemoSearch";
 import { VisitBeacon } from "@/components/marketing/VisitBeacon";
 import { StudioReceptionist } from "@/components/sites/ReceptionistChat";
 import { COMPANY } from "@/lib/config";
-import { affiliatesPath, homePath, requestPath, reviewsPath, t } from "@/lib/i18n";
+import {
+  affiliatesPath,
+  homePath,
+  previewPath,
+  requestPath,
+  reviewsPath,
+  t,
+} from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
 export function CompanyPhone({ className }: { className?: string }) {
@@ -69,6 +76,9 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <Logo tone="dark" compactOnMobile />
         </Link>
         <nav className="hidden items-center gap-7 text-sm text-white/85 lg:flex">
+          <Link href={previewPath(locale)} className="hover:text-lime">
+            {c.nav.seeSite}
+          </Link>
           <a href={`${home}#work`} className="hover:text-lime">
             {locale === "es" ? "Trabajo" : "Work"}
           </a>
@@ -97,17 +107,25 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             {c.nav.owner}
           </Link>
           <Link
-            href={requestPath(locale)}
+            href={previewPath(locale)}
             className="btn-lime rounded-full px-4 py-2 text-sm"
           >
-            {c.ctaPrimary}
+            {c.nav.seeSite}
           </Link>
         </div>
       </div>
       <div className="border-t border-white/10 px-6 py-2 md:hidden">
         <div className="mx-auto flex max-w-6xl flex-col gap-2">
           <DemoSearch locale={locale} variant="header" />
-          <CompanyPhone className="text-sm font-medium text-lime hover:text-white" />
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <CompanyPhone className="text-sm font-medium text-lime hover:text-white" />
+            <a
+              href={COMPANY.smsHref}
+              className="text-sm text-white/70 hover:text-lime"
+            >
+              {locale === "es" ? "Texto" : "Text"} {COMPANY.phone}
+            </a>
+          </div>
         </div>
       </div>
     </header>
@@ -137,6 +155,9 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         <div className="flex gap-6 text-sm text-white/70">
           <Link href={homePath(locale)} className="hover:text-lime">
             {locale === "es" ? "Inicio" : "Home"}
+          </Link>
+          <Link href={previewPath(locale)} className="hover:text-lime">
+            {c.nav.seeSite}
           </Link>
           <Link href={reviewsPath(locale)} className="hover:text-lime">
             {c.nav.reviews}
