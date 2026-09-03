@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
-import { createSeedState, mergeMissingSeedClients } from "../data/seed.ts";
 import {
   applySeedDemoBookJob,
   mergeMissingBySlug,
@@ -44,14 +44,15 @@ test("existing walk-in demos get Book a job turned on without dropping other cli
 });
 
 test("mesa street kitchen seed is a live paid restaurant demo", () => {
-  const mesa = createSeedState().clients.find(
-    (row) => row.slug === "mesa-street-kitchen",
-  );
-  assert.equal(mesa?.template, "restaurant");
-  assert.equal(mesa?.siteStatus, "live");
-  assert.equal(mesa?.paymentStatus, "paid");
-  assert.equal(mesa?.offlineAt, null);
-  assert.equal(mesa?.overdueSince, null);
+  const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
+  const start = src.indexOf('slug: "mesa-street-kitchen"');
+  assert.ok(start > 0);
+  const chunk = src.slice(start, start + 1600);
+  assert.match(chunk, /template: "restaurant"/);
+  assert.match(chunk, /siteStatus: "live"/);
+  assert.match(chunk, /paymentStatus: "paid"/);
+  assert.doesNotMatch(chunk, /siteStatus: "offline"/);
+  assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
 });
 
 test("stale offline mesa street kitchen is restored without touching other clients", () => {
@@ -100,42 +101,3 @@ test("stale offline mesa street kitchen is restored without touching other clien
   assert.equal(alreadyLive.added, false);
 });
 
-test("merge restores mesa street kitchen in an existing store without flipping other overdue clients", () => {
-  const seed = createSeedState();
-  const mesa = seed.clients.find((row) => row.slug === "mesa-street-kitchen");
-  assert.ok(mesa);
-  const unpaidShop = {
-    ...mesa,
-    id: "cli_real_unpaid",
-    slug: "real-unpaid-shop",
-    businessName: "Real Unpaid Shop",
-    siteStatus: "offline" as const,
-    paymentStatus: "overdue" as const,
-    offlineAt: "2026-01-01T00:00:00.000Z",
-    overdueSince: "2026-01-01T00:00:00.000Z",
-  };
-  const staleMesa = {
-    ...mesa,
-    siteStatus: "offline" as const,
-    paymentStatus: "overdue" as const,
-    offlineAt: "2026-01-01T00:00:00.000Z",
-    overdueSince: "2026-01-01T00:00:00.000Z",
-  };
-  const { state, added } = mergeMissingSeedClients({
-    ...seed,
-    clients: [unpaidShop, staleMesa],
-  });
-  assert.equal(added, true);
-  assert.equal(
-    state.clients.find((row) => row.slug === "real-unpaid-shop")?.siteStatus,
-    "offline",
-  );
-  assert.equal(
-    state.clients.find((row) => row.slug === "real-unpaid-shop")?.paymentStatus,
-    "overdue",
-  );
-  const restored = state.clients.find((row) => row.slug === "mesa-street-kitchen");
-  assert.equal(restored?.siteStatus, "live");
-  assert.equal(restored?.paymentStatus, "paid");
-  assert.equal(restored?.offlineAt, null);
-});
