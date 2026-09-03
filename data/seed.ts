@@ -345,7 +345,7 @@ function demoClients(): Client[] {
       hours: "Mon 10am–7pm; Tue closed; Wed–Sat 10am–7pm; Sun closed",
       tagline: "Personal & small-business tax preparation in Phoenix",
       about:
-        "Hola Tax Service prepares personal and small-business taxes in Phoenix, and helps with Arizona LLC paperwork. Visit us at 1327 E Northern Ave. Call (602) 545-3308.",
+        "Hola Tax Service prepares personal and small-business taxes in Phoenix, helps with Arizona LLC paperwork, and does monthly bookkeeping for one person running one small business. Visit us at 1327 E Northern Ave. Call (602) 545-3308.",
       services: [
         "Personal tax preparation",
         "Small-business tax preparation",

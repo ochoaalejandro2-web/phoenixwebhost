@@ -5,7 +5,11 @@ import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
 import { displayHours, isPreviewClient, isSamplePhone, previewLeadId, siteHomeHref } from "@/lib/demo";
 import { clientShowsBookJob } from "@/lib/site-addons";
-import { tHolaTax, withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
+import {
+  isHolaTaxBookkeepingService,
+  tHolaTax,
+  withHolaTaxListedServices,
+} from "@/lib/hola-tax-i18n";
 import { DEMO_REVIEWS, photoAlt, SHOP_PHOTOS } from "@/lib/shop-content";
 import { tShop } from "@/lib/shop-i18n";
 import { withSiteLangPath } from "@/lib/site-locale";
@@ -138,7 +142,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
   const phone = String(client.phone || "").trim();
   const listedServices = Array.isArray(client.services) ? client.services : [];
   const services = isHola
-    ? withHolaTaxLlcService(listedServices)
+    ? withHolaTaxListedServices(listedServices)
     : listedServices;
   const shop = tShop(locale);
   const taxPhotos = SHOP_PHOTOS.tax;
@@ -213,6 +217,12 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
                 className="bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
               >
                 {c.call(client.phone)}
+              </a>
+              <a
+                href="#bookkeeping"
+                className="border border-[#00FF66] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#00FF66] hover:text-black"
+              >
+                {hola.booksHeroCta}
               </a>
               <a
                 href="#contact"
@@ -334,6 +344,21 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
                 </li>
               );
             }
+            if (isHola && isHolaTaxBookkeepingService(service)) {
+              return (
+                <li
+                  key={service}
+                  className="border border-[#00FF66] bg-white px-4 py-3 text-black"
+                >
+                  <a href="#bookkeeping" className="block hover:text-[#00E840]">
+                    {taxOfficeServiceLabel(service, locale)}
+                    <span className="mt-1 block text-sm font-semibold text-[#00E840]">
+                      {hola.booksPrice}
+                    </span>
+                  </a>
+                </li>
+              );
+            }
             return (
               <li
                 key={service}
@@ -344,6 +369,52 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             );
           })}
         </ul>
+        {isHola ? (
+          <aside
+            id="bookkeeping"
+            className="mt-6 border border-[#00FF66] bg-white px-5 py-6"
+          >
+            <p className="text-sm uppercase tracking-[0.22em] text-[#00E840]">
+              {hola.booksKicker}
+            </p>
+            <h3 className="mt-2 font-display text-2xl tracking-tight text-black">
+              {hola.booksTitle}
+            </h3>
+            <p className="mt-2 font-display text-3xl tracking-tight text-black">
+              {hola.booksPrice}
+            </p>
+            <p className="mt-3 text-black/80">{hola.booksLead}</p>
+            <ol className="mt-5 grid gap-3 sm:grid-cols-3">
+              {hola.booksSteps.map((step, index) => (
+                <li
+                  key={step}
+                  className="border border-[#00FF66] px-4 py-3 text-black"
+                >
+                  <p className="text-sm font-semibold text-[#00E840]">
+                    {index + 1}
+                  </p>
+                  <p className="mt-2 text-sm text-black">{step}</p>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-4 text-black/80">{hola.booksTaxNote}</p>
+            <p className="mt-2 text-black/80">{hola.booksCatchup}</p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <a
+                href={telHref(client.phone)}
+                className="bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
+              >
+                {hola.ctaCallOrText(client.phone)}
+              </a>
+              <a
+                href="#contact"
+                className="border border-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00FF66]/10"
+              >
+                {c.ctaMessage}
+              </a>
+            </div>
+          </aside>
+        ) : null}
         {isHola ? (
           <aside className="mt-6 grid gap-3 sm:grid-cols-2">
             <SiteStill

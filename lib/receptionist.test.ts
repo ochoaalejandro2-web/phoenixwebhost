@@ -9,6 +9,7 @@ import {
   buildClientFacts,
   buildStudioFacts,
   extractListedPrices,
+  factsPrompt,
   fallbackAnswer,
   matchListedServices,
 } from "./receptionist.ts";
@@ -80,7 +81,7 @@ const holaTax = client({
   hours: "Mon 10am–7pm; Tue closed; Wed–Sat 10am–7pm; Sun closed",
   tagline: "Personal & small-business tax preparation in Phoenix",
   about:
-    "Hola Tax Service prepares personal and small-business taxes in Phoenix, and helps with Arizona LLC paperwork.",
+    "Hola Tax Service prepares personal and small-business taxes in Phoenix, helps with Arizona LLC paperwork, and does monthly bookkeeping for one person running one small business.",
   services: [
     "Personal tax preparation",
     "Small-business tax preparation",
@@ -188,6 +189,44 @@ test("fallback answers Hola Tax LLC questions and follows Spanish", () => {
   assert.match(spanish, /LLC/i);
   assert.match(spanish, /Hola Tax/);
   assert.match(spanish, /llame|formulario/i);
+});
+
+test("fallback answers Hola Tax bookkeeping at $199 for a solo owner", () => {
+  const en = buildClientFacts(holaTax, "en");
+  assert.ok(en.listedPrices.some((row) => row.includes("$199")));
+  assert.ok(en.listedPrices.some((row) => row.includes("$349")));
+  assert.equal(
+    en.listedPrices.some((row) => /\$299|\$200|\$69/.test(row)),
+    false,
+  );
+
+  const books = fallbackAnswer(en, "do you do bookkeeping?");
+  assert.match(books, /Bookkeeping/i);
+  assert.match(books, /\(602\) 545-3308/);
+  assert.equal(books.includes(COMPANY.phone), false);
+  assert.equal(/\$200|\$69/.test(books), false);
+
+  const qbo = fallbackAnswer(en, "do you use QuickBooks Online?");
+  assert.match(qbo, /Bookkeeping/i);
+
+  const price = fallbackAnswer(en, "how much is bookkeeping?");
+  assert.match(price, /\$199/);
+  assert.match(price, /\$349/);
+  assert.equal(/\$299/.test(price), false);
+  assert.equal(/\$200/.test(price), false);
+  assert.equal(price.includes(COMPANY.phone), false);
+
+  const es = buildClientFacts(holaTax, "es");
+  const spanishBooks = fallbackAnswer(es, "¿Hacen contabilidad?");
+  assert.match(spanishBooks, /Contabilidad/);
+  const spanishPrice = fallbackAnswer(es, "¿Cuánto cuesta la contabilidad?");
+  assert.match(spanishPrice, /\$199/);
+
+  const prompt = factsPrompt(en);
+  assert.match(prompt, /QuickBooks Online/);
+  assert.match(prompt, /\$199/);
+  assert.equal(/\$200|\$69/.test(prompt), false);
+  assert.equal(/Phoenixwebhost Inc/.test(prompt), false);
 });
 
 test("fallback does not invent a missing service or a missing price", () => {
