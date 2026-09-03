@@ -5,7 +5,7 @@ import { createSeedState, mergeMissingSeedClients } from "@/data/seed";
 import { applyExtraPriceIdsToEnv } from "@/lib/stripe-extra-prices";
 import { findClientByCustomDomain } from "@/lib/custom-domain";
 import { pickClientBySlug } from "@/lib/walk-in-hosts";
-import { withHolaTaxLlcService } from "@/lib/hola-tax-i18n";
+import { withHolaTaxListedServices } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/tax-office";
 import { closerFromName, sanitizeCloserCode } from "@/lib/closers";
 import { emptyDemoTweaks, parseDemoAccent, parseTemplateId } from "@/lib/demo";
@@ -152,7 +152,7 @@ function normalizeClient(client: Client): Client {
   if (!Array.isArray(services)) services = [];
   if (client.slug === HOLA_TAX_SLUG) {
     template = "tax";
-    services = withHolaTaxLlcService(services);
+    services = withHolaTaxListedServices(services);
   } else if (!KNOWN_TEMPLATES.includes(template)) {
     template = "professional";
   }

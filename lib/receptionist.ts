@@ -3,9 +3,10 @@ import { COMPANY, PRICING } from "./config.ts";
 import { displayHours } from "./demo.ts";
 import {
   holaTaxAbout,
+  holaTaxBookkeepingPriceText,
   holaTaxServiceLabel,
   holaTaxTagline,
-  withHolaTaxLlcService,
+  withHolaTaxListedServices,
 } from "./hola-tax-i18n.ts";
 import { normalizeSearchText } from "./public-demos.ts";
 import { serviceBlurb, serviceName } from "./shop-content.ts";
@@ -31,6 +32,8 @@ export type ReceptionistFacts = {
   /** English (or stored) names used for matching, even when the reply is Spanish. */
   serviceKeys: string[];
   listedPrices: string[];
+  /** Extra match text for Hola Tax bookkeeping (QuickBooks Online, etc.). */
+  serviceMatchExtra: string;
   locale: Locale;
   contactHint: string;
 };
@@ -214,6 +217,7 @@ export function buildStudioFacts(locale: Locale = "en"): ReceptionistFacts {
     services,
     serviceKeys: studioServices("en"),
     listedPrices: studioPrices(locale),
+    serviceMatchExtra: "",
     locale,
     contactHint:
       locale === "es"
@@ -225,7 +229,7 @@ export function buildStudioFacts(locale: Locale = "en"): ReceptionistFacts {
 function clientServiceKeys(client: Client): string[] {
   const raw =
     client.slug === HOLA_TAX_SLUG
-      ? withHolaTaxLlcService(client.services)
+      ? withHolaTaxListedServices(client.services)
       : [...client.services];
   return raw.filter(Boolean);
 }
@@ -267,7 +271,19 @@ export function buildClientFacts(
     about,
     services,
     serviceKeys: keys,
-    listedPrices: extractListedPrices(tagline, about, ...keys, ...services),
+    listedPrices: extractListedPrices(
+      tagline,
+      about,
+      ...keys,
+      ...services,
+      ...(client.slug === HOLA_TAX_SLUG
+        ? [holaTaxBookkeepingPriceText(useLocale)]
+        : []),
+    ),
+    serviceMatchExtra:
+      client.slug === HOLA_TAX_SLUG
+        ? holaTaxBookkeepingPriceText(useLocale)
+        : "",
     locale: useLocale,
     contactHint:
       useLocale === "es"
@@ -310,7 +326,11 @@ export function matchListedServices(
   const matched: string[] = [];
   facts.services.forEach((label, index) => {
     const key = facts.serviceKeys[index] || label;
-    const extra = [serviceBlurb(key, "en"), serviceBlurb(key, "es")]
+    const extra = [
+      serviceBlurb(key, "en"),
+      serviceBlurb(key, "es"),
+      /bookkeeping/i.test(key) ? facts.serviceMatchExtra : "",
+    ]
       .filter(Boolean)
       .join(" ");
     const hay = [label, key, extra].join(" ");
@@ -373,7 +393,7 @@ function looksLikeBook(q: string): boolean {
 
 function looksLikeServiceQuestion(q: string, message: string): boolean {
   return (
-    /\b(do you|does you|offer|have|hacen|hace|tienen|ofrecen|llc|lawn|lawns|cesped|c[eé]sped)\b/.test(
+    /\b(do you|does you|offer|have|hacen|hace|tienen|ofrecen|llc|lawn|lawns|cesped|c[eé]sped|bookkeeping|contabilidad|quickbooks)\b/.test(
       q,
     ) || /do you do|ustedes (hacen|ofrecen)/i.test(message)
   );
@@ -546,6 +566,9 @@ export function factsPrompt(facts: ReceptionistFacts): string {
     `Tagline: ${facts.tagline}`,
     `About: ${facts.about}`,
     `Services: ${facts.services.join("; ") || "None listed."}`,
+    facts.serviceMatchExtra
+      ? `Bookkeeping (this shop only): ${facts.serviceMatchExtra}`
+      : "",
     `Listed prices: ${prices}`,
     `Hours: ${hours}`,
     `Phone: ${phone}`,
