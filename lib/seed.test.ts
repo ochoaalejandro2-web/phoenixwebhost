@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
-import { applySeedDemoBookJob, mergeMissingBySlug } from "./seed-merge.ts";
+import {
+  applySeedDemoBookJob,
+  mergeMissingBySlug,
+  restoreMesaStreetKitchenDemo,
+} from "./seed-merge.ts";
 
 test("missing seed demos are appended without dropping existing clients", () => {
   const existing = [
@@ -37,3 +42,62 @@ test("existing walk-in demos get Book a job turned on without dropping other cli
   assert.equal(next.items.find((row) => row.slug === "palo-verde-yards")?.bookAJob, true);
   assert.equal(next.items.find((row) => row.slug === "a-new-paid-shop")?.bookAJob, false);
 });
+
+test("mesa street kitchen seed is a live paid restaurant demo", () => {
+  const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
+  const start = src.indexOf('slug: "mesa-street-kitchen"');
+  assert.ok(start > 0);
+  const chunk = src.slice(start, start + 1600);
+  assert.match(chunk, /template: "restaurant"/);
+  assert.match(chunk, /siteStatus: "live"/);
+  assert.match(chunk, /paymentStatus: "paid"/);
+  assert.doesNotMatch(chunk, /siteStatus: "offline"/);
+  assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
+});
+
+test("stale offline mesa street kitchen is restored without touching other clients", () => {
+  const now = "2026-01-01T00:00:00.000Z";
+  const stale = [
+    {
+      slug: "mesa-street-kitchen",
+      siteStatus: "offline",
+      paymentStatus: "overdue",
+      lastPaymentAt: now,
+      nextInvoiceAt: now,
+      reminderSentAt: now,
+      overdueSince: now,
+      offlineAt: now,
+      filesKeptUntil: now,
+      takenDownAt: null,
+    },
+    {
+      slug: "a-real-unpaid-shop",
+      siteStatus: "offline",
+      paymentStatus: "overdue",
+      lastPaymentAt: now,
+      nextInvoiceAt: now,
+      reminderSentAt: now,
+      overdueSince: now,
+      offlineAt: now,
+      filesKeptUntil: now,
+      takenDownAt: null,
+    },
+  ];
+  const next = restoreMesaStreetKitchenDemo(stale);
+  assert.equal(next.added, true);
+  const mesa = next.items.find((row) => row.slug === "mesa-street-kitchen");
+  const unpaid = next.items.find((row) => row.slug === "a-real-unpaid-shop");
+  assert.equal(mesa?.siteStatus, "live");
+  assert.equal(mesa?.paymentStatus, "paid");
+  assert.equal(mesa?.offlineAt, null);
+  assert.equal(mesa?.overdueSince, null);
+  assert.equal(mesa?.reminderSentAt, null);
+  assert.equal(mesa?.filesKeptUntil, null);
+  assert.equal(unpaid?.siteStatus, "offline");
+  assert.equal(unpaid?.paymentStatus, "overdue");
+  assert.equal(unpaid?.offlineAt, now);
+
+  const alreadyLive = restoreMesaStreetKitchenDemo(next.items);
+  assert.equal(alreadyLive.added, false);
+});
+
