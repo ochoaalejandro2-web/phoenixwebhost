@@ -47,7 +47,7 @@ test("desert sparkle cleaning seed is a live paid cleaning demo", () => {
   const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
   const start = src.indexOf('slug: "desert-sparkle-cleaning"');
   assert.ok(start > 0);
-  const chunk = src.slice(start, start + 1800);
+  const chunk = src.slice(start, start + 2800);
   assert.match(chunk, /template: "cleaning"/);
   assert.match(chunk, /siteStatus: "live"/);
   assert.match(chunk, /paymentStatus: "paid"/);

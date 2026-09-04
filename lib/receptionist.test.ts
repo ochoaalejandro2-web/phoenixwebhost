@@ -186,11 +186,11 @@ test("fallback answers cleaning questions from that site’s services", () => {
     }),
     "en",
   );
-  assert.deepEqual(matchListedServices(facts, "do you do deep cleans?"), [
-    "One-time deep clean",
+  assert.deepEqual(matchListedServices(facts, "do you do commercial?"), [
+    "Light commercial",
   ]);
-  const reply = fallbackAnswer(facts, "do you do deep cleans?");
-  assert.match(reply, /One-time deep clean/i);
+  const reply = fallbackAnswer(facts, "do you do commercial?");
+  assert.match(reply, /Light commercial/i);
   assert.match(reply, /Desert Sparkle Cleaning/);
   assert.match(reply, /\(623\) 555-0136/);
   assert.equal(reply.includes(COMPANY.phone), false);
