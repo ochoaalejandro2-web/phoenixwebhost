@@ -18,17 +18,25 @@ import {
   stripeTrafficConfigured,
   stripeVoiceConfigured,
 } from "@/lib/config";
+import { parseTemplateId } from "@/lib/demo";
 import { parseExtraPicks } from "@/lib/extra-picks";
 import { t } from "@/lib/i18n";
+import { parseQuotedPicks, sanitizeWalkInName } from "@/lib/walk-in-preview";
 
 export const metadata = { title: "Request a demo" };
 
 export default async function RequestPage({
   searchParams,
 }: {
-  searchParams: Promise<{ ads?: string; extra?: string | string[] }>;
+  searchParams: Promise<{
+    ads?: string;
+    extra?: string | string[];
+    business?: string;
+    template?: string;
+    quoted?: string | string[];
+  }>;
 }) {
-  const { ads, extra } = await searchParams;
+  const { ads, extra, business, template, quoted } = await searchParams;
   const c = t("en");
   return (
     <StudioShell>
@@ -86,6 +94,9 @@ export default async function RequestPage({
           domainReady={stripeDomainConfigured()}
           initialAds={parseAdsTier(ads)}
           initialExtras={parseExtraPicks(extra)}
+          initialBusiness={sanitizeWalkInName(business)}
+          initialTemplate={parseTemplateId(template) || ""}
+          initialQuoted={parseQuotedPicks(quoted)}
         />
       </main>
       <SiteFooter locale="en" />

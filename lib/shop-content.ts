@@ -651,6 +651,66 @@ export const SERVICE_BLURBS: Record<
     blurb: "A short plan for next year after this year’s return.",
     blurbEs: "Un plan corto para el año que viene después de esta declaración.",
   },
+  "House cleaning": {
+    nameEs: "Limpieza de casas",
+    blurb: "Kitchens, baths, floors, and the rooms you use every week.",
+    blurbEs: "Cocinas, baños, pisos y los cuartos que usa cada semana.",
+  },
+  "Office cleaning": {
+    nameEs: "Limpieza de oficinas",
+    blurb: "After-hours tidy for small offices and shops.",
+    blurbEs: "Limpieza después del horario para oficinas y tiendas pequeñas.",
+  },
+  "Move-out clean": {
+    nameEs: "Limpieza de mudanza",
+    blurb: "A full clean so the next tenant or buyer walks into a finished room.",
+    blurbEs: "Una limpieza completa para que el siguiente inquilino o comprador entre a un cuarto terminado.",
+  },
+  "Weekly service": {
+    nameEs: "Servicio semanal",
+    blurb: "A standing day each week. Same crew when we can.",
+    blurbEs: "Un día fijo cada semana. La misma cuadrilla cuando se puede.",
+  },
+  "Deep clean": {
+    nameEs: "Limpieza profunda",
+    blurb: "Baseboards, appliances, and the jobs a weekly visit does not cover.",
+    blurbEs: "Zócalos, aparatos y lo que una visita semanal no cubre.",
+  },
+  Windows: {
+    nameEs: "Ventanas",
+    blurb: "Interior glass and tracks. Exterior when the house allows it.",
+    blurbEs: "Vidrio interior y rieles. El exterior cuando la casa lo permite.",
+  },
+  "Retail hours": {
+    nameEs: "Horario de tienda",
+    blurb: "Clear open hours on the site so people know when to come in.",
+    blurbEs: "Horario claro en el sitio para que sepan cuándo entrar.",
+  },
+  "In-store pickup": {
+    nameEs: "Recoger en tienda",
+    blurb: "Call ahead, pick up at the counter. Not a full online shop.",
+    blurbEs: "Llame antes y recoja en el mostrador. No es una tienda en línea completa.",
+  },
+  "Local products": {
+    nameEs: "Productos locales",
+    blurb: "What is on the shelf this week — said in plain words.",
+    blurbEs: "Lo que hay en el estante esta semana — dicho en palabras claras.",
+  },
+  "Special orders": {
+    nameEs: "Pedidos especiales",
+    blurb: "We can order it if we do not have it. You get a real timeline.",
+    blurbEs: "Lo podemos pedir si no lo tenemos. Le damos un plazo real.",
+  },
+  "Gift cards": {
+    nameEs: "Tarjetas de regalo",
+    blurb: "A card for the shop, sold at the counter.",
+    blurbEs: "Una tarjeta de la tienda, vendida en el mostrador.",
+  },
+  "Customer help": {
+    nameEs: "Ayuda al cliente",
+    blurb: "A phone that answers and a person who knows the stock.",
+    blurbEs: "Un teléfono que contesta y alguien que conoce el inventario.",
+  },
 };
 
 export type SampleReview = {
