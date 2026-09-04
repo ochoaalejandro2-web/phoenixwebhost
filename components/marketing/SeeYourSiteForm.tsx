@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { previewPath, t } from "@/lib/i18n";
 import {
   WALK_IN_TYPES,
@@ -5,13 +8,23 @@ import {
 } from "@/lib/walk-in-preview";
 import type { Locale } from "@/lib/types";
 
-const TYPE_LABEL: Record<WalkInTypeId, "seeSiteTypeSalon" | "seeSiteTypeRestaurant" | "seeSiteTypeHandyman" | "seeSiteTypeContractor" | "seeSiteTypeCleaning" | "seeSiteTypeShop"> = {
+const TYPE_LABEL: Record<
+  WalkInTypeId,
+  | "seeSiteTypeSalon"
+  | "seeSiteTypeRestaurant"
+  | "seeSiteTypeHandyman"
+  | "seeSiteTypeContractor"
+  | "seeSiteTypeCleaning"
+  | "seeSiteTypeShop"
+  | "seeSiteTypeOther"
+> = {
   salon: "seeSiteTypeSalon",
   restaurant: "seeSiteTypeRestaurant",
   handyman: "seeSiteTypeHandyman",
   contractor: "seeSiteTypeContractor",
   cleaning: "seeSiteTypeCleaning",
   shop: "seeSiteTypeShop",
+  other: "seeSiteTypeOther",
 };
 
 export function SeeYourSiteForm({
@@ -19,17 +32,19 @@ export function SeeYourSiteForm({
   variant = "hero",
   name = "",
   type = "",
+  kind = "",
   error,
 }: {
   locale: Locale;
   variant?: "hero" | "page";
   name?: string;
   type?: string;
-  error?: "name" | "type" | null;
+  kind?: string;
+  error?: "name" | "type" | "kind" | null;
 }) {
   const c = t(locale);
   const action = previewPath(locale);
-  const selected = type || undefined;
+  const [selected, setSelected] = useState(type || "");
   const card =
     variant === "page"
       ? "rounded-[1.75rem] border border-zinc-200 bg-snow p-6 text-ink-black sm:p-8"
@@ -83,6 +98,7 @@ export function SeeYourSiteForm({
                 value={row.id}
                 required
                 defaultChecked={selected === row.id}
+                onChange={() => setSelected(row.id)}
                 className="sr-only"
               />
               {c[TYPE_LABEL[row.id]]}
@@ -93,6 +109,24 @@ export function SeeYourSiteForm({
       {error === "type" ? (
         <p role="alert" className="mt-2 text-sm text-lime-deep">
           {c.seeSiteTypeNeeded}
+        </p>
+      ) : null}
+      {selected === "other" ? (
+        <label className="mt-4 block text-sm text-body">
+          {c.seeSiteOtherLabel}
+          <input
+            name="kind"
+            required
+            defaultValue={kind}
+            placeholder={c.seeSiteOtherPlaceholder}
+            autoComplete="off"
+            className="field-studio mt-2 w-full rounded-full px-5 py-3.5 text-base"
+          />
+        </label>
+      ) : null}
+      {error === "kind" ? (
+        <p role="alert" className="mt-2 text-sm text-lime-deep">
+          {c.seeSiteOtherNeeded}
         </p>
       ) : null}
       <button

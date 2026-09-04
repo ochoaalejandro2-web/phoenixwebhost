@@ -15,6 +15,7 @@ export const WALK_IN_TYPE_IDS = [
   "contractor",
   "cleaning",
   "shop",
+  "other",
 ] as const;
 
 export type WalkInTypeId = (typeof WALK_IN_TYPE_IDS)[number];
@@ -31,6 +32,7 @@ export const WALK_IN_TYPES: WalkInType[] = [
   { id: "contractor", template: "contractor" },
   { id: "cleaning", template: "handyman" },
   { id: "shop", template: "professional" },
+  { id: "other", template: "professional" },
 ];
 
 const CLEANING_SERVICES = [
@@ -70,18 +72,28 @@ export function walkInTemplate(id: WalkInTypeId): TemplateId {
 
 export function walkInServices(id: WalkInTypeId): string[] {
   if (id === "cleaning") return [...CLEANING_SERVICES];
-  if (id === "shop") return [...SHOP_SERVICES];
+  if (id === "shop" || id === "other") return [...SHOP_SERVICES];
   return demoServices(walkInTemplate(id));
 }
 
-export function walkInAbout(businessName: string, id: WalkInTypeId, locale: Locale) {
+export function walkInAbout(
+  businessName: string,
+  id: WalkInTypeId,
+  locale: Locale,
+  otherKind = "",
+) {
   const city = "Phoenix, AZ";
+  const kind = sanitizeWalkInKind(otherKind);
   if (locale === "es") {
     if (id === "cleaning") {
       return `${businessName} es un negocio de limpieza en ${city}. Esta vista parte de una plantilla de Phoenixwebhost y lleva su nombre — no es un diseño a medida nuevo.`;
     }
     if (id === "shop") {
       return `${businessName} es una tienda local en ${city}. Esta vista parte de una plantilla de Phoenixwebhost y lleva su nombre — no es un diseño a medida nuevo.`;
+    }
+    if (id === "other") {
+      const typed = kind || "negocio";
+      return `${businessName} es un ${typed} local en ${city}. Esta vista parte de la plantilla de tienda general — no es un diseño a medida nuevo.`;
     }
     return `${businessName} es un negocio local en ${city}. Esta vista parte de una plantilla comprobada de Phoenixwebhost, llena con su nombre — no es un diseño a medida nuevo.`;
   }
@@ -91,10 +103,21 @@ export function walkInAbout(businessName: string, id: WalkInTypeId, locale: Loca
   if (id === "shop") {
     return `${businessName} is a local shop in ${city}. This preview starts from a Phoenixwebhost template and is filled with your name — not a brand-new custom design.`;
   }
+  if (id === "other") {
+    const typed = kind || "business";
+    return `${businessName} is a local ${typed} in ${city}. This preview starts from the general shop template and is filled with your name — not a brand-new custom design.`;
+  }
   return `${businessName} is a local ${city} business. This preview starts from a proven Phoenixwebhost template and is filled with your name — not a brand-new custom design.`;
 }
 
 export function sanitizeWalkInName(value: unknown) {
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 80);
+}
+
+export function sanitizeWalkInKind(value: unknown) {
   return String(value || "")
     .replace(/\s+/g, " ")
     .trim()
@@ -111,11 +134,13 @@ export function seeYourSitePath(locale: Locale) {
 
 export function previewHref(
   locale: Locale,
-  input: { name: string; type: WalkInTypeId },
+  input: { name: string; type: WalkInTypeId; kind?: string },
 ) {
   const params = new URLSearchParams();
   params.set("name", input.name);
   params.set("type", input.type);
+  const kind = sanitizeWalkInKind(input.kind);
+  if (input.type === "other" && kind) params.set("kind", kind);
   return `${previewPath(locale)}?${params.toString()}`;
 }
 
@@ -139,6 +164,7 @@ export function walkInRequestHref(
   input: {
     businessName: string;
     type: WalkInTypeId;
+    kind?: string;
     ads?: string;
     extras?: string[];
     quoted?: QuotedPick[];
@@ -147,11 +173,21 @@ export function walkInRequestHref(
   const params = new URLSearchParams();
   params.set("business", input.businessName);
   params.set("template", walkInTemplate(input.type));
+  const kind = sanitizeWalkInKind(input.kind);
+  if (input.type === "other" && kind) params.set("other", kind);
   if (input.ads && input.ads !== "none") params.set("ads", input.ads);
   if (input.extras?.length) params.set("extra", input.extras.join(","));
   if (input.quoted?.length) params.set("quoted", input.quoted.join(","));
   const path = locale === "es" ? "/es/request" : "/request";
   return `${path}?${params.toString()}`;
+}
+
+export function otherTypeNote(kind: string, locale: Locale) {
+  const typed = sanitizeWalkInKind(kind);
+  if (!typed) return "";
+  return locale === "es"
+    ? `Otro tipo de negocio (escrito): ${typed}. No es una de las plantillas de la lista — a medida.`
+    : `Other business type (typed): ${typed}. Not one of the listed templates — custom.`;
 }
 
 export function quotedMessageNote(quoted: QuotedPick[], locale: Locale) {
@@ -179,10 +215,11 @@ export function buildWalkInPreviewClient(input: {
   businessName: string;
   type: WalkInTypeId;
   locale: Locale;
+  kind?: string;
 }): Client {
   const name = sanitizeWalkInName(input.businessName) || "Your business";
   const spec = walkInTypeSpec(input.type);
-  const about = walkInAbout(name, input.type, input.locale);
+  const about = walkInAbout(name, input.type, input.locale, input.kind);
   return {
     id: "demo_walkin",
     businessName: name,

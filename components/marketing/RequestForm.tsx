@@ -7,7 +7,11 @@ import { TEMPLATES } from "@/lib/config";
 import { t } from "@/lib/i18n";
 import { extraFlagsFromPicks, type ExtraPick } from "@/lib/extra-picks";
 import type { Locale, TemplateId } from "@/lib/types";
-import { quotedMessageNote, type QuotedPick } from "@/lib/walk-in-preview";
+import {
+  otherTypeNote,
+  quotedMessageNote,
+  type QuotedPick,
+} from "@/lib/walk-in-preview";
 
 export function AddonToggle({
   checked,
@@ -61,6 +65,7 @@ export function RequestForm({
   initialBusiness = "",
   initialTemplate = "",
   initialQuoted = [],
+  initialOther = "",
 }: {
   locale: Locale;
   boostReady?: boolean;
@@ -77,10 +82,12 @@ export function RequestForm({
   initialBusiness?: string;
   initialTemplate?: TemplateId | "";
   initialQuoted?: QuotedPick[];
+  initialOther?: string;
 }) {
   const c = t(locale);
   const initial = extraFlagsFromPicks(initialExtras);
   const quotedNote = quotedMessageNote(initialQuoted, locale);
+  const customTypeNote = otherTypeNote(initialOther, locale);
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
   const [adsTier, setAdsTier] = useState<AdsTier>(initialAds);
   const [includeEmail, setIncludeEmail] = useState(initial.includeEmail);
@@ -103,7 +110,9 @@ export function RequestForm({
         email: form.get("email"),
         phone: form.get("phone"),
         city: form.get("city"),
-        message: [form.get("message"), quotedNote].filter(Boolean).join(" "),
+        message: [form.get("message"), customTypeNote, quotedNote]
+          .filter(Boolean)
+          .join(" "),
         template: form.get("template"),
         locale,
         ...adsFlagsFromTier(adsTier),
@@ -170,6 +179,11 @@ export function RequestForm({
           className="field-studio"
         />
       </label>
+      {customTypeNote ? (
+        <p className="rounded-2xl border border-lime/40 bg-lime/10 px-4 py-3 text-sm text-ink-black">
+          {customTypeNote}
+        </p>
+      ) : null}
       <label className="text-sm text-body">
         {c.formTemplate}
         <select
