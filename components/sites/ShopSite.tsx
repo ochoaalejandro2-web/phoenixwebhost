@@ -190,11 +190,13 @@ export function ShopSite({
   const services = Array.isArray(client.services) ? client.services : [];
   const hours = displayHours(client.hours, client.template, locale);
   const reviews = shopLayoutReviews(client, preview);
-  const callLabel = phone ? c.call(phone) : c.callShort;
-  const submitBtn = `justify-self-start rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`;
-  const showPreviewReviewNote = preview || client.sample;
-
   const isCleaning = client.template === "cleaning";
+  const callLabel = phone ? c.call(phone) : c.callShort;
+  const ctaBtn = `inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold`;
+  const submitBtn = isCleaning
+    ? `min-h-11 w-full rounded-full px-5 py-2.5 text-sm font-semibold sm:w-auto sm:justify-self-start ${theme.call} ${theme.callHover}`
+    : `justify-self-start rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`;
+  const showPreviewReviewNote = preview || client.sample;
   const links = isCleaning
     ? [
         { href: "#services", label: c.navServices },
@@ -217,11 +219,14 @@ export function ShopSite({
       <header
         className={`shop-header sticky top-0 z-40 border-b backdrop-blur ${theme.header} ${theme.headerBorder}`}
       >
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3">
-          <a href={home} className={`font-display text-lg leading-tight ${theme.name}`}>
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-5">
+          <a
+            href={home}
+            className={`min-w-0 font-display text-base leading-snug sm:text-lg ${theme.name}`}
+          >
             {displayName}
           </a>
-          <div className="flex items-center gap-4">
+          <div className="flex shrink-0 items-center gap-3 sm:gap-4">
             <nav className="hidden items-center gap-4 text-sm lg:flex">
               {links.map((link) => (
                 <a key={link.href} href={link.href} className={theme.nav}>
@@ -232,14 +237,15 @@ export function ShopSite({
             {phone ? (
               <a
                 href={telHref(phone)}
-                className={`site-phone site-cta inline-flex rounded-full px-4 py-2 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+                className={`site-phone site-cta inline-flex min-h-11 items-center justify-center rounded-full px-3.5 py-2 text-sm font-semibold sm:px-4 ${theme.call} ${theme.callHover}`}
               >
-                {callLabel}
+                <span className="sm:hidden">{c.callShort}</span>
+                <span className="hidden sm:inline">{callLabel}</span>
               </a>
             ) : (
               <a
                 href="#contact"
-                className={`inline-flex rounded-full px-4 py-2 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+                className={`inline-flex min-h-11 items-center justify-center rounded-full px-3.5 py-2 text-sm font-semibold sm:px-4 ${theme.call} ${theme.callHover}`}
               >
                 {c.message}
               </a>
@@ -249,7 +255,7 @@ export function ShopSite({
       </header>
 
       {client.sample ? (
-        <p className={`px-5 py-1.5 text-center text-xs font-semibold tracking-wide ${theme.call}`}>
+        <p className={`px-4 py-1 text-center text-[11px] font-semibold tracking-wide sm:px-5 sm:py-1.5 sm:text-xs ${theme.call}`}>
           {c.sampleSite}
         </p>
       ) : null}
@@ -274,19 +280,19 @@ export function ShopSite({
           <p className={`mt-5 max-w-xl text-base sm:text-lg ${theme.heroLead ?? "text-white/90"}`}>
             {client.about}
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-8 flex w-full max-w-md flex-col gap-3 sm:max-w-xl sm:flex-row sm:flex-wrap sm:items-center">
             {isCleaning ? (
               <>
                 <a
                   href="#contact"
-                  className={`inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+                  className={`${ctaBtn} w-full sm:w-auto ${theme.call} ${theme.callHover}`}
                 >
                   {c.estimate}
                 </a>
                 {phone ? (
                   <a
                     href={telHref(phone)}
-                    className={`site-cta inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.ghostBtn}`}
+                    className={`site-cta ${ctaBtn} w-full sm:w-auto ${theme.ghostBtn}`}
                   >
                     {callLabel}
                   </a>
@@ -297,14 +303,14 @@ export function ShopSite({
                 {phone ? (
                   <a
                     href={telHref(phone)}
-                    className={`site-cta inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+                    className={`site-cta ${ctaBtn} w-full sm:w-auto ${theme.call} ${theme.callHover}`}
                   >
                     {callLabel}
                   </a>
                 ) : null}
                 <a
                   href="#contact"
-                  className={`inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.ghostBtn}`}
+                  className={`${ctaBtn} w-full sm:w-auto ${theme.ghostBtn}`}
                 >
                   {c.message}
                 </a>
@@ -428,7 +434,7 @@ export function ShopSite({
           {phone ? (
             <a
               href={telHref(phone)}
-              className={`site-cta mt-6 inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+              className={`site-cta mt-6 ${ctaBtn} ${theme.call} ${theme.callHover}`}
             >
               {callLabel}
             </a>

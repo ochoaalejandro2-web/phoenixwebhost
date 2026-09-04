@@ -73,7 +73,7 @@ function withReceptionist(
   if (isPreviewClient(client)) return site;
   return (
     <>
-      {site}
+      <div className="pb-24">{site}</div>
       <ReceptionistChat
         site={client.slug}
         locale={locale}

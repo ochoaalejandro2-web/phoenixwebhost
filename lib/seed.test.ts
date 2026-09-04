@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   applySeedDemoBookJob,
   mergeMissingBySlug,
+  refreshDesertSparkleDemoCopy,
   restoreMesaStreetKitchenDemo,
 } from "./seed-merge.ts";
 
@@ -54,6 +55,45 @@ test("desert sparkle cleaning seed is a live paid cleaning demo", () => {
   assert.match(chunk, /sample: true/);
   assert.doesNotMatch(chunk, /siteStatus: "offline"/);
   assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
+  const aboutMatch = chunk.match(/about:\s*"([^"]+)"/);
+  assert.ok(aboutMatch);
+  assert.ok(aboutMatch[1].length < 220);
+  assert.match(aboutMatch[1], /Weekly house cleaning/);
+  assert.match(aboutMatch[1], /West Valley/);
+  assert.match(aboutMatch[1], /sample name/);
+  assert.doesNotMatch(aboutMatch[1], /placeholder name/);
+  assert.doesNotMatch(aboutMatch[1], /A real Tolleson or Avondale cleaner/);
+});
+
+test("existing desert sparkle about is refreshed from seed without touching other clients", () => {
+  const seed = [
+    {
+      slug: "desert-sparkle-cleaning",
+      about: "Weekly house cleaning, deep cleans, and move-out jobs.",
+    },
+    { slug: "ironwood-handyman", about: "Old handyman copy stays." },
+  ];
+  const stale = [
+    {
+      slug: "desert-sparkle-cleaning",
+      about:
+        "Sample layout for a West Valley house-cleaning crew — not a live customer.",
+    },
+    { slug: "ironwood-handyman", about: "Old handyman copy stays." },
+  ];
+  const next = refreshDesertSparkleDemoCopy(stale, seed);
+  assert.equal(next.added, true);
+  assert.equal(
+    next.items.find((row) => row.slug === "desert-sparkle-cleaning")?.about,
+    "Weekly house cleaning, deep cleans, and move-out jobs.",
+  );
+  assert.equal(
+    next.items.find((row) => row.slug === "ironwood-handyman")?.about,
+    "Old handyman copy stays.",
+  );
+
+  const alreadyFresh = refreshDesertSparkleDemoCopy(next.items, seed);
+  assert.equal(alreadyFresh.added, false);
 });
 
 test("mesa street kitchen seed is a live paid restaurant demo", () => {

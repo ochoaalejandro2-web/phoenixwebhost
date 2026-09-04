@@ -2,6 +2,7 @@ import { monthKey } from "@/lib/slug";
 import {
   applySeedDemoBookJob,
   mergeMissingBySlug,
+  refreshDesertSparkleDemoCopy,
   restoreMesaStreetKitchenDemo,
 } from "@/lib/seed-merge";
 import type { AppState, Client } from "@/lib/types";
@@ -296,7 +297,7 @@ function demoClients(): Client[] {
       hours: "Mon–Sat 8:00am–6:00pm",
       tagline: "More Saturday mornings. A house that stays ready.",
       about:
-        "Sample layout for a West Valley house-cleaning crew — not a live customer. Desert Sparkle Cleaning is the placeholder name. A real Tolleson or Avondale cleaner would put their phone, hours, and services here: weekly house cleaning, deep cleans, move-in and move-out, and light office work. No long contracts.",
+        "Weekly house cleaning, deep cleans, and move-out jobs for Tolleson, Avondale, and the West Valley. Desert Sparkle is a sample name — not a live customer. No long contracts.",
       services: [
         "Recurring house cleaning",
         "One-time deep clean",
@@ -454,10 +455,11 @@ export function mergeMissingSeedClients(state: AppState): {
   const missing = mergeMissingBySlug(state.clients, seed);
   const flags = applySeedDemoBookJob(missing.items, seed);
   const restored = restoreMesaStreetKitchenDemo(flags.items);
-  if (!missing.added && !flags.added && !restored.added) {
+  const sparkle = refreshDesertSparkleDemoCopy(restored.items, seed);
+  if (!missing.added && !flags.added && !restored.added && !sparkle.added) {
     return { state, added: false };
   }
-  return { state: { ...state, clients: restored.items }, added: true };
+  return { state: { ...state, clients: sparkle.items }, added: true };
 }
 
 export function createSeedState(): AppState {

@@ -139,12 +139,12 @@ export function ReceptionistChat({
         aria-expanded={open}
         aria-label={open ? ui.close : ui.open}
         onClick={() => setOpen((value) => !value)}
-        className="pointer-events-auto flex h-14 items-center gap-2 rounded-full border border-lime bg-header px-4 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(0,200,81,0.28)] hover:text-lime"
+        className="pointer-events-auto inline-flex h-14 min-w-14 items-center justify-center gap-2 rounded-full border border-lime bg-header px-0 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(0,200,81,0.28)] hover:text-lime sm:px-4"
       >
         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-lime text-header">
           {open ? "×" : "●"}
         </span>
-        {open ? ui.close : ui.open}
+        <span className="hidden sm:inline">{open ? ui.close : ui.open}</span>
       </button>
     </div>
   );
