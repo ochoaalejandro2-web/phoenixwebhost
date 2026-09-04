@@ -11,8 +11,8 @@ export const metadata = {
 export default async function PreviewEsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ name?: string; type?: string }>;
+  searchParams: Promise<{ name?: string; type?: string; kind?: string }>;
 }) {
-  const { name, type } = await searchParams;
-  return <SeeYourSitePage locale="es" name={name} type={type} />;
+  const { name, type, kind } = await searchParams;
+  return <SeeYourSitePage locale="es" name={name} type={type} kind={kind} />;
 }

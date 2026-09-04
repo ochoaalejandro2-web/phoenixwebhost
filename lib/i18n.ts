@@ -303,6 +303,12 @@ export const copy = {
     seeSiteTypeContractor: "Contractor",
     seeSiteTypeCleaning: "Cleaning",
     seeSiteTypeShop: "General shop",
+    seeSiteTypeOther: "Other",
+    seeSiteOtherLabel: "What kind of business is it?",
+    seeSiteOtherPlaceholder: "Yoga studio, daycare, auto shop…",
+    seeSiteOtherNeeded: "Type what kind of business it is.",
+    seeSiteOtherPreviewNote:
+      "This preview uses the general shop template. You typed “{kind}” — Alex will see that on the demo request.",
     seeSiteOrderTitle: "Pickup ordering (Stripe)",
     seeSiteOrderHelp:
       "Restaurant pickup add-on. Setup $299–$499 + $149/month. Card fees about 3%. Not delivery, not a full online shop.",
@@ -594,6 +600,12 @@ export const copy = {
     seeSiteChange: "Probar otro nombre",
     seeSiteNameNeeded: "Escriba primero el nombre del negocio.",
     seeSiteTypeNeeded: "Elija un tipo de negocio.",
+    seeSiteTypeOther: "Otro",
+    seeSiteOtherLabel: "¿Qué tipo de negocio es?",
+    seeSiteOtherPlaceholder: "Estudio de yoga, guardería, taller…",
+    seeSiteOtherNeeded: "Escriba qué tipo de negocio es.",
+    seeSiteOtherPreviewNote:
+      "Esta vista usa la plantilla de tienda general. Usted escribió “{kind}” — Alex lo verá en la solicitud de demo.",
     seeSitePreviewKicker: "Vista previa — aún no está en línea",
     seeSitePreviewNote:
       "Una plantilla comprobada con su nombre. El teléfono es de muestra hasta que nos dé el suyo.",

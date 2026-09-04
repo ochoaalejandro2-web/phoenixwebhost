@@ -3,10 +3,12 @@ import test from "node:test";
 import { DEMO_SAMPLE_PHONE } from "./demo.ts";
 import {
   buildWalkInPreviewClient,
+  otherTypeNote,
   parseQuotedPicks,
   parseWalkInType,
   previewHref,
   quotedMessageNote,
+  sanitizeWalkInKind,
   sanitizeWalkInName,
   walkInRequestHref,
   walkInServices,
@@ -23,6 +25,8 @@ test("walk-in types reuse existing templates, including cleaning and shop", () =
   assert.equal(walkInTemplate("contractor"), "contractor");
   assert.equal(walkInTemplate("cleaning"), "handyman");
   assert.equal(walkInTemplate("shop"), "professional");
+  assert.equal(parseWalkInType("other"), "other");
+  assert.equal(walkInTemplate("other"), "professional");
 });
 
 test("walk-in preview puts the prospect name and a sample phone on the template", () => {
@@ -72,4 +76,36 @@ test("preview and request links carry the business name and add-ons", () => {
   assert.deepEqual(parseQuotedPicks("ordering,photos"), ["ordering", "photos"]);
   assert.match(quotedMessageNote(["ordering"], "en"), /pickup ordering/);
   assert.equal(sanitizeWalkInName("  a   b  "), "a b");
+});
+
+test("other type uses the general shop template and passes the typed label to the lead", () => {
+  assert.equal(sanitizeWalkInKind("  yoga studio  "), "yoga studio");
+  const client = buildWalkInPreviewClient({
+    businessName: "Desert Flow",
+    type: "other",
+    locale: "en",
+    kind: "yoga studio",
+  });
+  assert.equal(client.template, "professional");
+  assert.match(client.about, /yoga studio/);
+  assert.ok(client.services.includes("In-store pickup"));
+  assert.equal(
+    previewHref("en", {
+      name: "Desert Flow",
+      type: "other",
+      kind: "yoga studio",
+    }),
+    "/preview?name=Desert+Flow&type=other&kind=yoga+studio",
+  );
+  assert.equal(
+    walkInRequestHref("en", {
+      businessName: "Desert Flow",
+      type: "other",
+      kind: "yoga studio",
+    }),
+    "/request?business=Desert+Flow&template=professional&other=yoga+studio",
+  );
+  assert.match(otherTypeNote("yoga studio", "en"), /yoga studio/);
+  assert.match(otherTypeNote("estudio de yoga", "es"), /estudio de yoga/);
+  assert.equal(otherTypeNote("  ", "en"), "");
 });

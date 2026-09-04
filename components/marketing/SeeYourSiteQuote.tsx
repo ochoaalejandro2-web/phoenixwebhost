@@ -20,10 +20,12 @@ export function SeeYourSiteQuote({
   locale,
   businessName,
   type,
+  kind = "",
 }: {
   locale: Locale;
   businessName: string;
   type: WalkInTypeId;
+  kind?: string;
 }) {
   const c = t(locale);
   const [flags, setFlags] = useState<WalkInQuoteFlags>(emptyWalkInFlags());
@@ -31,6 +33,7 @@ export function SeeYourSiteQuote({
   const requestHref = walkInRequestHref(locale, {
     businessName,
     type,
+    kind,
     ads: flags.ads,
     extras: selectedExtraPicks(flags),
     quoted: selectedQuotedPicks(flags),

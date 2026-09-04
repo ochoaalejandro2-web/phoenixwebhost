@@ -13,6 +13,7 @@ import type { Locale } from "@/lib/types";
 import {
   buildWalkInPreviewClient,
   parseWalkInType,
+  sanitizeWalkInKind,
   sanitizeWalkInName,
 } from "@/lib/walk-in-preview";
 
@@ -20,17 +21,21 @@ export function SeeYourSitePage({
   locale,
   name,
   type,
+  kind,
 }: {
   locale: Locale;
   name?: string;
   type?: string;
+  kind?: string;
 }) {
   const c = t(locale);
   const businessName = sanitizeWalkInName(name);
   const walkInType = parseWalkInType(type);
+  const otherKind = sanitizeWalkInKind(kind);
   const missingName = Boolean(type) && !businessName;
   const missingType = Boolean(businessName) && !walkInType;
-  const ready = Boolean(businessName && walkInType);
+  const missingKind = walkInType === "other" && Boolean(businessName) && !otherKind;
+  const ready = Boolean(businessName && walkInType && !missingKind);
 
   return (
     <StudioShell>
@@ -40,6 +45,7 @@ export function SeeYourSitePage({
           locale={locale}
           businessName={businessName}
           type={walkInType}
+          kind={otherKind}
         />
       ) : (
         <main className="mx-auto w-full max-w-3xl px-6 py-14 sm:py-20">
@@ -48,7 +54,10 @@ export function SeeYourSitePage({
             variant="page"
             name={businessName}
             type={walkInType || type || ""}
-            error={missingName ? "name" : missingType ? "type" : null}
+            kind={otherKind}
+            error={
+              missingName ? "name" : missingType ? "type" : missingKind ? "kind" : null
+            }
           />
           <p className="mt-8 text-sm text-body">
             {c.callPrompt}{" "}
@@ -66,13 +75,15 @@ function SeeYourSiteResult({
   locale,
   businessName,
   type,
+  kind,
 }: {
   locale: Locale;
   businessName: string;
   type: NonNullable<ReturnType<typeof parseWalkInType>>;
+  kind: string;
 }) {
   const c = t(locale);
-  const client = buildWalkInPreviewClient({ businessName, type, locale });
+  const client = buildWalkInPreviewClient({ businessName, type, locale, kind });
   return (
     <main>
       <section className="border-b border-zinc-100 bg-header text-white">
@@ -81,7 +92,10 @@ function SeeYourSiteResult({
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-lime">
               {c.seeSitePreviewKicker}
             </p>
-            <p className="mt-1 truncate text-sm text-white/80">{businessName}</p>
+            <p className="mt-1 truncate text-sm text-white/80">
+              {businessName}
+              {type === "other" && kind ? ` · ${kind}` : ""}
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
             <p className="text-lime">
@@ -102,7 +116,9 @@ function SeeYourSiteResult({
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-[minmax(0,1.05fr)_22rem] lg:items-start lg:px-6">
         <div>
           <p className="mb-4 text-sm leading-relaxed text-body">
-            {c.seeSitePreviewNote}
+            {type === "other" && kind
+              ? c.seeSiteOtherPreviewNote.replace("{kind}", kind)
+              : c.seeSitePreviewNote}
           </p>
           <div className="overflow-hidden rounded-[1.5rem] border border-zinc-200 bg-white shadow-[0_24px_60px_rgba(10,10,10,0.10)]">
             <div className="flex items-center gap-1.5 border-b border-zinc-100 bg-zinc-50 px-4 py-2">
@@ -123,6 +139,7 @@ function SeeYourSiteResult({
           locale={locale}
           businessName={businessName}
           type={type}
+          kind={kind}
         />
       </div>
     </main>

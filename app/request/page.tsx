@@ -21,7 +21,11 @@ import {
 import { parseTemplateId } from "@/lib/demo";
 import { parseExtraPicks } from "@/lib/extra-picks";
 import { t } from "@/lib/i18n";
-import { parseQuotedPicks, sanitizeWalkInName } from "@/lib/walk-in-preview";
+import {
+  parseQuotedPicks,
+  sanitizeWalkInKind,
+  sanitizeWalkInName,
+} from "@/lib/walk-in-preview";
 
 export const metadata = { title: "Request a demo" };
 
@@ -34,9 +38,10 @@ export default async function RequestPage({
     business?: string;
     template?: string;
     quoted?: string | string[];
+    other?: string;
   }>;
 }) {
-  const { ads, extra, business, template, quoted } = await searchParams;
+  const { ads, extra, business, template, quoted, other } = await searchParams;
   const c = t("en");
   return (
     <StudioShell>
@@ -97,6 +102,7 @@ export default async function RequestPage({
           initialBusiness={sanitizeWalkInName(business)}
           initialTemplate={parseTemplateId(template) || ""}
           initialQuoted={parseQuotedPicks(quoted)}
+          initialOther={sanitizeWalkInKind(other)}
         />
       </main>
       <SiteFooter locale="en" />
