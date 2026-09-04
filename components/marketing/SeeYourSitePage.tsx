@@ -83,7 +83,13 @@ function SeeYourSiteResult({
             </p>
             <p className="mt-1 truncate text-sm text-white/80">{businessName}</p>
           </div>
-          <div className="flex flex-wrap gap-3 text-sm">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            <p className="text-lime">
+              {c.priceLaunch} {c.priceLaunchHint} · {c.priceMonth} {c.priceMonthHint}
+            </p>
+            <a href="#quote" className="text-white/70 hover:text-lime">
+              {c.nav.pricing}
+            </a>
             <a href={COMPANY.telHref} className="text-lime hover:text-white">
               {c.seeSiteCtaCall} {COMPANY.phone}
             </a>

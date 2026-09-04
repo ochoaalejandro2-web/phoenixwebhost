@@ -41,7 +41,10 @@ export function SeeYourSiteQuote({
   }
 
   return (
-    <aside className="rounded-[1.75rem] border border-zinc-200 bg-snow text-ink-black">
+    <aside
+      id="quote"
+      className="scroll-mt-24 rounded-[1.75rem] border border-zinc-200 bg-snow text-ink-black"
+    >
       <div className="border-b border-zinc-100 bg-header px-5 py-5 text-white sm:px-6">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime">
           {c.seeSitePriceTitle}
