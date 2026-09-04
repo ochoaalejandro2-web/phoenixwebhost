@@ -137,6 +137,7 @@ const KNOWN_TEMPLATES: TemplateId[] = [
   "restaurant",
   "professional",
   "landscaping",
+  "cleaning",
   "tax",
 ];
 

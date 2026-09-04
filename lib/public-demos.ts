@@ -21,6 +21,7 @@ const TEMPLATE_IDS: TemplateId[] = [
   "restaurant",
   "professional",
   "landscaping",
+  "cleaning",
   "tax",
 ];
 
@@ -32,6 +33,7 @@ const TEMPLATE_LABELS: Record<TemplateId, { en: string; es: string }> = {
   restaurant: { en: "Restaurant & cafe", es: "Restaurante y café" },
   professional: { en: "Professional services", es: "Servicios profesionales" },
   landscaping: { en: "Landscaping & yards", es: "Jardinería y patios" },
+  cleaning: { en: "Cleaning & maid service", es: "Limpieza y servicio de casa" },
   tax: { en: "Tax office", es: "Oficina de impuestos" },
 };
 
@@ -123,6 +125,21 @@ export const PUBLIC_DEMOS: PublicDemo[] = [
       "Lawn care",
       "Drip irrigation",
       "Rock and gravel yards",
+    ],
+  },
+  {
+    slug: "desert-sparkle-cleaning",
+    name: "Desert Sparkle Cleaning",
+    city: "Tolleson, AZ",
+    template: "cleaning",
+    href: demoHref("desert-sparkle-cleaning"),
+    hostLabel: demoHost("desert-sparkle-cleaning"),
+    services: [
+      "Recurring house cleaning",
+      "One-time deep clean",
+      "Move-in / move-out",
+      "Special event / spring clean",
+      "Light commercial",
     ],
   },
   {
@@ -334,6 +351,29 @@ export const TEMPLATE_SYNONYMS: Record<TemplateId, string[]> = {
     "cesped",
     "césped",
     "riego",
+  ],
+  cleaning: [
+    "cleaning",
+    "cleaner",
+    "cleaners",
+    "clean",
+    "maid",
+    "maids",
+    "maid service",
+    "house cleaning",
+    "housekeeping",
+    "housekeeper",
+    "deep clean",
+    "move out",
+    "move-out",
+    "recurring",
+    "residential cleaning",
+    "limpieza",
+    "limpiar",
+    "limpia",
+    "ama de casa",
+    "servicio de limpieza",
+    "aseo",
   ],
   tax: [
     "tax",

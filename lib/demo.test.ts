@@ -47,12 +47,13 @@ test("demo URL is a preview path, not a paid /s/ site", () => {
   assert.equal(demoUrl("lead_abc").includes("/s/"), false);
 });
 
-test("trade picker only accepts the eight templates, including carpentry, handyman, and tax", () => {
+test("trade picker only accepts the nine templates, including cleaning, carpentry, handyman, and tax", () => {
   assert.equal(parseTemplateId("contractor"), "contractor");
   assert.equal(parseTemplateId("handyman"), "handyman");
   assert.equal(parseTemplateId("carpentry"), "carpentry");
   assert.equal(parseTemplateId("tax"), "tax");
   assert.equal(parseTemplateId("salon"), "salon");
+  assert.equal(parseTemplateId("cleaning"), "cleaning");
   assert.equal(parseTemplateId("hola-tax-service"), null);
   assert.equal(parseTemplateId("custom"), null);
   assert.deepEqual(demoServices("handyman"), [
@@ -84,6 +85,15 @@ test("trade picker only accepts the eight templates, including carpentry, handym
   assert.equal(demoServices("tax").length, 6);
   assert.equal(demoServices("salon").length, 6);
   assert.equal(demoServices("landscaping").length, 6);
+  assert.deepEqual(demoServices("cleaning"), [
+    "Recurring house cleaning",
+    "One-time deep clean",
+    "Move-in / move-out",
+    "Special event / spring clean",
+    "Light commercial",
+    "Windows",
+  ]);
+  assert.equal(demoServices("cleaning").length, 6);
   assert.equal(
     demoServices("tax").some((row) => /llc/i.test(row)),
     false,
@@ -207,6 +217,7 @@ test("each trade has a local hero photo and a four-photo gallery", () => {
     "restaurant",
     "professional",
     "landscaping",
+    "cleaning",
     "tax",
   ];
   for (const id of trades) {

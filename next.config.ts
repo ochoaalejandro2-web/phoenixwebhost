@@ -7,6 +7,11 @@ const WALK_IN_HOST_REWRITES: Array<{ host: string; slug: string }> = [
   { host: "palo-verde-yards.phoenixwebhost.com", slug: "palo-verde-yards" },
   { host: "desertpeak.phoenixwebhost.com", slug: "desert-peak-roofing" },
   { host: "desert-peak-roofing.phoenixwebhost.com", slug: "desert-peak-roofing" },
+  { host: "desertsparkle.phoenixwebhost.com", slug: "desert-sparkle-cleaning" },
+  {
+    host: "desert-sparkle-cleaning.phoenixwebhost.com",
+    slug: "desert-sparkle-cleaning",
+  },
   { host: "casa-luna-salon.phoenixwebhost.com", slug: "casa-luna-salon" },
   { host: "mesa-street-kitchen.phoenixwebhost.com", slug: "mesa-street-kitchen" },
 ];

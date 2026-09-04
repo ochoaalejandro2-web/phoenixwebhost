@@ -43,6 +43,19 @@ test("existing walk-in demos get Book a job turned on without dropping other cli
   assert.equal(next.items.find((row) => row.slug === "a-new-paid-shop")?.bookAJob, false);
 });
 
+test("desert sparkle cleaning seed is a live paid cleaning demo", () => {
+  const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
+  const start = src.indexOf('slug: "desert-sparkle-cleaning"');
+  assert.ok(start > 0);
+  const chunk = src.slice(start, start + 2800);
+  assert.match(chunk, /template: "cleaning"/);
+  assert.match(chunk, /siteStatus: "live"/);
+  assert.match(chunk, /paymentStatus: "paid"/);
+  assert.match(chunk, /sample: true/);
+  assert.doesNotMatch(chunk, /siteStatus: "offline"/);
+  assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
+});
+
 test("mesa street kitchen seed is a live paid restaurant demo", () => {
   const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
   const start = src.indexOf('slug: "mesa-street-kitchen"');

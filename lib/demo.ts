@@ -15,6 +15,7 @@ const TEMPLATE_IDS: TemplateId[] = [
   "restaurant",
   "professional",
   "landscaping",
+  "cleaning",
   "tax",
 ];
 
@@ -26,6 +27,7 @@ const TEMPLATE_LABELS: Record<TemplateId, { en: string; es: string }> = {
   restaurant: { en: "Restaurant & cafe", es: "Restaurante y café" },
   professional: { en: "Professional services", es: "Servicios profesionales" },
   landscaping: { en: "Landscaping & yards", es: "Jardinería y patios" },
+  cleaning: { en: "Cleaning & maid service", es: "Limpieza y servicio de casa" },
   tax: { en: "Tax office", es: "Oficina de impuestos" },
 };
 
@@ -39,6 +41,7 @@ export const DEMO_HOURS: Record<TemplateId, string> = {
   restaurant: "Tue–Sun 11:00am–9:00pm",
   professional: "Mon–Fri 8:00am–5:00pm",
   landscaping: "Mon–Sat 7:00am–5:00pm",
+  cleaning: "Mon–Sat 8:00am–6:00pm",
   tax: "Mon–Fri 9:00am–6:00pm · Sat 9:00am–1:00pm",
 };
 
@@ -50,6 +53,7 @@ const DEMO_HOURS_ES: Record<TemplateId, string> = {
   restaurant: "Mar–Dom 11:00am–9:00pm",
   professional: "Lun–Vie 8:00am–5:00pm",
   landscaping: "Lun–Sáb 7:00am–5:00pm",
+  cleaning: "Lun–Sáb 8:00am–6:00pm",
   tax: "Lun–Vie 9:00am–6:00pm · Sáb 9:00am–1:00pm",
 };
 
@@ -61,6 +65,7 @@ const DEMO_STREET: Record<TemplateId, string> = {
   restaurant: "125 W Main St",
   professional: "201 E Washington St",
   landscaping: "4120 N 32nd St",
+  cleaning: "9184 W Van Buren St",
   tax: "4550 N Central Ave",
 };
 
@@ -177,6 +182,14 @@ export const TEMPLATE_STARTER_SERVICES: Record<TemplateId, string[]> = {
     "Cleanup",
     "Rock and gravel yards",
     "Tree and cactus care",
+  ],
+  cleaning: [
+    "Recurring house cleaning",
+    "One-time deep clean",
+    "Move-in / move-out",
+    "Special event / spring clean",
+    "Light commercial",
+    "Windows",
   ],
   tax: [
     "Personal tax preparation",

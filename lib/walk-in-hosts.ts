@@ -33,12 +33,17 @@ export const WALK_IN_HOST_ALIASES: Record<string, string> = {
   "hola-tax": "hola-tax-service",
   holataxservice: "hola-tax-service",
   "hola-tax-service": "hola-tax-service",
+  desertsparkle: "desert-sparkle-cleaning",
+  "desert-sparkle": "desert-sparkle-cleaning",
+  desertsparklecleaning: "desert-sparkle-cleaning",
+  "desert-sparkle-cleaning": "desert-sparkle-cleaning",
 };
 
 export const WALK_IN_DISPLAY_HOST: Record<string, string> = {
   "ironwood-handyman": "ironwood.phoenixwebhost.com",
   "palo-verde-yards": "paloverde.phoenixwebhost.com",
   "desert-peak-roofing": "desertpeak.phoenixwebhost.com",
+  "desert-sparkle-cleaning": "desertsparkle.phoenixwebhost.com",
 };
 
 const HOLA_TAX_CUSTOM = {

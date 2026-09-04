@@ -13,6 +13,7 @@ test("public demos are the real repo starting points, not invented shops", () =>
   assert.deepEqual(slugs, [
     "casa-luna-salon",
     "desert-peak-roofing",
+    "desert-sparkle-cleaning",
     "hola-tax-service",
     "ironwood-handyman",
     "mesa-street-kitchen",
@@ -34,6 +35,10 @@ test("public demos are the real repo starting points, not invented shops", () =>
   assert.equal(
     PUBLIC_DEMOS.find((demo) => demo.slug === "desert-peak-roofing")?.hostLabel,
     "desertpeak.phoenixwebhost.com",
+  );
+  assert.equal(
+    PUBLIC_DEMOS.find((demo) => demo.slug === "desert-sparkle-cleaning")?.hostLabel,
+    "desertsparkle.phoenixwebhost.com",
   );
   assert.equal(
     PUBLIC_DEMOS.find((demo) => demo.slug === "hola-tax-service")?.hostLabel,
@@ -113,6 +118,13 @@ test("trade, city, name, and synonym queries find the matching live demo", () =>
 
   assert.equal(filterPublicDemos("tax")[0]?.slug, "hola-tax-service");
   assert.ok(filterPublicDemos("bookkeeping").some((row) => row.slug === "hola-tax-service"));
+
+  assert.equal(filterPublicDemos("cleaning")[0]?.slug, "desert-sparkle-cleaning");
+  assert.equal(filterPublicDemos("maid")[0]?.slug, "desert-sparkle-cleaning");
+  assert.equal(filterPublicDemos("housekeeping")[0]?.slug, "desert-sparkle-cleaning");
+  assert.equal(filterPublicDemos("limpieza")[0]?.slug, "desert-sparkle-cleaning");
+  assert.equal(filterPublicDemos("Tolleson")[0]?.slug, "desert-sparkle-cleaning");
+  assert.equal(filterPublicDemos("Desert Sparkle")[0]?.slug, "desert-sparkle-cleaning");
 });
 
 test("unknown queries return no demos", () => {
@@ -126,6 +138,7 @@ test("template starting points stay mapped to those live demo URLs", () => {
   assert.equal(demoForTemplate("salon")?.href, "/s/casa-luna-salon");
   assert.equal(demoForTemplate("restaurant")?.href, "/s/mesa-street-kitchen");
   assert.equal(demoForTemplate("landscaping")?.href, "/s/palo-verde-yards");
+  assert.equal(demoForTemplate("cleaning")?.href, "/s/desert-sparkle-cleaning");
   assert.equal(demoForTemplate("tax")?.href, "/s/hola-tax-service");
   assert.equal(demoForTemplate("professional"), undefined);
   assert.ok(filterTemplates("landscaping").includes("landscaping"));
@@ -134,6 +147,9 @@ test("template starting points stay mapped to those live demo URLs", () => {
   assert.ok(filterTemplates("millwork").includes("carpentry"));
   assert.ok(filterTemplates("manitas").includes("handyman"));
   assert.ok(filterTemplates("professional").includes("professional"));
+  assert.ok(filterTemplates("cleaning").includes("cleaning"));
+  assert.ok(filterTemplates("maid").includes("cleaning"));
+  assert.ok(filterTemplates("limpieza").includes("cleaning"));
 });
 
 test("plan copy on the public site is still $200 launch + $69/month", () => {

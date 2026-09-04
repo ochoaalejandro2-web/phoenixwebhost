@@ -8,6 +8,7 @@ export type TemplateId =
   | "restaurant"
   | "professional"
   | "landscaping"
+  | "cleaning"
   | "tax";
 
 export type ContactNotice = "sent" | "no-email" | "send-failed" | "missing";

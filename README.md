@@ -53,7 +53,7 @@ Buying launch and care still works with ads and extras unchecked. Local Boost, T
 
 ## Request a demo
 
-The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the eight templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
+The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the nine templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
 
 - Slim bar at the top: **This is a preview, not live yet**, plus **Purchase / Go live $200+$69**. Optional Local Boost / Traffic / Loud (one ads level), Business Email, Book a job, and the other extras stay behind that button. Color/logo tweaks stay behind a small control. The bar is not an admin dashboard sitting on top of a wireframe.
 - The visitor gets an email with the preview link and the price: **$200 to launch + $69/month** (first payment **$269** if they pay launch and the first month together).
@@ -86,6 +86,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Demo restaurant | `/s/mesa-street-kitchen` (paid, live) |
 | Demo landscaping (sample) | `/s/palo-verde-yards` (paid, live) |
 | Demo handyman (sample) | `/s/ironwood-handyman` (paid, live) |
+| Demo cleaning (sample) | `/s/desert-sparkle-cleaning` (paid, live) |
 | Premium Carpentry Designs | `/s/premium-carpentry-designs` (paid, live) — shareable phone URL |
 | Hola Tax (tax office template) | `/s/hola-tax-service` (paid, live) · client portal `/s/hola-tax-service/portal` |
 
@@ -182,8 +183,8 @@ When you are ready for real charges, switch the same variable names to **live** 
 - Client detail: notes, this month’s edit requests (capped at 2 requests / 30 minutes), Stripe customer and subscription IDs, add-on status, pause / offline toggle. Existing clients can add one ads level, Business Email, Book a job, the other extras, or a domain later from this page.
 - **Affiliates** lets Alex add closer codes and unique sell links (`/r/{code}` or `?ref=`). Demo requests and paid checkouts keep that code so Alex can pay the closer the $200 launch after Stripe succeeds. There is no automatic Stripe payout. The public **Sell with us** page (`/affiliates`, also `/es/affiliates`) explains the pitch.
 - **Requests** also lists chat and Book a job inbox next to demo requests. The included receptionist emails the site owner (and Alex for studio/preview chats).
-- **New client** generates a site from a template (contractor, handyman, carpentry & millwork, salon, restaurant, professional services, landscaping, tax office). Tax office includes a private client document portal on that site only.
-- Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the eight templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
+- **New client** generates a site from a template (contractor, handyman, carpentry & millwork, salon, restaurant, professional services, landscaping, cleaning & maid service, tax office). Tax office includes a private client document portal on that site only.
+- Public **Request a demo** form (`/request`) generates a live preview at `/demo/{id}` from one of the nine templates, emails the visitor the preview link and the $200 + $69/month price, and lands under **Requests**. After a save, Alex also gets an email (`NOTIFY_EMAIL` / Resend) and a text (`NOTIFY_PHONE` / Twilio) so he can call the next morning if they do not buy. Missing provider keys skip that channel; the form still succeeds. There is no $100-down checkout on the public site.
 - Public **Reviews** (`/reviews`, also on the homepage) stay pending until Alex approves them under **Reviews**. Same email + SMS on submit. No fake reviews are seeded.
 - Owner login uses 2-step verification when Resend or Twilio is configured: password, then a 6-digit code emailed and texted. If those keys are missing, a valid password signs in immediately. Public visitors are not asked for a code.
 - **Sign a PDF** (`/admin/sign`): upload one PDF, get a short unguessable code to text. The customer opens `/sign` (or `/sign/K7M2-P9QX`) with no account, sees that PDF, types a name or draws on their phone, and submits. After it is signed, that code will not accept another signature. Download the signed PDF from the same Admin page. Files go to private Vercel Blob (or `data/sign-files/` locally) — not a public folder.

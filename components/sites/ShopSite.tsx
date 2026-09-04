@@ -4,6 +4,10 @@ import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
 import { isPreviewClient, previewLeadId, siteHomeHref, displayHours, isSamplePhone } from "@/lib/demo";
 import { clientShowsBookJob } from "@/lib/site-addons";
 import {
+  CLEANING_AREAS,
+  CLEANING_PLANS,
+  CLEANING_STEPS,
+  CLEANING_TRUST,
   photoAlt,
   serviceBlurb,
   serviceName,
@@ -190,14 +194,23 @@ export function ShopSite({
   const submitBtn = `justify-self-start rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`;
   const showPreviewReviewNote = preview || client.sample;
 
-  const links = [
-    { href: "#services", label: c.navServices },
-    { href: "#about", label: c.navAbout },
-    { href: "#photos", label: c.navPhotos },
-    { href: "#hours", label: c.navHours },
-    ...(reviews.length ? [{ href: "#reviews", label: c.navReviews }] : []),
-    { href: "#contact", label: c.navContact },
-  ];
+  const isCleaning = client.template === "cleaning";
+  const links = isCleaning
+    ? [
+        { href: "#services", label: c.navServices },
+        { href: "#plans", label: c.navPlans },
+        { href: "#areas", label: c.navAreas },
+        ...(reviews.length ? [{ href: "#reviews", label: c.navReviews }] : []),
+        { href: "#contact", label: c.navContact },
+      ]
+    : [
+        { href: "#services", label: c.navServices },
+        { href: "#about", label: c.navAbout },
+        { href: "#photos", label: c.navPhotos },
+        { href: "#hours", label: c.navHours },
+        ...(reviews.length ? [{ href: "#reviews", label: c.navReviews }] : []),
+        { href: "#contact", label: c.navContact },
+      ];
 
   return (
     <div className={`flex min-h-full flex-col ${theme.page}`}>
@@ -262,23 +275,61 @@ export function ShopSite({
             {client.about}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            {phone ? (
-              <a
-                href={telHref(phone)}
-                className={`site-cta inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`}
-              >
-                {callLabel}
-              </a>
-            ) : null}
-            <a
-              href="#contact"
-              className={`inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.ghostBtn}`}
-            >
-              {c.message}
-            </a>
+            {isCleaning ? (
+              <>
+                <a
+                  href="#contact"
+                  className={`inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+                >
+                  {c.estimate}
+                </a>
+                {phone ? (
+                  <a
+                    href={telHref(phone)}
+                    className={`site-cta inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.ghostBtn}`}
+                  >
+                    {callLabel}
+                  </a>
+                ) : null}
+              </>
+            ) : (
+              <>
+                {phone ? (
+                  <a
+                    href={telHref(phone)}
+                    className={`site-cta inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.call} ${theme.callHover}`}
+                  >
+                    {callLabel}
+                  </a>
+                ) : null}
+                <a
+                  href="#contact"
+                  className={`inline-block rounded-full px-5 py-2.5 text-sm font-semibold ${theme.ghostBtn}`}
+                >
+                  {c.message}
+                </a>
+              </>
+            )}
           </div>
         </div>
       </section>
+
+      {isCleaning ? (
+        <section className="border-b border-[#d5e8e3] bg-white">
+          <ul className="mx-auto grid max-w-5xl gap-4 px-5 py-8 sm:grid-cols-2 lg:grid-cols-4">
+            {CLEANING_TRUST.map((item) => (
+              <li key={item.title}>
+                <p className={`text-sm font-semibold ${theme.sectionTitle}`}>
+                  {locale === "es" ? item.titleEs : item.title}
+                </p>
+                <p className={`mt-2 text-sm leading-relaxed ${theme.muted}`}>
+                  {locale === "es" ? item.bodyEs : item.body}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section id="services" className="mx-auto w-full max-w-5xl px-5 py-16">
         <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>
@@ -301,6 +352,68 @@ export function ShopSite({
           })}
         </ul>
       </section>
+
+      {isCleaning ? (
+        <>
+          <section id="plans" className="mx-auto w-full max-w-5xl px-5 py-8">
+            <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>{c.plansTitle}</h2>
+            <p className={`mt-2 text-sm ${theme.muted}`}>{c.plansNote}</p>
+            <ul className="mt-8 grid gap-4 md:grid-cols-3">
+              {CLEANING_PLANS.map((plan) => (
+                <li
+                  key={plan.name}
+                  className={`rounded-2xl border p-5 ${theme.card} ${theme.cardBorder}`}
+                >
+                  <h3 className="font-display text-xl">
+                    {locale === "es" ? plan.nameEs : plan.name}
+                  </h3>
+                  <p className={`mt-2 text-lg font-semibold ${theme.sectionTitle}`}>
+                    {locale === "es" ? plan.priceEs : plan.price}
+                  </p>
+                  <p className={`mt-2 text-sm leading-relaxed ${theme.muted}`}>
+                    {locale === "es" ? plan.bodyEs : plan.body}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="mx-auto w-full max-w-5xl px-5 py-12">
+            <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>{c.howTitle}</h2>
+            <ol className="mt-8 grid gap-4 sm:grid-cols-2">
+              {CLEANING_STEPS.map((step) => (
+                <li
+                  key={step.n}
+                  className={`rounded-2xl border p-5 ${theme.card} ${theme.cardBorder}`}
+                >
+                  <p className="text-sm font-semibold text-[#1b7a72]">{step.n}</p>
+                  <h3 className="mt-2 font-display text-xl">
+                    {locale === "es" ? step.titleEs : step.title}
+                  </h3>
+                  <p className={`mt-2 text-sm leading-relaxed ${theme.muted}`}>
+                    {locale === "es" ? step.bodyEs : step.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section id="areas" className="mx-auto w-full max-w-5xl px-5 py-8">
+            <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>{c.areasTitle}</h2>
+            <p className={`mt-2 text-sm ${theme.muted}`}>{c.areasLead}</p>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {CLEANING_AREAS.map((area) => (
+                <li
+                  key={area}
+                  className={`rounded-full border px-4 py-2 text-sm ${theme.card} ${theme.cardBorder}`}
+                >
+                  {area}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </>
+      ) : null}
 
       <section id="about" className="mx-auto grid w-full max-w-5xl gap-8 px-5 py-6 sm:grid-cols-2 sm:items-center">
         <PhotoStill
@@ -401,6 +514,9 @@ export function ShopSite({
       <section className="mx-auto w-full max-w-5xl px-5 pb-16">
         <div className={`rounded-2xl border p-6 ${theme.card} ${theme.cardBorder}`}>
           <p className={`font-display text-2xl ${theme.sectionTitle}`}>{c.contactTitle(client.template)}</p>
+          {isCleaning ? (
+            <p className={`mt-2 text-sm ${theme.muted}`}>{c.spanishNote}</p>
+          ) : null}
           {preview ? (
             <PreviewContactForm
               locale={locale}
@@ -440,6 +556,9 @@ export function ShopSite({
             {client.address} · {hours}
           </p>
         </div>
+        {isCleaning && client.sample ? (
+          <p className="mx-auto mt-3 max-w-5xl text-xs">{c.demoFooter}</p>
+        ) : null}
       </footer>
     </div>
   );
