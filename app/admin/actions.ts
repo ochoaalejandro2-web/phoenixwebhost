@@ -297,6 +297,7 @@ export async function resetDemoAction() {
   revalidatePath("/s/mesa-street-kitchen");
   revalidatePath("/s/palo-verde-yards");
   revalidatePath("/s/ironwood-handyman");
+  revalidatePath("/s/desert-sparkle-cleaning");
   revalidatePath("/s/premium-carpentry-designs");
   revalidatePath("/s/hola-tax-service");
   redirect("/admin");

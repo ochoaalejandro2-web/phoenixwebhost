@@ -107,6 +107,11 @@ const previews: Record<
     screen: "bg-[#e8efe4] text-[#2f4a38]",
     title: "Yards",
   },
+  cleaning: {
+    bar: "bg-[#1b7a72] text-white",
+    screen: "bg-[#f4faf8] text-[#16302c]",
+    title: "Cleaning",
+  },
   tax: {
     bar: "bg-black text-[#00FF66]",
     screen: "bg-white text-black",

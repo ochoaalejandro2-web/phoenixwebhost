@@ -119,6 +119,13 @@ export const TEMPLATES: {
     blurbEs: "Plantas del desierto, césped, riego y jardinería en el área de Phoenix.",
   },
   {
+    id: "cleaning",
+    name: "Cleaning & maid service",
+    nameEs: "Limpieza y servicio de casa",
+    blurb: "House cleaning, deep cleans, move-outs, and West Valley recurring plans.",
+    blurbEs: "Limpieza de casas, limpiezas profundas, mudanzas y planes recurrentes del West Valley.",
+  },
+  {
     id: "tax",
     name: "Tax office",
     nameEs: "Oficina de impuestos",

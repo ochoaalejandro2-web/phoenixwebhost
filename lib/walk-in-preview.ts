@@ -30,18 +30,9 @@ export const WALK_IN_TYPES: WalkInType[] = [
   { id: "restaurant", template: "restaurant" },
   { id: "handyman", template: "handyman" },
   { id: "contractor", template: "contractor" },
-  { id: "cleaning", template: "handyman" },
+  { id: "cleaning", template: "cleaning" },
   { id: "shop", template: "professional" },
   { id: "other", template: "professional" },
-];
-
-const CLEANING_SERVICES = [
-  "House cleaning",
-  "Office cleaning",
-  "Move-out clean",
-  "Weekly service",
-  "Deep clean",
-  "Windows",
 ];
 
 const SHOP_SERVICES = [
@@ -71,7 +62,7 @@ export function walkInTemplate(id: WalkInTypeId): TemplateId {
 }
 
 export function walkInServices(id: WalkInTypeId): string[] {
-  if (id === "cleaning") return [...CLEANING_SERVICES];
+  if (id === "cleaning") return demoServices("cleaning");
   if (id === "shop" || id === "other") return [...SHOP_SERVICES];
   return demoServices(walkInTemplate(id));
 }

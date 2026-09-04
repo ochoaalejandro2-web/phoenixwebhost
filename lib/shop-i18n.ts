@@ -8,15 +8,19 @@ const shop = {
     navHours: "Hours",
     navReviews: "Reviews",
     navContact: "Contact",
+    navPlans: "Plans",
+    navAreas: "Areas",
     call: (phone: string) => `Call ${phone}`,
     callShort: "Call",
     message: "Send a message",
+    estimate: "Get a free estimate",
     servicesTitle: (template: TemplateId) => {
       if (template === "restaurant") return "From the kitchen";
       if (template === "landscaping") return "Yard work";
       if (template === "handyman") return "Around the house";
       if (template === "carpentry") return "From the shop";
       if (template === "salon") return "In the chair";
+      if (template === "cleaning") return "House cleaning";
       if (template === "tax") return "How we help";
       return "Services";
     },
@@ -24,8 +28,20 @@ const shop = {
     photosTitle: "Recent work",
     hoursTitle: "Hours & location",
     reviewsTitle: "What neighbors say",
-    contactTitle: (template: TemplateId) =>
-      template === "carpentry" ? "Request a quote" : "Contact",
+    contactTitle: (template: TemplateId) => {
+      if (template === "carpentry") return "Request a quote";
+      if (template === "cleaning") return "Get a free estimate";
+      return "Contact";
+    },
+    plansTitle: "Recurring plans",
+    plansNote:
+      "Sample prices for this demo — not a real quote. A live shop would replace these with their own numbers.",
+    howTitle: "How a visit works",
+    areasTitle: "West Valley homes we serve",
+    areasLead:
+      "Tolleson, Avondale, Goodyear, Glendale, and the west side of Phoenix.",
+    spanishNote: "English or Spanish — we will call you back.",
+    demoFooter: "A Phoenixwebhost sample site — not a customer account.",
     formName: "Name",
     formEmail: "Email",
     formPhone: "Phone",
@@ -49,15 +65,19 @@ const shop = {
     navHours: "Horario",
     navReviews: "Reseñas",
     navContact: "Contacto",
+    navPlans: "Planes",
+    navAreas: "Zonas",
     call: (phone: string) => `Llame al ${phone}`,
     callShort: "Llamar",
     message: "Enviar un mensaje",
+    estimate: "Pida un presupuesto gratis",
     servicesTitle: (template: TemplateId) => {
       if (template === "restaurant") return "De la cocina";
       if (template === "landscaping") return "Trabajo de jardín";
       if (template === "handyman") return "En la casa";
       if (template === "carpentry") return "Del taller";
       if (template === "salon") return "En el sillón";
+      if (template === "cleaning") return "Limpieza de casa";
       if (template === "tax") return "Cómo le ayudamos";
       return "Servicios";
     },
@@ -65,8 +85,20 @@ const shop = {
     photosTitle: "Trabajo reciente",
     hoursTitle: "Horario y ubicación",
     reviewsTitle: "Lo que dicen los vecinos",
-    contactTitle: (template: TemplateId) =>
-      template === "carpentry" ? "Pedir una cotización" : "Contacto",
+    contactTitle: (template: TemplateId) => {
+      if (template === "carpentry") return "Pedir una cotización";
+      if (template === "cleaning") return "Pida un presupuesto gratis";
+      return "Contacto";
+    },
+    plansTitle: "Planes recurrentes",
+    plansNote:
+      "Precios de muestra para esta demo — no son una cotización real. Un negocio en vivo pondría sus propios números.",
+    howTitle: "Cómo es una visita",
+    areasTitle: "Casas del West Valley que atendemos",
+    areasLead:
+      "Tolleson, Avondale, Goodyear, Glendale y el lado oeste de Phoenix.",
+    spanishNote: "Inglés o español — le devolvemos la llamada.",
+    demoFooter: "Sitio de muestra de Phoenixwebhost — no es una cuenta de cliente.",
     formName: "Nombre",
     formEmail: "Correo",
     formPhone: "Teléfono",

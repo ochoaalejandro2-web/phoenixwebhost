@@ -207,6 +207,35 @@ export const SHOP_PHOTOS: Record<TemplateId, {
       },
     ],
   },
+  cleaning: {
+    hero: {
+      src: "/templates/cleaning/hero.jpg",
+      alt: "Sunlit living room in a tidy West Valley home",
+      altEs: "Sala iluminada en una casa ordenada del West Valley",
+    },
+    gallery: [
+      {
+        src: "/templates/cleaning/photo-1.jpg",
+        alt: "Kitchen counters wiped down after a house clean",
+        altEs: "Mesas de cocina limpias después de una visita",
+      },
+      {
+        src: "/templates/cleaning/photo-2.jpg",
+        alt: "Bathroom sink and tile after a detailed clean",
+        altEs: "Lavabo y azulejo del baño después de una limpieza detallada",
+      },
+      {
+        src: "/templates/cleaning/photo-3.jpg",
+        alt: "Bright living room after a house-cleaning visit",
+        altEs: "Sala iluminada después de una visita de limpieza",
+      },
+      {
+        src: "/templates/cleaning/photo-4.jpg",
+        alt: "Supplies ready for a recurring house-cleaning visit",
+        altEs: "Materiales listos para una visita de limpieza recurrente",
+      },
+    ],
+  },
   landscaping: {
     hero: {
       src: "/templates/landscaping/hero.jpg",
@@ -409,6 +438,26 @@ export const SHOP_THEMES: Record<Exclude<TemplateId, "tax">, ShopTheme> = {
     footerBorder: "border-[#d7d0be]",
     field: "rounded-lg border border-[#d7d0be] bg-white px-3 py-2 text-ink",
     ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#2f4a38]",
+  },
+  cleaning: {
+    page: "bg-[#f4faf8] text-[#16302c]",
+    header: "bg-white/95 text-[#16302c]",
+    headerBorder: "border-[#d5e8e3]",
+    name: "text-[#16302c]",
+    nav: "text-[#4a6a64] hover:text-[#16302c]",
+    call: "bg-[#1b7a72] text-white",
+    callHover: "hover:bg-[#15665f]",
+    kicker: "text-[#9fd4cc]",
+    body: "text-[#16302c]",
+    muted: "text-[#4a6a64]",
+    card: "bg-white",
+    cardBorder: "border-[#d5e8e3]",
+    sectionTitle: "text-[#16302c]",
+    overlay: "bg-gradient-to-r from-black/70 via-black/40 to-black/15",
+    footer: "text-[#4a6a64]",
+    footerBorder: "border-[#d5e8e3]",
+    field: "rounded-lg border border-[#d5e8e3] bg-white px-3 py-2 text-ink",
+    ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#16302c]",
   },
 };
 
@@ -681,6 +730,31 @@ export const SERVICE_BLURBS: Record<
     blurb: "Interior glass and tracks. Exterior when the house allows it.",
     blurbEs: "Vidrio interior y rieles. El exterior cuando la casa lo permite.",
   },
+  "Recurring house cleaning": {
+    nameEs: "Limpieza de casa recurrente",
+    blurb: "A standing weekly or bi-weekly visit for kitchens, baths, floors, and the rooms you use.",
+    blurbEs: "Una visita fija semanal o quincenal para cocinas, baños, pisos y los cuartos que usa.",
+  },
+  "One-time deep clean": {
+    nameEs: "Limpieza profunda de una vez",
+    blurb: "Baseboards, appliances, and the jobs a regular visit does not cover.",
+    blurbEs: "Zócalos, aparatos y lo que una visita regular no cubre.",
+  },
+  "Move-in / move-out": {
+    nameEs: "Mudanza de entrada o salida",
+    blurb: "A full clean so the next tenant, buyer, or you walk into a finished room.",
+    blurbEs: "Una limpieza completa para que el siguiente inquilino, comprador o usted entre a un cuarto terminado.",
+  },
+  "Special event / spring clean": {
+    nameEs: "Evento o limpieza de primavera",
+    blurb: "A one-day reset before guests, holidays, or the first real heat.",
+    blurbEs: "Un reinicio de un día antes de visitas, fiestas o el primer calor.",
+  },
+  "Light commercial": {
+    nameEs: "Comercial ligero",
+    blurb: "Small offices and shops after hours. Not a night crew for a big building.",
+    blurbEs: "Oficinas y tiendas pequeñas fuera de horario. No es cuadrilla nocturna para un edificio grande.",
+  },
   "Retail hours": {
     nameEs: "Horario de tienda",
     blurb: "Clear open hours on the site so people know when to come in.",
@@ -860,6 +934,29 @@ export const DEMO_REVIEWS: Record<TemplateId, SampleReview[]> = {
       bodyEs: "La primera cita fue de 30 minutos y salí con los siguientes pasos en papel.",
     },
   ],
+  cleaning: [
+    {
+      name: "Leticia M.",
+      city: "Tolleson",
+      stars: 5,
+      body: "They come every other Tuesday, leave the sinks dry, and text if they will be late. That is the job.",
+      bodyEs: "Vienen cada otro martes, dejan los lavabos secos y mandan mensaje si se atrasan. Ese es el trabajo.",
+    },
+    {
+      name: "Andre P.",
+      city: "Avondale",
+      stars: 5,
+      body: "Move-out clean before we handed back the keys. Cabinets, fridge, and the patio door tracks. Sample review for this layout.",
+      bodyEs: "Limpieza de salida antes de devolver las llaves. Gabinetes, refri y los rieles de la puerta. Reseña de muestra para este diseño.",
+    },
+    {
+      name: "Sofia R.",
+      city: "Goodyear",
+      stars: 4,
+      body: "Straight talk on the estimate. No long contract. They came back for a missed baseboard and that was that.",
+      bodyEs: "Presupuesto claro. Sin contrato largo. Regresaron por un zócalo y ya.",
+    },
+  ],
   landscaping: [
     {
       name: "Jordan H.",
@@ -935,3 +1032,96 @@ export function serviceBlurb(name: string, locale: Locale) {
   if (!row) return "";
   return locale === "es" ? row.blurbEs : row.blurb;
 }
+
+export const CLEANING_AREAS = [
+  "Tolleson",
+  "Avondale",
+  "Goodyear",
+  "Glendale",
+  "Phoenix West Valley",
+] as const;
+
+export const CLEANING_TRUST = [
+  {
+    title: "Insured",
+    titleEs: "Asegurados",
+    body: "The visit is covered. If something in the house is damaged, we do not disappear.",
+    bodyEs: "La visita está cubierta. Si algo en la casa se daña, no desaparecemos.",
+  },
+  {
+    title: "Background-checked",
+    titleEs: "Con antecedentes revisados",
+    body: "The people who get a key or a garage code are the people we sent.",
+    bodyEs: "Quienes reciben una llave o el código del garage son las personas que mandamos.",
+  },
+  {
+    title: "No long contracts",
+    titleEs: "Sin contratos largos",
+    body: "Weekly, every other week, or once a month. Pause when you need to.",
+    bodyEs: "Semanal, cada dos semanas o una vez al mes. Pause cuando lo necesite.",
+  },
+  {
+    title: "We come back if we miss a spot",
+    titleEs: "Regresamos si falta algo",
+    body: "Tell us within 24 hours and we return to finish that room. No slogan, just the fix.",
+    bodyEs: "Avísenos en 24 horas y regresamos a terminar ese cuarto. Sin lema, solo el arreglo.",
+  },
+] as const;
+
+export const CLEANING_PLANS = [
+  {
+    name: "Weekly",
+    nameEs: "Semanal",
+    price: "From $129 / visit",
+    priceEs: "Desde $129 / visita",
+    body: "Best when the house stays busy. Same weekday when we can.",
+    bodyEs: "Mejor cuando la casa se usa mucho. El mismo día de la semana cuando se puede.",
+  },
+  {
+    name: "Bi-weekly",
+    nameEs: "Quincenal",
+    price: "From $149 / visit",
+    priceEs: "Desde $149 / visita",
+    body: "The usual plan for most West Valley homes. Sample price, not a quote.",
+    bodyEs: "El plan más común en el West Valley. Precio de muestra, no una cotización.",
+  },
+  {
+    name: "Monthly",
+    nameEs: "Mensual",
+    price: "From $189 / visit",
+    priceEs: "Desde $189 / visita",
+    body: "A deeper reset once a month. Good if you already tidy during the week.",
+    bodyEs: "Un reinicio más profundo una vez al mes. Bien si ya ordena entre semana.",
+  },
+] as const;
+
+export const CLEANING_STEPS = [
+  {
+    n: "1",
+    title: "Free estimate",
+    titleEs: "Presupuesto gratis",
+    body: "Call or send the form. We ask about beds, pets, and how often you want us.",
+    bodyEs: "Llame o mande el formulario. Preguntamos por recámaras, mascotas y cada cuánto nos quiere.",
+  },
+  {
+    n: "2",
+    title: "Customize the checklist",
+    titleEs: "Ajuste la lista",
+    body: "You mark the rooms that matter. We do not invent extras on the day.",
+    bodyEs: "Usted marca los cuartos que importan. No inventamos extras el día de la visita.",
+  },
+  {
+    n: "3",
+    title: "We clean",
+    titleEs: "Limpiamos",
+    body: "The crew arrives in the window we booked. Floors, baths, kitchen, and the list you approved.",
+    bodyEs: "La cuadrilla llega en la ventana que agendamos. Pisos, baños, cocina y la lista que aprobó.",
+  },
+  {
+    n: "4",
+    title: "You tell us how it went",
+    titleEs: "Nos dice cómo quedó",
+    body: "A short text after the visit. If a room is not right, we come back.",
+    bodyEs: "Un mensaje corto después de la visita. Si un cuarto no quedó bien, regresamos.",
+  },
+] as const;

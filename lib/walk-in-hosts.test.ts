@@ -15,6 +15,8 @@ test("short walk-in hosts always map to the stored demo slugs", () => {
   assert.equal(resolveWalkInHostSlug("palo-verde"), "palo-verde-yards");
   assert.equal(resolveWalkInHostSlug("desertpeak"), "desert-peak-roofing");
   assert.equal(resolveWalkInHostSlug("desert-peak"), "desert-peak-roofing");
+  assert.equal(resolveWalkInHostSlug("desertsparkle"), "desert-sparkle-cleaning");
+  assert.equal(resolveWalkInHostSlug("desert-sparkle"), "desert-sparkle-cleaning");
   assert.equal(resolveWalkInHostSlug("ironwood-handyman"), "ironwood-handyman");
   assert.equal(resolveWalkInHostSlug("unknown-shop"), null);
 });
@@ -90,6 +92,10 @@ test("marketing chrome uses the short walk-in host labels", () => {
   assert.equal(
     walkInDisplayHost("ironwood-handyman", "ironwood-handyman.phoenixwebhost.com"),
     "ironwood.phoenixwebhost.com",
+  );
+  assert.equal(
+    walkInDisplayHost("desert-sparkle-cleaning", "desert-sparkle-cleaning.phoenixwebhost.com"),
+    "desertsparkle.phoenixwebhost.com",
   );
   assert.equal(
     walkInDisplayHost("casa-luna-salon", "casa-luna-salon.phoenixwebhost.com"),

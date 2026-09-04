@@ -23,7 +23,7 @@ test("walk-in types reuse existing templates, including cleaning and shop", () =
   assert.equal(walkInTemplate("restaurant"), "restaurant");
   assert.equal(walkInTemplate("handyman"), "handyman");
   assert.equal(walkInTemplate("contractor"), "contractor");
-  assert.equal(walkInTemplate("cleaning"), "handyman");
+  assert.equal(walkInTemplate("cleaning"), "cleaning");
   assert.equal(walkInTemplate("shop"), "professional");
   assert.equal(parseWalkInType("other"), "other");
   assert.equal(walkInTemplate("other"), "professional");
@@ -45,7 +45,7 @@ test("walk-in preview puts the prospect name and a sample phone on the template"
 });
 
 test("cleaning and general shop reuse layouts but swap the service list", () => {
-  assert.ok(walkInServices("cleaning").includes("House cleaning"));
+  assert.ok(walkInServices("cleaning").includes("Recurring house cleaning"));
   assert.equal(walkInServices("cleaning").includes("Drywall"), false);
   assert.ok(walkInServices("shop").includes("In-store pickup"));
   const cleaning = buildWalkInPreviewClient({
@@ -53,7 +53,7 @@ test("cleaning and general shop reuse layouts but swap the service list", () => 
     type: "cleaning",
     locale: "es",
   });
-  assert.equal(cleaning.template, "handyman");
+  assert.equal(cleaning.template, "cleaning");
   assert.match(cleaning.about, /Sparkle Crew/);
   assert.match(cleaning.about, /limpieza/);
 });

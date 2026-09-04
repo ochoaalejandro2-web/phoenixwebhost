@@ -165,6 +165,38 @@ test("fallback answers carpentry cabinet questions from that site’s services",
   assert.equal(/unavailable/i.test(reply), false);
 });
 
+test("fallback answers cleaning questions from that site’s services", () => {
+  const facts = buildClientFacts(
+    client({
+      businessName: "Desert Sparkle Cleaning",
+      slug: "desert-sparkle-cleaning",
+      template: "cleaning",
+      phone: "(623) 555-0136",
+      city: "Tolleson, AZ",
+      hours: "Mon–Sat 8:00am–6:00pm",
+      tagline: "More Saturday mornings. A house that stays ready.",
+      about: "Weekly house cleaning, deep cleans, and move-out work.",
+      services: [
+        "Recurring house cleaning",
+        "One-time deep clean",
+        "Move-in / move-out",
+        "Special event / spring clean",
+        "Light commercial",
+      ],
+    }),
+    "en",
+  );
+  assert.deepEqual(matchListedServices(facts, "do you do deep cleans?"), [
+    "One-time deep clean",
+  ]);
+  const reply = fallbackAnswer(facts, "do you do deep cleans?");
+  assert.match(reply, /One-time deep clean/i);
+  assert.match(reply, /Desert Sparkle Cleaning/);
+  assert.match(reply, /\(623\) 555-0136/);
+  assert.equal(reply.includes(COMPANY.phone), false);
+  assert.equal(/unavailable/i.test(reply), false);
+});
+
 test("fallback answers landscaping lawn questions from that site’s services", () => {
   const facts = buildClientFacts(landscaping, "en");
   assert.deepEqual(matchListedServices(facts, "do you do lawns?"), ["Lawn care"]);

@@ -176,11 +176,13 @@ test("short walk-in hosts map onto the stored demo slugs", () => {
     "casa-luna-salon",
     "mesa-street-kitchen",
     "palo-verde-yards",
+    "desert-sparkle-cleaning",
     "hola-tax-service",
   ];
   assert.equal(resolveDemoSubdomainSlug("ironwood", slugs), "ironwood-handyman");
   assert.equal(resolveDemoSubdomainSlug("paloverde", slugs), "palo-verde-yards");
   assert.equal(resolveDemoSubdomainSlug("desertpeak", slugs), "desert-peak-roofing");
+  assert.equal(resolveDemoSubdomainSlug("desertsparkle", slugs), "desert-sparkle-cleaning");
   assert.equal(
     resolveDemoSubdomainSlug("ironwood-handyman", slugs),
     "ironwood-handyman",
