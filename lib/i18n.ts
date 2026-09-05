@@ -35,9 +35,11 @@ export const copy = {
       "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. An AI receptionist is included — visitors can ask about your services, hours, and phone. Built for contractors, handymen, carpenters, salons, restaurants, landscapers, tax offices, and local offices.",
     monthTitle: "Stay live — $69 / month",
     monthBody:
-      "Keeps the site online, covers small care, and includes an AI receptionist on the site. This is not unlimited work.",
+      "Keeps the site online, covers small care, includes an AI receptionist, and includes basic local SEO (setup and visibility — not paid ads). This is not unlimited work.",
     includedTitle: "What $69/month covers",
+    includedLead: "Limited monthly care. Basic local SEO is included. Never unlimited changes.",
     included: [
+      "Basic local SEO included — setup and visibility basics (Google-friendly pages, business info, contact, mobile, Google Business Profile help). Not paid ads or ranking guarantees.",
       "An AI receptionist on your site — answers from your services, hours, and phone. Included, not an extra.",
       "The site stays live, with SSL",
       "Up to 30 minutes of small edits per month — or 2 small requests",
@@ -53,7 +55,7 @@ export const copy = {
       "Many photos: quoted",
       "A shop: quoted",
       "A logo: $100–$300",
-      "Magic SEO or guaranteed rankings — we do not sell that",
+      "Magic SEO or guaranteed rankings — we do not sell that. Free basic SEO on the plan is setup and visibility, not paid ads or ranking promises.",
       "Unlimited changes — we do not sell that",
     ],
     unpaidTitle: "If a month goes unpaid",
@@ -141,12 +143,14 @@ export const copy = {
     boostKicker: "Optional add-on",
     boostTitle: "Local Boost — $99 once + $79/month extra",
     boostBody:
-      "Local Google visibility for Phoenix small businesses: we set up your Google Business Profile and a small local ad that points to your own site. The monthly extra keeps that listing and ad in care. This is not magic SEO, and it does not promise rankings.",
+      "Local Google visibility for Phoenix small businesses: we set up your Google Business Profile and a small local ad that points to your own site. The monthly extra keeps that listing and ad in care. The website plan already includes free basic SEO. Local Boost is optional paid ads — not magic SEO, and it does not promise rankings.",
+    boostSeoNote:
+      "The $200 + $69 plan includes free basic SEO. Local Boost is optional paid ads for faster local visibility.",
     boostSetupHint: "one-time, Google profile + small ad",
     boostMonthHint: "per month extra, listing and ad care",
     boostCheckbox: "Add Local Boost — $99 now + $79/month extra",
     boostCheckboxHelp:
-      "Optional and separate. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
+      "Optional paid ads, separate from the website. The base plan already includes free basic SEO. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
     boostMissing:
       "Local Boost checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
     adsPickOne: "Pick one ads level — or none.",
@@ -184,6 +188,8 @@ export const copy = {
     emailMissing:
       "Business Email checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
     includedSplit: "Included in the website",
+    includedSplitHelp:
+      "Custom site, AI receptionist chat, and basic local SEO. The owner gets the lead by email.",
     extrasSplit: "Optional extras — not in the $200 + $69 website",
     bookKicker: "Optional add-on",
     bookTitle: "Book a job — $49 once + $19/month extra",
@@ -285,7 +291,7 @@ export const copy = {
       "A proven template with your name on it. The phone is a placeholder until you give us yours.",
     seeSitePriceTitle: "Clear pricing — no hidden fees",
     seeSiteBaseLabel: "Website",
-    seeSiteBaseHelp: "$200 to launch + $69/month. Always on this quote.",
+    seeSiteBaseHelp: "$200 to launch + $69/month. Basic local SEO included. Always on this quote.",
     seeSiteDueNow: "Due to launch",
     seeSitePerMonth: "Then every month",
     seeSiteFirstPay: "First payment if you pay launch + first month together",
@@ -355,9 +361,11 @@ export const copy = {
       "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Incluye una recepcionista de IA — los visitantes pueden preguntar por servicios, horario y teléfono. Para contratistas, manitas, carpinteros, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
     monthTitle: "Mantenerlo en línea — $69 / mes",
     monthBody:
-      "Mantiene el sitio publicado, cubre el cuidado pequeño e incluye una recepcionista de IA en el sitio. Esto no es trabajo ilimitado.",
+      "Mantiene el sitio publicado, cubre el cuidado pequeño, incluye una recepcionista de IA y SEO local básico (configuración y visibilidad — no anuncios de pago). Esto no es trabajo ilimitado.",
     includedTitle: "Qué cubre el plan de $69 al mes",
+    includedLead: "Cuidado mensual limitado. El SEO local básico va incluido. Nunca cambios ilimitados.",
     included: [
+      "SEO local básico incluido — configuración y visibilidad (páginas claras para Google, datos del negocio, contacto, móvil, ayuda con el Perfil de Empresa en Google). No son anuncios de pago ni garantías de posición.",
       "Una recepcionista de IA en su sitio — responde con sus servicios, horario y teléfono. Incluida, no es un extra.",
       "El sitio permanece en línea, con SSL",
       "Hasta 30 minutos de cambios pequeños al mes — o 2 solicitudes pequeñas",
@@ -373,7 +381,7 @@ export const copy = {
       "Muchas fotos: se cotiza",
       "Una tienda: se cotiza",
       "Un logotipo: $100–$300",
-      "SEO mágico o posiciones garantizadas — no vendemos eso",
+      "SEO mágico o posiciones garantizadas — no vendemos eso. El SEO local básico del plan es configuración y visibilidad, no anuncios de pago ni promesas de posiciones.",
       "Cambios ilimitados — no vendemos eso",
     ],
     unpaidTitle: "Si un mes no se paga",
@@ -461,12 +469,14 @@ export const copy = {
     boostKicker: "Complemento opcional",
     boostTitle: "Local Boost — $99 una vez + $79 al mes extra",
     boostBody:
-      "Visibilidad local en Google para negocios pequeños de Phoenix: configuramos su Perfil de Empresa en Google y un anuncio local pequeño que apunta a su propio sitio. El cargo mensual extra cuida ese listado y anuncio. No es SEO mágico y no promete posiciones.",
+      "Visibilidad local en Google para negocios pequeños de Phoenix: configuramos su Perfil de Empresa en Google y un anuncio local pequeño que apunta a su propio sitio. El cargo mensual extra cuida ese listado y anuncio. El plan del sitio ya incluye SEO local básico gratis. Local Boost es un anuncio de pago opcional — no es SEO mágico y no promete posiciones.",
+    boostSeoNote:
+      "El plan de $200 + $69 incluye SEO local básico gratis. Local Boost es un anuncio de pago opcional para más visibilidad local.",
     boostSetupHint: "un solo pago, perfil de Google + anuncio pequeño",
     boostMonthHint: "al mes extra, cuidado del listado y anuncio",
     boostCheckbox: "Agregar Local Boost — $99 ahora + $79 al mes extra",
     boostCheckboxHelp:
-      "Opcional y aparte. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
+      "Anuncios de pago opcionales, aparte del sitio. El plan base ya incluye SEO local básico gratis. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
     boostMissing:
       "El pago de Local Boost aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
     adsPickOne: "Elija un nivel de anuncios — o ninguno.",
@@ -504,6 +514,8 @@ export const copy = {
     emailMissing:
       "El pago de Business Email aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
     includedSplit: "Incluido en el sitio",
+    includedSplitHelp:
+      "Sitio a la medida, recepcionista de IA en el chat y SEO local básico. El dueño recibe el lead por correo.",
     extrasSplit: "Extras opcionales — no van en el sitio de $200 + $69",
     bookKicker: "Complemento opcional",
     bookTitle: "Reservar un trabajo — $49 una vez + $19 al mes extra",
@@ -611,7 +623,7 @@ export const copy = {
       "Una plantilla comprobada con su nombre. El teléfono es de muestra hasta que nos dé el suyo.",
     seeSitePriceTitle: "Precios claros — sin cargos ocultos",
     seeSiteBaseLabel: "Sitio web",
-    seeSiteBaseHelp: "$200 para lanzar + $69 al mes. Siempre en esta cotización.",
+    seeSiteBaseHelp: "$200 para lanzar + $69 al mes. SEO local básico incluido. Siempre en esta cotización.",
     seeSiteDueNow: "Para lanzar",
     seeSitePerMonth: "Luego cada mes",
     seeSiteFirstPay: "Primer pago si paga el lanzamiento y el primer mes juntos",

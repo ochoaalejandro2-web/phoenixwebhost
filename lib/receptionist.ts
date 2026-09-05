@@ -158,6 +158,7 @@ function studioServices(locale: Locale): string[] {
     return [
       `Sitios para negocios pequeños — ${PRICING.setupLabel} de lanzamiento + ${PRICING.monthlyLabel} al mes`,
       "Recepcionista de IA incluida en cada sitio (no es un extra)",
+      "SEO local básico incluido — configuración y visibilidad, no anuncios de pago ni garantías de posición",
       "Hospedaje, SSL, copias de seguridad y vigilancia de actividad",
       `Hasta ${PRICING.includedEditMinutes} minutos de cambios pequeños al mes, o ${PRICING.includedEditRequests} solicitudes pequeñas`,
       "Un formulario de contacto",
@@ -166,6 +167,7 @@ function studioServices(locale: Locale): string[] {
   return [
     `Small-business websites — ${PRICING.setupLabel} to launch + ${PRICING.monthlyLabel}/month`,
     "AI receptionist included on every site (not an extra)",
+    "Basic local SEO included — setup and visibility, not paid ads or ranking guarantees",
     "Hosting, SSL, backups, and uptime watch",
     `Up to ${PRICING.includedEditMinutes} minutes of small edits per month, or ${PRICING.includedEditRequests} small requests`,
     "One contact form",
@@ -212,8 +214,8 @@ export function buildStudioFacts(locale: Locale = "en"): ReceptionistFacts {
         : "Straightforward websites for Arizona small businesses.",
     about:
       locale === "es"
-        ? `${COMPANY.legalName} hace sitios para negocios pequeños en Arizona. ${PRICING.setupLabel} para lanzar, ${PRICING.monthlyLabel} al mes para mantenerlo en línea. Cada sitio incluye una recepcionista de IA que responde con los servicios, horarios y teléfono de ese negocio — no es un complemento de pago. Local Boost, Traffic, Loud y Business Email son opcionales. Llame al ${COMPANY.phone} o pida una demo en phoenixwebhost.com.`
-        : `${COMPANY.legalName} builds websites for Arizona small businesses. ${PRICING.setupLabel} to launch, ${PRICING.monthlyLabel}/month to keep it live. Every site includes an AI receptionist that answers from that business’s services, hours, and phone — not a paid add-on. Local Boost, Traffic, Loud, and Business Email are optional extras. Call ${COMPANY.phone} or request a demo at phoenixwebhost.com.`,
+        ? `${COMPANY.legalName} hace sitios para negocios pequeños en Arizona. ${PRICING.setupLabel} para lanzar, ${PRICING.monthlyLabel} al mes para mantenerlo en línea. Cada sitio incluye una recepcionista de IA y SEO local básico (configuración y visibilidad — no anuncios de pago ni garantías de posición). Local Boost, Traffic y Loud son anuncios de pago opcionales. Business Email es opcional. Llame al ${COMPANY.phone} o pida una demo en phoenixwebhost.com.`
+        : `${COMPANY.legalName} builds websites for Arizona small businesses. ${PRICING.setupLabel} to launch, ${PRICING.monthlyLabel}/month to keep it live. Every site includes an AI receptionist and basic local SEO (setup and visibility — not paid ads or ranking guarantees). Local Boost, Traffic, and Loud are optional paid ads. Business Email is optional. Call ${COMPANY.phone} or request a demo at phoenixwebhost.com.`,
     services,
     serviceKeys: studioServices("en"),
     listedPrices: studioPrices(locale),
@@ -400,7 +402,7 @@ function looksLikeServiceQuestion(q: string, message: string): boolean {
 }
 
 function looksLikeIncluded(q: string): boolean {
-  return /\b(included|incluye|receptionist|recepcionista|what do i get|package|paquete)\b/.test(
+  return /\b(included|incluye|receptionist|recepcionista|what do i get|package|paquete|seo)\b/.test(
     q,
   );
 }
@@ -443,8 +445,8 @@ export function fallbackAnswer(facts: ReceptionistFacts, raw: string): string {
 
   if (facts.kind === "studio" && looksLikeIncluded(q)) {
     return locale === "es"
-      ? `El sitio es ${PRICING.setupLabel} de lanzamiento + ${PRICING.monthlyLabel} al mes. La recepcionista de IA va incluida — no es un extra. ${facts.contactHint}`
-      : `The website is ${PRICING.setupLabel} to launch + ${PRICING.monthlyLabel}/month. The AI receptionist is included — not an extra. ${facts.contactHint}`;
+      ? `El sitio es ${PRICING.setupLabel} de lanzamiento + ${PRICING.monthlyLabel} al mes. La recepcionista de IA y el SEO local básico van incluidos — configuración y visibilidad, no anuncios de pago ni garantías de posición. Local Boost, Traffic y Loud son anuncios de pago opcionales. ${facts.contactHint}`
+      : `The website is ${PRICING.setupLabel} to launch + ${PRICING.monthlyLabel}/month. The AI receptionist and basic local SEO are included — setup and visibility, not paid ads or ranking guarantees. Local Boost, Traffic, and Loud are optional paid ads. ${facts.contactHint}`;
   }
 
   if (looksLikeHours(q, message)) {
@@ -545,6 +547,8 @@ export function factsPrompt(facts: ReceptionistFacts): string {
       ? [
           "You represent Phoenixwebhost Inc., the website studio.",
           "The AI receptionist is INCLUDED in the $200 launch + $69/month website. It is not a $49 add-on.",
+          "Basic local SEO is INCLUDED: Google-friendly site structure, business info (name, address, phone), contact, mobile-ready pages, and help with Google Business Profile basics. Setup and visibility only — not paid ads and not a ranking guarantee.",
+          "Never say customers get free Facebook ads or free Google ads with the base plan. Local Boost, Traffic, and Loud are optional paid ads.",
           "Optional paid extras are Local Boost, Traffic, Loud, and Business Email only.",
           "Public studio phone is (480) 953-2393. Do not give a personal owner name.",
         ]

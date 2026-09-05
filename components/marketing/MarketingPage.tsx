@@ -173,6 +173,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.boostKicker}</p>
             <h2 className="mt-3 font-display text-3xl text-ink-black">{c.boostTitle}</h2>
             <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.boostBody}</p>
+            <p className="mt-4 text-sm leading-relaxed text-body">{c.boostSeoNote}</p>
             <div className="mt-8 flex flex-wrap gap-10">
               <div>
                 <p className="price-lime font-display text-4xl">$99</p>
@@ -226,11 +227,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime">
             {c.includedSplit}
           </p>
-          <p className="mt-2 text-sm text-body">
-            {locale === "es"
-              ? "Sitio a la medida y recepcionista de IA en el chat. El dueño recibe el lead por correo."
-              : "Custom site and the AI receptionist chat. The owner gets the lead by email."}
-          </p>
+          <p className="mt-2 text-sm text-body">{c.includedSplitHelp}</p>
         </div>
         <div id="extras" className="mx-auto max-w-6xl border-t border-zinc-200 px-6 py-10 scroll-mt-24">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime">
@@ -371,22 +368,33 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
         <div className="mx-auto grid max-w-6xl gap-14 px-6 py-24 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <h2 className="font-display text-3xl text-ink-black">{c.includedTitle}</h2>
-            <p className="mt-5 text-body">
-              {locale === "es"
-                ? "Cuidado mensual limitado. Nunca cambios ilimitados."
-                : "Limited monthly care. Never unlimited changes."}
-            </p>
+            <p className="mt-5 text-body">{c.includedLead}</p>
           </div>
           <ul className="grid gap-3 sm:grid-cols-2">
-            {c.included.map((item) => (
-              <li
-                key={item}
-                className="flex gap-3 rounded-2xl border border-zinc-200 bg-snow px-4 py-3.5 text-sm text-body"
-              >
-                <LimeCheck />
-                <span>{item}</span>
-              </li>
-            ))}
+            {c.included.map((item) => {
+              const dash = " — ";
+              const splitAt = item.indexOf(dash);
+              const title = splitAt >= 0 ? item.slice(0, splitAt) : item;
+              const detail = splitAt >= 0 ? item.slice(splitAt + dash.length) : "";
+              return (
+                <li
+                  key={item}
+                  className="flex gap-3 rounded-2xl border border-zinc-200 bg-snow px-4 py-3.5 text-sm text-body"
+                >
+                  <LimeCheck />
+                  <span>
+                    {detail ? (
+                      <>
+                        <span className="block text-ink-black">{title}</span>
+                        <span className="mt-1 block text-xs leading-relaxed">{detail}</span>
+                      </>
+                    ) : (
+                      item
+                    )}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </div>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 pb-24 lg:grid-cols-2">
