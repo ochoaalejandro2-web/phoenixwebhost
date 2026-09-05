@@ -54,11 +54,14 @@ export default async function RequestPage({
           <p className="mt-2 max-w-lg text-sm leading-relaxed text-body">
             First payment is $269 if you pay launch and the first month together.
             This demo starts from a proven template — we do not invent a brand-new
-            custom design for $200.
+            custom design for $200. Basic local SEO is included: setup and
+            visibility, not paid ads or ranking guarantees.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             Optional Local Boost: $99 once plus $79/month extra for Google Business
-            Profile setup and a small local ad to your own site. Not magic SEO.
+            Profile setup and a small local ad to your own site. The base plan
+            already includes free basic SEO. Local Boost is optional paid ads — not
+            magic SEO.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             Optional Traffic: $199/month extra for a bigger Google ad than Local

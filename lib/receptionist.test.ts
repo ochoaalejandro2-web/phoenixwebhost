@@ -131,6 +131,43 @@ test("marketing ladder keeps receptionist included and lists the paid extras", (
   assert.equal(/receptionist/i.test(en.notIncluded.join(" ")), false);
 });
 
+test("marketing copy presents basic local SEO as included, not free ads", () => {
+  for (const locale of ["en", "es"] as const) {
+    const c = copy[locale];
+    const included = c.included.join(" ");
+    const blob = [
+      c.monthBody,
+      included,
+      c.notIncluded.join(" "),
+      c.boostBody,
+      c.boostSeoNote,
+      c.boostCheckboxHelp,
+      c.includedLead,
+      c.includedSplitHelp,
+    ].join(" ");
+    assert.match(included, locale === "es" ? /SEO local básico/i : /basic local SEO/i);
+    assert.match(included, locale === "es" ? /no son anuncios de pago/i : /not paid ads/i);
+    assert.match(c.notIncluded.join(" "), locale === "es" ? /SEO mágico/i : /Magic SEO/i);
+    assert.match(c.boostSeoNote, locale === "es" ? /anuncio de pago/i : /paid ads/i);
+    assert.match(c.boostTitle, /\$99/);
+    assert.match(c.boostTitle, /\$79/);
+    assert.equal(/free (Facebook|Google) ads/i.test(blob), false);
+    assert.equal(/anuncios (de Facebook|de Google) gratis/i.test(blob), false);
+    assert.match(blob, locale === "es" ? /no .*garant/i : /not .*ranking/i);
+  }
+  const studio = fallbackAnswer(buildStudioFacts("en"), "is SEO included?");
+  assert.match(studio, /basic local SEO/i);
+  assert.match(studio, /not paid ads/i);
+  assert.match(studio, /Local Boost/);
+  assert.equal(/free Facebook|free Google ads/i.test(studio), false);
+  const spanish = fallbackAnswer(buildStudioFacts("es"), "¿incluye SEO?");
+  assert.match(spanish, /SEO local básico/i);
+  assert.match(spanish, /no anuncios de pago/i);
+  const prompt = factsPrompt(buildStudioFacts("en"));
+  assert.match(prompt, /Basic local SEO is INCLUDED/i);
+  assert.match(prompt, /Never say customers get free Facebook ads/i);
+});
+
 test("fallback answers carpentry cabinet questions from that site’s services", () => {
   const facts = buildClientFacts(
     client({

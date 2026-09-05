@@ -61,6 +61,7 @@ export function AdsTierPicker({
     <fieldset className="grid gap-3">
       <legend className="text-sm font-medium text-ink-black">{c.adsPickOne}</legend>
       <p className="text-sm text-body">{c.adsLadderHelp}</p>
+      <p className="text-sm text-body">{c.boostSeoNote}</p>
       <div className="grid gap-3 sm:grid-cols-3">
         {options.map((option) => {
           const selected = value === option.id;

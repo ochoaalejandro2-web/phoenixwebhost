@@ -30,6 +30,7 @@ Buying launch and care still works with ads and extras unchecked. Local Boost, T
 
 - Site stays live, SSL, backups, uptime watch, basic security
 - An **AI receptionist** on the site that answers from that business’s services, hours, and phone (included — not a paid add-on)
+- **Basic local SEO** (included): Google-friendly site structure, business info (name, address, phone), contact, mobile-ready pages, and help setting up / optimizing Google Business Profile basics as part of launch care. Setup and visibility only — not paid ads, and not a ranking guarantee.
 - Up to **30 minutes** of small edits per month, **or 2 small requests**
 - Hours, phone, address, prices, a sentence or two, swap a photo they send
 - 1 contact form
@@ -42,7 +43,7 @@ Buying launch and care still works with ads and extras unchecked. Local Boost, T
 - Many photos: quoted
 - Shop: quoted
 - Logo: **$100–$300**
-- Ads / SEO: extra, or skip at first. Optional **Local Boost** is the small local-visibility add-on (Google profile + a small ad). Optional **Traffic** ($199/month) is a bigger managed ad. Optional **Loud** ($349/month) is the aggressive ads package. Pick one ads level. Not magic SEO, and not a ranking promise. The $75 extra in sales copy is a live Instagram feed / extra page — not an ads product.
+- Magic SEO / guaranteed rankings: we do not sell that. Free basic SEO on the $200 + $69 plan is setup and visibility, not paid ads. Optional **Local Boost** ($99 + $79/month) is paid ads for faster local visibility (Google profile + a small ad). Optional **Traffic** ($199/month) is a bigger managed ad. Optional **Loud** ($349/month) is the aggressive ads package. Pick one ads level. Not magic SEO, and not a ranking promise. The $75 extra in sales copy is a live Instagram feed / extra page — not an ads product.
 - A professional inbox: extra, or skip. Optional **Business Email** is one mailbox such as info@their domain, plus $19/month to keep it working. Not magic.
 - Book a job form: extra, or skip. Optional **Book a job** is $49 + $19/month. The included receptionist is still free with the website.
 - Missed-call text-back, review texts, and a voice phone line: extra, sold here, set up after purchase. Not live on the demos.

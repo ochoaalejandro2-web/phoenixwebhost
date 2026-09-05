@@ -54,12 +54,15 @@ export default async function RequestEsPage({
           <p className="mt-2 max-w-lg text-sm leading-relaxed text-body">
             El primer pago es $269 si paga el lanzamiento y el primer mes juntos.
             Esta demo parte de una plantilla comprobada — no inventamos un diseño
-            a medida nuevo por $200.
+            a medida nuevo por $200. El SEO local básico va incluido:
+            configuración y visibilidad, no anuncios de pago ni garantías de
+            posición.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             Local Boost opcional: $99 una vez más $79 al mes extra para el Perfil
-            de Empresa en Google y un anuncio local pequeño a su propio sitio. No
-            es SEO mágico.
+            de Empresa en Google y un anuncio local pequeño a su propio sitio. El
+            plan base ya incluye SEO local básico gratis. Local Boost es un
+            anuncio de pago opcional — no es SEO mágico.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             Traffic opcional: $199 al mes extra para un anuncio de Google más
