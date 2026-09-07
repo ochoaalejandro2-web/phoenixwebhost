@@ -149,17 +149,23 @@ function PaServiceIcon({ service }: { service: string }) {
   );
 }
 
-function SocialGlyph({ kind }: { kind: "whatsapp" | "email" | "facebook" | "instagram" }) {
-  if (kind === "whatsapp") {
+function SocialGlyph({
+  kind,
+  className = "h-5 w-5",
+}: {
+  kind: "whatsapp" | "phone" | "email" | "facebook" | "instagram";
+  className?: string;
+}) {
+  if (kind === "whatsapp" || kind === "phone") {
     return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
-        <path d="M12.04 4.5A7.46 7.46 0 0 0 4.6 11.9c0 1.32.35 2.6 1 3.72L4.5 19.5l4.02-1.05a7.5 7.5 0 0 0 3.52.87 7.46 7.46 0 0 0 0-14.82Zm0 13.55a6.08 6.08 0 0 1-3.1-.85l-.22-.13-2.39.63.64-2.32-.14-.24a6.05 6.05 0 1 1 5.21 2.91Zm3.33-4.54c.18-.09 1.07-.53 1.22-.59.16-.06.27-.09.39.09.11.18.44.59.48.63.04.05.07.18-.04.35-.11.18-.33.41-.65.64-.22.16-.76.7-1.82.97-1.06.26-1.96.04-2.28-.13-.32-.16-1.22-.45-2.32-1.43-1.1-.98-1.42-1.77-1.58-2.07-.16-.3-.02-.48.12-.63.13-.13.29-.35.43-.52.15-.18.2-.3.29-.5.1-.2.05-.37-.02-.52-.07-.15-.38-.95-.53-1.3-.14-.35-.28-.3-.39-.3h-.33c-.11 0-.3.04-.45.22-.16.18-.59.57-.59 1.4 0 .82.61 1.61.69 1.72.09.11 1.2 1.83 2.9 2.57 1.7.74 1.7.49 2.01.46.3-.03 1.07-.44 1.22-.86.15-.43.15-.79.11-.86-.04-.08-.15-.13-.33-.22Z" />
+      <svg viewBox="0 0 24 24" aria-hidden="true" className={`${className} fill-none stroke-current stroke-[1.7]`}>
+        <path d="M7.2 3.8h3.1l1.1 3.2-2 1.2a11.2 11.2 0 0 0 6.4 6.4l1.2-2 3.2 1.1v3.1c0 .7-.6 1.3-1.3 1.3C10.4 18.1 5.9 13.6 5.9 5.1c0-.7.6-1.3 1.3-1.3Z" />
       </svg>
     );
   }
   if (kind === "email") {
     return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current stroke-[1.7]">
+      <svg viewBox="0 0 24 24" aria-hidden="true" className={`${className} fill-none stroke-current stroke-[1.7]`}>
         <rect x="3.5" y="5.5" width="17" height="13" rx="1.6" />
         <path d="m4.2 7.2 7.8 6.2 7.8-6.2" />
       </svg>
@@ -167,17 +173,55 @@ function SocialGlyph({ kind }: { kind: "whatsapp" | "email" | "facebook" | "inst
   }
   if (kind === "facebook") {
     return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+      <svg viewBox="0 0 24 24" aria-hidden="true" className={`${className} fill-current`}>
         <path d="M14.2 20v-7.1h2.4l.36-2.78h-2.76V8.4c0-.8.22-1.35 1.38-1.35H17V4.57A18.6 18.6 0 0 0 14.7 4.4c-2.3 0-3.87 1.4-3.87 3.98v2.22H8.4V12.9h2.43V20h3.37Z" />
       </svg>
     );
   }
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current stroke-[1.7]">
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={`${className} fill-none stroke-current stroke-[1.7]`}>
       <rect x="4" y="4" width="16" height="16" rx="4.5" />
       <circle cx="12" cy="12" r="3.6" />
       <circle cx="17.1" cy="6.9" r="0.7" fill="currentColor" stroke="none" />
     </svg>
+  );
+}
+
+function PaFinancialWordmark() {
+  return (
+    <div className="pa-appoint-wordmark text-center text-white">
+      <svg viewBox="0 0 120 120" aria-hidden="true" className="mx-auto h-28 w-28 sm:h-36 sm:w-36">
+        <polygon
+          points="60,8 104,34 104,86 60,112 16,86 16,34"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <rect x="40" y="30" width="40" height="58" rx="5" fill="none" stroke="currentColor" strokeWidth="3" />
+        <rect x="46" y="36" width="28" height="14" rx="2" fill="currentColor" />
+        <text
+          x="60"
+          y="47"
+          textAnchor="middle"
+          fill="#111111"
+          fontSize="8"
+          fontWeight="700"
+        >
+          1040
+        </text>
+        <path
+          d="M48 58h6M57 58h6M66 58h6M48 66h6M57 66h6M66 66h6M48 74h6M57 74h6M66 74h6"
+          stroke="currentColor"
+          strokeWidth="2.2"
+        />
+      </svg>
+      <p className="mt-3 font-display text-xl font-semibold tracking-[0.08em] sm:text-2xl">
+        P&A FINANCIAL LLC
+      </p>
+      <p className="mt-1 text-[0.7rem] tracking-[0.22em] text-white/80">
+        INCOME TAXES AND BOOKKEEPING
+      </p>
+    </div>
   );
 }
 
@@ -221,25 +265,25 @@ function PaFinancialAppointment({ locale }: { locale: Locale }) {
   const pa = paFinancialCopy(locale);
   return (
     <section id="appointment" className="pa-appoint" aria-labelledby="pa-appoint-title">
-      <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-16 md:grid-cols-[1fr_auto]">
+      <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-16 md:grid-cols-[1.15fr_0.85fr]">
         <div>
           <h2 id="pa-appoint-title" className="font-display text-3xl tracking-tight text-white sm:text-4xl">
             {pa.scheduleTitle}
           </h2>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-white sm:text-base">
             {pa.scheduleBlurb}
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="pa-appoint-card mt-7">
             <a href={PA_FINANCIAL_WHATSAPP} className="pa-appoint-btn" target="_blank" rel="noreferrer">
-              <SocialGlyph kind="whatsapp" />
+              <SocialGlyph kind="whatsapp" className="h-6 w-6" />
               WhatsApp
             </a>
             <a href={`mailto:${PA_FINANCIAL_EMAIL}`} className="pa-appoint-btn">
-              <SocialGlyph kind="email" />
+              <SocialGlyph kind="email" className="h-6 w-6" />
               Email
             </a>
             <a href={PA_FINANCIAL_FACEBOOK} className="pa-appoint-btn">
-              <SocialGlyph kind="facebook" />
+              <SocialGlyph kind="facebook" className="h-6 w-6" />
               Facebook
             </a>
             <a
@@ -248,18 +292,12 @@ function PaFinancialAppointment({ locale }: { locale: Locale }) {
               target="_blank"
               rel="noreferrer"
             >
-              <SocialGlyph kind="instagram" />
+              <SocialGlyph kind="instagram" className="h-6 w-6" />
               Instagram
             </a>
           </div>
         </div>
-        <Image
-          src={PA_FINANCIAL_LOGO}
-          alt=""
-          width={1042}
-          height={1042}
-          className="pa-appoint-mark mx-auto h-40 w-40 sm:h-48 sm:w-48 md:h-56 md:w-56"
-        />
+        <PaFinancialWordmark />
       </div>
     </section>
   );
@@ -287,7 +325,7 @@ function PaFinancialFooter({
             alt="P&A Financial LLC"
             width={1042}
             height={1042}
-            className="h-20 w-20"
+            className="h-24 w-24 sm:h-28 sm:w-28"
           />
         </a>
         <div>
@@ -309,27 +347,42 @@ function PaFinancialFooter({
         </div>
         <div>
           <p className="font-display text-base font-semibold tracking-tight">{pa.footerContact}</p>
-          <ul className="mt-3 grid gap-1.5">
+          <ul className="mt-3 grid gap-2">
             {phone ? (
               <li>
-                <a href={telHref(phone)}>{phone}</a>
+                <a href={telHref(phone)} className="inline-flex items-center gap-2">
+                  <SocialGlyph kind="phone" className="h-4 w-4" />
+                  {phone}
+                </a>
               </li>
             ) : null}
             <li>
-              <a href={`mailto:${PA_FINANCIAL_EMAIL}`}>{PA_FINANCIAL_EMAIL}</a>
+              <a href={`mailto:${PA_FINANCIAL_EMAIL}`} className="inline-flex items-center gap-2">
+                <SocialGlyph kind="email" className="h-4 w-4" />
+                {PA_FINANCIAL_EMAIL}
+              </a>
             </li>
           </ul>
         </div>
         <div>
           <p className="font-display text-base font-semibold tracking-tight">{pa.footerSocial}</p>
-          <ul className="mt-3 grid gap-1.5">
+          <ul className="mt-3 grid gap-2">
             <li>
-              <a href={PA_FINANCIAL_INSTAGRAM} target="_blank" rel="noreferrer">
-                Instagram
+              <a
+                href={PA_FINANCIAL_INSTAGRAM}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2"
+              >
+                <SocialGlyph kind="instagram" className="h-4 w-4" />
+                {pa.footerInstagram}
               </a>
             </li>
             <li>
-              <a href={PA_FINANCIAL_FACEBOOK}>Facebook</a>
+              <a href={PA_FINANCIAL_FACEBOOK} className="inline-flex items-center gap-2">
+                <SocialGlyph kind="facebook" className="h-4 w-4" />
+                {pa.footerFacebook}
+              </a>
             </li>
           </ul>
         </div>

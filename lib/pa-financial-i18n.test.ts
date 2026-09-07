@@ -35,5 +35,7 @@ test("P&A Financial copy stays on this shop", () => {
   assert.equal(PA_FINANCIAL_LOGO, "/clients/pa-financial/logo-circle.jpg");
   assert.equal(PA_FINANCIAL_OWNER, "/clients/pa-financial/patricia.jpg");
   assert.equal(paFinancialCopy("en").scheduleTitle, "Schedule Your Appointment");
+  assert.match(paFinancialCopy("en").scheduleBlurb, /financial clarity/);
+  assert.equal(paFinancialCopy("en").footerSocial, "Social Media");
   assert.equal(JSON.stringify(seo).includes("Phoenixwebhost"), false);
 });

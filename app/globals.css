@@ -278,29 +278,39 @@ body {
 }
 
 .theme-pa-financial .pa-appoint {
-  background: #0b0b0b;
+  background: #222222;
+  border-top: 14px solid var(--pa-wine);
+  border-bottom: 14px solid var(--pa-wine);
   color: #ffffff;
+}
+
+.theme-pa-financial .pa-appoint-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 0.75rem 1rem;
+  background: #ffffff;
+  border-radius: 1.15rem;
+  padding: 1rem 1.15rem;
 }
 
 .theme-pa-financial .pa-appoint-btn {
   display: inline-flex;
+  min-width: 4.5rem;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  border-radius: 999px;
-  background: var(--pa-wine);
-  color: #ffffff;
+  gap: 0.35rem;
+  color: #111111;
+  font-size: 0.78rem;
   font-weight: 600;
-  padding: 0.7rem 1.15rem;
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--pa-wine) 40%, transparent);
 }
 
 .theme-pa-financial .pa-appoint-btn:hover {
-  background: #000000;
+  color: var(--pa-wine);
 }
 
-.theme-pa-financial .pa-appoint-mark {
-  border-radius: 999px;
-  box-shadow: 0 0 36px color-mix(in srgb, var(--pa-wine) 45%, transparent);
+.theme-pa-financial .pa-appoint-wordmark {
+  color: #ffffff;
 }
 
 .theme-pa-financial footer.pa-footer {
