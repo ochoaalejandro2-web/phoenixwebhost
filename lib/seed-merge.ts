@@ -1,5 +1,6 @@
 export const MESA_STREET_KITCHEN_SLUG = "mesa-street-kitchen";
 export const DESERT_SPARKLE_SLUG = "desert-sparkle-cleaning";
+export const PA_FINANCIAL_SEED_SLUG = "pa-financial";
 
 export function mergeMissingBySlug<T extends { slug: string }>(
   existing: T[],
@@ -73,6 +74,30 @@ export function refreshDesertSparkleDemoCopy<T extends { slug: string; about?: s
     }
     added = true;
     return { ...client, about: fresh.about };
+  });
+  return { items, added };
+}
+
+/** Existing P&A rows keep Colorado if they were seeded before the Arizona swap. */
+export function refreshPaFinancialArizonaCopy<
+  T extends { slug: string; city?: string; about?: string },
+>(existing: T[], seed: T[]): { items: T[]; added: boolean } {
+  const fresh = seed.find((row) => row.slug === PA_FINANCIAL_SEED_SLUG);
+  if (!fresh) return { items: existing, added: false };
+  let added = false;
+  const items = existing.map((client) => {
+    if (client.slug !== PA_FINANCIAL_SEED_SLUG) return client;
+    const cityNeedsSwap =
+      typeof client.city === "string" && /colorado/i.test(client.city);
+    const aboutNeedsSwap =
+      typeof client.about === "string" && /colorado/i.test(client.about);
+    if (!cityNeedsSwap && !aboutNeedsSwap) return client;
+    added = true;
+    return {
+      ...client,
+      ...(cityNeedsSwap ? { city: fresh.city } : {}),
+      ...(aboutNeedsSwap ? { about: fresh.about } : {}),
+    };
   });
   return { items, added };
 }

@@ -3,6 +3,7 @@ import {
   applySeedDemoBookJob,
   mergeMissingBySlug,
   refreshDesertSparkleDemoCopy,
+  refreshPaFinancialArizonaCopy,
   restoreMesaStreetKitchenDemo,
 } from "@/lib/seed-merge";
 import type { AppState, Client } from "@/lib/types";
@@ -507,10 +508,17 @@ export function mergeMissingSeedClients(state: AppState): {
   const flags = applySeedDemoBookJob(missing.items, seed);
   const restored = restoreMesaStreetKitchenDemo(flags.items);
   const sparkle = refreshDesertSparkleDemoCopy(restored.items, seed);
-  if (!missing.added && !flags.added && !restored.added && !sparkle.added) {
+  const pa = refreshPaFinancialArizonaCopy(sparkle.items, seed);
+  if (
+    !missing.added &&
+    !flags.added &&
+    !restored.added &&
+    !sparkle.added &&
+    !pa.added
+  ) {
     return { state, added: false };
   }
-  return { state: { ...state, clients: sparkle.items }, added: true };
+  return { state: { ...state, clients: pa.items }, added: true };
 }
 
 export function createSeedState(): AppState {
