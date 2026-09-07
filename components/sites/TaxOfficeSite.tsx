@@ -729,27 +729,20 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             </div>
           </>
         ) : isPaFinancial && pa ? (
-          <aside id="about" className="pa-about mb-14 grid items-center gap-10 sm:grid-cols-2">
-            <PaOwnerPortrait
-              alt={`${pa.ownerName}, ${pa.ownerRole} of P&A Financial LLC`}
-              sizes="(max-width: 640px) 100vw, 480px"
-              className="pa-about-portrait"
-            />
-            <div>
-              <p className="pa-kicker">{pa.aboutKicker}</p>
-              <h2 className="mt-3 font-display text-3xl tracking-tight text-black sm:text-4xl">
-                {pa.aboutTitle}
-              </h2>
-              <p className="mt-5 text-base leading-relaxed text-black/75">
-                {taxOfficeAbout(client.slug, client.about, locale)}
-              </p>
-              <p className="mt-6 font-display text-xl tracking-tight text-black">
-                {pa.ownerName}
-              </p>
-              <p className="mt-1 text-sm tracking-[0.12em] uppercase text-black/55">
-                {pa.ownerRole}
-              </p>
-            </div>
+          <aside id="about" className="pa-about mb-14 max-w-3xl">
+            <p className="pa-kicker">{pa.aboutKicker}</p>
+            <h2 className="mt-3 font-display text-3xl tracking-tight text-black sm:text-4xl">
+              {pa.aboutTitle}
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-black/75">
+              {taxOfficeAbout(client.slug, client.about, locale)}
+            </p>
+            <p className="mt-6 font-display text-xl tracking-tight text-black">
+              {pa.ownerName}
+            </p>
+            <p className="mt-1 text-sm tracking-[0.12em] uppercase text-black/55">
+              {pa.ownerRole}
+            </p>
           </aside>
         ) : (
           <div className="mb-10 grid grid-cols-2 gap-3 md:grid-cols-4">

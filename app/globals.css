@@ -139,49 +139,47 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* P&A Financial — same tax-office layout, luxury wine / cream / gold. */
+/* P&A Financial — classic navy + gold, this shop only. */
 .theme-pa-financial {
-  --pa-wine: #871a1a;
-  --pa-live: #b4232a;
-  --pa-hot: #d12b33;
+  --pa-navy: #1b3a6b;
+  --pa-navy-deep: #0f4c81;
+  --pa-navy-ink: #0c2244;
   --pa-gold: #c9a04a;
   --pa-gold-soft: #e4c878;
-  --pa-cream: #f6f1e8;
-  --pa-ink: #14110f;
+  --pa-paper: #f7f8fa;
+  --pa-ink: #152033;
   color: var(--pa-ink);
-  background:
-    radial-gradient(1200px 480px at 12% -10%, color-mix(in srgb, var(--pa-gold) 14%, transparent), transparent 58%),
-    var(--pa-cream);
+  background: var(--pa-paper);
   font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 .theme-pa-financial .shop-header {
-  background: color-mix(in srgb, var(--pa-cream) 86%, #ffffff);
-  border-bottom-color: var(--pa-wine);
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--pa-gold) 55%, transparent);
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom-color: var(--pa-navy);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--pa-gold) 50%, transparent);
   padding-top: 0.85rem;
   padding-bottom: 0.85rem;
 }
 
 .theme-pa-financial footer {
-  background: var(--pa-cream);
+  background: #ffffff;
 }
 
 .theme-pa-financial .text-\[\#00E840\] {
-  color: var(--pa-live);
+  color: var(--pa-navy-deep);
 }
 
 .theme-pa-financial .text-\[\#00FF66\] {
-  color: var(--pa-gold-soft);
-  text-shadow: 0 0 18px color-mix(in srgb, var(--pa-gold) 50%, transparent);
+  color: var(--pa-gold);
+  text-shadow: none;
 }
 
 .theme-pa-financial .bg-\[\#00FF66\],
 .theme-pa-financial .bg-\[\#00E840\],
 .theme-pa-financial .site-cta {
-  background: linear-gradient(180deg, var(--pa-hot) 0%, var(--pa-wine) 100%);
-  color: #ffffff;
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--pa-wine) 42%, transparent);
+  background: linear-gradient(180deg, var(--pa-gold-soft) 0%, var(--pa-gold) 100%);
+  color: var(--pa-navy-ink);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--pa-gold) 38%, transparent);
   transition:
     background 0.15s ease,
     box-shadow 0.15s ease,
@@ -189,27 +187,27 @@ body {
 }
 
 .theme-pa-financial .hover\:bg-\[\#00E840\]:hover {
-  background: #000000;
+  background: var(--pa-navy);
   color: #ffffff;
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--pa-gold) 32%, transparent);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--pa-navy) 28%, transparent);
   transform: translateY(-1px);
 }
 
 .theme-pa-financial .hover\:bg-\[\#00FF66\]:hover {
-  background: var(--pa-wine);
+  background: var(--pa-navy-deep);
   color: #ffffff;
 }
 
 .theme-pa-financial .hover\:bg-\[\#00FF66\]\/10:hover {
-  background: color-mix(in srgb, var(--pa-wine) 12%, #ffffff);
+  background: color-mix(in srgb, var(--pa-navy) 8%, #ffffff);
 }
 
 .theme-pa-financial .border-\[\#00FF66\] {
-  border-color: var(--pa-wine);
+  border-color: var(--pa-navy);
 }
 
 .theme-pa-financial .hover\:text-\[\#00E840\]:hover {
-  color: var(--pa-live);
+  color: var(--pa-navy-deep);
 }
 
 .theme-pa-financial .hover\:text-\[\#00FF66\]:hover {
@@ -218,12 +216,12 @@ body {
 
 .theme-pa-financial input:focus,
 .theme-pa-financial textarea:focus {
-  border-color: var(--pa-wine);
+  border-color: var(--pa-navy-deep);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-gold) 38%, transparent);
 }
 
 .theme-pa-financial .pa-kicker {
-  color: var(--pa-wine);
+  color: var(--pa-navy-deep);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -231,9 +229,8 @@ body {
 }
 
 .theme-pa-financial .pa-hero {
-  border-bottom: 1px solid color-mix(in srgb, var(--pa-wine) 18%, #e8dfd2);
-  background:
-    linear-gradient(180deg, #fffaf3 0%, var(--pa-cream) 100%);
+  border-bottom: 1px solid color-mix(in srgb, var(--pa-navy) 12%, #e6eaf0);
+  background: linear-gradient(180deg, #ffffff 0%, var(--pa-paper) 100%);
 }
 
 .theme-pa-financial .pa-btn,
@@ -246,14 +243,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--pa-wine);
+  border: 1px solid var(--pa-navy);
   border-radius: 0.7rem;
-  color: var(--pa-wine);
+  color: var(--pa-navy);
   background: transparent;
 }
 
 .theme-pa-financial .pa-btn-ghost:hover {
-  background: var(--pa-wine);
+  background: var(--pa-navy);
   color: #ffffff;
 }
 
@@ -262,10 +259,10 @@ body {
   overflow: hidden;
   aspect-ratio: 4 / 5;
   border-radius: 1.35rem;
-  background: #d8d2c8;
+  background: #d7dde6;
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--pa-gold) 45%, #ffffff),
-    0 22px 48px rgba(20, 17, 15, 0.16);
+    0 22px 48px rgba(12, 34, 68, 0.14);
 }
 
 .theme-pa-financial .pa-portrait-caption {
@@ -279,7 +276,7 @@ body {
 .theme-pa-financial .pa-services {
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  background: #0b0b0b;
+  background: #0c2244;
   color: #ffffff;
 }
 
@@ -304,43 +301,45 @@ body {
 }
 
 .theme-pa-financial .pa-service-card {
-  background: #141414;
-  border: 1px solid color-mix(in srgb, var(--pa-wine) 85%, #ffffff);
+  background: #132a52;
+  border: 1px solid color-mix(in srgb, var(--pa-gold) 55%, var(--pa-navy));
   border-radius: 0.95rem;
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--pa-wine) 55%, transparent),
-    0 0 34px color-mix(in srgb, var(--pa-wine) 58%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--pa-gold) 35%, transparent),
+    0 0 34px color-mix(in srgb, var(--pa-gold) 28%, transparent);
 }
 
 .theme-pa-financial .pa-service-icon {
   border-radius: 999px;
-  background: var(--pa-wine);
-  box-shadow: 0 0 18px color-mix(in srgb, var(--pa-wine) 70%, transparent);
+  background: var(--pa-gold);
+  color: var(--pa-navy-ink);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--pa-gold) 55%, transparent);
 }
 
 .theme-pa-financial .pa-service-cta {
   min-width: min(18rem, 100%);
   justify-content: center;
-  background: var(--pa-wine);
-  color: #ffffff;
+  background: linear-gradient(180deg, var(--pa-gold-soft) 0%, var(--pa-gold) 100%);
+  color: var(--pa-navy-ink);
   font-weight: 700;
   padding: 0.95rem 1.8rem;
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--pa-wine) 42%, transparent);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--pa-gold) 36%, transparent);
 }
 
 .theme-pa-financial .pa-service-cta:hover {
-  background: #000000;
+  background: #ffffff;
+  color: var(--pa-navy);
 }
 
 .theme-pa-financial .pa-panel {
-  border: 1px solid color-mix(in srgb, var(--pa-wine) 22%, #e8dfd2);
+  border: 1px solid color-mix(in srgb, var(--pa-navy) 14%, #e6eaf0);
   border-radius: 1.1rem;
-  background: #fffaf3;
-  box-shadow: 0 18px 40px rgba(20, 17, 15, 0.06);
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(12, 34, 68, 0.06);
 }
 
 .theme-pa-financial .pa-field {
-  border: 1px solid color-mix(in srgb, var(--pa-wine) 24%, #d8cfc3);
+  border: 1px solid color-mix(in srgb, var(--pa-navy) 18%, #d5dbe4);
   border-radius: 0.7rem;
   background: #ffffff;
   color: var(--pa-ink);
@@ -349,7 +348,7 @@ body {
 }
 
 .theme-pa-financial .pa-field:focus {
-  border-color: var(--pa-wine);
+  border-color: var(--pa-navy-deep);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-gold) 38%, transparent);
 }
 
@@ -359,7 +358,7 @@ body {
 }
 
 .theme-pa-financial .pa-brand-name {
-  color: #111111;
+  color: var(--pa-navy);
   font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   font-size: 1.85rem;
   font-weight: 800;
@@ -384,15 +383,10 @@ body {
   font-size: 1.125rem;
 }
 
-.theme-pa-financial .pa-owner-photo {
-  border-radius: 18px;
-  box-shadow: 0 16px 32px rgba(15, 11, 10, 0.16);
-}
-
 .theme-pa-financial .pa-appoint {
-  background: #222222;
-  border-top: 14px solid var(--pa-wine);
-  border-bottom: 14px solid var(--pa-wine);
+  background: #102445;
+  border-top: 14px solid var(--pa-navy);
+  border-bottom: 14px solid var(--pa-navy);
   color: #ffffff;
 }
 
@@ -412,13 +406,13 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
-  color: #111111;
+  color: var(--pa-navy-ink);
   font-size: 0.78rem;
   font-weight: 600;
 }
 
 .theme-pa-financial .pa-appoint-btn:hover {
-  color: var(--pa-wine);
+  color: var(--pa-gold);
 }
 
 .theme-pa-financial .pa-appoint-wordmark {
@@ -426,7 +420,7 @@ body {
 }
 
 .theme-pa-financial footer.pa-footer {
-  background: var(--pa-wine);
+  background: var(--pa-navy);
   border-top: none;
   color: #ffffff;
 }
