@@ -116,6 +116,10 @@ test("logo, theme class, and WhatsApp come from client fields with P&A fallbacks
   assert.match(theme, /theme-tax-office/);
   assert.match(theme, /theme-tax-pro/);
   assert.match(theme, /theme-next-tax-llc/);
+  assert.match(
+    taxOfficeThemeClass(taxClient({ slug: "pa-financial" })),
+    /theme-pa-financial/,
+  );
   assert.equal(taxOfficeThemeClass(taxClient({ slug: "hola-tax-service" })), "theme-tax-office");
   assert.equal(whatsappHrefFromPhone("(480) 555-0100"), "https://wa.me/14805550100");
   const brand = taxProBrand(taxClient(), "en");
@@ -228,5 +232,10 @@ test("TaxOfficeSite uses the shared Pro layout instead of a P&A-only fork", () =
   assert.match(
     css,
     /prefers-reduced-motion:\s*reduce[\s\S]*theme-tax-pro[\s\S]*\.pa-appoint-logo[\s\S]*animation:\s*none/,
+  );
+  assert.match(css, /\.theme-pa-financial\s*\{[^}]*--pa-burgundy:\s*#871a1a/i);
+  assert.match(
+    css,
+    /\.theme-pa-financial\s+\.pa-services\s*\{[^}]*background:\s*var\(--pa-burgundy\)[^}]*color:\s*#ffffff/i,
   );
 });

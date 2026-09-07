@@ -172,6 +172,17 @@ test("P&A Financial circular brand logo is the white PNG and only the appointmen
     css,
     /prefers-reduced-motion:\s*reduce[\s\S]*theme-tax-pro[\s\S]*\.pa-appoint-logo[\s\S]*animation:\s*none/,
   );
+  assert.match(css, /\.theme-pa-financial\s*\{[^}]*--pa-burgundy:\s*#871a1a/i);
+  assert.match(
+    css,
+    /\.theme-pa-financial\s+\.pa-services\s*\{[^}]*background:\s*var\(--pa-burgundy\)/i,
+  );
+  assert.match(css, /\.theme-pa-financial\s+\.pa-services\s*\{[^}]*color:\s*#ffffff/i);
+  assert.match(css, /body:has\(\.theme-pa-financial\)\s+\.bg-lime/);
+  const paVars = css.match(/^\.theme-pa-financial\s*\{[^}]+\}/m);
+  assert.ok(paVars);
+  assert.match(paVars[0], /--pa-neon:\s*#871a1a/i);
+  assert.equal(/#00e840|#00ff66|#00c851/i.test(paVars[0]), false);
   const site = readFileSync(
     new URL("../components/sites/TaxOfficeSite.tsx", import.meta.url),
     "utf8",
@@ -220,6 +231,7 @@ test("P&A Financial leave-a-review CTA is bilingual and hidden when the URL is e
   );
   assert.match(chrome, /showReviewCta/);
   assert.match(chrome, /LeaveReviewCta/);
+  assert.match(chrome, /taxOfficeThemeClass/);
   const admin = readFileSync(
     new URL("../components/admin/TaxTemplateFields.tsx", import.meta.url),
     "utf8",

@@ -506,6 +506,195 @@ body {
   color: var(--pa-neon-hot);
 }
 
+/* P&A Financial — black, pure white, burgundy. Historical brand #871A1A
+   matches Patricia’s blazer. Other tax-pro shops keep navy/neon above. */
+.theme-pa-financial {
+  --pa-burgundy: #871a1a;
+  --pa-burgundy-deep: #6b1515;
+  --pa-navy: #000000;
+  --pa-navy-deep: #000000;
+  --pa-navy-ink: #000000;
+  --pa-gold: #871a1a;
+  --pa-gold-soft: #871a1a;
+  --pa-neon: #871a1a;
+  --pa-neon-hot: #871a1a;
+  --pa-paper: #ffffff;
+  --pa-paper-2: #ffffff;
+  --pa-ink: #000000;
+  --shop-bg: #ffffff;
+  --shop-surface: #ffffff;
+  --color-lime: #871a1a;
+  --color-lime-deep: #6b1515;
+  color: #000000;
+  background: #ffffff;
+}
+
+.theme-tax-office.theme-pa-financial {
+  background: #ffffff;
+  color: #000000;
+}
+
+.theme-pa-financial .shop-header {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom-color: var(--pa-burgundy);
+  box-shadow: none;
+}
+
+.theme-pa-financial .text-\[\#00FF66\] {
+  color: var(--pa-burgundy);
+  text-shadow: none;
+}
+
+.theme-pa-financial .bg-\[\#00FF66\],
+.theme-pa-financial .bg-\[\#00E840\],
+.theme-pa-financial .site-cta {
+  background: var(--pa-burgundy);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.theme-pa-financial .hover\:bg-\[\#00E840\]:hover,
+.theme-pa-financial .hover\:bg-\[\#00FF66\]:hover {
+  background: #000000;
+  color: #ffffff;
+  box-shadow: none;
+  transform: none;
+}
+
+.theme-pa-financial .hover\:bg-\[\#00FF66\]\/10:hover {
+  background: color-mix(in srgb, var(--pa-burgundy) 10%, #ffffff);
+}
+
+.theme-pa-financial .pa-kicker {
+  color: var(--pa-burgundy);
+  text-shadow: none;
+}
+
+.theme-pa-financial .pa-hero {
+  border-bottom: 1px solid #000000;
+  background: #ffffff;
+}
+
+.theme-pa-financial .pa-btn-ghost {
+  border-color: var(--pa-burgundy);
+  color: var(--pa-burgundy);
+  background: transparent;
+}
+
+.theme-pa-financial .pa-btn-ghost:hover {
+  background: var(--pa-burgundy);
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-portrait-frame {
+  background: #000000;
+  box-shadow: 0 0 0 1px #000000;
+}
+
+.theme-pa-financial .pa-services {
+  background: var(--pa-burgundy);
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-services .pa-kicker {
+  color: #ffffff;
+  text-shadow: none;
+}
+
+.theme-pa-financial .pa-service-card {
+  background: #000000;
+  border: 1px solid #ffffff;
+  box-shadow: none;
+}
+
+.theme-pa-financial .pa-service-icon {
+  background: var(--pa-burgundy);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.theme-pa-financial .pa-service-cta {
+  background: #ffffff;
+  color: var(--pa-burgundy);
+  box-shadow: none;
+}
+
+.theme-pa-financial .pa-service-cta:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-panel {
+  border-color: #000000;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.theme-pa-financial .pa-field {
+  border-color: #000000;
+  color: #000000;
+}
+
+.theme-pa-financial .pa-brand-name {
+  color: #000000;
+}
+
+.theme-pa-financial .pa-appoint {
+  background: #000000;
+  border-top-color: var(--pa-burgundy);
+  border-bottom-color: var(--pa-burgundy);
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-appoint-btn:hover {
+  color: var(--pa-burgundy);
+}
+
+.theme-pa-financial footer.pa-footer {
+  background: #000000;
+  border-top-color: var(--pa-burgundy);
+  color: #ffffff;
+}
+
+.theme-pa-financial footer.pa-footer a:hover {
+  color: #ffffff;
+}
+
+.theme-pa-financial .divide-\[\#00FF66\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--pa-burgundy);
+}
+
+.theme-pa-financial .decoration-\[\#00FF66\] {
+  text-decoration-color: var(--pa-burgundy);
+}
+
+/* Chat sits outside the shop wrapper; retint lime chrome on this page only. */
+body:has(.theme-pa-financial) .text-lime,
+body:has(.theme-pa-financial) .hover\:text-lime:hover {
+  color: #871a1a;
+}
+
+body:has(.theme-pa-financial) .bg-lime,
+body:has(.theme-pa-financial) span.bg-lime,
+body:has(.theme-pa-financial) button.bg-lime,
+body:has(.theme-pa-financial) .hover\:bg-lime-deep:hover {
+  background-color: #871a1a;
+  color: #ffffff;
+}
+
+body:has(.theme-pa-financial) .border-lime {
+  border-color: #871a1a;
+}
+
+body:has(.theme-pa-financial) .field-studio:focus {
+  border-color: #871a1a;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #871a1a 22%, transparent);
+}
+
+body:has(.theme-pa-financial) .shadow-\[0_10px_24px_rgba\(0\,200\,81\,0\.28\)\] {
+  box-shadow: 0 10px 24px color-mix(in srgb, #871a1a 28%, transparent);
+}
+
 /* Marketing homepage first-visit flare — lime/gold, not a game overlay. */
 .studio-flare {
   --flare-x: 50%;
