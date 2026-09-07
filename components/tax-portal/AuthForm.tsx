@@ -13,10 +13,12 @@ export function AuthForm({
   slug,
   mode,
   locale,
+  defaultEmail = "",
 }: {
   slug: string;
   mode: Mode;
   locale: Locale;
+  defaultEmail?: string;
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -94,6 +96,7 @@ export function AuthForm({
           required
           maxLength={200}
           autoComplete="email"
+          defaultValue={defaultEmail}
           className={taxFieldClass}
         />
       </label>

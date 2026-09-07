@@ -4,7 +4,9 @@ import { PA_FINANCIAL_SLUG } from "./pa-financial-i18n.ts";
 import {
   FILED_COPY_LABEL,
   isTaxIntakeLabel,
+  isTaxReturnYear,
   paFinancialStaffBootstrap,
+  resolveTaxFileKind,
   splitTaxFiles,
   taxOfficeStaffBootstrap,
   taxReturnYears,
@@ -28,6 +30,7 @@ test("P&A Financial staff bootstrap is Patricia’s email and its own password e
   try {
     const pa = paFinancialStaffBootstrap();
     assert.equal(pa.email, "pafinancial19@gmail.com");
+    assert.equal(pa.email.includes("ochoa.alejandro2"), false);
     assert.equal(pa.password, "pa-only-secret");
     assert.equal(pa.password === process.env.HOLA_TAX_STAFF_PASSWORD, false);
     const boot = taxOfficeStaffBootstrap("pa-financial");
@@ -57,4 +60,10 @@ test("filed copies group by tax year and stay separate from intake", () => {
   assert.equal(grouped.byYear.find((row) => row.year === 2023)?.files.length, 0);
   assert.equal(isTaxIntakeLabel("W-2"), true);
   assert.equal(isTaxIntakeLabel("Filed copy"), false);
+  assert.equal(resolveTaxFileKind(false, "filed"), "intake");
+  assert.equal(resolveTaxFileKind(true, "filed"), "filed");
+  const now = new Date("2026-09-07T12:00:00Z");
+  assert.equal(isTaxReturnYear(2023, now), true);
+  assert.equal(isTaxReturnYear(2022, now), false);
+  assert.equal(isTaxReturnYear(2026, now), true);
 });

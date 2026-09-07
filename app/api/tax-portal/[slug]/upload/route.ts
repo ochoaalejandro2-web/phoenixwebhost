@@ -17,8 +17,9 @@ import {
   ALLOWED_CONTENT_TYPES,
   FILED_COPY_LABEL,
   MAX_UPLOAD_BYTES,
-  isTaxIntakeLabel,
   isTaxReturnYear,
+  resolveTaxFileKind,
+  resolveTaxIntakeLabel,
   taxBlobPrefix,
   type TaxFileKind,
 } from "@/lib/tax-office";
@@ -90,17 +91,12 @@ export async function POST(
         ) {
           throw new Error("Invalid upload path");
         }
-        const filed = staff && payload.kind === "filed";
-        const kind: TaxFileKind = filed ? "filed" : "intake";
+        const kind = resolveTaxFileKind(staff, payload.kind);
         if (kind === "filed" && !isTaxReturnYear(payload.taxYear)) {
           throw new Error("Invalid tax year");
         }
-        const label =
-          kind === "filed"
-            ? FILED_COPY_LABEL
-            : isTaxIntakeLabel(payload.label || "")
-              ? payload.label
-              : "Other";
+        const intake = resolveTaxIntakeLabel(payload.label || "");
+        const label = kind === "filed" ? FILED_COPY_LABEL : intake || "Other";
         return {
           allowedContentTypes: [...ALLOWED_CONTENT_TYPES],
           maximumSizeInBytes: MAX_UPLOAD_BYTES,
@@ -126,12 +122,8 @@ export async function POST(
             taxYear?: number | null;
           };
           const kind: TaxFileKind = meta.kind === "filed" ? "filed" : "intake";
-          const label =
-            kind === "filed"
-              ? FILED_COPY_LABEL
-              : isTaxIntakeLabel(meta.label || "")
-                ? meta.label
-                : "";
+          const intake = resolveTaxIntakeLabel(String(meta.label || ""));
+          const label = kind === "filed" ? FILED_COPY_LABEL : intake;
           if (
             meta.clientId !== client.id ||
             !meta.userId ||

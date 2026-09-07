@@ -41,17 +41,27 @@ export function isTaxIntakeLabel(value: string): value is TaxIntakeLabel {
   return (TAX_INTAKE_LABELS as readonly string[]).includes(value);
 }
 
+export function resolveTaxFileKind(
+  staff: boolean,
+  requested?: string | null,
+): TaxFileKind {
+  return staff && requested === "filed" ? "filed" : "intake";
+}
+
+export function resolveTaxIntakeLabel(value: string): TaxIntakeLabel | null {
+  return isTaxIntakeLabel(value) ? value : null;
+}
+
 /** Current calendar year plus the previous three tax years (rolls forward). */
 export function taxReturnYears(now = new Date()) {
   const year = now.getFullYear();
   return [year, year - 1, year - 2, year - 3];
 }
 
+/** Years staff can upload into — matches the folders on the portal. */
 export function isTaxReturnYear(value: unknown, now = new Date()) {
   const year = Number(value);
-  if (!Number.isInteger(year)) return false;
-  const current = now.getFullYear();
-  return year >= 2000 && year <= current + 1;
+  return Number.isInteger(year) && taxReturnYears(now).includes(year);
 }
 
 export function splitTaxFiles<

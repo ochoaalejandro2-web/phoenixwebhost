@@ -19,10 +19,10 @@ import {
   FILED_COPY_LABEL,
   MAX_UPLOAD_BYTES,
   isAllowedContentType,
-  isTaxIntakeLabel,
   isTaxReturnYear,
+  resolveTaxFileKind,
+  resolveTaxIntakeLabel,
   safeUploadFilename,
-  type TaxFileKind,
 } from "@/lib/tax-office";
 
 export const runtime = "nodejs";
@@ -117,19 +117,16 @@ export async function POST(
     }
   }
 
-  const kind: TaxFileKind =
-    staff && body.kind === "filed" ? "filed" : "intake";
-  const label =
-    kind === "filed"
-      ? FILED_COPY_LABEL
-      : String(body.label || "");
+  const kind = resolveTaxFileKind(staff, body.kind);
+  const intake = resolveTaxIntakeLabel(String(body.label || ""));
+  const label = kind === "filed" ? FILED_COPY_LABEL : intake;
   const pathname = String(body.pathname || "");
   const filename = safeUploadFilename(String(body.filename || "document.pdf"));
   const contentType = String(body.contentType || "application/pdf");
   const sizeBytes = Number(body.sizeBytes || 0);
   const taxYear = kind === "filed" ? Number(body.taxYear) : null;
 
-  if (kind === "intake" && !isTaxIntakeLabel(label)) {
+  if (!label) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
   if (kind === "filed" && !isTaxReturnYear(taxYear)) {
