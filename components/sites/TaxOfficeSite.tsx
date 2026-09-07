@@ -99,7 +99,7 @@ function ContactNoticeBanner({
 }
 
 function PaServiceIcon({ service }: { service: string }) {
-  if (/bookkeep|contab/i.test(service)) {
+  if (/bookkeep|contab|payroll|n[oó]mina/i.test(service)) {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
         <rect x="5" y="4" width="14" height="16" rx="1.4" />
@@ -112,6 +112,16 @@ function PaServiceIcon({ service }: { service: string }) {
       <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
         <path d="M4.5 19.5V10l7.5-5 7.5 5v9.5" />
         <path d="M10 19.5v-5h4v5" />
+      </svg>
+    );
+  }
+  if (/w-?2|1099|uber|rideshare/i.test(service)) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
+        <rect x="4.5" y="5" width="7" height="9" rx="1" />
+        <rect x="12.5" y="8" width="7" height="9" rx="1" />
+        <path d="M6.2 8h3.6M6.2 10.2h3.6M6.2 12.4h2.4" />
+        <path d="M14.2 11h3.6M14.2 13.2h3.6M14.2 15.4h2.4" />
       </svg>
     );
   }
@@ -280,7 +290,7 @@ function TaxProServices({
           <span className="pa-chevron" aria-hidden="true">
             ‹
           </span>
-          <ul className="grid flex-1 gap-6 sm:grid-cols-2">
+          <ul className="grid flex-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {services.map((service) => (
               <li key={service} className="pa-service-card px-6 py-9 text-center">
                 <span className="pa-service-icon mx-auto inline-flex h-14 w-14 items-center justify-center">

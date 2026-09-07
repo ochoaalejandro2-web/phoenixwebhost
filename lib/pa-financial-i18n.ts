@@ -16,6 +16,12 @@ export const PA_FINANCIAL_AZ_REFUND = "https://aztaxes.gov/Home/CheckRefund";
 export const PA_FINANCIAL_IRS_PAYMENTS = "https://www.irs.gov/payments";
 
 const servicesEs: Record<string, string> = {
+  "Personal and Business Tax Preparation":
+    "Preparación de Impuestos Personales y Negocio",
+  "W-2 / 1099 / Uber": "W-2 / 1099 / Uber",
+  "ITIN Number Processing": "Trámite de ITIN Number",
+  "Business Registration": "Registro de Negocios",
+  "Bookkeeping / Payroll": "Bookkeeping / Nómina",
   "Personal Income Taxes": "Impuestos personales sobre la renta",
   "Business Income Taxes": "Impuestos de negocios sobre la renta",
   "LLC Formation": "Formación de LLC",
@@ -23,16 +29,15 @@ const servicesEs: Record<string, string> = {
   "Income Tax Preparation": "Preparación de impuestos sobre la renta",
   "ITIN Number Processing and Renewal":
     "Trámite y renovación de número ITIN",
-  "Business Registration": "Registro de negocios",
 };
 
 const copy = {
   en: {
     tagline: "Expert tax & financial services for the Hispanic community",
     heroLede:
-      "Trusted, bilingual help for Latino families and small businesses — personal and business income taxes, LLC formation, and bookkeeping, by appointment.",
+      "Trusted, bilingual help for Latino families and small businesses — personal and business tax preparation, W-2 / 1099 / Uber, ITIN processing, business registration, and bookkeeping / payroll, by appointment.",
     aboutLead:
-      "Personal and business income taxes, LLC formation, and bookkeeping for Hispanic and Latino families and small businesses — in English and Spanish. ITIN processing and renewal when you need it.",
+      "Personal and business tax preparation, W-2 / 1099 / Uber, ITIN processing, business registration, and bookkeeping / payroll for Hispanic and Latino families and small businesses — in English and Spanish.",
     about:
       "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish, with clear personal guidance.",
     hours: "By appointment — call or schedule",
@@ -44,20 +49,24 @@ const copy = {
     aboutKicker: "For the Latino community",
     whatWeDo: [
       {
-        title: "Personal Income Taxes",
-        blurb: "Household returns filed on time, with care.",
+        title: "Personal and Business Tax Preparation",
+        blurb: "Household and small-business returns filed on time, with care.",
       },
       {
-        title: "Business Income Taxes",
-        blurb: "Small-business returns without the software maze.",
+        title: "W-2 / 1099 / Uber",
+        blurb: "W-2, 1099, and rideshare income, explained clearly.",
       },
       {
-        title: "LLC Formation",
-        blurb: "Paperwork to form an LLC. We are not a law firm.",
+        title: "ITIN Number Processing",
+        blurb: "Step-by-step help obtaining an ITIN.",
       },
       {
-        title: "Bookkeeping",
-        blurb: "Straightforward books so tax time is not a scramble.",
+        title: "Business Registration",
+        blurb: "Paperwork to register a small business. We are not a law firm.",
+      },
+      {
+        title: "Bookkeeping / Payroll",
+        blurb: "Straightforward books and payroll so tax time is not a scramble.",
       },
     ],
     ownerName: "Patricia Escobedo",
@@ -81,6 +90,16 @@ const copy = {
     navServices: "Services",
     navContact: "Contact",
     blurbs: {
+      "Personal and Business Tax Preparation":
+        "File household and small-business returns on time and with care — in English, Spanish, or both.",
+      "W-2 / 1099 / Uber":
+        "Help filing W-2, 1099, and rideshare income, explained clearly.",
+      "ITIN Number Processing":
+        "Step-by-step help obtaining an ITIN, explained clearly.",
+      "Business Registration":
+        "Help setting up your small business and staying in step with the required paperwork.",
+      "Bookkeeping / Payroll":
+        "Straightforward books and payroll so tax time is not a scramble.",
       "Personal Income Taxes":
         "File household returns on time and with care — in English, Spanish, or both.",
       "Business Income Taxes":
@@ -93,16 +112,14 @@ const copy = {
         "File on time and with care — guidance for households who work in English, Spanish, or both.",
       "ITIN Number Processing and Renewal":
         "Step-by-step help obtaining or renewing an ITIN, explained clearly.",
-      "Business Registration":
-        "Help setting up your small business and staying in step with the required paperwork.",
     },
   },
   es: {
     tagline: "Servicios fiscales y financieros para la comunidad latina",
     heroLede:
-      "Ayuda de confianza, en inglés y español, para familias y negocios latinos — impuestos personales y de negocios, formación de LLC y contabilidad, con cita.",
+      "Ayuda de confianza, en inglés y español, para familias y negocios latinos — preparación de impuestos personales y de negocio, W-2 / 1099 / Uber, trámite de ITIN, registro de negocios y bookkeeping / nómina, con cita.",
     aboutLead:
-      "Impuestos personales y de negocios, formación de LLC y contabilidad para familias y negocios hispanos y latinos — en inglés y español. Trámite y renovación de ITIN cuando lo necesite.",
+      "Preparación de impuestos personales y de negocio, W-2 / 1099 / Uber, trámite de ITIN, registro de negocios y bookkeeping / nómina para familias y negocios hispanos y latinos — en inglés y español.",
     about:
       "Patricia Escobedo lleva más de ocho años preparando impuestos. Su camino comenzó en Arizona. Trabaja en inglés y español, con orientación clara y personal.",
     hours: "Con cita — llame o programe",
@@ -114,20 +131,24 @@ const copy = {
     aboutKicker: "Para la comunidad latina",
     whatWeDo: [
       {
-        title: "Personal Income Taxes",
-        blurb: "Declaraciones del hogar, a tiempo y con cuidado.",
+        title: "Personal and Business Tax Preparation",
+        blurb: "Declaraciones personales y de negocio, a tiempo y con cuidado.",
       },
       {
-        title: "Business Income Taxes",
-        blurb: "Declaraciones de negocio pequeño, sin el laberinto de software.",
+        title: "W-2 / 1099 / Uber",
+        blurb: "Ingresos W-2, 1099 y de Uber, explicados con claridad.",
       },
       {
-        title: "LLC Formation",
-        blurb: "Le ayudamos con el papeleo de una LLC. No somos un bufete.",
+        title: "ITIN Number Processing",
+        blurb: "Ayuda paso a paso para tramitar un ITIN.",
       },
       {
-        title: "Bookkeeping",
-        blurb: "Libros sencillos para que la temporada de impuestos no sea un apuro.",
+        title: "Business Registration",
+        blurb: "Le ayudamos con el papeleo de registro. No somos un bufete.",
+      },
+      {
+        title: "Bookkeeping / Payroll",
+        blurb: "Libros y nómina sencillos para que la temporada de impuestos no sea un apuro.",
       },
     ],
     ownerName: "Patricia Escobedo",
@@ -151,6 +172,16 @@ const copy = {
     navServices: "Servicios",
     navContact: "Contacto",
     blurbs: {
+      "Personal and Business Tax Preparation":
+        "Presente las declaraciones personales y de negocio a tiempo y con cuidado — en inglés, español, o ambos.",
+      "W-2 / 1099 / Uber":
+        "Ayuda para declarar ingresos W-2, 1099 y de Uber, explicada con claridad.",
+      "ITIN Number Processing":
+        "Ayuda paso a paso para tramitar un ITIN, explicada con claridad.",
+      "Business Registration":
+        "Le ayudamos a registrar su negocio pequeño y a cumplir con el papeleo.",
+      "Bookkeeping / Payroll":
+        "Libros y nómina sencillos para que la temporada de impuestos no sea un apuro.",
       "Personal Income Taxes":
         "Presente las declaraciones del hogar a tiempo y con cuidado — en inglés, español, o ambos.",
       "Business Income Taxes":
@@ -163,8 +194,6 @@ const copy = {
         "Presente a tiempo y con cuidado — guía para hogares que trabajan en inglés, español, o ambos.",
       "ITIN Number Processing and Renewal":
         "Ayuda paso a paso para obtener o renovar un ITIN, explicada con claridad.",
-      "Business Registration":
-        "Le ayudamos a registrar su negocio pequeño y a cumplir con el papeleo.",
     },
   },
 } as const;

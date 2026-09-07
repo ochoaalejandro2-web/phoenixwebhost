@@ -83,9 +83,11 @@ const paFinancial = client({
   about:
     "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona.",
   services: [
-    "Income Tax Preparation",
-    "ITIN Number Processing and Renewal",
+    "Personal and Business Tax Preparation",
+    "W-2 / 1099 / Uber",
+    "ITIN Number Processing",
     "Business Registration",
+    "Bookkeeping / Payroll",
   ],
 });
 

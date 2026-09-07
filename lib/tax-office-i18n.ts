@@ -23,7 +23,12 @@ const servicesEs: Record<string, string> = {
   "Income Tax Preparation": "Preparación de impuestos sobre la renta",
   "ITIN Number Processing and Renewal":
     "Trámite y renovación de número ITIN",
-  "Business Registration": "Registro de negocios",
+  "Personal and Business Tax Preparation":
+    "Preparación de Impuestos Personales y Negocio",
+  "W-2 / 1099 / Uber": "W-2 / 1099 / Uber",
+  "ITIN Number Processing": "Trámite de ITIN Number",
+  "Business Registration": "Registro de Negocios",
+  "Bookkeeping / Payroll": "Bookkeeping / Nómina",
   "Personal Income Taxes": "Impuestos personales sobre la renta",
   "Business Income Taxes": "Impuestos de negocios sobre la renta",
   "LLC Formation": "Formación de LLC",

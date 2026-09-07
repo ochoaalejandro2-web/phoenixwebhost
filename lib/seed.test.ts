@@ -124,10 +124,13 @@ test("P&A Financial seed is a real paying tax-office client, not a demo", () => 
   assert.match(chunk, /template: "tax"/);
   assert.match(chunk, /siteStatus: "live"/);
   assert.match(chunk, /paymentStatus: "paid"/);
-  assert.match(chunk, /Personal Income Taxes/);
-  assert.match(chunk, /Business Income Taxes/);
-  assert.match(chunk, /LLC Formation/);
-  assert.match(chunk, /Bookkeeping/);
+  assert.match(chunk, /Personal and Business Tax Preparation/);
+  assert.match(chunk, /W-2 \/ 1099 \/ Uber/);
+  assert.match(chunk, /ITIN Number Processing/);
+  assert.match(chunk, /Business Registration/);
+  assert.match(chunk, /Bookkeeping \/ Payroll/);
+  assert.doesNotMatch(chunk, /LLC Formation/);
+  assert.doesNotMatch(chunk, /Personal Income Taxes/);
   assert.match(chunk, /logo-brand\.png/);
   assert.match(chunk, /By appointment/);
   assert.match(chunk, /Real paying client/);
@@ -180,13 +183,14 @@ test("stale P&A Financial services and black/weak logos refresh from seed", () =
     {
       slug: "pa-financial",
       services: [
-        "Personal Income Taxes",
-        "Business Income Taxes",
-        "LLC Formation",
-        "Bookkeeping",
+        "Personal and Business Tax Preparation",
+        "W-2 / 1099 / Uber",
+        "ITIN Number Processing",
+        "Business Registration",
+        "Bookkeeping / Payroll",
       ],
       about:
-        "Personal and business income taxes, LLC formation, and bookkeeping.",
+        "Personal and business tax preparation, W-2 / 1099 / Uber, ITIN processing, business registration, and bookkeeping / payroll.",
       logoSrc: "/clients/pa-financial/logo-brand.png",
     },
     {
@@ -200,11 +204,13 @@ test("stale P&A Financial services and black/weak logos refresh from seed", () =
     {
       slug: "pa-financial",
       services: [
-        "Income Tax Preparation",
-        "ITIN Number Processing and Renewal",
-        "Business Registration",
+        "Personal Income Taxes",
+        "Business Income Taxes",
+        "LLC Formation",
+        "Bookkeeping",
       ],
-      about: "Income tax preparation and business registration in Arizona.",
+      about:
+        "Personal and business income taxes, LLC formation, and bookkeeping.",
       logoSrc: "/clients/pa-financial/logo-circle.jpg",
     },
     {
@@ -219,8 +225,10 @@ test("stale P&A Financial services and black/weak logos refresh from seed", () =
   const pa = next.items.find((row) => row.slug === "pa-financial");
   assert.deepEqual(pa?.services, seed[0].services);
   assert.equal(pa?.logoSrc, "/clients/pa-financial/logo-brand.png");
-  assert.match(String(pa?.about), /bookkeeping/i);
-  assert.match(String(pa?.about), /LLC/);
+  assert.match(String(pa?.about), /tax preparation/i);
+  assert.match(String(pa?.about), /W-2/);
+  assert.match(String(pa?.about), /payroll/i);
+  assert.equal(String(pa?.about).includes("LLC"), false);
   assert.equal(
     next.items.find((row) => row.slug === "hola-tax-service")?.about,
     "Hola stays.",
