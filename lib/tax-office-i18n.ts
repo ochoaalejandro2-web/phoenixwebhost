@@ -81,6 +81,22 @@ export const taxOfficeCopy = {
     staffLead: (name: string) =>
       `This is the staff login for ${name} only. You will see this office’s client folders — not other tax shops, and not the Phoenixwebhost owner panel.`,
     staffDown: "Staff login is not available until the database is connected.",
+    forgotTitle: "Reset staff password",
+    forgotLead: (name: string) =>
+      `Enter the staff email for ${name}. If it is this office’s staff login, we will email a one-time reset link. The link expires in 30 minutes.`,
+    forgotSubmit: "Send reset link",
+    forgotSent:
+      "If that email is a staff login for this office, we sent a one-time reset link. Check the inbox (and spam). The link expires in 30 minutes.",
+    forgotMailDown:
+      "We cannot email a reset link until email delivery is connected. Call the office.",
+    resetTitle: "Choose a new staff password",
+    resetLead:
+      "Set a new password for this office’s staff login. This link works once and then expires.",
+    resetSubmit: "Save new password",
+    resetInvalid:
+      "That reset link is invalid or has expired. Request a new one.",
+    resetDone: "Password updated. Sign in with your new password.",
+    backToStaffLogin: "Back to staff login",
     clientQ: "Client?",
     folderTitle: "Your folder",
     folderLead: (name: string) =>
@@ -134,6 +150,11 @@ export const taxOfficeCopy = {
       signupInvalid:
         "Name, a real email, phone, and a password of at least 8 characters are required.",
       badLogin: "That email or password did not match.",
+      forgotPassword: "Forgot password?",
+      newPassword: "New password",
+      confirmPassword: "Confirm password",
+      resetMismatch: "Those passwords did not match.",
+      resetWeak: "Use a password of at least 8 characters.",
     },
     scan: {
       title: "Upload or scan",
@@ -225,6 +246,22 @@ export const taxOfficeCopy = {
       `Este es el acceso del personal solo para ${name}. Verá las carpetas de clientes de esta oficina, no las de otras oficinas ni el panel de Phoenixwebhost.`,
     staffDown:
       "El acceso del personal no está disponible hasta que la base de datos esté conectada.",
+    forgotTitle: "Restablecer contraseña del personal",
+    forgotLead: (name: string) =>
+      `Escriba el correo del personal de ${name}. Si es el acceso de esta oficina, le enviaremos un enlace de un solo uso. El enlace caduca en 30 minutos.`,
+    forgotSubmit: "Enviar enlace",
+    forgotSent:
+      "Si ese correo es un acceso del personal de esta oficina, enviamos un enlace de un solo uso. Revise el correo (y el spam). El enlace caduca en 30 minutos.",
+    forgotMailDown:
+      "No podemos enviar el enlace hasta que el correo esté conectado. Llame a la oficina.",
+    resetTitle: "Elija una contraseña nueva del personal",
+    resetLead:
+      "Establezca una contraseña nueva para el acceso del personal de esta oficina. Este enlace funciona una sola vez y luego caduca.",
+    resetSubmit: "Guardar contraseña nueva",
+    resetInvalid:
+      "Ese enlace no es válido o ya caducó. Solicite uno nuevo.",
+    resetDone: "Contraseña actualizada. Inicie sesión con su contraseña nueva.",
+    backToStaffLogin: "Volver al acceso del personal",
     clientQ: "¿Cliente?",
     folderTitle: "Su carpeta",
     folderLead: (name: string) =>
@@ -278,6 +315,11 @@ export const taxOfficeCopy = {
       signupInvalid:
         "Se requieren el nombre, un correo real, teléfono y una contraseña de al menos 8 caracteres.",
       badLogin: "Ese correo o contraseña no coinciden.",
+      forgotPassword: "¿Olvidó su contraseña?",
+      newPassword: "Contraseña nueva",
+      confirmPassword: "Confirmar contraseña",
+      resetMismatch: "Esas contraseñas no coinciden.",
+      resetWeak: "Use una contraseña de al menos 8 caracteres.",
     },
     scan: {
       title: "Subir o escanear",

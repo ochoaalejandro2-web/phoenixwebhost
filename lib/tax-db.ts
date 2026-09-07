@@ -87,6 +87,15 @@ async function migrate() {
     locked_until TIMESTAMPTZ,
     PRIMARY KEY (client_id, email)
   )`;
+  await client`CREATE TABLE IF NOT EXISTS tax_portal_staff_reset (
+    jti TEXT PRIMARY KEY,
+    client_id TEXT NOT NULL,
+    email TEXT NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
+    used_at TIMESTAMPTZ
+  )`;
+  await client`CREATE INDEX IF NOT EXISTS tax_portal_staff_reset_shop_idx
+    ON tax_portal_staff_reset (client_id, email)`;
 }
 
 export type TaxUserRow = {
@@ -414,4 +423,67 @@ export async function clearTaxLoginFails(clientId: string, email: string) {
   const db = await sql();
   await db`DELETE FROM tax_portal_auth_lock
     WHERE client_id = ${clientId} AND email = ${email.toLowerCase()}`;
+}
+
+export async function insertStaffResetToken(input: {
+  jti: string;
+  clientId: string;
+  email: string;
+  expiresAt: Date;
+}) {
+  const db = await sql();
+  const email = input.email.trim().toLowerCase();
+  await db`DELETE FROM tax_portal_staff_reset
+    WHERE client_id = ${input.clientId}
+      AND email = ${email}
+      AND used_at IS NULL`;
+  await db`INSERT INTO tax_portal_staff_reset (jti, client_id, email, expires_at)
+    VALUES (${input.jti}, ${input.clientId}, ${email}, ${input.expiresAt.toISOString()})`;
+}
+
+export async function consumeStaffResetToken(jti: string, clientId: string) {
+  const db = await sql();
+  const rows = (await db`UPDATE tax_portal_staff_reset
+    SET used_at = NOW()
+    WHERE jti = ${jti}
+      AND client_id = ${clientId}
+      AND used_at IS NULL
+      AND expires_at > NOW()
+    RETURNING jti, email, client_id`) as {
+    jti: string;
+    email: string;
+    client_id: string;
+  }[];
+  const row = rows[0];
+  if (!row) return null;
+  return { jti: row.jti, email: row.email, clientId: row.client_id };
+}
+
+export async function resetTaxStaffPassword(input: {
+  clientId: string;
+  email: string;
+  password: string;
+  name: string;
+  phone?: string;
+  allowCreate: boolean;
+}) {
+  const db = await sql();
+  const email = input.email.trim().toLowerCase();
+  const passwordHash = await hash(input.password, BCRYPT_ROUNDS);
+  const existing = await findTaxUserByEmail(input.clientId, email);
+  if (existing?.role === "staff") {
+    await db`UPDATE tax_portal_users
+      SET password_hash = ${passwordHash}
+      WHERE client_id = ${input.clientId}
+        AND id = ${existing.id}
+        AND role = 'staff'`;
+    return findTaxUserById(input.clientId, existing.id);
+  }
+  if (existing || !input.allowCreate) return null;
+  const id = `taxu_${crypto.randomUUID()}`;
+  await db`INSERT INTO tax_portal_users
+    (id, client_id, email, password_hash, name, phone, role)
+    VALUES (${id}, ${input.clientId}, ${email}, ${passwordHash},
+      ${input.name.trim() || "Staff"}, ${input.phone?.trim() || ""}, 'staff')`;
+  return findTaxUserById(input.clientId, id);
 }

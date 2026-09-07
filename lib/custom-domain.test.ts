@@ -117,6 +117,38 @@ test("www custom domain rewrites to the generated client site", () => {
       search: "?lang=en",
     },
   );
+  assert.deepEqual(
+    clientHostDecision({
+      host: "www.hola-tax-service.com",
+      pathname: "/portal/staff/forgot",
+      search: "?lang=es",
+      protocol: "https:",
+      slug: hola.slug,
+      customDomain: hola.customDomain,
+      viaCustomDomain: true,
+    }),
+    {
+      type: "rewrite",
+      pathname: "/s/hola-tax-service/portal/staff/forgot",
+      search: "?lang=es",
+    },
+  );
+  assert.deepEqual(
+    clientHostDecision({
+      host: "www.hola-tax-service.com",
+      pathname: "/portal/staff/reset",
+      search: "?token=abc",
+      protocol: "https:",
+      slug: hola.slug,
+      customDomain: hola.customDomain,
+      viaCustomDomain: true,
+    }),
+    {
+      type: "rewrite",
+      pathname: "/s/hola-tax-service/portal/staff/reset",
+      search: "?token=abc",
+    },
+  );
 });
 
 test("/es on a client host rewrites to that client with lang=es, not marketing /es", () => {
