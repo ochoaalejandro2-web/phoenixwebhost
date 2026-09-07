@@ -3,7 +3,11 @@ import { BookJobForm } from "@/components/sites/BookJobForm";
 import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
-import { PA_FINANCIAL_SLUG, paFinancialHours } from "@/lib/pa-financial-i18n";
+import {
+  PA_FINANCIAL_LOGO,
+  PA_FINANCIAL_SLUG,
+  paFinancialHours,
+} from "@/lib/pa-financial-i18n";
 import { displayHours, isPreviewClient, isSamplePhone, previewLeadId, siteHomeHref } from "@/lib/demo";
 import { clientShowsBookJob } from "@/lib/site-addons";
 import {
@@ -112,6 +116,19 @@ function BrandMark({
           width={1300}
           height={451}
           className="h-9 w-auto sm:h-11"
+        />
+      </a>
+    );
+  }
+  if (client.slug === PA_FINANCIAL_SLUG) {
+    return (
+      <a href={home} className="inline-flex shrink-0 items-center">
+        <Image
+          src={PA_FINANCIAL_LOGO}
+          alt="P&A Financial LLC"
+          width={1024}
+          height={1024}
+          className="h-10 w-10 sm:h-12 sm:w-12"
         />
       </a>
     );

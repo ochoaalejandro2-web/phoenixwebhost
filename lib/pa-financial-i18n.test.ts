@@ -18,5 +18,6 @@ test("P&A Financial copy stays on this shop", () => {
   );
   const seo = paFinancialSeo("en");
   assert.equal(seo.brand, PA_FINANCIAL_LEGAL);
+  assert.equal(seo.icon, "/clients/pa-financial/icon.png");
   assert.equal(JSON.stringify(seo).includes("Phoenixwebhost"), false);
 });

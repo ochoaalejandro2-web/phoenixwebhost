@@ -3,6 +3,8 @@ import type { Locale } from "@/lib/types";
 export const PA_FINANCIAL_SLUG = "pa-financial";
 export const PA_FINANCIAL_LEGAL = "P&A Financial LLC";
 export const PA_FINANCIAL_PHONE = "(720) 501-0501";
+export const PA_FINANCIAL_LOGO = "/clients/pa-financial/logo.png";
+export const PA_FINANCIAL_ICON = "/clients/pa-financial/icon.png";
 
 const servicesEs: Record<string, string> = {
   "Income Tax Preparation": "Preparación de impuestos sobre la renta",
@@ -53,6 +55,6 @@ export function paFinancialSeo(locale: Locale) {
         ? `${PA_FINANCIAL_LEGAL} — Preparación de impuestos`
         : `${PA_FINANCIAL_LEGAL} — Tax preparation`,
     description: `${about} ${PA_FINANCIAL_PHONE}.`,
-    icon: null as string | null,
+    icon: PA_FINANCIAL_ICON,
   };
 }
