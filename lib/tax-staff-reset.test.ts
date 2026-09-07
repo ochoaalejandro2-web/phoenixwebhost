@@ -218,10 +218,10 @@ test("staff reset tokens expire and the email includes a one-time link", () => {
     });
     assert.match(en.subject, /P&A Financial LLC/);
     assert.match(en.text, /30 minutes/);
-    assert.match(en.text, url);
+    assert.equal(en.text.includes(url), true);
     assert.match(es.subject, /P&A Financial LLC/);
     assert.match(es.text, /30 minutos/);
-    assert.match(es.text, url);
+    assert.equal(es.text.includes(url), true);
     assert.equal(en.html.includes("<script"), false);
   } finally {
     if (prevAuth == null) delete process.env.AUTH_SECRET;
