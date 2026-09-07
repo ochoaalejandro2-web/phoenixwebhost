@@ -1,10 +1,12 @@
 import { LeaveReviewCta } from "@/components/sites/LeaveReviewCta";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
-import { clientThemeClass } from "@/lib/client-themes";
 import { withSiteLangPath } from "@/lib/site-locale";
 import { portalPath } from "@/lib/tax-office";
 import { tTaxOffice } from "@/lib/tax-office-i18n";
-import { taxOfficeGoogleReviewUrl } from "@/lib/tax-office-layout";
+import {
+  taxOfficeGoogleReviewUrl,
+  taxOfficeThemeClass,
+} from "@/lib/tax-office-layout";
 import type { Client, Locale } from "@/lib/types";
 
 export const taxFieldClass =
@@ -31,7 +33,7 @@ export function PortalChrome({
   return (
     <div
       lang={locale}
-      className={`${clientThemeClass("tax")} flex min-h-full flex-col bg-white text-black`}
+      className={`${taxOfficeThemeClass(client)} flex min-h-full flex-col bg-white text-black`}
     >
       <header className="border-b border-[#00FF66] bg-white px-5 py-4">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4">
