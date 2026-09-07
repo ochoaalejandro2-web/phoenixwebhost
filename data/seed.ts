@@ -455,9 +455,9 @@ function demoClients(): Client[] {
       address: "",
       city: "Arizona",
       hours: "By appointment — call to schedule",
-      tagline: "Personalized tax and financial help, in English and Spanish",
+      tagline: "Expert tax & financial services for the Hispanic community",
       about:
-        "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and serves the Hispanic community with personalized financial and tax help.",
+        "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and helps Hispanic and Latino families and small businesses with clear, personal tax and financial guidance.",
       services: [
         "Income Tax Preparation",
         "ITIN Number Processing and Renewal",

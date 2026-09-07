@@ -20,21 +20,23 @@ const servicesEs: Record<string, string> = {
 
 const copy = {
   en: {
-    tagline: "Personalized tax and financial help, in English and Spanish",
+    tagline: "Expert tax & financial services for the Hispanic community",
     heroLede:
-      "Income tax preparation, ITIN processing, and business registration — by appointment, in English and Spanish.",
+      "Trusted, bilingual help for Latino families and small businesses — income taxes, ITIN processing, and business registration, by appointment.",
     about:
-      "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and serves the Hispanic community with personalized financial and tax help.",
+      "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and helps Hispanic and Latino families and small businesses with clear, personal tax and financial guidance.",
     hours: "By appointment — call to schedule",
     servicesTitle: "Our Services",
+    servicesLead:
+      "Tax and financial help for families and small businesses in our community.",
     contactUs: "Contact Us",
     aboutTitle: "About",
-    aboutKicker: "Meet the owner",
+    aboutKicker: "For the Latino community",
     ownerName: "Patricia Escobedo",
     ownerRole: "Owner",
     scheduleTitle: "Schedule Your Appointment",
     scheduleBlurb:
-      "Take the first step toward financial clarity by booking your appointment with P&A Financial LLC. Our expert services are designed to meet your needs with personalized attention.",
+      "Take the first step toward financial clarity with P&A Financial LLC. We help Latino families and small businesses with taxes and paperwork, in English and Spanish.",
     footerLinks: "Links",
     footerContact: "Contact",
     footerSocial: "Social Media",
@@ -46,30 +48,31 @@ const copy = {
     navContact: "Contact",
     blurbs: {
       "Income Tax Preparation":
-        "Ensure your taxes are filed accurately and on time with our expert guidance.",
+        "File on time and with care — guidance for households who work in English, Spanish, or both.",
       "ITIN Number Processing and Renewal":
-        "Simplify the process of obtaining or renewing your ITIN number.",
+        "Step-by-step help obtaining or renewing an ITIN, explained clearly.",
       "Business Registration":
-        "Let us assist you in setting up your business, ensuring compliance with regulations.",
+        "Help setting up your small business and staying in step with the required paperwork.",
     },
   },
   es: {
-    tagline:
-      "Ayuda personalizada de impuestos y finanzas, en inglés y español",
+    tagline: "Servicios fiscales y financieros para la comunidad latina",
     heroLede:
-      "Preparación de impuestos, trámites de ITIN y registro de negocios — con cita, en inglés y español.",
+      "Ayuda de confianza, en inglés y español, para familias y negocios latinos — impuestos, trámites de ITIN y registro de negocios, con cita.",
     about:
-      "Patricia Escobedo lleva más de ocho años preparando impuestos. Su camino comenzó en Arizona. Trabaja en inglés y español y sirve a la comunidad hispana con ayuda financiera y de impuestos personalizada.",
+      "Patricia Escobedo lleva más de ocho años preparando impuestos. Su camino comenzó en Arizona. Trabaja en inglés y español y ayuda a familias y negocios hispanos y latinos con orientación clara y personal de impuestos y finanzas.",
     hours: "Con cita — llame para agendar",
     servicesTitle: "Nuestros servicios",
+    servicesLead:
+      "Ayuda de impuestos y finanzas para familias y negocios de nuestra comunidad.",
     contactUs: "Contáctenos",
     aboutTitle: "Acerca de",
-    aboutKicker: "Conozca a la propietaria",
+    aboutKicker: "Para la comunidad latina",
     ownerName: "Patricia Escobedo",
     ownerRole: "Propietaria",
     scheduleTitle: "Programe su cita",
     scheduleBlurb:
-      "Dé el primer paso hacia claridad financiera reservando su cita con P&A Financial LLC. Nuestros servicios están pensados para atenderle de forma personalizada.",
+      "Dé el primer paso hacia claridad financiera con P&A Financial LLC. Ayudamos a familias y negocios latinos con impuestos y papeleo, en inglés y español.",
     footerLinks: "Enlaces",
     footerContact: "Contacto",
     footerSocial: "Redes sociales",
@@ -81,11 +84,11 @@ const copy = {
     navContact: "Contacto",
     blurbs: {
       "Income Tax Preparation":
-        "Asegúrese de que sus impuestos se presenten a tiempo y de forma correcta, con nuestra guía.",
+        "Presente a tiempo y con cuidado — guía para hogares que trabajan en inglés, español, o ambos.",
       "ITIN Number Processing and Renewal":
-        "Simplifique el trámite para obtener o renovar su número ITIN.",
+        "Ayuda paso a paso para obtener o renovar un ITIN, explicada con claridad.",
       "Business Registration":
-        "Le ayudamos a registrar su negocio y a cumplir con los requisitos.",
+        "Le ayudamos a registrar su negocio pequeño y a cumplir con el papeleo.",
     },
   },
 } as const;
@@ -130,8 +133,8 @@ export function paFinancialSeo(locale: Locale) {
     brand: PA_FINANCIAL_LEGAL,
     title:
       locale === "es"
-        ? `${PA_FINANCIAL_LEGAL} — Preparación de impuestos`
-        : `${PA_FINANCIAL_LEGAL} — Tax preparation`,
+        ? `${PA_FINANCIAL_LEGAL} — Impuestos y finanzas para la comunidad latina`
+        : `${PA_FINANCIAL_LEGAL} — Tax & financial help for the Hispanic community`,
     description: `${about} ${PA_FINANCIAL_PHONE}.`,
     icon: PA_FINANCIAL_ICON,
   };

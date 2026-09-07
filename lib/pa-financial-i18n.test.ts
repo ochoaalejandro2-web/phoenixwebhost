@@ -24,11 +24,11 @@ test("P&A Financial copy stays on this shop", () => {
     paFinancialServiceLabel("Business Registration", "es"),
     "Registro de negocios",
   );
-  assert.equal(paFinancialServicesTitle("en"), "Our Services");
-  assert.match(
-    paFinancialServiceBlurb("Income Tax Preparation", "en"),
-    /accurately/,
-  );
+  assert.match(paFinancialAbout("", "en"), /Latino/);
+  assert.match(paFinancialCopy("en").tagline, /Hispanic community/);
+  assert.match(paFinancialCopy("es").tagline, /comunidad latina/);
+  assert.match(paFinancialCopy("en").heroLede, /bilingual/i);
+  assert.equal(paFinancialCopy("en").aboutKicker, "For the Latino community");
   const seo = paFinancialSeo("en");
   assert.equal(seo.brand, PA_FINANCIAL_LEGAL);
   assert.equal(seo.icon, "/clients/pa-financial/icon.png");

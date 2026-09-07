@@ -228,6 +228,10 @@ body {
   text-transform: uppercase;
 }
 
+.theme-pa-financial .pa-services .pa-kicker {
+  color: var(--pa-gold-soft);
+}
+
 .theme-pa-financial .pa-hero {
   border-bottom: 1px solid color-mix(in srgb, var(--pa-navy) 12%, #e6eaf0);
   background: linear-gradient(180deg, #fbf7ef 0%, var(--pa-paper) 100%);

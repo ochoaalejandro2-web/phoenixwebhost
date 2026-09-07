@@ -265,7 +265,8 @@ function PaFinancialServices({
   return (
     <div id="services" className="pa-services">
       <div className="mx-auto max-w-5xl px-5 py-16 text-center sm:py-20">
-        <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
+        <p className="pa-kicker">{paFinancialCopy(locale).servicesLead}</p>
+        <h2 className="mt-3 font-display text-3xl tracking-tight text-white sm:text-4xl">
           {paFinancialServicesTitle(locale)}
         </h2>
         <div className="pa-services-row mt-12">
