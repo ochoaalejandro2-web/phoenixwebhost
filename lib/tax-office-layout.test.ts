@@ -11,9 +11,11 @@ import {
 import {
   isHolaTaxLayout,
   isTaxProLayout,
+  paFinancialGoogleReviewUrlFromEnv,
   readTaxBrandFields,
   sanitizeHttpUrl,
   sanitizePublicAssetPath,
+  taxOfficeGoogleReviewUrl,
   taxOfficeLogoSrc,
   taxOfficeThemeClass,
   taxProBrand,
@@ -143,10 +145,67 @@ test("brand field sanitizers reject unsafe paths and non-http URLs", () => {
   fd.set("logoSrc", "/clients/acme/logo-brand.svg");
   fd.set("instagram", "https://instagram.com/acme");
   fd.set("facebook", "not-a-url");
+  fd.set("googleReviewUrl", "javascript:alert(1)");
   const next = readTaxBrandFields(fd);
   assert.equal(next.logoSrc, "/clients/acme/logo-brand.svg");
   assert.match(String(next.instagram), /instagram\.com\/acme/);
   assert.equal(next.facebook, undefined);
+  assert.equal(next.googleReviewUrl, undefined);
+  const saved = new FormData();
+  saved.set("googleReviewUrl", "https://g.page/r/abc/review");
+  assert.equal(
+    readTaxBrandFields(saved).googleReviewUrl,
+    "https://g.page/r/abc/review",
+  );
+});
+
+test("google review URL prefers the client brand field and hides when empty", () => {
+  assert.equal(taxOfficeGoogleReviewUrl(taxClient()), "");
+  assert.equal(
+    taxOfficeGoogleReviewUrl(
+      taxClient({ googleReviewUrl: "https://g.page/r/abc/review" }),
+    ),
+    "https://g.page/r/abc/review",
+  );
+  assert.equal(
+    taxOfficeGoogleReviewUrl(taxClient({ googleReviewUrl: "javascript:alert(1)" })),
+    "",
+  );
+  const prev = process.env.PA_FINANCIAL_GOOGLE_REVIEW_URL;
+  process.env.PA_FINANCIAL_GOOGLE_REVIEW_URL =
+    "https://search.google.com/local/writereview?placeid=ChIJ";
+  try {
+    assert.match(
+      paFinancialGoogleReviewUrlFromEnv(),
+      /search\.google\.com\/local\/writereview/,
+    );
+    assert.equal(taxOfficeGoogleReviewUrl(taxClient()), "");
+    assert.match(
+      taxOfficeGoogleReviewUrl(taxClient({ slug: "pa-financial" })),
+      /search\.google\.com\/local\/writereview/,
+    );
+    assert.equal(
+      taxOfficeGoogleReviewUrl(
+        taxClient({
+          slug: "pa-financial",
+          googleReviewUrl: "https://g.page/r/override/review",
+        }),
+      ),
+      "https://g.page/r/override/review",
+    );
+    const brand = taxProBrand(
+      taxClient({ googleReviewUrl: "https://g.page/r/shop/review" }),
+      "en",
+    );
+    assert.equal(brand.googleReviewUrl, "https://g.page/r/shop/review");
+    assert.equal(taxProBrand(taxClient(), "en").googleReviewUrl, "");
+    delete process.env.PA_FINANCIAL_GOOGLE_REVIEW_URL;
+    assert.equal(taxOfficeGoogleReviewUrl(taxClient({ slug: "pa-financial" })), "");
+    assert.equal(paFinancialGoogleReviewUrlFromEnv(), "");
+  } finally {
+    if (prev == null) delete process.env.PA_FINANCIAL_GOOGLE_REVIEW_URL;
+    else process.env.PA_FINANCIAL_GOOGLE_REVIEW_URL = prev;
+  }
 });
 
 test("TaxOfficeSite uses the shared Pro layout instead of a P&A-only fork", () => {
@@ -160,6 +219,8 @@ test("TaxOfficeSite uses the shared Pro layout instead of a P&A-only fork", () =
   assert.match(site, /href="#appointment"/);
   assert.match(site, /pa-logo-spin/);
   assert.match(site, /pa-appoint-logo/);
+  assert.match(site, /LeaveReviewCta/);
+  assert.match(site, /brand\.googleReviewUrl|taxOfficeGoogleReviewUrl/);
   assert.equal(site.includes("PA_FINANCIAL_WHATSAPP"), false);
   const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /theme-tax-pro/);

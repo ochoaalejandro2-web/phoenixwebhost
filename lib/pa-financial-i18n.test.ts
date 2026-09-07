@@ -181,4 +181,49 @@ test("P&A Financial circular brand logo is the white PNG and only the appointmen
   assert.match(site, /pa-appoint-logo/);
   assert.match(site, /telHref\(phone\)/);
   assert.match(site, /isTaxProLayout/);
+  assert.match(site, /LeaveReviewCta/);
+});
+
+test("P&A Financial leave-a-review CTA is bilingual and hidden when the URL is empty", () => {
+  assert.equal(paFinancialCopy("en").leaveReview, "Leave a review");
+  assert.equal(paFinancialCopy("es").leaveReview, "Deja una reseña");
+  const taxI18n = readFileSync(
+    new URL("./tax-office-i18n.ts", import.meta.url),
+    "utf8",
+  );
+  assert.match(taxI18n, /leaveReview: "Leave a review"/);
+  assert.match(taxI18n, /leaveReview: "Deja una reseña"/);
+  const cta = readFileSync(
+    new URL("../components/sites/LeaveReviewCta.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(cta, /leaveReview/);
+  assert.match(cta, /target="_blank"/);
+  assert.match(cta, /noopener noreferrer/);
+  assert.match(cta, /if \(!url\) return null/);
+  assert.equal(cta.includes("★"), false);
+  const site = readFileSync(
+    new URL("../components/sites/TaxOfficeSite.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(site, /LeaveReviewCta/);
+  const portal = readFileSync(
+    new URL("../app/s/[slug]/portal/folder/page.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(portal, /LeaveReviewCta/);
+  assert.match(portal, /taxOfficeGoogleReviewUrl/);
+  assert.match(portal, /showReviewCta/);
+  const chrome = readFileSync(
+    new URL("../components/tax-portal/PortalChrome.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(chrome, /showReviewCta/);
+  assert.match(chrome, /LeaveReviewCta/);
+  const admin = readFileSync(
+    new URL("../components/admin/TaxTemplateFields.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(admin, /googleReviewUrl/);
+  assert.match(admin, /Write a review/);
 });

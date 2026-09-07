@@ -16,6 +16,7 @@ export function TaxBrandFields({
     instagram?: string;
     facebook?: string;
     whatsapp?: string;
+    googleReviewUrl?: string;
   };
 }) {
   return (
@@ -83,6 +84,23 @@ export function TaxBrandFields({
           className={field}
         />
       </label>
+      <label className="text-sm">
+        Google review URL
+        <input
+          name="googleReviewUrl"
+          type="url"
+          defaultValue={defaults.googleReviewUrl || ""}
+          placeholder="https://g.page/r/…/review"
+          className={field}
+        />
+      </label>
+      <p className="text-xs text-ink-soft">
+        Paste the Google “Write a review” link. It becomes Leave a review /
+        Deja una reseña on the public site and the client portal. Leave blank
+        to hide the button. For P&A Financial,{" "}
+        <code>PA_FINANCIAL_GOOGLE_REVIEW_URL</code> is used if this field is
+        empty.
+      </p>
     </fieldset>
   );
 }

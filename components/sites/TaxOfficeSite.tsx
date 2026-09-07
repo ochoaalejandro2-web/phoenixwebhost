@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { BookJobForm } from "@/components/sites/BookJobForm";
+import { LeaveReviewCta } from "@/components/sites/LeaveReviewCta";
 import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { displayHours, isPreviewClient, isSamplePhone, previewLeadId, siteHomeHref } from "@/lib/demo";
@@ -22,6 +23,7 @@ import {
 import {
   isHolaTaxLayout,
   isTaxProLayout,
+  taxOfficeGoogleReviewUrl,
   taxOfficeThemeClass,
   taxProBrand,
   taxProCopy,
@@ -615,6 +617,11 @@ function TaxProHero({
             <a href="#appointment" className="pa-btn-ghost px-6 py-2.5 text-sm font-semibold">
               {copy.scheduleCta}
             </a>
+            <LeaveReviewCta
+              href={brand.googleReviewUrl}
+              locale={locale}
+              className="pa-btn-ghost px-6 py-2.5 text-sm font-semibold"
+            />
           </div>
         </div>
         {brand.ownerPhotoSrc ? (
@@ -670,6 +677,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
     : listedServices;
   const shop = tShop(locale);
   const reviews = preview ? DEMO_REVIEWS.tax : [];
+  const reviewUrl = brand?.googleReviewUrl || taxOfficeGoogleReviewUrl(client);
   const hours = isPro && copy
     ? copy.hours || displayHours(client.hours, "tax", locale)
     : displayHours(client.hours, "tax", locale);
@@ -704,6 +712,11 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
                   {c.clientLogin}
                 </a>
               )}
+              <LeaveReviewCta
+                href={reviewUrl}
+                locale={locale}
+                className="font-semibold text-black hover:text-[#00E840]"
+              />
               {phone ? (
               <a
                 href={telHref(client.phone)}
@@ -768,6 +781,11 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               >
                 {c.ctaMessage}
               </a>
+              <LeaveReviewCta
+                href={reviewUrl}
+                locale={locale}
+                className="border border-[#00FF66] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#00FF66] hover:text-black"
+              />
             </div>
             <p className="mt-4 max-w-xl text-sm text-white/80">
               <a href={portal} className="font-semibold text-[#00FF66] hover:text-[#00E840]">

@@ -89,6 +89,7 @@ const copy = {
     navAbout: "What we do",
     navServices: "Services",
     navContact: "Contact",
+    leaveReview: "Leave a review",
     blurbs: {
       "Personal and Business Tax Preparation":
         "File household and small-business returns on time and with care — in English, Spanish, or both.",
@@ -171,6 +172,7 @@ const copy = {
     navAbout: "Qué hacemos",
     navServices: "Servicios",
     navContact: "Contacto",
+    leaveReview: "Deja una reseña",
     blurbs: {
       "Personal and Business Tax Preparation":
         "Presente las declaraciones personales y de negocio a tiempo y con cuidado — en inglés, español, o ambos.",

@@ -89,6 +89,8 @@ export type Client = {
   instagram?: string;
   facebook?: string;
   whatsapp?: string;
+  /** Google “Write a review” URL. Empty hides the public/portal CTA. */
+  googleReviewUrl?: string;
 };
 
 export type DemoAccent =
