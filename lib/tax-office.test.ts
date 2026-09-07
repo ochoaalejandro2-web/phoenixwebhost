@@ -23,27 +23,39 @@ test("tax return years roll forward from the current calendar year", () => {
 
 test("P&A Financial staff bootstrap is Patricia’s email and its own password env", () => {
   assert.equal(PA_FINANCIAL_SLUG, "pa-financial");
-  const prevPa = process.env.PA_FINANCIAL_STAFF_PASSWORD;
-  const prevHola = process.env.HOLA_TAX_STAFF_PASSWORD;
+  const prevPaPass = process.env.PA_FINANCIAL_STAFF_PASSWORD;
+  const prevPaEmail = process.env.PA_FINANCIAL_STAFF_EMAIL;
+  const prevHolaPass = process.env.HOLA_TAX_STAFF_PASSWORD;
+  const prevHolaEmail = process.env.HOLA_TAX_STAFF_EMAIL;
+  delete process.env.PA_FINANCIAL_STAFF_EMAIL;
+  delete process.env.HOLA_TAX_STAFF_EMAIL;
   process.env.PA_FINANCIAL_STAFF_PASSWORD = "pa-only-secret";
   process.env.HOLA_TAX_STAFF_PASSWORD = "hola-other-secret";
   try {
     const pa = paFinancialStaffBootstrap();
+    const hola = taxOfficeStaffBootstrap("hola-tax-service");
     assert.equal(pa.email, "pafinancial19@gmail.com");
     assert.equal(pa.email.includes("ochoa.alejandro2"), false);
+    assert.equal(hola.email, "ochoa.alejandro2@gmail.com");
+    assert.equal(pa.email === hola.email, false);
     assert.equal(pa.password, "pa-only-secret");
-    assert.equal(pa.password === process.env.HOLA_TAX_STAFF_PASSWORD, false);
+    assert.equal(pa.password === hola.password, false);
     const boot = taxOfficeStaffBootstrap("pa-financial");
     assert.equal(boot.email, "pafinancial19@gmail.com");
     assert.equal(boot.password, "pa-only-secret");
-    const hola = taxOfficeStaffBootstrap("hola-tax-service");
-    assert.equal(hola.password, "hola-other-secret");
+    delete process.env.PA_FINANCIAL_STAFF_PASSWORD;
+    assert.equal(taxOfficeStaffBootstrap("pa-financial").password, "");
+    assert.equal(taxOfficeStaffBootstrap("hola-tax-service").password, "hola-other-secret");
     assert.equal(taxOfficeStaffBootstrap("other-shop").password, "");
   } finally {
-    if (prevPa == null) delete process.env.PA_FINANCIAL_STAFF_PASSWORD;
-    else process.env.PA_FINANCIAL_STAFF_PASSWORD = prevPa;
-    if (prevHola == null) delete process.env.HOLA_TAX_STAFF_PASSWORD;
-    else process.env.HOLA_TAX_STAFF_PASSWORD = prevHola;
+    if (prevPaPass == null) delete process.env.PA_FINANCIAL_STAFF_PASSWORD;
+    else process.env.PA_FINANCIAL_STAFF_PASSWORD = prevPaPass;
+    if (prevPaEmail == null) delete process.env.PA_FINANCIAL_STAFF_EMAIL;
+    else process.env.PA_FINANCIAL_STAFF_EMAIL = prevPaEmail;
+    if (prevHolaPass == null) delete process.env.HOLA_TAX_STAFF_PASSWORD;
+    else process.env.HOLA_TAX_STAFF_PASSWORD = prevHolaPass;
+    if (prevHolaEmail == null) delete process.env.HOLA_TAX_STAFF_EMAIL;
+    else process.env.HOLA_TAX_STAFF_EMAIL = prevHolaEmail;
   }
 });
 
