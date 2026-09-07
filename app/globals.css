@@ -139,6 +139,19 @@ body {
   letter-spacing: -0.03em;
 }
 
+/* P&A Financial — burgundy + black, Bahnschrift or Barlow. */
+.theme-pa-financial {
+  color: #000000;
+  background: #ffffff;
+  font-family: Bahnschrift, var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+}
+
+.theme-pa-financial .font-display {
+  font-family: Bahnschrift, var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
 /* Marketing homepage first-visit flare — lime/gold, not a game overlay. */
 .studio-flare {
   --flare-x: 50%;

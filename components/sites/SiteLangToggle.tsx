@@ -8,10 +8,9 @@ function persistLang(slug: string, locale: Locale) {
   document.cookie = `${siteLangCookieName(slug)}=${locale}; Path=/; Max-Age=31536000; SameSite=Lax`;
 }
 
-function langClass(active: boolean) {
-  return active
-    ? "font-semibold text-black"
-    : "font-semibold text-[#00E840] hover:text-[#00FF66]";
+function langClass(active: boolean, activeClass?: string, idleClass?: string) {
+  if (active) return activeClass || "font-semibold text-black";
+  return idleClass || "font-semibold text-[#00E840] hover:text-[#00FF66]";
 }
 
 /**
@@ -22,10 +21,14 @@ export function SiteLangToggle({
   slug,
   locale,
   label,
+  activeClass,
+  idleClass,
 }: {
   slug: string;
   locale: Locale;
   label: string;
+  activeClass?: string;
+  idleClass?: string;
 }) {
   useEffect(() => {
     persistLang(slug, locale);
@@ -39,7 +42,7 @@ export function SiteLangToggle({
         lang="en"
         onClick={() => persistLang(slug, "en")}
         aria-current={locale === "en" ? "true" : undefined}
-        className={langClass(locale === "en")}
+        className={langClass(locale === "en", activeClass, idleClass)}
       >
         English
       </a>
@@ -52,7 +55,7 @@ export function SiteLangToggle({
         lang="es"
         onClick={() => persistLang(slug, "es")}
         aria-current={locale === "es" ? "true" : undefined}
-        className={langClass(locale === "es")}
+        className={langClass(locale === "es", activeClass, idleClass)}
       >
         Español
       </a>

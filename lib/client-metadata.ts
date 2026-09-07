@@ -3,6 +3,7 @@ import { HOLA_TAX_SLUG } from "@/lib/client-themes";
 import { publicSiteUrl } from "@/lib/config";
 import { normalizeCustomDomain, wwwHost } from "@/lib/custom-domain";
 import { holaTaxSeo } from "@/lib/hola-tax-i18n";
+import { PA_FINANCIAL_SLUG, paFinancialSeo } from "@/lib/pa-financial-i18n";
 import type { Client, Locale } from "@/lib/types";
 
 export function clientPublicUrl(
@@ -26,6 +27,9 @@ export function clientSiteSeo(
   const canonicalUrl = clientPublicUrl(client);
   if (client.slug === HOLA_TAX_SLUG) {
     return { ...holaTaxSeo(locale), canonicalUrl };
+  }
+  if (client.slug === PA_FINANCIAL_SLUG) {
+    return { ...paFinancialSeo(locale), canonicalUrl };
   }
   return {
     brand: client.businessName,

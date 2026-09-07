@@ -300,6 +300,10 @@ export async function resetDemoAction() {
   revalidatePath("/s/desert-sparkle-cleaning");
   revalidatePath("/s/premium-carpentry-designs");
   revalidatePath("/s/hola-tax-service");
+  revalidatePath("/s/pa-financial");
+  revalidatePath("/s/pa-financial/about");
+  revalidatePath("/s/pa-financial/services");
+  revalidatePath("/s/pa-financial/contact");
   redirect("/admin");
 }
 

@@ -71,6 +71,24 @@ const landscaping = client({
   ],
 });
 
+const paFinancial = client({
+  businessName: "P&A Financial LLC",
+  slug: "pa-financial",
+  template: "tax",
+  phone: "(720) 501-0501",
+  address: "",
+  city: "Colorado",
+  hours: "By appointment — call to schedule",
+  tagline: "Personalized tax and financial help, in English and Spanish",
+  about:
+    "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Colorado.",
+  services: [
+    "Income Tax Preparation",
+    "ITIN Number Processing and Renewal",
+    "Business Registration",
+  ],
+});
+
 const holaTax = client({
   businessName: "Hola Tax Service LLC",
   slug: "hola-tax-service",
@@ -243,6 +261,24 @@ test("fallback answers landscaping lawn questions from that site’s services", 
   assert.match(reply, /\(602\) 555-0168/);
   assert.equal(reply.includes(COMPANY.phone), false);
   assert.equal(/unavailable/i.test(reply), false);
+});
+
+test("fallback answers P&A Financial from that site’s services and follows Spanish", () => {
+  const en = buildClientFacts(paFinancial, "en");
+  assert.match(en.hours, /appointment/i);
+  assert.equal(en.address, "");
+  const itin = fallbackAnswer(en, "do you do ITIN renewals?");
+  assert.match(itin, /ITIN/i);
+  assert.match(itin, /720\) 501-0501/);
+  assert.equal(itin.includes(COMPANY.phone), false);
+  assert.equal(/\$\d/.test(itin), false);
+
+  const es = buildClientFacts(paFinancial, "es");
+  const spanish = fallbackAnswer(es, "¿Hacen impuestos?");
+  assert.match(spanish, /impuestos|Preparación/i);
+  assert.match(spanish, /P&A Financial/);
+  assert.match(spanish, /llame|formulario/i);
+  assert.match(es.hours, /cita/i);
 });
 
 test("fallback answers Hola Tax LLC questions and follows Spanish", () => {

@@ -5,6 +5,7 @@ import {
   usableEmail,
   type SiteContactStatus,
 } from "@/lib/notify";
+import { isPaFinancialSlug } from "@/lib/pa-financial-i18n";
 import { parseSiteLocale, withSiteLangQuery } from "@/lib/site-locale";
 import { addContactMessage, getClientBySlug } from "@/lib/store";
 import type { Locale } from "@/lib/types";
@@ -23,8 +24,9 @@ function wantsJson(request: Request) {
 }
 
 function siteUrl(request: Request, slug: string, query: string) {
-  const url = new URL(`/s/${slug}?${query}`, request.url);
-  url.hash = "contact";
+  const path = isPaFinancialSlug(slug) ? `/s/${slug}/contact` : `/s/${slug}`;
+  const url = new URL(`${path}?${query}`, request.url);
+  if (!isPaFinancialSlug(slug)) url.hash = "contact";
   return url;
 }
 

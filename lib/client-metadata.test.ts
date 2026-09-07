@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { wwwHost } from "./custom-domain.ts";
 import { holaTaxSeo } from "./hola-tax-i18n.ts";
+import { paFinancialSeo } from "./pa-financial-i18n.ts";
 
 test("Hola Tax SEO is the tax office, not Phoenixwebhost marketing", () => {
   const seo = holaTaxSeo("en");
@@ -14,6 +15,19 @@ test("Hola Tax SEO is the tax office, not Phoenixwebhost marketing", () => {
   assert.equal(seo.description.includes("$200"), false);
   assert.equal(seo.icon, "/clients/hola-tax-service/icon.png");
   assert.equal(`https://${wwwHost("www.hola-tax-service.com")}`, "https://www.hola-tax-service.com");
+  const blob = JSON.stringify(seo);
+  assert.equal(blob.includes("Phoenixwebhost"), false);
+  assert.equal(blob.includes("$200"), false);
+  assert.equal(blob.includes("$69"), false);
+});
+
+test("P&A Financial SEO is the tax office, not Phoenixwebhost marketing", () => {
+  const seo = paFinancialSeo("en");
+  assert.equal(seo.brand, "P&A Financial LLC");
+  assert.equal(seo.title, "P&A Financial LLC — Tax preparation");
+  assert.match(seo.description, /Patricia Escobedo/);
+  assert.match(seo.description, /720\) 501-0501/);
+  assert.equal(seo.icon, null);
   const blob = JSON.stringify(seo);
   assert.equal(blob.includes("Phoenixwebhost"), false);
   assert.equal(blob.includes("$200"), false);

@@ -690,6 +690,21 @@ export const SERVICE_BLURBS: Record<
     blurb: "Help gathering the papers for an ITIN application.",
     blurbEs: "Ayuda para juntar los papeles de una solicitud de ITIN.",
   },
+  "Income Tax Preparation": {
+    nameEs: "Preparación de impuestos sobre la renta",
+    blurb: "Personal and family income-tax returns in English or Spanish.",
+    blurbEs: "Declaraciones de impuestos personales y familiares en inglés o español.",
+  },
+  "ITIN Number Processing and Renewal": {
+    nameEs: "Trámite y renovación de número ITIN",
+    blurb: "Help applying for a new ITIN or renewing one that has expired.",
+    blurbEs: "Ayuda para solicitar un ITIN nuevo o renovar uno que ya venció.",
+  },
+  "Business Registration": {
+    nameEs: "Registro de negocios",
+    blurb: "Help with business registration paperwork. Not a law firm.",
+    blurbEs: "Ayuda con el papeleo de registro de un negocio. No somos un bufete.",
+  },
   "Year-round tax support": {
     nameEs: "Apoyo con impuestos todo el año",
     blurb: "Questions in July, not only in April.",

@@ -33,6 +33,10 @@ export const WALK_IN_HOST_ALIASES: Record<string, string> = {
   "hola-tax": "hola-tax-service",
   holataxservice: "hola-tax-service",
   "hola-tax-service": "hola-tax-service",
+  pafinancial: "pa-financial",
+  "pa-financial": "pa-financial",
+  pataxesllc: "pa-financial",
+  "pataxes-llc": "pa-financial",
   desertsparkle: "desert-sparkle-cleaning",
   "desert-sparkle": "desert-sparkle-cleaning",
   desertsparklecleaning: "desert-sparkle-cleaning",
@@ -49,6 +53,12 @@ export const WALK_IN_DISPLAY_HOST: Record<string, string> = {
 const HOLA_TAX_CUSTOM = {
   slug: "hola-tax-service",
   customDomain: "www.hola-tax-service.com",
+} as const;
+
+/** Ready when DNS + Vercel domain are attached. Admin customDomain can stay empty until then. */
+const PA_FINANCIAL_CUSTOM = {
+  slug: "pa-financial",
+  customDomain: "www.pataxesllc.com",
 } as const;
 
 export function resolveWalkInHostSlug(hostSlug: string): string | null {
@@ -96,6 +106,9 @@ export function resolveKnownCustomDomain(host: string): {
   if (!needle) return null;
   if (customDomainMatchesHost(HOLA_TAX_CUSTOM.customDomain, needle)) {
     return { ...HOLA_TAX_CUSTOM };
+  }
+  if (customDomainMatchesHost(PA_FINANCIAL_CUSTOM.customDomain, needle)) {
+    return { ...PA_FINANCIAL_CUSTOM };
   }
   return null;
 }

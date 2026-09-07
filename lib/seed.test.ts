@@ -108,6 +108,35 @@ test("mesa street kitchen seed is a live paid restaurant demo", () => {
   assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
 });
 
+test("P&A Financial seed is a real paying tax-office client, not a demo", () => {
+  const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
+  const start = src.indexOf('id: "cli_pa_financial"');
+  assert.ok(start > 0);
+  const end = src.indexOf("export function mergeMissingSeedClients", start);
+  const chunk = src.slice(start, end > start ? end : start + 2800);
+  assert.match(chunk, /businessName: "P&A Financial LLC"/);
+  assert.match(chunk, /slug: "pa-financial"/);
+  assert.match(chunk, /contactName: "Patricia Escobedo"/);
+  assert.match(chunk, /pafinancial19@gmail.com/);
+  assert.match(chunk, /\(720\) 501-0501/);
+  assert.match(chunk, /template: "tax"/);
+  assert.match(chunk, /siteStatus: "live"/);
+  assert.match(chunk, /paymentStatus: "paid"/);
+  assert.match(chunk, /Income Tax Preparation/);
+  assert.match(chunk, /ITIN Number Processing and Renewal/);
+  assert.match(chunk, /Business Registration/);
+  assert.match(chunk, /By appointment/);
+  assert.match(chunk, /Real paying Pro client/);
+  assert.match(chunk, /\$200 launch paid cash/);
+  assert.match(chunk, /pataxesllc.com/);
+  assert.doesNotMatch(chunk, /sample: true/);
+  assert.doesNotMatch(chunk, /cus_demo_/);
+  assert.doesNotMatch(chunk, /sub_demo_/);
+  assert.doesNotMatch(chunk, /\.example/);
+  assert.doesNotMatch(chunk, /siteStatus: "offline"/);
+  assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
+});
+
 test("stale offline mesa street kitchen is restored without touching other clients", () => {
   const now = "2026-01-01T00:00:00.000Z";
   const stale = [
