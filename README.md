@@ -209,17 +209,18 @@ Unpaid / paused sites render the “temporarily offline” page. After 30 days t
 
 ## Tax office template
 
-The **Tax office** template is a sellable Phoenixwebhost layout (white / black / neon) plus a private document drop box for that shop’s tax customers. It is not tax-prep software.
+The **Tax office** template is a sellable Phoenixwebhost layout plus a private document drop box for that shop’s tax customers. New shops (except Hola Tax) use the P&A Pro look — navy/neon, few colors, clone and swap brand. It is not tax-prep software.
 
-**P&A Financial** (`/s/pa-financial`) is the live Pro reference to clone: navy/neon, circular spinning logo, What we do, dual Call / Schedule appointment, IRS refund helpers, and the shared tax portal (year folders + staff login). Hola Tax stays its own live shop — do not copy Hola’s bookkeeping promo onto P&A, or P&A’s brand onto Hola.
+**P&A Financial** (`/s/pa-financial`) is the live Pro reference. Every new Tax office client (except Hola Tax) now starts from that layout: navy/neon, What we do, dual Call / Schedule appointment, IRS refund helper, spinning circular logo when a logo path is set. Hola Tax stays its own live shop — do not copy Hola’s bookkeeping promo onto P&A, or P&A’s brand onto Hola.
 
-To spin the next tax client:
+To spin the next tax client in one pass:
 
-1. Admin → New client → Tax office template (or copy seed fields: services, hours, phone, about).
-2. Put logo/photos in `public/clients/{slug}/` and point copy/theme at that slug. Swap brand colors with a theme class (copy `.theme-pa-financial` in `app/globals.css` if you want the navy/neon Pro look).
-3. Shop-specific sentences go in a small i18n module gated by slug (see `lib/pa-financial-i18n.ts`). Do not fork `TaxOfficeSite.tsx`.
-4. Set staff on **Admin → that client → Tax portal staff login**, or add `{SLUG}_STAFF_EMAIL` / `{SLUG}_STAFF_PASSWORD` like Hola and P&A. Never reuse `ADMIN_PASSWORD` or another shop’s staff password.
-5. Portal URLs: `/s/{slug}/portal` (client), `/s/{slug}/portal/staff/login` (staff).
+1. Admin → New client → Tax office template. Fill services, hours, phone, about, and the **Tax office brand** fields (header name, circular logo path, optional owner photo / Instagram / Facebook / WhatsApp).
+2. Put the circular logo (and optional owner photo) in `public/clients/{slug}/`. Logo path example: `/clients/{slug}/logo-brand.svg`.
+3. Default colors are navy/neon (`.theme-tax-pro`). To swap brand colors, copy that CSS block in `app/globals.css` to `.theme-{slug}` and change the `--pa-*` variables. The page already adds `theme-{slug}` on the root.
+4. Patricia-only sentences stay in `lib/pa-financial-i18n.ts`. The next shop’s English copy comes from Admin seed fields; bilingual chrome (What we do, Call, Schedule) is shared. Add a small slug-gated i18n module only if they need custom EN/ES sentences. Do not fork `TaxOfficeSite.tsx`.
+5. Set staff on **Admin → that client → Tax portal staff login**, or add `{SLUG}_STAFF_EMAIL` / `{SLUG}_STAFF_PASSWORD` like Hola and P&A. Never reuse `ADMIN_PASSWORD` or another shop’s staff password.
+6. Portal URLs: `/s/{slug}/portal` (client), `/s/{slug}/portal/staff/login` (staff).
 
 - Public site: `/s/{slug}` (custom domain works the same way as other clients)
 - Client login / upload: `/s/{slug}/portal`. On a phone, **Scan document** opens the rear camera; 1–5 photos become one private PDF. Intake labels stay W-2 / 1099 / ID / Other.

@@ -82,6 +82,13 @@ export type Client = {
   sample?: boolean;
   /** Preview-only header label. Paid sites keep using businessName. */
   logoText?: string;
+  /** Circular brand mark for the tax Pro layout (`/clients/{slug}/…`). */
+  logoSrc?: string;
+  /** Optional owner portrait for the tax Pro hero. */
+  ownerPhotoSrc?: string;
+  instagram?: string;
+  facebook?: string;
+  whatsapp?: string;
 };
 
 export type DemoAccent =

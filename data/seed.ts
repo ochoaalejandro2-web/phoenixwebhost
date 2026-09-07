@@ -495,6 +495,10 @@ function demoClients(): Client[] {
       editRequests: [],
       createdAt: isoDaysFromNow(-1),
       logoText: "P&A Financial",
+      logoSrc: "/clients/pa-financial/logo-brand.svg",
+      ownerPhotoSrc: "/clients/pa-financial/patricia.jpg",
+      instagram: "https://www.instagram.com/pafin_ancial",
+      whatsapp: "https://wa.me/17205010501",
     },
   ];
 }

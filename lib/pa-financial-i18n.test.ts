@@ -135,7 +135,7 @@ test("P&A Financial circular brand logo spins unless motion is reduced", () => {
   assert.match(css, /animation:\s*pa-logo-spin 16s linear infinite/);
   assert.match(
     css,
-    /prefers-reduced-motion:\s*reduce[\s\S]*\.theme-pa-financial \.pa-logo-spin[\s\S]*animation:\s*none/,
+    /prefers-reduced-motion:\s*reduce[\s\S]*theme-tax-pro[\s\S]*\.pa-logo-spin[\s\S]*animation:\s*none/,
   );
   const site = readFileSync(
     new URL("../components/sites/TaxOfficeSite.tsx", import.meta.url),
@@ -144,5 +144,5 @@ test("P&A Financial circular brand logo spins unless motion is reduced", () => {
   assert.match(site, /href="#appointment"/);
   assert.match(site, /pa-logo-spin/);
   assert.match(site, /telHref\(phone\)/);
-  assert.match(site, /PA_FINANCIAL_WHATSAPP/);
+  assert.match(site, /isTaxProLayout/);
 });

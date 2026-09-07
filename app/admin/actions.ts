@@ -24,6 +24,7 @@ import {
 import { TEMPLATES } from "@/lib/config";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
 import { normalizeCustomDomain } from "@/lib/custom-domain";
+import { readTaxBrandFields } from "@/lib/tax-office-layout";
 import type { Client, ReviewStatus, SiteStatus, TemplateId } from "@/lib/types";
 import { upsertTaxStaffUser, taxPortalDbReady } from "@/lib/tax-db";
 
@@ -45,6 +46,7 @@ export async function createClientAction(formData: FormData) {
   const businessName = String(formData.get("businessName") || "").trim();
   if (!businessName) throw new Error("Business name is required");
   const taken = (await listClients()).map((c) => c.slug);
+  const template = parseTemplateId(String(formData.get("template") || "contractor"));
   const client: Client = {
     id: `cli_${crypto.randomUUID()}`,
     businessName,
@@ -61,7 +63,7 @@ export async function createClientAction(formData: FormData) {
       .split("\n")
       .map((s) => s.trim())
       .filter(Boolean),
-    template: parseTemplateId(String(formData.get("template") || "contractor")),
+    template,
     customDomain: normalizeCustomDomain(String(formData.get("customDomain") || "")),
     siteStatus: "live",
     paymentStatus: "unpaid",
@@ -87,6 +89,7 @@ export async function createClientAction(formData: FormData) {
     notes: [],
     editRequests: [],
     createdAt: new Date().toISOString(),
+    ...(isTaxOfficeTemplate(template) ? readTaxBrandFields(formData) : {}),
   };
   await upsertClient(client);
   if (isTaxOfficeTemplate(client.template)) {
@@ -274,6 +277,9 @@ export async function saveClientAction(formData: FormData) {
     stripeVoiceSubscriptionId:
       String(formData.get("stripeVoiceSubscriptionId") || "").trim() || null,
   };
+  if (isTaxOfficeTemplate(next.template)) {
+    Object.assign(next, readTaxBrandFields(formData));
+  }
   await upsertClient(next);
   if (isTaxOfficeTemplate(next.template)) {
     await maybeSetTaxStaff(next, formData);
