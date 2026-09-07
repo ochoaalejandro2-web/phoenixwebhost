@@ -487,7 +487,7 @@ function demoClients(): Client[] {
       notes: [
         {
           id: "note_pa_1",
-          body: "Real paying Pro client — not a demo or sample. $200 launch paid cash. Owner: Patricia Escobedo. Contact pafinancial19@gmail.com / (720) 501-0501. Instagram instagram.com/pafin_ancial. Custom domain later: pataxesllc.com (CNAME www to cname.vercel-dns.com, add the domain in Vercel, then set Custom domain in Admin to www.pataxesllc.com). Hours and street address TBD — site says by appointment until she sends them. Logo is a text wordmark until the PNG arrives (set PA_FINANCIAL_LOGO_SRC in lib/pa-financial-i18n.ts).",
+          body: "Real paying client — not a demo. $200 launch paid cash. Tax-office template. Custom domain later: pataxesllc.com (CNAME www to cname.vercel-dns.com, add in Vercel, set Custom domain in Admin to www.pataxesllc.com).",
           createdAt: isoDaysFromNow(-1),
         },
       ],

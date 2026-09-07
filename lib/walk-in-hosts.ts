@@ -36,7 +36,6 @@ export const WALK_IN_HOST_ALIASES: Record<string, string> = {
   pafinancial: "pa-financial",
   "pa-financial": "pa-financial",
   pataxesllc: "pa-financial",
-  "pataxes-llc": "pa-financial",
   desertsparkle: "desert-sparkle-cleaning",
   "desert-sparkle": "desert-sparkle-cleaning",
   desertsparklecleaning: "desert-sparkle-cleaning",
@@ -55,7 +54,6 @@ const HOLA_TAX_CUSTOM = {
   customDomain: "www.hola-tax-service.com",
 } as const;
 
-/** Ready when DNS + Vercel domain are attached. Admin customDomain can stay empty until then. */
 const PA_FINANCIAL_CUSTOM = {
   slug: "pa-financial",
   customDomain: "www.pataxesllc.com",

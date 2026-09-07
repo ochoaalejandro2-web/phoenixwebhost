@@ -126,7 +126,7 @@ test("P&A Financial seed is a real paying tax-office client, not a demo", () => 
   assert.match(chunk, /ITIN Number Processing and Renewal/);
   assert.match(chunk, /Business Registration/);
   assert.match(chunk, /By appointment/);
-  assert.match(chunk, /Real paying Pro client/);
+  assert.match(chunk, /Real paying client/);
   assert.match(chunk, /\$200 launch paid cash/);
   assert.match(chunk, /pataxesllc.com/);
   assert.doesNotMatch(chunk, /sample: true/);

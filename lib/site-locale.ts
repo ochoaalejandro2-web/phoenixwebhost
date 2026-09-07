@@ -11,7 +11,7 @@ export function siteLangCookieName(slug: string) {
   return `pwh_lang_${slug}`;
 }
 
-const I18N_SLUGS = new Set(["hola-tax-service", "pa-financial"]);
+const I18N_SLUGS = new Set(["hola-tax-service"]);
 
 /**
  * Hola Tax by slug (same as the dedicated i18n PR) plus every Tax office

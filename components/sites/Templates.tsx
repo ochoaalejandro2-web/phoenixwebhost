@@ -1,12 +1,10 @@
 import type { ReactNode } from "react";
 import { ReceptionistChat } from "@/components/sites/ReceptionistChat";
-import { PaFinancialSite } from "@/components/sites/PaFinancialSite";
 import { ShopSite } from "@/components/sites/ShopSite";
 import { TaxOfficeSite } from "@/components/sites/TaxOfficeSite";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
 import { COMPANY } from "@/lib/config";
 import { isPreviewClient } from "@/lib/demo";
-import { isPaFinancialSlug, type PaFinancialPage } from "@/lib/pa-financial-i18n";
 import type { Client, ContactNotice, Locale } from "@/lib/types";
 
 export function OfflineSite({ client }: { client: Client }) {
@@ -52,22 +50,10 @@ export function renderClientSite(
   client: Client,
   notice?: ContactNotice | null,
   locale: Locale = "en",
-  page: PaFinancialPage = "home",
 ) {
   if (client.siteStatus === "taken_down") return <TakenDownSite />;
   if (client.siteStatus === "offline" || client.siteStatus === "paused") {
     return <OfflineSite client={client} />;
-  }
-  if (isPaFinancialSlug(client.slug)) {
-    const site = (
-      <PaFinancialSite
-        client={client}
-        notice={notice}
-        locale={locale}
-        page={page}
-      />
-    );
-    return withReceptionist(client, locale, site);
   }
   if (isTaxOfficeTemplate(client.template)) {
     const site = (

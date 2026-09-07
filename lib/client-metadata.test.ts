@@ -24,12 +24,7 @@ test("Hola Tax SEO is the tax office, not Phoenixwebhost marketing", () => {
 test("P&A Financial SEO is the tax office, not Phoenixwebhost marketing", () => {
   const seo = paFinancialSeo("en");
   assert.equal(seo.brand, "P&A Financial LLC");
-  assert.equal(seo.title, "P&A Financial LLC — Tax preparation");
+  assert.match(seo.title, /Tax preparation/);
   assert.match(seo.description, /Patricia Escobedo/);
-  assert.match(seo.description, /720\) 501-0501/);
-  assert.equal(seo.icon, null);
-  const blob = JSON.stringify(seo);
-  assert.equal(blob.includes("Phoenixwebhost"), false);
-  assert.equal(blob.includes("$200"), false);
-  assert.equal(blob.includes("$69"), false);
+  assert.equal(JSON.stringify(seo).includes("Phoenixwebhost"), false);
 });

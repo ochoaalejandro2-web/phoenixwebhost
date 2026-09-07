@@ -3,6 +3,7 @@ import { BookJobForm } from "@/components/sites/BookJobForm";
 import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
+import { PA_FINANCIAL_SLUG, paFinancialHours } from "@/lib/pa-financial-i18n";
 import { displayHours, isPreviewClient, isSamplePhone, previewLeadId, siteHomeHref } from "@/lib/demo";
 import { clientShowsBookJob } from "@/lib/site-addons";
 import {
@@ -147,12 +148,15 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
   const shop = tShop(locale);
   const taxPhotos = SHOP_PHOTOS.tax;
   const reviews = preview ? DEMO_REVIEWS.tax : [];
-  const hours = displayHours(client.hours, "tax", locale);
+  const hours =
+    client.slug === PA_FINANCIAL_SLUG
+      ? paFinancialHours(locale)
+      : displayHours(client.hours, "tax", locale);
   return (
     <div
       data-template="tax"
       lang={locale}
-      className={`${clientThemeClass("tax")} flex min-h-full flex-col bg-white text-black`}
+      className={`${clientThemeClass("tax")}${client.slug === PA_FINANCIAL_SLUG ? " theme-pa-financial" : ""} flex min-h-full flex-col bg-white text-black`}
     >
       <header className="shop-header sticky top-0 z-40 border-b border-[#00FF66] bg-white/95 px-5 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-2">

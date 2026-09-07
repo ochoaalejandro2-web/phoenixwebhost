@@ -139,17 +139,31 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* P&A Financial — burgundy + black, Bahnschrift or Barlow. */
-.theme-pa-financial {
-  color: #000000;
-  background: #ffffff;
-  font-family: Bahnschrift, var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+/* P&A Financial — same tax-office layout, burgundy instead of neon. */
+.theme-pa-financial.text-\[\#00E840\],
+.theme-pa-financial .text-\[\#00E840\],
+.theme-pa-financial .text-\[\#00FF66\] {
+  color: #871a1a;
 }
-
-.theme-pa-financial .font-display {
-  font-family: Bahnschrift, var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+.theme-pa-financial .bg-\[\#00FF66\],
+.theme-pa-financial .bg-\[\#00E840\] {
+  background-color: #871a1a;
+  color: #ffffff;
+}
+.theme-pa-financial .hover\:bg-\[\#00E840\]:hover,
+.theme-pa-financial .hover\:bg-\[\#00FF66\]:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+.theme-pa-financial .border-\[\#00FF66\] {
+  border-color: #871a1a;
+}
+.theme-pa-financial .hover\:text-\[\#00E840\]:hover,
+.theme-pa-financial .hover\:text-\[\#00FF66\]:hover {
+  color: #871a1a;
+}
+.theme-pa-financial .hover\:bg-\[\#00FF66\]:hover {
+  background-color: #871a1a;
 }
 
 /* Marketing homepage first-visit flare — lime/gold, not a game overlay. */
