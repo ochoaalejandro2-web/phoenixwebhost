@@ -146,7 +146,7 @@ body {
   --pa-navy-ink: #0c2244;
   --pa-gold: #c9a04a;
   --pa-gold-soft: #e4c878;
-  --pa-paper: #f7f8fa;
+  --pa-paper: #f8f4ec;
   --pa-ink: #152033;
   color: var(--pa-ink);
   background: var(--pa-paper);
@@ -154,7 +154,7 @@ body {
 }
 
 .theme-pa-financial .shop-header {
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(251, 247, 239, 0.96);
   border-bottom-color: var(--pa-navy);
   box-shadow: 0 1px 0 color-mix(in srgb, var(--pa-gold) 50%, transparent);
   padding-top: 0.85rem;
@@ -230,7 +230,7 @@ body {
 
 .theme-pa-financial .pa-hero {
   border-bottom: 1px solid color-mix(in srgb, var(--pa-navy) 12%, #e6eaf0);
-  background: linear-gradient(180deg, #ffffff 0%, var(--pa-paper) 100%);
+  background: linear-gradient(180deg, #fbf7ef 0%, var(--pa-paper) 100%);
 }
 
 .theme-pa-financial .pa-btn,
