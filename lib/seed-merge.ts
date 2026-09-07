@@ -84,17 +84,21 @@ const PA_STALE_LOGOS = [
   "/clients/pa-financial/logo.png",
 ];
 
+const PA_LISTED_SERVICES = [
+  "Personal and Business Tax Preparation",
+  "W-2 / 1099 / Uber",
+  "ITIN Number Processing",
+  "Business Registration",
+  "Bookkeeping / Payroll",
+];
+
 function paListedServicesNeedRefresh(services?: string[]) {
-  const text = (services || []).join(" ");
-  return (
-    !/bookkeeping/i.test(text) ||
-    !/llc/i.test(text) ||
-    !/personal/i.test(text) ||
-    !/business/i.test(text)
-  );
+  const listed = services || [];
+  if (listed.length !== PA_LISTED_SERVICES.length) return true;
+  return PA_LISTED_SERVICES.some((name, index) => listed[index] !== name);
 }
 
-/** Existing P&A rows keep the black / weak logos and the old three-service list. */
+/** Existing P&A rows keep stale logos and the old service list until seed refresh. */
 export function refreshPaFinancialListedOfferings<
   T extends {
     slug: string;
@@ -113,10 +117,13 @@ export function refreshPaFinancialListedOfferings<
       !client.logoSrc || PA_STALE_LOGOS.includes(String(client.logoSrc));
     const aboutNeed =
       typeof client.about === "string" &&
-      (!/bookkeeping/i.test(client.about) ||
-        !/llc/i.test(client.about) ||
-        !/personal/i.test(client.about) ||
-        !/business/i.test(client.about));
+      (/llc formation/i.test(client.about) ||
+        /income taxes/i.test(client.about) ||
+        !/tax preparation/i.test(client.about) ||
+        !/W-2/i.test(client.about) ||
+        !/ITIN/i.test(client.about) ||
+        !/business registration/i.test(client.about) ||
+        !/payroll/i.test(client.about));
     if (!servicesNeed && !logoNeed && !aboutNeed) return client;
     added = true;
     return {

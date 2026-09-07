@@ -29,7 +29,7 @@ test("P&A Financial copy stays on this shop", () => {
   assert.match(paFinancialAbout("", "es"), /Arizona/);
   assert.equal(
     paFinancialServiceLabel("Business Registration", "es"),
-    "Registro de negocios",
+    "Registro de Negocios",
   );
   assert.match(paFinancialAbout("", "en"), /Latino/);
   assert.match(paFinancialCopy("en").tagline, /Hispanic community/);
@@ -55,37 +55,56 @@ test("P&A Financial What we do copy names the real services in both languages", 
   assert.equal(es.aboutTitle, "Qué hacemos");
   assert.equal(en.navAbout, "What we do");
   assert.equal(es.navAbout, "Qué hacemos");
-  assert.match(en.aboutLead, /Personal and business income taxes/);
-  assert.match(en.aboutLead, /LLC/);
-  assert.match(en.aboutLead, /bookkeeping/i);
+  assert.match(en.aboutLead, /Personal and business tax preparation/);
+  assert.match(en.aboutLead, /W-2 \/ 1099 \/ Uber/);
   assert.match(en.aboutLead, /ITIN/);
-  assert.match(es.aboutLead, /Impuestos personales y de negocios/);
-  assert.match(es.aboutLead, /LLC/);
-  assert.match(es.aboutLead, /contabilidad/i);
+  assert.match(en.aboutLead, /business registration/i);
+  assert.match(en.aboutLead, /bookkeeping \/ payroll/i);
+  assert.match(es.aboutLead, /Preparación de impuestos personales y de negocio/);
+  assert.match(es.aboutLead, /W-2 \/ 1099 \/ Uber/);
   assert.match(es.aboutLead, /ITIN/);
-  assert.equal(en.whatWeDo.length, 4);
-  assert.equal(es.whatWeDo.length, 4);
+  assert.match(es.aboutLead, /registro de negocios/i);
+  assert.match(es.aboutLead, /bookkeeping \/ nómina/i);
+  assert.equal(en.whatWeDo.length, 5);
+  assert.equal(es.whatWeDo.length, 5);
   assert.deepEqual(
     en.whatWeDo.map((item) => item.title),
     [
-      "Personal Income Taxes",
-      "Business Income Taxes",
-      "LLC Formation",
-      "Bookkeeping",
+      "Personal and Business Tax Preparation",
+      "W-2 / 1099 / Uber",
+      "ITIN Number Processing",
+      "Business Registration",
+      "Bookkeeping / Payroll",
     ],
   );
-  assert.match(en.whatWeDo[0].title, /Personal Income Taxes/i);
-  assert.match(es.whatWeDo[1].blurb, /negocio/i);
-  assert.match(en.whatWeDo[2].title, /LLC/);
-  assert.match(en.whatWeDo[3].title, /Bookkeeping/);
+  assert.deepEqual(
+    es.whatWeDo.map((item) => item.title),
+    en.whatWeDo.map((item) => item.title),
+  );
+  assert.equal(
+    paFinancialServiceLabel("Personal and Business Tax Preparation", "es"),
+    "Preparación de Impuestos Personales y Negocio",
+  );
+  assert.equal(paFinancialServiceLabel("W-2 / 1099 / Uber", "es"), "W-2 / 1099 / Uber");
+  assert.equal(
+    paFinancialServiceLabel("ITIN Number Processing", "es"),
+    "Trámite de ITIN Number",
+  );
+  assert.equal(
+    paFinancialServiceLabel("Bookkeeping / Payroll", "es"),
+    "Bookkeeping / Nómina",
+  );
+  assert.match(es.whatWeDo[1].blurb, /Uber/i);
+  assert.match(en.whatWeDo[2].title, /ITIN/);
+  assert.match(en.whatWeDo[4].title, /Bookkeeping \/ Payroll/);
   assert.match(paFinancialAbout("", "en"), /Patricia Escobedo/);
   assert.match(paFinancialAbout("", "en"), /ITIN/);
-  assert.match(paFinancialServiceBlurb("Personal Income Taxes", "en"), /household/i);
-  assert.equal(
-    paFinancialServiceLabel("LLC Formation", "es"),
-    "Formación de LLC",
+  assert.match(
+    paFinancialServiceBlurb("Personal and Business Tax Preparation", "en"),
+    /household/i,
   );
-  assert.equal(paFinancialServiceLabel("Bookkeeping", "es"), "Contabilidad");
+  assert.match(paFinancialServiceBlurb("W-2 / 1099 / Uber", "en"), /rideshare/i);
+  assert.match(paFinancialServiceBlurb("Bookkeeping / Payroll", "es"), /nómina/i);
   assert.equal(paFinancialServicesTitle("en"), "Our Services");
 });
 

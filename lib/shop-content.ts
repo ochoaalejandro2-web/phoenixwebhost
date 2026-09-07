@@ -690,6 +690,26 @@ export const SERVICE_BLURBS: Record<
     blurb: "Help gathering the papers for an ITIN application.",
     blurbEs: "Ayuda para juntar los papeles de una solicitud de ITIN.",
   },
+  "Personal and Business Tax Preparation": {
+    nameEs: "Preparación de Impuestos Personales y Negocio",
+    blurb: "Household and small-business returns in English or Spanish.",
+    blurbEs: "Declaraciones personales y de negocio en inglés o español.",
+  },
+  "W-2 / 1099 / Uber": {
+    nameEs: "W-2 / 1099 / Uber",
+    blurb: "Help filing W-2, 1099, and rideshare income.",
+    blurbEs: "Ayuda para declarar ingresos W-2, 1099 y de Uber.",
+  },
+  "ITIN Number Processing": {
+    nameEs: "Trámite de ITIN Number",
+    blurb: "Help gathering the papers for an ITIN.",
+    blurbEs: "Ayuda para juntar los papeles de un trámite de ITIN.",
+  },
+  "Bookkeeping / Payroll": {
+    nameEs: "Bookkeeping / Nómina",
+    blurb: "Straightforward books and payroll so tax time is not a scramble.",
+    blurbEs: "Libros y nómina sencillos para que la temporada de impuestos no sea un apuro.",
+  },
   "Personal Income Taxes": {
     nameEs: "Impuestos personales sobre la renta",
     blurb: "Household income-tax returns in English or Spanish.",
@@ -716,7 +736,7 @@ export const SERVICE_BLURBS: Record<
     blurbEs: "Ayuda para solicitar un ITIN nuevo o renovar uno que ya venció.",
   },
   "Business Registration": {
-    nameEs: "Registro de negocios",
+    nameEs: "Registro de Negocios",
     blurb: "Help with business registration paperwork. Not a law firm.",
     blurbEs: "Ayuda con el papeleo de registro de un negocio. No somos un bufete.",
   },

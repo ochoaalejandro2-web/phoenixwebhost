@@ -458,12 +458,13 @@ function demoClients(): Client[] {
       hours: "By appointment — call or schedule",
       tagline: "Expert tax & financial services for the Hispanic community",
       about:
-        "Personal and business income taxes, LLC formation, and bookkeeping for Hispanic and Latino families and small businesses. Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona.",
+        "Personal and business tax preparation, W-2 / 1099 / Uber, ITIN processing, business registration, and bookkeeping / payroll for Hispanic and Latino families and small businesses. Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona.",
       services: [
-        "Personal Income Taxes",
-        "Business Income Taxes",
-        "LLC Formation",
-        "Bookkeeping",
+        "Personal and Business Tax Preparation",
+        "W-2 / 1099 / Uber",
+        "ITIN Number Processing",
+        "Business Registration",
+        "Bookkeeping / Payroll",
       ],
       template: "tax",
       customDomain: null,
