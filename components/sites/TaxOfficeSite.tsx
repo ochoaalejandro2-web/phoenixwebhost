@@ -225,6 +225,36 @@ function PaFinancialWordmark() {
   );
 }
 
+function PaOwnerPortrait({
+  alt,
+  sizes,
+  caption,
+  className,
+  preload,
+}: {
+  alt: string;
+  sizes: string;
+  caption?: string;
+  className?: string;
+  preload?: boolean;
+}) {
+  return (
+    <figure className={`pa-portrait ${className ?? ""}`}>
+      <div className="pa-portrait-frame">
+        <Image
+          src={PA_FINANCIAL_OWNER}
+          alt={alt}
+          fill
+          sizes={sizes}
+          preload={preload}
+          className="object-cover object-[50%_18%]"
+        />
+      </div>
+      {caption ? <figcaption className="pa-portrait-caption">{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
 function PaFinancialServices({
   services,
   locale,
@@ -234,26 +264,34 @@ function PaFinancialServices({
 }) {
   return (
     <div id="services" className="pa-services">
-      <div className="mx-auto max-w-5xl px-5 py-16 text-center">
+      <div className="mx-auto max-w-5xl px-5 py-16 text-center sm:py-20">
         <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
           {paFinancialServicesTitle(locale)}
         </h2>
-        <ul className="mt-10 grid gap-6 md:grid-cols-3">
-          {services.map((service) => (
-            <li key={service} className="pa-service-card px-6 py-8 text-left">
-              <span className="pa-service-icon inline-flex h-14 w-14 items-center justify-center">
-                <PaServiceIcon service={service} />
-              </span>
-              <p className="mt-5 font-display text-lg font-semibold tracking-tight text-white">
-                {taxOfficeServiceLabel(service, locale)}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-white/80">
-                {paFinancialServiceBlurb(service, locale)}
-              </p>
-            </li>
-          ))}
-        </ul>
-        <a href="#contact" className="pa-service-cta mt-10 inline-flex">
+        <div className="pa-services-row mt-12">
+          <span className="pa-chevron" aria-hidden="true">
+            ‹
+          </span>
+          <ul className="grid flex-1 gap-6 md:grid-cols-3">
+            {services.map((service) => (
+              <li key={service} className="pa-service-card px-6 py-9 text-center">
+                <span className="pa-service-icon mx-auto inline-flex h-14 w-14 items-center justify-center">
+                  <PaServiceIcon service={service} />
+                </span>
+                <p className="mt-5 font-display text-lg font-semibold tracking-tight text-white">
+                  {taxOfficeServiceLabel(service, locale)}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-white/75">
+                  {paFinancialServiceBlurb(service, locale)}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <span className="pa-chevron" aria-hidden="true">
+            ›
+          </span>
+        </div>
+        <a href="#contact" className="pa-service-cta mt-12 inline-flex">
           {paFinancialContactUs(locale)}
         </a>
       </div>
@@ -439,6 +477,58 @@ function BrandMark({
   );
 }
 
+function PaFinancialHero({
+  client,
+  locale,
+  phone,
+}: {
+  client: Client;
+  locale: Locale;
+  phone: string;
+}) {
+  const c = tTaxOffice(locale);
+  const pa = paFinancialCopy(locale);
+  return (
+    <section className="pa-hero" aria-labelledby="pa-hero-title">
+      <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-14 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
+        <div>
+          <p className="pa-kicker">
+            {client.city}
+            {" · "}
+            {pa.hours}
+          </p>
+          <h1
+            id="pa-hero-title"
+            className="mt-4 max-w-xl font-display text-4xl leading-[1.08] tracking-tight text-black sm:text-5xl"
+          >
+            {taxOfficeTagline(client.slug, client.tagline, locale)}
+          </h1>
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-black/72 sm:text-lg">
+            {pa.heroLede}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {phone ? (
+              <a href={telHref(phone)} className="site-cta pa-btn px-6 py-2.5 text-sm font-semibold">
+                {c.call(phone)}
+              </a>
+            ) : null}
+            <a href="#contact" className="pa-btn-ghost px-6 py-2.5 text-sm font-semibold">
+              {c.ctaMessage}
+            </a>
+          </div>
+        </div>
+        <PaOwnerPortrait
+          alt={`${pa.ownerName}, ${pa.ownerRole} of P&A Financial LLC`}
+          sizes="(max-width: 1024px) 100vw, 520px"
+          caption={`${pa.ownerName} · ${pa.ownerRole}`}
+          className="pa-hero-portrait"
+          preload
+        />
+      </div>
+    </section>
+  );
+}
+
 /**
  * Tax office template: white / black / neon, plus a private client drop box.
  * Hola Tax (first live shop) also gets its logo, favicon, and photo hero.
@@ -456,8 +546,12 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
     : withSiteLangPath(`/s/${client.slug}`, locale);
   const portal = withSiteLangPath(portalPath(client.slug), locale);
   const staff = withSiteLangPath(portalPath(client.slug, "/staff/login"), locale);
-  const field =
-    "rounded-none border border-[#00FF66] bg-white px-3 py-2 text-black outline-none focus:shadow-[0_0_0_3px_rgba(0,255,102,0.25)]";
+  const field = isPaFinancial
+    ? "pa-field"
+    : "rounded-none border border-[#00FF66] bg-white px-3 py-2 text-black outline-none focus:shadow-[0_0_0_3px_rgba(0,255,102,0.25)]";
+  const panel = isPaFinancial
+    ? "pa-panel"
+    : "border border-[#00FF66] bg-white";
   const phone = String(client.phone || "").trim();
   const listedServices = Array.isArray(client.services) ? client.services : [];
   const services = isHola
@@ -509,7 +603,9 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
         </div>
       </header>
 
-      {isHola ? (
+      {isPaFinancial && pa ? (
+        <PaFinancialHero client={client} locale={locale} phone={phone} />
+      ) : isHola ? (
         <section className="relative isolate min-h-[70vh] overflow-hidden border-b border-[#00FF66] lg:min-h-[calc(100svh-4.75rem)]">
           <Image
             src={HOLA_PHOTOS.office}
@@ -633,27 +729,26 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             </div>
           </>
         ) : isPaFinancial && pa ? (
-          <aside id="about" className="mb-10 grid items-center gap-6 sm:grid-cols-2">
-            <SiteStill
-              src={PA_FINANCIAL_OWNER}
+          <aside id="about" className="pa-about mb-14 grid items-center gap-10 sm:grid-cols-2">
+            <PaOwnerPortrait
               alt={`${pa.ownerName}, ${pa.ownerRole} of P&A Financial LLC`}
               sizes="(max-width: 640px) 100vw, 480px"
-              className="pa-owner-photo aspect-square"
+              className="pa-about-portrait"
             />
             <div>
-              <p className="text-sm uppercase tracking-[0.22em] text-[#00E840]">
-                {pa.aboutKicker}
-              </p>
-              <h2 className="mt-2 font-display text-3xl tracking-tight text-black">
+              <p className="pa-kicker">{pa.aboutKicker}</p>
+              <h2 className="mt-3 font-display text-3xl tracking-tight text-black sm:text-4xl">
                 {pa.aboutTitle}
               </h2>
-              <p className="mt-4 text-black/85">
+              <p className="mt-5 text-base leading-relaxed text-black/75">
                 {taxOfficeAbout(client.slug, client.about, locale)}
               </p>
-              <p className="mt-5 font-display text-xl tracking-tight text-black">
+              <p className="mt-6 font-display text-xl tracking-tight text-black">
                 {pa.ownerName}
               </p>
-              <p className="text-sm text-black/70">{pa.ownerRole}</p>
+              <p className="mt-1 text-sm tracking-[0.12em] uppercase text-black/55">
+                {pa.ownerRole}
+              </p>
             </div>
           </aside>
         ) : (
@@ -800,7 +895,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             </div>
           </aside>
         ) : null}
-        <div className="mt-10 grid gap-4 border border-[#00FF66] bg-white p-6 sm:grid-cols-2">
+        <div className={`mt-10 grid gap-4 p-6 sm:grid-cols-2 ${panel}`}>
           <div>
             <p className="font-display text-2xl tracking-tight text-black">
               {shop.hoursTitle}
@@ -878,7 +973,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
           id="contact"
           action={`/api/sites/${client.slug}/contact`}
           method="post"
-          className="mt-8 grid gap-3 border border-[#00FF66] bg-white p-6"
+          className={`mt-8 grid gap-3 p-6 ${panel}`}
         >
           <input type="hidden" name="lang" value={locale} />
           <p className="font-display text-xl tracking-tight text-black">

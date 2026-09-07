@@ -33,7 +33,7 @@ test("P&A Financial copy stays on this shop", () => {
   assert.equal(seo.brand, PA_FINANCIAL_LEGAL);
   assert.equal(seo.icon, "/clients/pa-financial/icon.png");
   assert.equal(PA_FINANCIAL_LOGO, "/clients/pa-financial/logo-circle.jpg");
-  assert.equal(PA_FINANCIAL_OWNER, "/clients/pa-financial/patricia.jpg");
+  assert.match(PA_FINANCIAL_OWNER, /\/clients\/pa-financial\/patricia-studio\.jpg/);
   assert.equal(paFinancialCopy("en").scheduleTitle, "Schedule Your Appointment");
   assert.match(paFinancialCopy("en").scheduleBlurb, /financial clarity/);
   assert.equal(paFinancialCopy("en").footerSocial, "Social Media");

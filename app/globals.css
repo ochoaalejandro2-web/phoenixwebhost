@@ -139,16 +139,20 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* P&A Financial — same tax-office layout, her wine + black, with Hola-level pop. */
+/* P&A Financial — same tax-office layout, luxury wine / cream / gold. */
 .theme-pa-financial {
   --pa-wine: #871a1a;
   --pa-live: #b4232a;
   --pa-hot: #d12b33;
   --pa-gold: #c9a04a;
   --pa-gold-soft: #e4c878;
-  --pa-cream: var(--paper);
-  color: #000000;
-  background: var(--pa-cream);
+  --pa-cream: #f6f1e8;
+  --pa-ink: #14110f;
+  color: var(--pa-ink);
+  background:
+    radial-gradient(1200px 480px at 12% -10%, color-mix(in srgb, var(--pa-gold) 14%, transparent), transparent 58%),
+    var(--pa-cream);
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 .theme-pa-financial .shop-header {
@@ -218,6 +222,60 @@ body {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-gold) 38%, transparent);
 }
 
+.theme-pa-financial .pa-kicker {
+  color: var(--pa-wine);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.theme-pa-financial .pa-hero {
+  border-bottom: 1px solid color-mix(in srgb, var(--pa-wine) 18%, #e8dfd2);
+  background:
+    linear-gradient(180deg, #fffaf3 0%, var(--pa-cream) 100%);
+}
+
+.theme-pa-financial .pa-btn,
+.theme-pa-financial .pa-service-cta,
+.theme-pa-financial .site-cta {
+  border-radius: 0.7rem;
+}
+
+.theme-pa-financial .pa-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pa-wine);
+  border-radius: 0.7rem;
+  color: var(--pa-wine);
+  background: transparent;
+}
+
+.theme-pa-financial .pa-btn-ghost:hover {
+  background: var(--pa-wine);
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-portrait-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 1.35rem;
+  background: #d8d2c8;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--pa-gold) 45%, #ffffff),
+    0 22px 48px rgba(20, 17, 15, 0.16);
+}
+
+.theme-pa-financial .pa-portrait-caption {
+  margin-top: 0.85rem;
+  color: color-mix(in srgb, var(--pa-ink) 62%, transparent);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .theme-pa-financial .pa-services {
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -225,34 +283,74 @@ body {
   color: #ffffff;
 }
 
+.theme-pa-financial .pa-services-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-pa-financial .pa-chevron {
+  display: none;
+  color: #ffffff;
+  font-size: 2.4rem;
+  font-weight: 200;
+  line-height: 1;
+}
+
+@media (min-width: 900px) {
+  .theme-pa-financial .pa-chevron {
+    display: block;
+  }
+}
+
 .theme-pa-financial .pa-service-card {
-  background: #111111;
-  border: 1px solid var(--pa-wine);
-  border-radius: 0.85rem;
+  background: #141414;
+  border: 1px solid color-mix(in srgb, var(--pa-wine) 85%, #ffffff);
+  border-radius: 0.95rem;
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--pa-wine) 70%, transparent),
-    0 0 28px color-mix(in srgb, var(--pa-wine) 55%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--pa-wine) 55%, transparent),
+    0 0 34px color-mix(in srgb, var(--pa-wine) 58%, transparent);
 }
 
 .theme-pa-financial .pa-service-icon {
   border-radius: 999px;
   background: var(--pa-wine);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--pa-wine) 60%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--pa-wine) 70%, transparent);
 }
 
 .theme-pa-financial .pa-service-cta {
-  min-width: min(28rem, 100%);
+  min-width: min(18rem, 100%);
   justify-content: center;
-  border-radius: 0.55rem;
-  background: linear-gradient(180deg, var(--pa-hot) 0%, var(--pa-wine) 100%);
+  background: var(--pa-wine);
   color: #ffffff;
   font-weight: 700;
-  padding: 0.9rem 1.8rem;
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--pa-wine) 45%, transparent);
+  padding: 0.95rem 1.8rem;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--pa-wine) 42%, transparent);
 }
 
 .theme-pa-financial .pa-service-cta:hover {
   background: #000000;
+}
+
+.theme-pa-financial .pa-panel {
+  border: 1px solid color-mix(in srgb, var(--pa-wine) 22%, #e8dfd2);
+  border-radius: 1.1rem;
+  background: #fffaf3;
+  box-shadow: 0 18px 40px rgba(20, 17, 15, 0.06);
+}
+
+.theme-pa-financial .pa-field {
+  border: 1px solid color-mix(in srgb, var(--pa-wine) 24%, #d8cfc3);
+  border-radius: 0.7rem;
+  background: #ffffff;
+  color: var(--pa-ink);
+  padding: 0.7rem 0.85rem;
+  outline: none;
+}
+
+.theme-pa-financial .pa-field:focus {
+  border-color: var(--pa-wine);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-gold) 38%, transparent);
 }
 
 .theme-pa-financial .pa-brand-logo {

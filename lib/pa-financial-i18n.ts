@@ -5,7 +5,7 @@ export const PA_FINANCIAL_LEGAL = "P&A Financial LLC";
 export const PA_FINANCIAL_PHONE = "(720) 501-0501";
 export const PA_FINANCIAL_EMAIL = "pafinancial19@gmail.com";
 export const PA_FINANCIAL_LOGO = "/clients/pa-financial/logo-circle.jpg";
-export const PA_FINANCIAL_OWNER = "/clients/pa-financial/patricia.jpg";
+export const PA_FINANCIAL_OWNER = "/clients/pa-financial/patricia-studio.jpg";
 export const PA_FINANCIAL_ICON = "/clients/pa-financial/icon.png";
 export const PA_FINANCIAL_WHATSAPP = "https://wa.me/17205010501";
 export const PA_FINANCIAL_INSTAGRAM = "https://www.instagram.com/pafin_ancial";
@@ -21,6 +21,8 @@ const servicesEs: Record<string, string> = {
 const copy = {
   en: {
     tagline: "Personalized tax and financial help, in English and Spanish",
+    heroLede:
+      "Income tax preparation, ITIN processing, and business registration — by appointment, in English and Spanish.",
     about:
       "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and serves the Hispanic community with personalized financial and tax help.",
     hours: "By appointment — call to schedule",
@@ -54,6 +56,8 @@ const copy = {
   es: {
     tagline:
       "Ayuda personalizada de impuestos y finanzas, en inglés y español",
+    heroLede:
+      "Preparación de impuestos, trámites de ITIN y registro de negocios — con cita, en inglés y español.",
     about:
       "Patricia Escobedo lleva más de ocho años preparando impuestos. Su camino comenzó en Arizona. Trabaja en inglés y español y sirve a la comunidad hispana con ayuda financiera y de impuestos personalizada.",
     hours: "Con cita — llame para agendar",
