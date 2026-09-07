@@ -77,11 +77,11 @@ const paFinancial = client({
   template: "tax",
   phone: "(720) 501-0501",
   address: "",
-  city: "Colorado",
+  city: "Arizona",
   hours: "By appointment — call to schedule",
   tagline: "Personalized tax and financial help, in English and Spanish",
   about:
-    "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Colorado.",
+    "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona.",
   services: [
     "Income Tax Preparation",
     "ITIN Number Processing and Renewal",

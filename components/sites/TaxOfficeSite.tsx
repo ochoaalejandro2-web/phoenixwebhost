@@ -6,7 +6,10 @@ import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
 import {
   PA_FINANCIAL_LOGO,
   PA_FINANCIAL_SLUG,
+  paFinancialContactUs,
   paFinancialHours,
+  paFinancialServiceBlurb,
+  paFinancialServicesTitle,
 } from "@/lib/pa-financial-i18n";
 import { displayHours, isPreviewClient, isSamplePhone, previewLeadId, siteHomeHref } from "@/lib/demo";
 import { clientShowsBookJob } from "@/lib/site-addons";
@@ -94,6 +97,85 @@ function ContactNoticeBanner({
     >
       {copy}
     </p>
+  );
+}
+
+function PaServiceIcon({ service }: { service: string }) {
+  if (/itin/i.test(service)) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
+        <path d="M7 19c2-4 5-7 10-10" />
+        <path d="M14 6.5c.8-.4 2.2-.2 3 .6.8.8 1 2.2.6 3" />
+        <path d="M6 8.5 8 6l1.2.4L8.4 8.2z" />
+        <path d="M16.2 4.2 17 5.6" />
+        <path d="M19.2 7.2 20.4 8" />
+        <path d="M15.4 9.8 16.6 10.6" />
+      </svg>
+    );
+  }
+  if (/business/i.test(service)) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
+        <rect x="5" y="4" width="11" height="15" rx="1.2" />
+        <path d="M8 8h5M8 11h5M8 14h3" />
+        <path d="M14 16.5 19 8.5" />
+        <path d="M17.2 8.2h2.4v2.4" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
+      <rect x="6" y="3.5" width="12" height="17" rx="1.6" />
+      <rect x="8" y="5.5" width="8" height="4" rx="0.6" />
+      <text
+        x="12"
+        y="8.7"
+        textAnchor="middle"
+        fill="white"
+        stroke="none"
+        fontSize="4"
+        fontWeight="600"
+      >
+        1040
+      </text>
+      <path d="M8.5 12h1.4M11.3 12h1.4M14.1 12h1.4M8.5 14.4h1.4M11.3 14.4h1.4M14.1 14.4h1.4M8.5 16.8h1.4M11.3 16.8h1.4M14.1 16.8h1.4" />
+    </svg>
+  );
+}
+
+function PaFinancialServices({
+  services,
+  locale,
+}: {
+  services: string[];
+  locale: Locale;
+}) {
+  return (
+    <div className="pa-services">
+      <div className="mx-auto max-w-5xl px-5 py-16 text-center">
+        <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
+          {paFinancialServicesTitle(locale)}
+        </h2>
+        <ul className="mt-10 grid gap-6 md:grid-cols-3">
+          {services.map((service) => (
+            <li key={service} className="pa-service-card px-6 py-8 text-left">
+              <span className="pa-service-icon inline-flex h-14 w-14 items-center justify-center">
+                <PaServiceIcon service={service} />
+              </span>
+              <p className="mt-5 font-display text-lg font-semibold tracking-tight text-white">
+                {taxOfficeServiceLabel(service, locale)}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-white/80">
+                {paFinancialServiceBlurb(service, locale)}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <a href="#contact" className="pa-service-cta mt-10 inline-flex">
+          {paFinancialContactUs(locale)}
+        </a>
+      </div>
+    </div>
   );
 }
 
@@ -344,10 +426,14 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             ))}
           </div>
         )}
-        <h2 className="font-display text-3xl tracking-tight text-black">
-          {c.servicesTitle}
-        </h2>
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+        {client.slug === PA_FINANCIAL_SLUG ? (
+          <PaFinancialServices services={services} locale={locale} />
+        ) : (
+          <>
+            <h2 className="font-display text-3xl tracking-tight text-black">
+              {c.servicesTitle}
+            </h2>
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
           {services.map((service) => {
             const llc = isHola && /llc/i.test(service);
             if (llc) {
@@ -390,6 +476,8 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             );
           })}
         </ul>
+          </>
+        )}
         {isHola ? (
           <aside
             id="bookkeeping"

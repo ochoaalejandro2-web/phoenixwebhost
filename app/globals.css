@@ -216,6 +216,43 @@ body {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-gold) 38%, transparent);
 }
 
+.theme-pa-financial .pa-services {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background: #0b0b0b;
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-service-card {
+  background: #111111;
+  border: 1px solid var(--pa-wine);
+  border-radius: 0.85rem;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--pa-wine) 70%, transparent),
+    0 0 28px color-mix(in srgb, var(--pa-wine) 55%, transparent);
+}
+
+.theme-pa-financial .pa-service-icon {
+  border-radius: 999px;
+  background: var(--pa-wine);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--pa-wine) 60%, transparent);
+}
+
+.theme-pa-financial .pa-service-cta {
+  min-width: min(28rem, 100%);
+  justify-content: center;
+  border-radius: 0.55rem;
+  background: linear-gradient(180deg, var(--pa-hot) 0%, var(--pa-wine) 100%);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.9rem 1.8rem;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--pa-wine) 45%, transparent);
+}
+
+.theme-pa-financial .pa-service-cta:hover {
+  background: #000000;
+}
+
 /* Marketing homepage first-visit flare — lime/gold, not a game overlay. */
 .studio-flare {
   --flare-x: 50%;

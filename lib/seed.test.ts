@@ -129,6 +129,8 @@ test("P&A Financial seed is a real paying tax-office client, not a demo", () => 
   assert.match(chunk, /Real paying client/);
   assert.match(chunk, /\$200 launch paid cash/);
   assert.match(chunk, /pataxesllc.com/);
+  assert.match(chunk, /city: "Arizona"/);
+  assert.doesNotMatch(chunk, /Colorado/);
   assert.doesNotMatch(chunk, /sample: true/);
   assert.doesNotMatch(chunk, /cus_demo_/);
   assert.doesNotMatch(chunk, /sub_demo_/);
