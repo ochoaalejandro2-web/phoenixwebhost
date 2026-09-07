@@ -139,31 +139,81 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* P&A Financial — same tax-office layout, burgundy instead of neon. */
-.theme-pa-financial.text-\[\#00E840\],
-.theme-pa-financial .text-\[\#00E840\],
+/* P&A Financial — same tax-office layout, her wine + black, with Hola-level pop. */
+.theme-pa-financial {
+  --pa-wine: #871a1a;
+  --pa-live: #b4232a;
+  --pa-hot: #d12b33;
+  --pa-gold: #c9a04a;
+  --pa-gold-soft: #e4c878;
+  --pa-cream: var(--paper);
+  color: #000000;
+  background: var(--pa-cream);
+}
+
+.theme-pa-financial .shop-header {
+  background: color-mix(in srgb, var(--pa-cream) 86%, #ffffff);
+  border-bottom-color: var(--pa-wine);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--pa-gold) 55%, transparent);
+}
+
+.theme-pa-financial footer {
+  background: var(--pa-cream);
+}
+
+.theme-pa-financial .text-\[\#00E840\] {
+  color: var(--pa-live);
+}
+
 .theme-pa-financial .text-\[\#00FF66\] {
-  color: #871a1a;
+  color: var(--pa-gold-soft);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--pa-gold) 50%, transparent);
 }
+
 .theme-pa-financial .bg-\[\#00FF66\],
-.theme-pa-financial .bg-\[\#00E840\] {
-  background-color: #871a1a;
+.theme-pa-financial .bg-\[\#00E840\],
+.theme-pa-financial .site-cta {
+  background: linear-gradient(180deg, var(--pa-hot) 0%, var(--pa-wine) 100%);
   color: #ffffff;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--pa-wine) 42%, transparent);
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
-.theme-pa-financial .hover\:bg-\[\#00E840\]:hover,
+
+.theme-pa-financial .hover\:bg-\[\#00E840\]:hover {
+  background: #000000;
+  color: #ffffff;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--pa-gold) 32%, transparent);
+  transform: translateY(-1px);
+}
+
 .theme-pa-financial .hover\:bg-\[\#00FF66\]:hover {
-  background-color: #000000;
+  background: var(--pa-wine);
   color: #ffffff;
 }
+
+.theme-pa-financial .hover\:bg-\[\#00FF66\]\/10:hover {
+  background: color-mix(in srgb, var(--pa-wine) 12%, #ffffff);
+}
+
 .theme-pa-financial .border-\[\#00FF66\] {
-  border-color: #871a1a;
+  border-color: var(--pa-wine);
 }
-.theme-pa-financial .hover\:text-\[\#00E840\]:hover,
+
+.theme-pa-financial .hover\:text-\[\#00E840\]:hover {
+  color: var(--pa-live);
+}
+
 .theme-pa-financial .hover\:text-\[\#00FF66\]:hover {
-  color: #871a1a;
+  color: var(--pa-gold);
 }
-.theme-pa-financial .hover\:bg-\[\#00FF66\]:hover {
-  background-color: #871a1a;
+
+.theme-pa-financial input:focus,
+.theme-pa-financial textarea:focus {
+  border-color: var(--pa-wine);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-gold) 38%, transparent);
 }
 
 /* Marketing homepage first-visit flare — lime/gold, not a game overlay. */
