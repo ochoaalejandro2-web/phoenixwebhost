@@ -3,6 +3,7 @@ import {
   PortalChrome,
 } from "@/components/tax-portal/PortalChrome";
 import { ScanUpload } from "@/components/tax-portal/ScanUpload";
+import { StaffDeleteFileButton } from "@/components/tax-portal/StaffDeletes";
 import { dateLocale, tTaxOffice, taxDocLabel } from "@/lib/tax-office-i18n";
 import { splitTaxFiles, taxReturnYears } from "@/lib/tax-office";
 import type { TaxFileRow } from "@/lib/tax-db";
@@ -29,11 +30,13 @@ export function FileTable({
   files,
   locale,
   empty,
+  canDelete,
 }: {
   slug: string;
   files: TaxFileRow[];
   locale: Locale;
   empty?: string;
+  canDelete?: boolean;
 }) {
   const c = tTaxOffice(locale);
   if (files.length === 0) {
@@ -54,12 +57,22 @@ export function FileTable({
               {formatBytes(file.sizeBytes)} · {fmt(file.createdAt, locale)}
             </p>
           </div>
-          <a
-            href={`/api/tax-portal/${slug}/files/${file.id}`}
-            className="font-semibold text-[#00E840] hover:text-[#00FF66]"
-          >
-            {c.download}
-          </a>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href={`/api/tax-portal/${slug}/files/${file.id}`}
+              className="font-semibold text-[#00E840] hover:text-[#00FF66]"
+            >
+              {c.download}
+            </a>
+            {canDelete ? (
+              <StaffDeleteFileButton
+                slug={slug}
+                fileId={file.id}
+                filename={file.filename}
+                locale={locale}
+              />
+            ) : null}
+          </div>
         </li>
       ))}
     </ul>
@@ -70,10 +83,12 @@ export function YearFolders({
   slug,
   files,
   locale,
+  canDelete,
 }: {
   slug: string;
   files: TaxFileRow[];
   locale: Locale;
+  canDelete?: boolean;
 }) {
   const c = tTaxOffice(locale);
   const years = taxReturnYears();
@@ -89,6 +104,7 @@ export function YearFolders({
               files={bucket.files}
               locale={locale}
               empty={c.emptyYear}
+              canDelete={canDelete}
             />
           </div>
         </section>
@@ -97,7 +113,12 @@ export function YearFolders({
         <section>
           <h3 className="font-display text-lg">{c.filedTitle}</h3>
           <div className="mt-3">
-            <FileTable slug={slug} files={grouped.otherYears} locale={locale} />
+            <FileTable
+              slug={slug}
+              files={grouped.otherYears}
+              locale={locale}
+              canDelete={canDelete}
+            />
           </div>
         </section>
       ) : null}

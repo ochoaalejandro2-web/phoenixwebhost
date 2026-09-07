@@ -99,6 +99,22 @@ function ContactNoticeBanner({
 }
 
 function PaServiceIcon({ service }: { service: string }) {
+  if (/bookkeep|contab/i.test(service)) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
+        <rect x="5" y="4" width="14" height="16" rx="1.4" />
+        <path d="M8 8h8M8 11.5h8M8 15h5" />
+      </svg>
+    );
+  }
+  if (/llc/i.test(service)) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
+        <path d="M4.5 19.5V10l7.5-5 7.5 5v9.5" />
+        <path d="M10 19.5v-5h4v5" />
+      </svg>
+    );
+  }
   if (/itin/i.test(service)) {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
@@ -111,7 +127,7 @@ function PaServiceIcon({ service }: { service: string }) {
       </svg>
     );
   }
-  if (/business/i.test(service)) {
+  if (/registration|registro/i.test(service)) {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
         <rect x="5" y="4" width="11" height="15" rx="1.2" />
@@ -264,7 +280,7 @@ function TaxProServices({
           <span className="pa-chevron" aria-hidden="true">
             ‹
           </span>
-          <ul className="grid flex-1 gap-6 md:grid-cols-3">
+          <ul className="grid flex-1 gap-6 sm:grid-cols-2">
             {services.map((service) => (
               <li key={service} className="pa-service-card px-6 py-9 text-center">
                 <span className="pa-service-icon mx-auto inline-flex h-14 w-14 items-center justify-center">
@@ -612,8 +628,9 @@ function TaxProHero({
  * Tax office template: private client drop box plus a public shop page.
  * Hola Tax keeps its photo-hero / bookkeeping layout.
  * Every other tax client uses the Pro layout (P&A Financial reference):
- * navy/neon, What we do, dual Call / Schedule, IRS refund helpers, spinning
- * circular logo when `logoSrc` is set. Swap colors with `.theme-{slug}`.
+ * navy/neon, What we do, dual Call / Schedule, IRS refund helpers, white
+ * circular brand logo when `logoSrc` is set (spin only the large appointment
+ * seal). Swap colors with `.theme-{slug}`.
  * Patricia-only copy and socials stay behind the pa-financial slug / client fields.
  * Do not fork this file for the next tax client.
  */
@@ -652,7 +669,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
       lang={locale}
       className={`${taxOfficeThemeClass(client)} flex min-h-full flex-col bg-white text-black`}
     >
-      <header className="shop-header sticky top-0 z-40 border-b border-[#00FF66] bg-white/95 px-5 py-3 backdrop-blur">
+      <header className="shop-header sticky top-0 z-40 border-b border-[#00FF66] bg-white/95 px-5 py-4 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-2">
           <BrandMark
             client={client}

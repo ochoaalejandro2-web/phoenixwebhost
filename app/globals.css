@@ -389,7 +389,6 @@ body {
   overflow: hidden;
   border-radius: 50%;
   transform-origin: 50% 50%;
-  animation: pa-logo-spin 16s linear infinite;
 }
 
 :is(.theme-tax-pro, .theme-pa-financial) .pa-logo-spin img {
@@ -400,18 +399,19 @@ body {
 }
 
 :is(.theme-tax-pro, .theme-pa-financial) .pa-brand-logo {
-  height: 3.15rem;
-  width: 3.15rem;
+  height: 5.25rem;
+  width: 5.25rem;
 }
 
 :is(.theme-tax-pro, .theme-pa-financial) .pa-appoint-logo {
-  width: 11rem;
-  height: 11rem;
+  width: 14rem;
+  height: 14rem;
+  animation: pa-logo-spin 16s linear infinite;
 }
 
 :is(.theme-tax-pro, .theme-pa-financial) .pa-footer-logo {
-  width: 6rem;
-  height: 6rem;
+  width: 7.25rem;
+  height: 7.25rem;
 }
 
 :is(.theme-tax-pro, .theme-pa-financial) .pa-do-list {
@@ -436,8 +436,8 @@ body {
 
 @media (min-width: 640px) {
   :is(.theme-tax-pro, .theme-pa-financial) .pa-brand-logo {
-    height: 3.85rem;
-    width: 3.85rem;
+    height: 6.5rem;
+    width: 6.5rem;
   }
 
   :is(.theme-tax-pro, .theme-pa-financial) .pa-brand-name {
@@ -445,13 +445,13 @@ body {
   }
 
   :is(.theme-tax-pro, .theme-pa-financial) .pa-footer-logo {
-    width: 7rem;
-    height: 7rem;
+    width: 8.5rem;
+    height: 8.5rem;
   }
 
   :is(.theme-tax-pro, .theme-pa-financial) .pa-appoint-logo {
-    width: 13rem;
-    height: 13rem;
+    width: 16.5rem;
+    height: 16.5rem;
   }
 }
 
@@ -689,7 +689,8 @@ html[data-studio-flare="play"] .studio-hero-photo {
     filter: none !important;
   }
 
-  :is(.theme-tax-pro, .theme-pa-financial) .pa-logo-spin {
+  :is(.theme-tax-pro, .theme-pa-financial) .pa-logo-spin,
+  :is(.theme-tax-pro, .theme-pa-financial) .pa-appoint-logo {
     animation: none;
   }
 }

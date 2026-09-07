@@ -43,7 +43,7 @@ export function TaxBrandFields({
         <input
           name="logoSrc"
           defaultValue={defaults.logoSrc || ""}
-          placeholder="/clients/their-slug/logo-brand.svg"
+          placeholder="/clients/their-slug/logo-brand.png"
           className={field}
         />
       </label>

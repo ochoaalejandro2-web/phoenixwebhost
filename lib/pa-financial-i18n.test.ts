@@ -39,7 +39,7 @@ test("P&A Financial copy stays on this shop", () => {
   const seo = paFinancialSeo("en");
   assert.equal(seo.brand, PA_FINANCIAL_LEGAL);
   assert.equal(seo.icon, "/clients/pa-financial/icon.png");
-  assert.equal(PA_FINANCIAL_LOGO, "/clients/pa-financial/logo-brand.svg");
+  assert.equal(PA_FINANCIAL_LOGO, "/clients/pa-financial/logo-brand.png");
   assert.equal(PA_FINANCIAL_TEL, "tel:7205010501");
   assert.match(PA_FINANCIAL_OWNER, /\/clients\/pa-financial\/patricia\.jpg/);
   assert.equal(paFinancialCopy("en").scheduleTitle, "Schedule Your Appointment");
@@ -55,23 +55,37 @@ test("P&A Financial What we do copy names the real services in both languages", 
   assert.equal(es.aboutTitle, "Qué hacemos");
   assert.equal(en.navAbout, "What we do");
   assert.equal(es.navAbout, "Qué hacemos");
-  assert.match(en.aboutLead, /Income tax preparation/);
-  assert.match(en.aboutLead, /ITIN/);
-  assert.match(en.aboutLead, /business registration/i);
+  assert.match(en.aboutLead, /Personal and business income taxes/);
+  assert.match(en.aboutLead, /LLC/);
   assert.match(en.aboutLead, /bookkeeping/i);
-  assert.match(es.aboutLead, /impuestos/);
+  assert.match(en.aboutLead, /ITIN/);
+  assert.match(es.aboutLead, /Impuestos personales y de negocios/);
+  assert.match(es.aboutLead, /LLC/);
+  assert.match(es.aboutLead, /contabilidad/i);
   assert.match(es.aboutLead, /ITIN/);
-  assert.match(es.aboutLead, /registro de negocios/i);
-  assert.match(es.aboutLead, /Contabilidad/);
-  assert.equal(en.whatWeDo.length, 3);
-  assert.equal(es.whatWeDo.length, 3);
-  assert.match(en.whatWeDo[0].title, /Income tax/i);
-  assert.match(es.whatWeDo[0].title, /impuestos/i);
-  assert.match(en.whatWeDo[1].blurb, /ITIN/);
-  assert.match(es.whatWeDo[2].title, /Registro/);
+  assert.equal(en.whatWeDo.length, 4);
+  assert.equal(es.whatWeDo.length, 4);
+  assert.deepEqual(
+    en.whatWeDo.map((item) => item.title),
+    [
+      "Personal Income Taxes",
+      "Business Income Taxes",
+      "LLC Formation",
+      "Bookkeeping",
+    ],
+  );
+  assert.match(en.whatWeDo[0].title, /Personal Income Taxes/i);
+  assert.match(es.whatWeDo[1].blurb, /negocio/i);
+  assert.match(en.whatWeDo[2].title, /LLC/);
+  assert.match(en.whatWeDo[3].title, /Bookkeeping/);
   assert.match(paFinancialAbout("", "en"), /Patricia Escobedo/);
   assert.match(paFinancialAbout("", "en"), /ITIN/);
-  assert.match(paFinancialServiceBlurb("Income Tax Preparation", "en"), /File on time/);
+  assert.match(paFinancialServiceBlurb("Personal Income Taxes", "en"), /household/i);
+  assert.equal(
+    paFinancialServiceLabel("LLC Formation", "es"),
+    "Formación de LLC",
+  );
+  assert.equal(paFinancialServiceLabel("Bookkeeping", "es"), "Contabilidad");
   assert.equal(paFinancialServicesTitle("en"), "Our Services");
 });
 
@@ -122,20 +136,22 @@ test("P&A Financial refund helper links stay public and bilingual", () => {
   assert.equal(paFinancialCopy("es").refundTitle, "Consulte su reembolso");
 });
 
-test("P&A Financial circular brand logo spins unless motion is reduced", () => {
+test("P&A Financial circular brand logo is the white PNG and only the appointment seal spins", () => {
   const logo = readFileSync(
-    new URL("../public/clients/pa-financial/logo-brand.svg", import.meta.url),
-    "utf8",
+    new URL("../public/clients/pa-financial/logo-brand.png", import.meta.url),
   );
-  assert.match(logo, /P&amp;A Financial LLC/);
-  assert.match(logo, /1040/);
-  assert.match(logo, /INCOME TAXES AND BOOKKEEPING/);
+  assert.equal(logo[0], 0x89);
+  assert.equal(logo[1], 0x50);
+  assert.equal(logo[2], 0x4e);
+  assert.equal(logo[3], 0x47);
+  assert.ok(logo.length > 20_000);
   const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /@keyframes pa-logo-spin/);
-  assert.match(css, /animation:\s*pa-logo-spin 16s linear infinite/);
+  assert.match(css, /\.pa-appoint-logo[\s\S]*animation:\s*pa-logo-spin 16s linear infinite/);
+  assert.match(css, /\.pa-brand-logo[\s\S]*6\.5rem/);
   assert.match(
     css,
-    /prefers-reduced-motion:\s*reduce[\s\S]*theme-tax-pro[\s\S]*\.pa-logo-spin[\s\S]*animation:\s*none/,
+    /prefers-reduced-motion:\s*reduce[\s\S]*theme-tax-pro[\s\S]*\.pa-appoint-logo[\s\S]*animation:\s*none/,
   );
   const site = readFileSync(
     new URL("../components/sites/TaxOfficeSite.tsx", import.meta.url),
@@ -143,6 +159,7 @@ test("P&A Financial circular brand logo spins unless motion is reduced", () => {
   );
   assert.match(site, /href="#appointment"/);
   assert.match(site, /pa-logo-spin/);
+  assert.match(site, /pa-appoint-logo/);
   assert.match(site, /telHref\(phone\)/);
   assert.match(site, /isTaxProLayout/);
 });

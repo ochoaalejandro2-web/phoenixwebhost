@@ -47,6 +47,27 @@ export function canUploadAsStaff(
   return session.role === "staff" && session.clientId === clientId;
 }
 
+/** Staff may delete a file only inside their own tax office. Customers cannot. */
+export function canDeleteTaxFile(
+  session: Pick<TaxSession, "role" | "clientId">,
+  file: Pick<TaxFileRecord, "clientId">,
+) {
+  return session.role === "staff" && session.clientId === file.clientId;
+}
+
+/** Staff may delete a customer profile only inside their own tax office. */
+export function canDeleteTaxCustomer(
+  session: Pick<TaxSession, "role" | "clientId" | "userId">,
+  person: Pick<TaxSession, "role" | "clientId" | "userId">,
+) {
+  return (
+    session.role === "staff" &&
+    person.role === "customer" &&
+    session.clientId === person.clientId &&
+    session.userId !== person.userId
+  );
+}
+
 export function blobPathAllowed(
   session: Pick<TaxSession, "role" | "clientId" | "userId">,
   pathname: string,

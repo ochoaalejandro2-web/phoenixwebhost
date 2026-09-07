@@ -159,11 +159,13 @@ test("TaxOfficeSite uses the shared Pro layout instead of a P&A-only fork", () =
   assert.match(site, /taxProBrand/);
   assert.match(site, /href="#appointment"/);
   assert.match(site, /pa-logo-spin/);
+  assert.match(site, /pa-appoint-logo/);
   assert.equal(site.includes("PA_FINANCIAL_WHATSAPP"), false);
   const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /theme-tax-pro/);
+  assert.match(css, /\.pa-appoint-logo[\s\S]*animation:\s*pa-logo-spin/);
   assert.match(
     css,
-    /prefers-reduced-motion:\s*reduce[\s\S]*theme-tax-pro[\s\S]*\.pa-logo-spin[\s\S]*animation:\s*none/,
+    /prefers-reduced-motion:\s*reduce[\s\S]*theme-tax-pro[\s\S]*\.pa-appoint-logo[\s\S]*animation:\s*none/,
   );
 });

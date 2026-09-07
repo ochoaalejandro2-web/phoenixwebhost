@@ -346,6 +346,29 @@ export async function insertTaxFile(input: {
   return getTaxFile(input.clientId, id);
 }
 
+export async function deleteTaxFile(clientId: string, fileId: string) {
+  const file = await getTaxFile(clientId, fileId);
+  if (!file) return null;
+  const db = await sql();
+  await db`DELETE FROM tax_portal_files
+    WHERE client_id = ${clientId} AND id = ${fileId}`;
+  return file;
+}
+
+export async function deleteTaxCustomer(clientId: string, userId: string) {
+  const person = await findTaxUserById(clientId, userId);
+  if (!person || person.role !== "customer") return null;
+  const files = await listTaxFiles(clientId, userId);
+  const db = await sql();
+  await db`DELETE FROM tax_portal_files
+    WHERE client_id = ${clientId} AND user_id = ${userId}`;
+  await db`DELETE FROM tax_portal_auth_lock
+    WHERE client_id = ${clientId} AND email = ${person.email}`;
+  await db`DELETE FROM tax_portal_users
+    WHERE client_id = ${clientId} AND id = ${userId} AND role = 'customer'`;
+  return { user: person, files };
+}
+
 export async function countTaxCustomers(clientId: string) {
   const db = await sql();
   const rows = (await db`SELECT COUNT(*)::int AS n FROM tax_portal_users

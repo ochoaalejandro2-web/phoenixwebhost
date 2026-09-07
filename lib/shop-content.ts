@@ -690,6 +690,21 @@ export const SERVICE_BLURBS: Record<
     blurb: "Help gathering the papers for an ITIN application.",
     blurbEs: "Ayuda para juntar los papeles de una solicitud de ITIN.",
   },
+  "Personal Income Taxes": {
+    nameEs: "Impuestos personales sobre la renta",
+    blurb: "Household income-tax returns in English or Spanish.",
+    blurbEs: "Declaraciones de impuestos del hogar en inglés o español.",
+  },
+  "Business Income Taxes": {
+    nameEs: "Impuestos de negocios sobre la renta",
+    blurb: "Small-business income-tax returns without the software maze.",
+    blurbEs: "Declaraciones de impuestos de negocios pequeños, sin el laberinto de software.",
+  },
+  "LLC Formation": {
+    nameEs: "Formación de LLC",
+    blurb: "Help with LLC paperwork. Not a law firm.",
+    blurbEs: "Ayuda con el papeleo de una LLC. No somos un bufete.",
+  },
   "Income Tax Preparation": {
     nameEs: "Preparación de impuestos sobre la renta",
     blurb: "Personal and family income-tax returns in English or Spanish.",

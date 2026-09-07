@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { FiledCopyUpload } from "@/components/tax-portal/FiledCopyUpload";
 import { FileTable, YearFolders } from "@/components/tax-portal/FolderPanel";
 import { LogoutForm, PortalChrome } from "@/components/tax-portal/PortalChrome";
+import { StaffDeleteProfile } from "@/components/tax-portal/StaffDeletes";
 import { readSiteLocale } from "@/lib/read-site-locale";
 import { withSiteLangPath } from "@/lib/site-locale";
 import { requireTaxStaff } from "@/lib/tax-auth";
@@ -59,7 +60,7 @@ export default async function StaffFolderPage({
       <h2 className="mt-10 font-display text-xl">{c.filedTitle}</h2>
       <p className="mt-2 text-sm text-black/80">{c.staffFiledLead}</p>
       <div className="mt-4">
-        <YearFolders slug={slug} files={files} locale={locale} />
+        <YearFolders slug={slug} files={files} locale={locale} canDelete />
       </div>
       <h2 className="mt-10 font-display text-xl">{c.staffIntakeTitle}</h2>
       <div className="mt-4">
@@ -67,8 +68,15 @@ export default async function StaffFolderPage({
           slug={slug}
           files={splitTaxFiles(files, taxReturnYears()).intake}
           locale={locale}
+          canDelete
         />
       </div>
+      <StaffDeleteProfile
+        slug={slug}
+        userId={person.id}
+        name={person.name}
+        locale={locale}
+      />
     </PortalChrome>
   );
 }

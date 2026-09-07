@@ -6,6 +6,7 @@ import {
   mergeMissingBySlug,
   refreshDesertSparkleDemoCopy,
   refreshPaFinancialArizonaCopy,
+  refreshPaFinancialListedOfferings,
   restoreMesaStreetKitchenDemo,
 } from "./seed-merge.ts";
 
@@ -123,9 +124,11 @@ test("P&A Financial seed is a real paying tax-office client, not a demo", () => 
   assert.match(chunk, /template: "tax"/);
   assert.match(chunk, /siteStatus: "live"/);
   assert.match(chunk, /paymentStatus: "paid"/);
-  assert.match(chunk, /Income Tax Preparation/);
-  assert.match(chunk, /ITIN Number Processing and Renewal/);
-  assert.match(chunk, /Business Registration/);
+  assert.match(chunk, /Personal Income Taxes/);
+  assert.match(chunk, /Business Income Taxes/);
+  assert.match(chunk, /LLC Formation/);
+  assert.match(chunk, /Bookkeeping/);
+  assert.match(chunk, /logo-brand\.png/);
   assert.match(chunk, /By appointment/);
   assert.match(chunk, /Real paying client/);
   assert.match(chunk, /\$200 launch paid cash/);
@@ -170,6 +173,59 @@ test("stale P&A Financial Colorado copy is swapped to Arizona", () => {
     "Hola stays.",
   );
   assert.equal(refreshPaFinancialArizonaCopy(next.items, seed).added, false);
+});
+
+test("stale P&A Financial services and black/weak logos refresh from seed", () => {
+  const seed = [
+    {
+      slug: "pa-financial",
+      services: [
+        "Personal Income Taxes",
+        "Business Income Taxes",
+        "LLC Formation",
+        "Bookkeeping",
+      ],
+      about:
+        "Personal and business income taxes, LLC formation, and bookkeeping.",
+      logoSrc: "/clients/pa-financial/logo-brand.png",
+    },
+    {
+      slug: "hola-tax-service",
+      services: ["Personal tax preparation"],
+      about: "Hola stays.",
+      logoSrc: "/clients/hola-tax-service/logo.png",
+    },
+  ];
+  const stale = [
+    {
+      slug: "pa-financial",
+      services: [
+        "Income Tax Preparation",
+        "ITIN Number Processing and Renewal",
+        "Business Registration",
+      ],
+      about: "Income tax preparation and business registration in Arizona.",
+      logoSrc: "/clients/pa-financial/logo-circle.jpg",
+    },
+    {
+      slug: "hola-tax-service",
+      services: ["Personal tax preparation"],
+      about: "Hola stays.",
+      logoSrc: "/clients/hola-tax-service/logo.png",
+    },
+  ];
+  const next = refreshPaFinancialListedOfferings(stale, seed);
+  assert.equal(next.added, true);
+  const pa = next.items.find((row) => row.slug === "pa-financial");
+  assert.deepEqual(pa?.services, seed[0].services);
+  assert.equal(pa?.logoSrc, "/clients/pa-financial/logo-brand.png");
+  assert.match(String(pa?.about), /bookkeeping/i);
+  assert.match(String(pa?.about), /LLC/);
+  assert.equal(
+    next.items.find((row) => row.slug === "hola-tax-service")?.about,
+    "Hola stays.",
+  );
+  assert.equal(refreshPaFinancialListedOfferings(next.items, seed).added, false);
 });
 
 test("stale offline mesa street kitchen is restored without touching other clients", () => {

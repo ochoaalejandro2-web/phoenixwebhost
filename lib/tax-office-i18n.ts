@@ -24,6 +24,9 @@ const servicesEs: Record<string, string> = {
   "ITIN Number Processing and Renewal":
     "Trámite y renovación de número ITIN",
   "Business Registration": "Registro de negocios",
+  "Personal Income Taxes": "Impuestos personales sobre la renta",
+  "Business Income Taxes": "Impuestos de negocios sobre la renta",
+  "LLC Formation": "Formación de LLC",
 };
 
 export const taxOfficeCopy = {
@@ -105,6 +108,17 @@ export const taxOfficeCopy = {
     fileCount: (n: number) => (n === 1 ? "1 file" : `${n} files`),
     noFilesYet: "No files yet",
     allClients: "All clients",
+    deleteFile: "Delete",
+    deleting: "Deleting…",
+    deleteFileConfirm: (name: string) =>
+      `Delete ${name}? This cannot be undone.`,
+    deleteFileFailed: "Could not delete that file.",
+    deleteProfile: "Delete client profile",
+    deleteProfileLead:
+      "Remove this client and every file in their folder. Only staff of this office can do that. This cannot be undone.",
+    deleteProfileConfirm: (name: string) =>
+      `Delete ${name} and every file in this folder? This cannot be undone.`,
+    deleteProfileFailed: "Could not delete that client profile.",
     auth: {
       name: "Name",
       phone: "Phone",
@@ -238,6 +252,17 @@ export const taxOfficeCopy = {
     fileCount: (n: number) => (n === 1 ? "1 archivo" : `${n} archivos`),
     noFilesYet: "Aún no hay archivos",
     allClients: "Todos los clientes",
+    deleteFile: "Eliminar",
+    deleting: "Eliminando…",
+    deleteFileConfirm: (name: string) =>
+      `¿Eliminar ${name}? Esto no se puede deshacer.`,
+    deleteFileFailed: "No se pudo eliminar ese archivo.",
+    deleteProfile: "Eliminar perfil del cliente",
+    deleteProfileLead:
+      "Elimina a este cliente y todos los archivos de su carpeta. Solo el personal de esta oficina puede hacerlo. Esto no se puede deshacer.",
+    deleteProfileConfirm: (name: string) =>
+      `¿Eliminar a ${name} y todos los archivos de esta carpeta? Esto no se puede deshacer.`,
+    deleteProfileFailed: "No se pudo eliminar el perfil de ese cliente.",
     auth: {
       name: "Nombre",
       phone: "Teléfono",
