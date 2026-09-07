@@ -99,7 +99,7 @@ function SeeYourSiteResult({
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
             <p className="text-lime">
-              {c.priceLaunch} {c.priceLaunchHint} · {c.priceMonth} {c.priceMonthHint}
+              {c.heroPricePopular} · {c.heroPriceFrom}
             </p>
             <a href="#quote" className="text-white/70 hover:text-lime">
               {c.nav.pricing}

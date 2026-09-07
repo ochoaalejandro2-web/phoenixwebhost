@@ -139,7 +139,7 @@ test("marketing ladder keeps receptionist included and lists the paid extras", (
   ].join(" ");
   assert.match(en.included.join(" "), /receptionist/i);
   assert.match(en.includedSplit, /Included/);
-  assert.match(en.extrasSplit, /not in the \$200 \+ \$69/i);
+  assert.match(en.extrasSplit, /not in Starter or Pro/i);
   assert.match(extras, /Book a job/);
   assert.match(extras, /Missed-call/);
   assert.match(extras, /Review texts/);

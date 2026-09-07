@@ -1,5 +1,6 @@
 import { HOLA_TAX_SLUG } from "./client-themes.ts";
 import { COMPANY, PRICING } from "./config.ts";
+import { PACKAGES } from "./packages.ts";
 import { displayHours } from "./demo.ts";
 import {
   holaTaxAbout,
@@ -163,20 +164,20 @@ export function extractListedPrices(...parts: string[]): string[] {
 function studioServices(locale: Locale): string[] {
   if (locale === "es") {
     return [
-      `Sitios para negocios pequeños — ${PRICING.setupLabel} de lanzamiento + ${PRICING.monthlyLabel} al mes`,
-      "Recepcionista de IA incluida en cada sitio (no es un extra)",
+      `Sitios para negocios pequeños — Starter ${PACKAGES.starter.setupLabel} + ${PACKAGES.starter.monthlyLabel}/mes, Pro ${PACKAGES.pro.setupLabel} + ${PACKAGES.pro.monthlyLabel}/mes, Premium ${PACKAGES.premium.setupLabel} + ${PACKAGES.premium.monthlyLabel}/mes`,
+      "Recepcionista de IA incluida en Pro y Premium (no en Starter, no es un extra de $49)",
       "SEO local básico incluido — configuración y visibilidad, no anuncios de pago ni garantías de posición",
       "Hospedaje, SSL, copias de seguridad y vigilancia de actividad",
-      `Hasta ${PRICING.includedEditMinutes} minutos de cambios pequeños al mes, o ${PRICING.includedEditRequests} solicitudes pequeñas`,
+      "Tope de cambios: Starter 1 al mes, Pro 2, Premium 4. Extra $49 o suba de paquete — nunca ilimitados",
       "Un formulario de contacto",
     ];
   }
   return [
-    `Small-business websites — ${PRICING.setupLabel} to launch + ${PRICING.monthlyLabel}/month`,
-    "AI receptionist included on every site (not an extra)",
+    `Small-business websites — Starter ${PACKAGES.starter.setupLabel} + ${PACKAGES.starter.monthlyLabel}/mo, Pro ${PACKAGES.pro.setupLabel} + ${PACKAGES.pro.monthlyLabel}/mo, Premium ${PACKAGES.premium.setupLabel} + ${PACKAGES.premium.monthlyLabel}/mo`,
+    "AI receptionist included on Pro and Premium (not Starter, not a $49 add-on)",
     "Basic local SEO included — setup and visibility, not paid ads or ranking guarantees",
     "Hosting, SSL, backups, and uptime watch",
-    `Up to ${PRICING.includedEditMinutes} minutes of small edits per month, or ${PRICING.includedEditRequests} small requests`,
+    "Edit cap: Starter 1/month, Pro 2, Premium 4. Extra edits $49 or upgrade — never unlimited",
     "One contact form",
   ];
 }
@@ -184,8 +185,10 @@ function studioServices(locale: Locale): string[] {
 function studioPrices(locale: Locale): string[] {
   if (locale === "es") {
     return [
-      `${PRICING.setupLabel} de lanzamiento`,
-      `${PRICING.monthlyLabel} al mes para mantenerlo en línea`,
+      `Starter ${PACKAGES.starter.setupLabel} de lanzamiento + ${PACKAGES.starter.monthlyLabel} al mes`,
+      `Pro ${PACKAGES.pro.setupLabel} de lanzamiento + ${PACKAGES.pro.monthlyLabel} al mes (el más popular)`,
+      `Premium ${PACKAGES.premium.setupLabel} de lanzamiento + ${PACKAGES.premium.monthlyLabel} al mes`,
+      `Cambio extra ${PRICING.extraEditLabel} o suba de paquete`,
       `Local Boost opcional ${PRICING.boostSetupLabel} + ${PRICING.boostMonthlyLabel} al mes`,
       `Traffic opcional ${PRICING.trafficMonthlyLabel} al mes`,
       `Loud opcional ${PRICING.loudMonthlyLabel} al mes`,
@@ -195,8 +198,10 @@ function studioPrices(locale: Locale): string[] {
     ];
   }
   return [
-    `${PRICING.setupLabel} to launch`,
-    `${PRICING.monthlyLabel}/month to stay live`,
+    `Starter ${PACKAGES.starter.setupLabel} to launch + ${PACKAGES.starter.monthlyLabel}/month`,
+    `Pro ${PACKAGES.pro.setupLabel} to launch + ${PACKAGES.pro.monthlyLabel}/month (most popular)`,
+    `Premium ${PACKAGES.premium.setupLabel} to launch + ${PACKAGES.premium.monthlyLabel}/month`,
+    `Extra edit ${PRICING.extraEditLabel} or upgrade`,
     `Optional Local Boost ${PRICING.boostSetupLabel} + ${PRICING.boostMonthlyLabel}/month`,
     `Optional Traffic ${PRICING.trafficMonthlyLabel}/month`,
     `Optional Loud ${PRICING.loudMonthlyLabel}/month`,
@@ -221,8 +226,8 @@ export function buildStudioFacts(locale: Locale = "en"): ReceptionistFacts {
         : "Straightforward websites for Arizona small businesses.",
     about:
       locale === "es"
-        ? `${COMPANY.legalName} hace sitios para negocios pequeños en Arizona. ${PRICING.setupLabel} para lanzar, ${PRICING.monthlyLabel} al mes para mantenerlo en línea. Cada sitio incluye una recepcionista de IA y SEO local básico (configuración y visibilidad — no anuncios de pago ni garantías de posición). Local Boost, Traffic y Loud son anuncios de pago opcionales. Business Email es opcional. Llame al ${COMPANY.phone} o pida una demo en phoenixwebhost.com.`
-        : `${COMPANY.legalName} builds websites for Arizona small businesses. ${PRICING.setupLabel} to launch, ${PRICING.monthlyLabel}/month to keep it live. Every site includes an AI receptionist and basic local SEO (setup and visibility — not paid ads or ranking guarantees). Local Boost, Traffic, and Loud are optional paid ads. Business Email is optional. Call ${COMPANY.phone} or request a demo at phoenixwebhost.com.`,
+        ? `${COMPANY.legalName} hace sitios para negocios pequeños en Arizona. Tres paquetes: Starter ${PACKAGES.starter.setupLabel} + ${PACKAGES.starter.monthlyLabel}/mes, Pro ${PACKAGES.pro.setupLabel} + ${PACKAGES.pro.monthlyLabel}/mes (el más popular), Premium ${PACKAGES.premium.setupLabel} + ${PACKAGES.premium.monthlyLabel}/mes. La recepcionista de IA va en Pro y Premium, no en Starter. SEO local básico incluido (configuración y visibilidad — no anuncios de pago ni garantías de posición). Cambios extra ${PRICING.extraEditLabel} o suba de paquete — nunca ilimitados. Local Boost, Traffic y Loud son anuncios de pago opcionales. Business Email es opcional. Llame al ${COMPANY.phone} o pida una demo en phoenixwebhost.com.`
+        : `${COMPANY.legalName} builds websites for Arizona small businesses. Three packages: Starter ${PACKAGES.starter.setupLabel} + ${PACKAGES.starter.monthlyLabel}/mo, Pro ${PACKAGES.pro.setupLabel} + ${PACKAGES.pro.monthlyLabel}/mo (most popular), Premium ${PACKAGES.premium.setupLabel} + ${PACKAGES.premium.monthlyLabel}/mo. The AI receptionist is on Pro and Premium, not Starter. Basic local SEO included (setup and visibility — not paid ads or ranking guarantees). Extra edits ${PRICING.extraEditLabel} or upgrade — never unlimited. Local Boost, Traffic, and Loud are optional paid ads. Business Email is optional. Call ${COMPANY.phone} or request a demo at phoenixwebhost.com.`,
     services,
     serviceKeys: studioServices("en"),
     listedPrices: studioPrices(locale),
@@ -441,8 +446,8 @@ function listPhrase(items: string[], locale: Locale): string {
 
 function websiteBuyReply(locale: Locale): string {
   return locale === "es"
-    ? `${COMPANY.legalName} hace sitios para negocios pequeños: ${PRICING.setupLabel} de lanzamiento + ${PRICING.monthlyLabel} al mes, con recepcionista de IA incluida. Vea phoenixwebhost.com o llame al ${COMPANY.phone}.`
-    : `${COMPANY.legalName} builds small-business websites for ${PRICING.setupLabel} to launch + ${PRICING.monthlyLabel}/month, with an AI receptionist included. See phoenixwebhost.com or call ${COMPANY.phone}.`;
+    ? `${COMPANY.legalName} hace sitios para negocios pequeños: Starter ${PACKAGES.starter.setupLabel} + ${PACKAGES.starter.monthlyLabel}/mes, Pro ${PACKAGES.pro.setupLabel} + ${PACKAGES.pro.monthlyLabel}/mes (el más popular, con recepcionista de IA), Premium ${PACKAGES.premium.setupLabel} + ${PACKAGES.premium.monthlyLabel}/mes. Vea phoenixwebhost.com o llame al ${COMPANY.phone}.`
+    : `${COMPANY.legalName} builds small-business websites: Starter ${PACKAGES.starter.setupLabel} + ${PACKAGES.starter.monthlyLabel}/mo, Pro ${PACKAGES.pro.setupLabel} + ${PACKAGES.pro.monthlyLabel}/mo (most popular, AI receptionist included), Premium ${PACKAGES.premium.setupLabel} + ${PACKAGES.premium.monthlyLabel}/mo. See phoenixwebhost.com or call ${COMPANY.phone}.`;
 }
 
 export function fallbackAnswer(facts: ReceptionistFacts, raw: string): string {
@@ -462,8 +467,8 @@ export function fallbackAnswer(facts: ReceptionistFacts, raw: string): string {
 
   if (facts.kind === "studio" && looksLikeIncluded(q)) {
     return locale === "es"
-      ? `El sitio es ${PRICING.setupLabel} de lanzamiento + ${PRICING.monthlyLabel} al mes. La recepcionista de IA y el SEO local básico van incluidos — configuración y visibilidad, no anuncios de pago ni garantías de posición. Local Boost, Traffic y Loud son anuncios de pago opcionales. ${facts.contactHint}`
-      : `The website is ${PRICING.setupLabel} to launch + ${PRICING.monthlyLabel}/month. The AI receptionist and basic local SEO are included — setup and visibility, not paid ads or ranking guarantees. Local Boost, Traffic, and Loud are optional paid ads. ${facts.contactHint}`;
+      ? `Hay tres paquetes: Starter ${PACKAGES.starter.setupLabel} + ${PACKAGES.starter.monthlyLabel}/mes, Pro ${PACKAGES.pro.setupLabel} + ${PACKAGES.pro.monthlyLabel}/mes (el más popular), Premium ${PACKAGES.premium.setupLabel} + ${PACKAGES.premium.monthlyLabel}/mes. La recepcionista de IA va en Pro y Premium, no en Starter. El SEO local básico va incluido — configuración y visibilidad, no anuncios de pago ni garantías de posición. Cambios extra ${PRICING.extraEditLabel} o suba de paquete — nunca ilimitados. Local Boost, Traffic y Loud son anuncios de pago opcionales. ${facts.contactHint}`
+      : `There are three packages: Starter ${PACKAGES.starter.setupLabel} + ${PACKAGES.starter.monthlyLabel}/mo, Pro ${PACKAGES.pro.setupLabel} + ${PACKAGES.pro.monthlyLabel}/mo (most popular), Premium ${PACKAGES.premium.setupLabel} + ${PACKAGES.premium.monthlyLabel}/mo. The AI receptionist is included on Pro and Premium, not Starter. Basic local SEO is included — setup and visibility, not paid ads or ranking guarantees. Extra edits ${PRICING.extraEditLabel} or upgrade — never unlimited. Local Boost, Traffic, and Loud are optional paid ads. ${facts.contactHint}`;
   }
 
   if (looksLikeHours(q, message)) {
@@ -563,7 +568,8 @@ export function factsPrompt(facts: ReceptionistFacts): string {
     facts.kind === "studio"
       ? [
           "You represent Phoenixwebhost Inc., the website studio.",
-          "The AI receptionist is INCLUDED in the $200 launch + $69/month website. It is not a $49 add-on.",
+          "The AI receptionist is INCLUDED in Pro ($200 + $69/month) and Premium. It is NOT included in Starter. It is not a $49 add-on.",
+          "There are three website packages: Starter $99 + $29.95/month, Pro $200 + $69/month (most popular), Premium $349 + $99.95/month. Extra edits beyond the package cap are $49 or upgrade. Never unlimited edits.",
           "Basic local SEO is INCLUDED: Google-friendly site structure, business info (name, address, phone), contact, mobile-ready pages, and help with Google Business Profile basics. Setup and visibility only — not paid ads and not a ranking guarantee.",
           "Never say customers get free Facebook ads or free Google ads with the base plan. Local Boost, Traffic, and Loud are optional paid ads.",
           "Optional paid extras are Local Boost, Traffic, Loud, and Business Email only.",
@@ -684,7 +690,7 @@ export const receptionistUi = {
     send: "Send",
     placeholder: "Ask about services, hours, or how to book…",
     studioLead:
-      "Questions about a Phoenixwebhost website? The AI receptionist is included in the $200 + $69 plan — not an extra.",
+      "Questions about a Phoenixwebhost website? The AI receptionist is included in Pro and Premium — not Starter, and not an extra.",
     clientLead: (name: string) =>
       `Questions about ${name}? I answer from this site — services, hours, and the phone listed here.`,
   },
@@ -696,7 +702,7 @@ export const receptionistUi = {
     send: "Enviar",
     placeholder: "Pregunte por servicios, horario o cómo contactarnos…",
     studioLead:
-      "¿Preguntas sobre un sitio de Phoenixwebhost? La recepcionista de IA va incluida en el plan de $200 + $69 — no es un extra.",
+      "¿Preguntas sobre un sitio de Phoenixwebhost? La recepcionista de IA va incluida en Pro y Premium — no en Starter, y no es un extra.",
     clientLead: (name: string) =>
       `¿Preguntas sobre ${name}? Respondo con lo que dice este sitio: servicios, horario y teléfono.`,
   },

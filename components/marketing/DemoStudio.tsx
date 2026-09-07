@@ -450,7 +450,7 @@ export function DemoBar({
             onClick={() => toggle("buy")}
             className="btn-lime shrink-0 rounded-full px-3 py-1.5 text-xs sm:px-4 sm:text-sm"
           >
-            <span className="sm:hidden">{locale === "es" ? "Publicar $200+$69" : "Go live $200+$69"}</span>
+            <span className="sm:hidden">{locale === "es" ? "Publicar Pro $200+$69" : "Go live Pro $200+$69"}</span>
             <span className="hidden sm:inline">{c.formPay}</span>
           </button>
         )}

@@ -156,7 +156,7 @@ test("template starting points stay mapped to those live demo URLs", () => {
   assert.ok(filterTemplates("limpieza").includes("cleaning"));
 });
 
-test("plan copy on the public site is still $200 launch + $69/month", () => {
+test("plan copy on the public site keeps Pro at $200 launch + $69/month", () => {
   assert.equal(PRICING.setupLabel, "$200");
   assert.equal(PRICING.monthlyLabel, "$69");
 });

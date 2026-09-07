@@ -10,13 +10,24 @@ import {
   walkInShowsOrdering,
 } from "./walk-in-quote.ts";
 
-test("base quote is always $200 launch + $69/month with no hidden extras", () => {
+test("base quote defaults to Pro $200 launch + $69/month with no hidden extras", () => {
   const quote = walkInQuote(emptyWalkInFlags());
   assert.equal(quote.setupLabel, "$200");
   assert.equal(quote.monthlyLabel, "$69");
   assert.equal(quote.firstPayLabel, "$269");
   assert.deepEqual(quote.quoted, []);
   assert.equal(quote.lines[0]?.id, "base");
+});
+
+test("Starter quote is $99 launch + $29.95/month and ignores ads", () => {
+  const quote = walkInQuote({
+    ...emptyWalkInFlags(),
+    packageId: "starter",
+    ads: "loud",
+  });
+  assert.equal(quote.setupLabel, "$99");
+  assert.equal(quote.monthlyLabel, "$29.95");
+  assert.equal(quote.firstPayLabel, "$128.95");
 });
 
 test("toggling the existing upsell ladder updates launch, monthly, and first-pay totals", () => {

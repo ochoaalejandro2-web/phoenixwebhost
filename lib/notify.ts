@@ -370,8 +370,8 @@ function customerDemoBodies(lead: Lead) {
     ? `Preparamos una idea de cómo podría verse el sitio de ${lead.businessName}, partiendo de nuestra plantilla de ${trade}. No es un diseño a medida nuevo: es una plantilla profesional llena con sus datos.`
     : `Here is an idea of how ${lead.businessName} could look online, starting from our ${trade} template. This is not a brand-new custom design — it is a proven layout filled with your answers.`;
   const pay = es
-    ? "Para publicarlo de verdad: $200 de lanzamiento + $69 al mes para mantenerlo en línea. El primer pago es $269 si paga el lanzamiento y el primer mes juntos."
-    : "To go live: $200 to launch + $69/month to keep it live. The first payment is $269 if you pay launch and the first month together.";
+    ? "Para publicarlo de verdad hay tres paquetes: Starter $99 + $29.95 al mes, Pro $200 + $69 al mes (el más popular), Premium $349 + $99.95 al mes. El pago de la demo es Pro. El primer pago Pro es $269 si paga el lanzamiento y el primer mes juntos. Cambios extra $49 o suba de paquete — nunca ilimitados."
+    : "To go live there are three packages: Starter $99 + $29.95/mo, Pro $200 + $69/mo (most popular), Premium $349 + $99.95/mo. Demo checkout is Pro. The first Pro payment is $269 if you pay launch and the first month together. Extra edits $49 or upgrade — never unlimited.";
   const extras = es
     ? "Local Boost, Traffic o Loud (un solo nivel de anuncios) y Business Email son opcionales y se pueden agregar en el mismo pago. Una página extra cuesta $75–$150. Un logotipo, $100–$300. No vendemos diseño ilimitado con IA."
     : "Local Boost, Traffic, or Loud (one ads level) and Business Email are optional and can be added in the same checkout. An extra page is $75–$150. A logo is $100–$300. We do not sell unlimited AI design.";

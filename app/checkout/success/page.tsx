@@ -13,7 +13,7 @@ export default function CheckoutSuccessPage() {
       <main className="mx-auto max-w-xl px-6 py-24 text-center">
         <h1 className="font-display text-4xl text-ink-black">Payment received</h1>
         <p className="mt-5 text-body">
-          The $200 launch and $69/month plan are in Stripe test or live mode,
+          The Pro $200 launch and $69/month plan are in Stripe test or live mode,
           depending on your keys. If you added Local Boost, the $99 setup and
           $79/month extra are on the same receipt. If you added Traffic, the
           $199/month extra is on the same receipt. If you added Loud, the

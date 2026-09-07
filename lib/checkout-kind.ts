@@ -20,7 +20,7 @@ export const CHECKOUT_KINDS = [
 export type CheckoutKind = (typeof CHECKOUT_KINDS)[number];
 
 export const BOOST_NOT_CONFIGURED =
-  "Local Boost is not connected yet. Uncheck the add-on to pay for the $200 launch and $69/month plan, or try again after the Boost prices are set.";
+  "Local Boost is not connected yet. Uncheck the add-on to pay for the Pro $200 launch and $69/month plan, or try again after the Boost prices are set.";
 
 export const TRAFFIC_NOT_CONFIGURED =
   "Traffic is not connected yet. Pick Local Boost or the website only, or try again after the Traffic price is set.";
@@ -29,7 +29,7 @@ export const LOUD_NOT_CONFIGURED =
   "Loud is not connected yet. Pick Local Boost or Traffic, or try again after the Loud price is set.";
 
 export const EMAIL_NOT_CONFIGURED =
-  "Business Email is not connected yet. Uncheck the add-on to pay for the $200 launch and $69/month plan, or try again after the Business Email prices are set.";
+  "Business Email is not connected yet. Uncheck the add-on to pay for the Pro $200 launch and $69/month plan, or try again after the Business Email prices are set.";
 
 export const STRIPE_NOT_CONFIGURED =
   "Stripe is not configured. Add STRIPE_SECRET_KEY, STRIPE_SETUP_PRICE_ID, and STRIPE_MONTHLY_PRICE_ID.";
