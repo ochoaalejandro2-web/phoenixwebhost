@@ -14,6 +14,7 @@ import {
   paFinancialContactUs,
   paFinancialCopy,
   paFinancialHours,
+  paFinancialRefundLinks,
   paFinancialServiceBlurb,
   paFinancialServicesTitle,
 } from "@/lib/pa-financial-i18n";
@@ -300,6 +301,33 @@ function PaFinancialServices({
   );
 }
 
+function PaFinancialRefundHelp({ locale }: { locale: Locale }) {
+  const pa = paFinancialCopy(locale);
+  return (
+    <section className="px-5 py-10" aria-labelledby="pa-refund-title">
+      <div className="pa-panel mx-auto flex max-w-5xl flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-7">
+        <h2 id="pa-refund-title" className="font-display text-xl tracking-tight">
+          {pa.refundTitle}
+        </h2>
+        <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-end">
+          {paFinancialRefundLinks(locale).map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pa-btn-ghost px-5 py-2.5 text-sm font-semibold"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 function PaFinancialAppointment({ locale }: { locale: Locale }) {
   const pa = paFinancialCopy(locale);
   return (
@@ -382,6 +410,13 @@ function PaFinancialFooter({
             <li>
               <a href="#contact">{pa.navContact}</a>
             </li>
+            {paFinancialRefundLinks(locale).map((link) => (
+              <li key={link.href}>
+                <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
         <div>
@@ -1027,6 +1062,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
         ) : null}
       </section>
 
+      {isPaFinancial ? <PaFinancialRefundHelp locale={locale} /> : null}
       {isPaFinancial ? <PaFinancialAppointment locale={locale} /> : null}
 
       {isPaFinancial ? (

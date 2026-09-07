@@ -1,12 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  PA_FINANCIAL_AZ_REFUND,
+  PA_FINANCIAL_IRS_REFUND,
   PA_FINANCIAL_LEGAL,
   PA_FINANCIAL_LOGO,
   PA_FINANCIAL_OWNER,
   PA_FINANCIAL_SLUG,
   paFinancialAbout,
   paFinancialCopy,
+  paFinancialRefundLinks,
   paFinancialSeo,
   paFinancialServiceBlurb,
   paFinancialServiceLabel,
@@ -38,4 +41,27 @@ test("P&A Financial copy stays on this shop", () => {
   assert.match(paFinancialCopy("en").scheduleBlurb, /financial clarity/);
   assert.equal(paFinancialCopy("en").footerSocial, "Social Media");
   assert.equal(JSON.stringify(seo).includes("Phoenixwebhost"), false);
+});
+
+test("P&A Financial refund helper links stay public and bilingual", () => {
+  assert.equal(PA_FINANCIAL_IRS_REFUND, "https://sa.www4.irs.gov/wmr/");
+  assert.equal(PA_FINANCIAL_AZ_REFUND, "https://aztaxes.gov/Home/CheckRefund");
+  const en = paFinancialRefundLinks("en");
+  const es = paFinancialRefundLinks("es");
+  assert.equal(en.length, 2);
+  assert.equal(es.length, 2);
+  assert.deepEqual(
+    en.map((link) => link.href),
+    [PA_FINANCIAL_IRS_REFUND, PA_FINANCIAL_AZ_REFUND],
+  );
+  assert.deepEqual(
+    es.map((link) => link.href),
+    [PA_FINANCIAL_IRS_REFUND, PA_FINANCIAL_AZ_REFUND],
+  );
+  assert.equal(en[0].label, "IRS Where's My Refund");
+  assert.equal(en[1].label, "Where is my state refund");
+  assert.equal(paFinancialCopy("en").refundTitle, "Check your refund");
+  assert.equal(es[0].label, "¿Dónde está mi reembolso? (IRS)");
+  assert.equal(es[1].label, "¿Dónde está mi reembolso estatal?");
+  assert.equal(paFinancialCopy("es").refundTitle, "Consulte su reembolso");
 });

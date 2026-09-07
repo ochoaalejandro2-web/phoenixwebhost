@@ -10,6 +10,8 @@ export const PA_FINANCIAL_ICON = "/clients/pa-financial/icon.png";
 export const PA_FINANCIAL_WHATSAPP = "https://wa.me/17205010501";
 export const PA_FINANCIAL_INSTAGRAM = "https://www.instagram.com/pafin_ancial";
 export const PA_FINANCIAL_FACEBOOK = "#";
+export const PA_FINANCIAL_IRS_REFUND = "https://sa.www4.irs.gov/wmr/";
+export const PA_FINANCIAL_AZ_REFUND = "https://aztaxes.gov/Home/CheckRefund";
 
 const servicesEs: Record<string, string> = {
   "Income Tax Preparation": "Preparación de impuestos sobre la renta",
@@ -40,6 +42,9 @@ const copy = {
     footerLinks: "Links",
     footerContact: "Contact",
     footerSocial: "Social Media",
+    refundTitle: "Check your refund",
+    refundIrs: "IRS Where's My Refund",
+    refundState: "Where is my state refund",
     footerInstagram: "instagram.com/pafin_ancial",
     footerFacebook: "facebook.com/",
     navHome: "Home",
@@ -76,6 +81,9 @@ const copy = {
     footerLinks: "Enlaces",
     footerContact: "Contacto",
     footerSocial: "Redes sociales",
+    refundTitle: "Consulte su reembolso",
+    refundIrs: "¿Dónde está mi reembolso? (IRS)",
+    refundState: "¿Dónde está mi reembolso estatal?",
     footerInstagram: "instagram.com/pafin_ancial",
     footerFacebook: "facebook.com/",
     navHome: "Inicio",
@@ -120,6 +128,14 @@ export function paFinancialContactUs(locale: Locale) {
 
 export function paFinancialCopy(locale: Locale) {
   return copy[locale];
+}
+
+export function paFinancialRefundLinks(locale: Locale) {
+  const labels = copy[locale];
+  return [
+    { href: PA_FINANCIAL_IRS_REFUND, label: labels.refundIrs },
+    { href: PA_FINANCIAL_AZ_REFUND, label: labels.refundState },
+  ] as const;
 }
 
 export function paFinancialServiceBlurb(service: string, locale: Locale) {
