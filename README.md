@@ -139,6 +139,8 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `BLOB_READ_WRITE_TOKEN` | for tax portal uploads and Admin Sign a PDF | Vercel Blob token. Private files only. Uploads fail closed on Vercel if missing |
 | `HOLA_TAX_STAFF_EMAIL` | no | Staff email bootstrap for Hola Tax Service. Default `ochoa.alejandro2@gmail.com` |
 | `HOLA_TAX_STAFF_PASSWORD` | for Hola Tax staff login | Staff password for that one shop. Separate from `ADMIN_PASSWORD`. Other tax-office clients set staff in Admin |
+| `PA_FINANCIAL_STAFF_EMAIL` | no | Staff email bootstrap for P&A Financial. Default `pafinancial19@gmail.com` |
+| `PA_FINANCIAL_STAFF_PASSWORD` | for P&A staff login | Patricia’s staff password for `/s/pa-financial/portal/staff/login` only. Separate from Hola and `ADMIN_PASSWORD` |
 
 Local data is saved to `data/store.json`. On Vercel, set `DATABASE_URL` (Neon or any Postgres) so client records survive deploys. The owner panel shows a warning if that URL is missing.
 
@@ -209,9 +211,21 @@ Unpaid / paused sites render the “temporarily offline” page. After 30 days t
 
 The **Tax office** template is a sellable Phoenixwebhost layout (white / black / neon) plus a private document drop box for that shop’s tax customers. It is not tax-prep software.
 
+**P&A Financial** (`/s/pa-financial`) is the live Pro reference to clone: navy/neon, circular spinning logo, What we do, dual Call / Schedule appointment, IRS refund helpers, and the shared tax portal (year folders + staff login). Hola Tax stays its own live shop — do not copy Hola’s bookkeeping promo onto P&A, or P&A’s brand onto Hola.
+
+To spin the next tax client:
+
+1. Admin → New client → Tax office template (or copy seed fields: services, hours, phone, about).
+2. Put logo/photos in `public/clients/{slug}/` and point copy/theme at that slug. Swap brand colors with a theme class (copy `.theme-pa-financial` in `app/globals.css` if you want the navy/neon Pro look).
+3. Shop-specific sentences go in a small i18n module gated by slug (see `lib/pa-financial-i18n.ts`). Do not fork `TaxOfficeSite.tsx`.
+4. Set staff on **Admin → that client → Tax portal staff login**, or add `{SLUG}_STAFF_EMAIL` / `{SLUG}_STAFF_PASSWORD` like Hola and P&A. Never reuse `ADMIN_PASSWORD` or another shop’s staff password.
+5. Portal URLs: `/s/{slug}/portal` (client), `/s/{slug}/portal/staff/login` (staff).
+
 - Public site: `/s/{slug}` (custom domain works the same way as other clients)
-- Client login / upload: `/s/{slug}/portal`. On a phone, **Scan document** opens the rear camera; 1–5 photos become one private PDF.
+- Client login / upload: `/s/{slug}/portal`. On a phone, **Scan document** opens the rear camera; 1–5 photos become one private PDF. Intake labels stay W-2 / 1099 / ID / Other.
+- **Filed copies by tax year:** each customer folder has Tax {current} plus the previous three years (rolls forward). Staff uploads the filed return / client copy into the correct year. Clients can download those copies; they cannot upload into the year buckets.
 - Staff login: `/s/{slug}/portal/staff/login` — that shop’s folders only
+- **P&A Financial staff:** `/s/pa-financial/portal/staff/login` with email `pafinancial19@gmail.com`. Set `PA_FINANCIAL_STAFF_PASSWORD` on Vercel (Production + Preview). Do not reuse `HOLA_TAX_STAFF_PASSWORD` or `ADMIN_PASSWORD`. You can also set the password in Admin → P&A Financial client → Tax portal staff login.
 - Customers of shop A cannot see shop B. Staff of shop A cannot see shop B.
 - Files go to Vercel Blob with **private** access. Downloads require a signed-in session. Nothing is stored in git or `/public`.
 - Needs `DATABASE_URL` and `BLOB_READ_WRITE_TOKEN`. If either is missing, the portal fails closed and will not take uploads.

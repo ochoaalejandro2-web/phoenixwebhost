@@ -1,10 +1,11 @@
 import type { Client } from "@/lib/types";
-import { isTaxOfficeTemplate } from "@/lib/client-themes";
+import { HOLA_TAX_SLUG, isTaxOfficeTemplate } from "./client-themes.ts";
+import { PA_FINANCIAL_SLUG } from "./pa-financial-i18n.ts";
 
 export const TAX_TEMPLATE_ID = "tax" as const;
 
 /** Live first example. Used only to migrate that record onto the tax template. */
-export { HOLA_TAX_SLUG } from "@/lib/client-themes";
+export { HOLA_TAX_SLUG };
 
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 export const MAX_SCAN_PAGES = 5;
@@ -14,8 +15,12 @@ export const ALLOWED_CONTENT_TYPES = [
   "image/png",
 ] as const;
 
-export const TAX_DOC_LABELS = ["W-2", "1099", "ID", "Other"] as const;
+export const TAX_INTAKE_LABELS = ["W-2", "1099", "ID", "Other"] as const;
+export const FILED_COPY_LABEL = "Filed copy" as const;
+export const TAX_DOC_LABELS = [...TAX_INTAKE_LABELS, FILED_COPY_LABEL] as const;
+export type TaxIntakeLabel = (typeof TAX_INTAKE_LABELS)[number];
 export type TaxDocLabel = (typeof TAX_DOC_LABELS)[number];
+export type TaxFileKind = "intake" | "filed";
 
 export const TAX_LABEL_COPY: Record<
   TaxDocLabel,
@@ -25,10 +30,45 @@ export const TAX_LABEL_COPY: Record<
   "1099": { en: "1099", es: "1099" },
   ID: { en: "ID", es: "Identificación" },
   Other: { en: "Other", es: "Otro" },
+  "Filed copy": { en: "Filed copy", es: "Copia presentada" },
 };
 
 export function isTaxDocLabel(value: string): value is TaxDocLabel {
   return (TAX_DOC_LABELS as readonly string[]).includes(value);
+}
+
+export function isTaxIntakeLabel(value: string): value is TaxIntakeLabel {
+  return (TAX_INTAKE_LABELS as readonly string[]).includes(value);
+}
+
+/** Current calendar year plus the previous three tax years (rolls forward). */
+export function taxReturnYears(now = new Date()) {
+  const year = now.getFullYear();
+  return [year, year - 1, year - 2, year - 3];
+}
+
+export function isTaxReturnYear(value: unknown, now = new Date()) {
+  const year = Number(value);
+  if (!Number.isInteger(year)) return false;
+  const current = now.getFullYear();
+  return year >= 2000 && year <= current + 1;
+}
+
+export function splitTaxFiles<
+  T extends { kind?: string; taxYear?: number | null; label?: string },
+>(files: T[], years: number[]) {
+  const filed = files.filter(
+    (file) => file.kind === "filed" || file.label === FILED_COPY_LABEL,
+  );
+  const intake = files.filter((file) => !filed.includes(file));
+  const byYear = years.map((year) => ({
+    year,
+    files: filed.filter((file) => file.taxYear === year),
+  }));
+  const otherYears = filed.filter(
+    (file) => !years.includes(Number(file.taxYear || 0)),
+  );
+  return { intake, byYear, otherYears };
 }
 
 export function isTaxOfficeClient(
@@ -72,4 +112,22 @@ export function holaTaxStaffBootstrap() {
       .toLowerCase(),
     password: process.env.HOLA_TAX_STAFF_PASSWORD || "",
   };
+}
+
+/** Patricia’s P&A Financial staff login only. Never reuse Hola or owner passwords. */
+export function paFinancialStaffBootstrap() {
+  return {
+    email: (
+      process.env.PA_FINANCIAL_STAFF_EMAIL || "pafinancial19@gmail.com"
+    )
+      .trim()
+      .toLowerCase(),
+    password: process.env.PA_FINANCIAL_STAFF_PASSWORD || "",
+  };
+}
+
+export function taxOfficeStaffBootstrap(slug: string) {
+  if (slug === HOLA_TAX_SLUG) return holaTaxStaffBootstrap();
+  if (slug === PA_FINANCIAL_SLUG) return paFinancialStaffBootstrap();
+  return { email: "", password: "" };
 }

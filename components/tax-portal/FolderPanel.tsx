@@ -4,6 +4,7 @@ import {
 } from "@/components/tax-portal/PortalChrome";
 import { ScanUpload } from "@/components/tax-portal/ScanUpload";
 import { dateLocale, tTaxOffice, taxDocLabel } from "@/lib/tax-office-i18n";
+import { splitTaxFiles, taxReturnYears } from "@/lib/tax-office";
 import type { TaxFileRow } from "@/lib/tax-db";
 import type { Locale } from "@/lib/types";
 
@@ -27,14 +28,16 @@ export function FileTable({
   slug,
   files,
   locale,
+  empty,
 }: {
   slug: string;
   files: TaxFileRow[];
   locale: Locale;
+  empty?: string;
 }) {
   const c = tTaxOffice(locale);
   if (files.length === 0) {
-    return <p className="text-sm text-black/70">{c.emptyFolder}</p>;
+    return <p className="text-sm text-black/70">{empty || c.emptyFolder}</p>;
   }
   return (
     <ul className="divide-y divide-[#00FF66] border border-[#00FF66]">
@@ -63,6 +66,45 @@ export function FileTable({
   );
 }
 
+export function YearFolders({
+  slug,
+  files,
+  locale,
+}: {
+  slug: string;
+  files: TaxFileRow[];
+  locale: Locale;
+}) {
+  const c = tTaxOffice(locale);
+  const years = taxReturnYears();
+  const grouped = splitTaxFiles(files, years);
+  return (
+    <div className="grid gap-6">
+      {grouped.byYear.map((bucket) => (
+        <section key={bucket.year}>
+          <h3 className="font-display text-lg">{c.filedYear(bucket.year)}</h3>
+          <div className="mt-3">
+            <FileTable
+              slug={slug}
+              files={bucket.files}
+              locale={locale}
+              empty={c.emptyYear}
+            />
+          </div>
+        </section>
+      ))}
+      {grouped.otherYears.length ? (
+        <section>
+          <h3 className="font-display text-lg">{c.filedTitle}</h3>
+          <div className="mt-3">
+            <FileTable slug={slug} files={grouped.otherYears} locale={locale} />
+          </div>
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
 export function FolderPanel({
   slug,
   clientName,
@@ -83,6 +125,7 @@ export function FolderPanel({
   locale: Locale;
 }) {
   const c = tTaxOffice(locale);
+  const grouped = splitTaxFiles(files, taxReturnYears());
   return (
     <>
       <h1 className="font-display text-3xl tracking-tight">{c.folderTitle}</h1>
@@ -105,7 +148,12 @@ export function FolderPanel({
       )}
       <h2 className="mt-10 font-display text-xl">{c.filesTitle}</h2>
       <div className="mt-4">
-        <FileTable slug={slug} files={files} locale={locale} />
+        <FileTable slug={slug} files={grouped.intake} locale={locale} />
+      </div>
+      <h2 className="mt-10 font-display text-xl">{c.filedTitle}</h2>
+      <p className="mt-2 max-w-2xl text-sm text-black/80">{c.filedLead}</p>
+      <div className="mt-4">
+        <YearFolders slug={slug} files={files} locale={locale} />
       </div>
     </>
   );

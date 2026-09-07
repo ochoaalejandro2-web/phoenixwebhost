@@ -1,18 +1,46 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
-import { blobPathAllowed, canUploadAsCustomer } from "@/lib/tax-access";
+import {
+  blobPathAllowed,
+  canUploadAsCustomer,
+  canUploadAsStaff,
+} from "@/lib/tax-access";
 import { sessionForClient } from "@/lib/tax-auth";
-import { insertTaxFile, taxPortalBlobReady, taxPortalDbReady } from "@/lib/tax-db";
+import {
+  findTaxUserById,
+  insertTaxFile,
+  taxPortalBlobReady,
+  taxPortalDbReady,
+} from "@/lib/tax-db";
 import { loadLiveTaxOffice } from "@/lib/tax-guard";
 import {
   ALLOWED_CONTENT_TYPES,
+  FILED_COPY_LABEL,
   MAX_UPLOAD_BYTES,
-  isTaxDocLabel,
+  isTaxIntakeLabel,
+  isTaxReturnYear,
   taxBlobPrefix,
+  type TaxFileKind,
 } from "@/lib/tax-office";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+type UploadMeta = {
+  ownerUserId?: string;
+  label?: string;
+  kind?: string;
+  taxYear?: number;
+};
+
+function parsePayload(raw: string | null | undefined): UploadMeta {
+  if (!raw) return {};
+  try {
+    return JSON.parse(raw) as UploadMeta;
+  } catch {
+    return {};
+  }
+}
 
 export async function POST(
   request: Request,
@@ -28,7 +56,9 @@ export async function POST(
   }
 
   const session = await sessionForClient(client.id);
-  if (!session || !canUploadAsCustomer(session, client.id)) {
+  const staff = Boolean(session && canUploadAsStaff(session, client.id));
+  const customer = Boolean(session && canUploadAsCustomer(session, client.id));
+  if (!session || (!staff && !customer)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
@@ -44,21 +74,33 @@ export async function POST(
       body,
       request,
       onBeforeGenerateToken: async (pathname, clientPayload) => {
+        const payload = parsePayload(clientPayload);
+        const ownerUserId = staff
+          ? String(payload.ownerUserId || "")
+          : session.userId;
+        if (staff) {
+          const owner = await findTaxUserById(client.id, ownerUserId);
+          if (!owner || owner.role !== "customer") {
+            throw new Error("Invalid folder");
+          }
+        }
         if (
-          !pathname.startsWith(taxBlobPrefix(session.clientId, session.userId)) ||
+          !pathname.startsWith(taxBlobPrefix(session.clientId, ownerUserId)) ||
           pathname.includes("..")
         ) {
           throw new Error("Invalid upload path");
         }
-        let label = "Other";
-        if (clientPayload) {
-          try {
-            const parsed = JSON.parse(clientPayload) as { label?: string };
-            if (parsed.label && isTaxDocLabel(parsed.label)) label = parsed.label;
-          } catch {
-            label = "Other";
-          }
+        const filed = staff && payload.kind === "filed";
+        const kind: TaxFileKind = filed ? "filed" : "intake";
+        if (kind === "filed" && !isTaxReturnYear(payload.taxYear)) {
+          throw new Error("Invalid tax year");
         }
+        const label =
+          kind === "filed"
+            ? FILED_COPY_LABEL
+            : isTaxIntakeLabel(payload.label || "")
+              ? payload.label
+              : "Other";
         return {
           allowedContentTypes: [...ALLOWED_CONTENT_TYPES],
           maximumSizeInBytes: MAX_UPLOAD_BYTES,
@@ -66,8 +108,10 @@ export async function POST(
           allowOverwrite: false,
           tokenPayload: JSON.stringify({
             clientId: session.clientId,
-            userId: session.userId,
+            userId: ownerUserId,
             label,
+            kind,
+            taxYear: kind === "filed" ? Number(payload.taxYear) : null,
           }),
         };
       },
@@ -78,20 +122,31 @@ export async function POST(
             clientId?: string;
             userId?: string;
             label?: string;
+            kind?: TaxFileKind;
+            taxYear?: number | null;
           };
+          const kind: TaxFileKind = meta.kind === "filed" ? "filed" : "intake";
+          const label =
+            kind === "filed"
+              ? FILED_COPY_LABEL
+              : isTaxIntakeLabel(meta.label || "")
+                ? meta.label
+                : "";
           if (
             meta.clientId !== client.id ||
-            meta.userId !== session.userId ||
-            !meta.label ||
-            !isTaxDocLabel(meta.label)
+            !meta.userId ||
+            !label ||
+            (kind === "filed" && !isTaxReturnYear(meta.taxYear))
           ) {
             return;
           }
-          if (!blobPathAllowed(session, blob.pathname)) return;
+          if (!blobPathAllowed(session, blob.pathname, meta.userId)) return;
           await insertTaxFile({
             clientId: meta.clientId,
             userId: meta.userId,
-            label: meta.label,
+            label,
+            kind,
+            taxYear: kind === "filed" ? Number(meta.taxYear) : null,
             filename: blob.pathname.split("/").pop() || "document.pdf",
             contentType: blob.contentType || "application/pdf",
             sizeBytes: 0,

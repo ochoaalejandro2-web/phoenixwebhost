@@ -566,6 +566,9 @@ function PaFinancialHero({
 /**
  * Tax office template: white / black / neon, plus a private client drop box.
  * Hola Tax (first live shop) also gets its logo, favicon, and photo hero.
+ * P&A Financial is the Pro tax-office reference to clone (navy/neon, circular
+ * spinning logo, What we do, dual Call / Schedule). Shop-specific copy stays
+ * behind the pa-financial slug — do not fork this file for the next tax client.
  * English | Español uses the shared site toggle (`?lang=` + per-slug cookie).
  */
 export function TaxOfficeSite({ client, notice, locale }: SiteView) {

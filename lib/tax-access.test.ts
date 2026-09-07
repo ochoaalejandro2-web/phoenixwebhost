@@ -4,6 +4,7 @@ import {
   blobPathAllowed,
   canReadTaxFile,
   canUploadAsCustomer,
+  canUploadAsStaff,
 } from "./tax-access.ts";
 
 test("staff can only read files for their own tax office", () => {
@@ -58,5 +59,33 @@ test("uploads stay inside the signed-in customer prefix", () => {
     blobPathAllowed(session, "tax-portal/shop-a/cust-2/file.pdf"),
     false,
   );
+});
+
+test("staff can upload filed copies into their own shop customer folder only", () => {
+  const staff = { role: "staff" as const, clientId: "shop-a", userId: "staff-1" };
+  assert.equal(canUploadAsStaff(staff, "shop-a"), true);
+  assert.equal(canUploadAsStaff(staff, "shop-b"), false);
+  assert.equal(
+    blobPathAllowed(
+      staff,
+      "tax-portal/shop-a/cust-1/filed/2024/return.pdf",
+      "cust-1",
+    ),
+    true,
+  );
+  assert.equal(
+    blobPathAllowed(
+      staff,
+      "tax-portal/shop-b/cust-1/filed/2024/return.pdf",
+      "cust-1",
+    ),
+    false,
+  );
+  const customer = {
+    role: "customer" as const,
+    clientId: "shop-a",
+    userId: "cust-1",
+  };
+  assert.equal(canUploadAsStaff(customer, "shop-a"), false);
 });
 
