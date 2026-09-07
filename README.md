@@ -1,6 +1,6 @@
 # Phoenixwebhost Inc.
 
-Arizona small-business websites. **$200 to launch. $69/month to keep it live.** The **AI receptionist** is included. Optional ads add-ons (pick one): **Local Boost** **$99 once + $79/month extra**, **Traffic** **$199/month extra**, or **Loud** **$349/month extra**. Optional extras: **Domain** **about $20/year for a .com (first year)**, **Business Email** **$49 + $19/month**, **Book a job** **$49 + $19/month**, **Missed-call text-back** **$49 + $29/month**, **Review texts** **$29/month**, **Voice receptionist** **$99 + $79/month**.
+Arizona small-business websites. **Three packages:** **Starter** **$99 launch + $29.95/mo**, **Pro** **$200 launch + $69/mo** (most popular), **Premium** **$349 launch + $99.95/mo**. The **AI receptionist** is included on Pro and Premium, not Starter. Extra edits beyond the package cap are **$49** or upgrade — never unlimited. Optional ads add-ons (pick one; not on Starter): **Local Boost** **$99 once + $79/month extra**, **Traffic** **$199/month extra**, or **Loud** **$349/month extra**. Optional extras: **Domain** **about $20/year for a .com (first year)**, **Business Email** **$49 + $19/month**, **Book a job** **$49 + $19/month**, **Missed-call text-back** **$49 + $29/month**, **Review texts** **$29/month**, **Voice receptionist** **$99 + $79/month**. Premium includes one of booking, review texts, or missed-call text-back.
 
 Owner: **Alex Ochoa**, Phoenix, AZ  
 Company: **Phoenixwebhost Inc.**  
@@ -12,9 +12,11 @@ This repo is only Phoenixwebhost. It is a separate business: marketing site, own
 
 | | Price | Covers |
 | --- | --- | --- |
-| Launch | **$200 once** | A simple small-business website |
-| Stay live | **$69 / month** | Hosting plus limited care (not unlimited changes) |
-| Local Boost (optional) | **$99 once + $79 / month extra** | Google Business Profile setup and a small local ad to the client's own site, then ongoing listing and ad care. Not magic SEO. |
+| Starter | **$99 once + $29.95 / month** | 1–3 pages, phone/hours/map, live + SSL + basic SEO, 1 small edit/mo. No AI receptionist, no booking, no ads. |
+| Pro (most popular) | **$200 once + $69 / month** | Multi-page custom look, SEO + Google Business help, AI receptionist, 2 edits/mo, contact/click-to-call. Booking / missed-call texts / reviews are add-ons. |
+| Premium | **$349 once + $99.95 / month** | Everything in Pro, 4 priority edits/mo, photo polish help, one included add-on (booking or review texts or missed-call text-back), EN+ES copy if wanted. |
+| Extra edit beyond cap | **$49** or upgrade | Never unlimited edits. |
+| Local Boost (optional) | **$99 once + $79 / month extra** | Google Business Profile setup and a small local ad to the client's own site, then ongoing listing and ad care. Not magic SEO. Not on Starter. |
 | Traffic (optional) | **$199 / month extra** | Managed ads add-on on top of a website plan. Bigger Google ad than Local Boost so more people can see the business. No setup fee. Not a ranking promise. |
 | Loud (optional) | **$349 / month extra** | Managed ads add-on on top of a website plan. The aggressive ads package — louder ads, more people seeing it. No setup fee. Not a ranking promise. |
 | Business Email (optional) | **$49 once + $19 / month extra** | One professional inbox such as info@the client’s domain, then keep that inbox working. A real business email so customers take them seriously — not magic. |
@@ -24,14 +26,14 @@ This repo is only Phoenixwebhost. It is a separate business: marketing site, own
 | Voice receptionist (optional) | **$99 once + $79 / month extra** | Phone line, 150 minutes included, extra minutes $0.50. Not included in the website. Sold here; we set it up after purchase. |
 | Domain (optional) | **about $20 / year** for a .com (first year) | We register a .com for you. The domain stays in the customer’s name. They keep the login. Skip if they already have a domain. Phoenixwebhost only points DNS. Not a domain supermarket cart. |
 
-Buying launch and care still works with ads and extras unchecked. Local Boost, Traffic, and Loud are one ads ladder — pick one level, not two. Domain, Business Email, Book a job, missed-call text-back, review texts, and voice can be added with any ads level, or alone. Each is a separate add-on at signup, or later from the owner panel. The on-site chat receptionist stays in the $200 + $69 website.
+Buying a website package still works with ads and extras unchecked. Local Boost, Traffic, and Loud are one ads ladder — pick one level, not two. Ads are not included on Starter. Domain, Business Email, Book a job, missed-call text-back, review texts, and voice can be added with any ads level, or alone. Each is a separate add-on at signup, or later from the owner panel. The on-site chat receptionist is included in Pro and Premium — not Starter. Premium includes one of booking, review texts, or missed-call text-back.
 
-**$69/month includes**
+**Monthly care (not unlimited)**
 
 - Site stays live, SSL, backups, uptime watch, basic security
-- An **AI receptionist** on the site that answers from that business’s services, hours, and phone (included — not a paid add-on)
-- **Basic local SEO** (included): Google-friendly site structure, business info (name, address, phone), contact, mobile-ready pages, and help setting up / optimizing Google Business Profile basics as part of launch care. Setup and visibility only — not paid ads, and not a ranking guarantee.
-- Up to **30 minutes** of small edits per month, **or 2 small requests**
+- An **AI receptionist** on Pro and Premium (not Starter) that answers from that business’s services, hours, and phone
+- **Basic local SEO** (included on every package): Google-friendly site structure, business info (name, address, phone), contact, mobile-ready pages. Pro and Premium also include Google Business Profile help. Setup and visibility only — not paid ads, and not a ranking guarantee.
+- Edit cap by package: **Starter 1** small edit/month, **Pro 2**, **Premium 4** priority. Extra edits **$49** or upgrade
 - Hours, phone, address, prices, a sentence or two, swap a photo they send
 - 1 contact form
 - A short monthly note
@@ -43,9 +45,9 @@ Buying launch and care still works with ads and extras unchecked. Local Boost, T
 - Many photos: quoted
 - Shop: quoted
 - Logo: **$100–$300**
-- Magic SEO / guaranteed rankings: we do not sell that. Free basic SEO on the $200 + $69 plan is setup and visibility, not paid ads. Optional **Local Boost** ($99 + $79/month) is paid ads for faster local visibility (Google profile + a small ad). Optional **Traffic** ($199/month) is a bigger managed ad. Optional **Loud** ($349/month) is the aggressive ads package. Pick one ads level. Not magic SEO, and not a ranking promise. The $75 extra in sales copy is a live Instagram feed / extra page — not an ads product.
+- Magic SEO / guaranteed rankings: we do not sell that. Free basic SEO on every package is setup and visibility, not paid ads. Optional **Local Boost** ($99 + $79/month) is paid ads for faster local visibility (Google profile + a small ad). Optional **Traffic** ($199/month) is a bigger managed ad. Optional **Loud** ($349/month) is the aggressive ads package. Pick one ads level. Not magic SEO, and not a ranking promise. The $75 extra in sales copy is a live Instagram feed / extra page — not an ads product.
 - A professional inbox: extra, or skip. Optional **Business Email** is one mailbox such as info@their domain, plus $19/month to keep it working. Not magic.
-- Book a job form: extra, or skip. Optional **Book a job** is $49 + $19/month. The included receptionist is still free with the website.
+- Book a job form: extra, or skip. Optional **Book a job** is $49 + $19/month. The AI receptionist is included on Pro and Premium, not Starter.
 - Missed-call text-back, review texts, and a voice phone line: extra, sold here, set up after purchase. Not live on the demos.
 - A .com domain: extra, about $20 for the first year. We register it in their name. They keep the login. Skip if they already have one.
 - Unlimited changes: **never**
@@ -56,9 +58,9 @@ Buying launch and care still works with ads and extras unchecked. Local Boost, T
 
 The public CTA is **Request a demo**. `/request` (and `/es/request`) collect name, email, business, optional phone, city, a short story, and one of the nine templates. That creates a **preview** at `/demo/{id}` — a finished-looking mockup of their shop (full-bleed photo hero, services, about, photos, hours, address, reviews, contact), not the paid live site.
 
-- Slim bar at the top: **This is a preview, not live yet**, plus **Purchase / Go live $200+$69**. Optional Local Boost / Traffic / Loud (one ads level), Business Email, Book a job, and the other extras stay behind that button. Color/logo tweaks stay behind a small control. The bar is not an admin dashboard sitting on top of a wireframe.
-- The visitor gets an email with the preview link and the price: **$200 to launch + $69/month** (first payment **$269** if they pay launch and the first month together).
-- **Purchase / Go live** on the demo uses the existing Stripe Checkout for $200 + $69/month, plus optional Local Boost / Traffic / Loud (one ads level) and Business Email.
+- Slim bar at the top: **This is a preview, not live yet**, plus **Purchase / Go live Pro $200+$69**. Optional Local Boost / Traffic / Loud (one ads level), Business Email, Book a job, and the other extras stay behind that button. Color/logo tweaks stay behind a small control. The bar is not an admin dashboard sitting on top of a wireframe.
+- The visitor gets an email with the preview link and the three packages. Demo checkout is **Pro $200 + $69/month** (first Pro payment **$269** if they pay launch and the first month together).
+- **Purchase / Go live** on the demo uses the existing Stripe Checkout for Pro $200 + $69/month, plus optional Local Boost / Traffic / Loud (one ads level) and Business Email. Starter and Premium monthly Stripe links are not created yet — those packages use Request / Contact.
 - A small chat on the demo can change logo text, colors, one extra sentence, or one extra page. Extra pages ($75–$150) and logos ($100–$300) stay quoted. No unlimited AI design.
 - Alex sees the lead in Admin (name, email, phone, business, notes, demo URL, purchased or not) and gets the same email + SMS alerts as before (`NOTIFY_EMAIL` / `NOTIFY_PHONE`).
 - There is **no $100-down checkout** on the site. That close happens on the phone.

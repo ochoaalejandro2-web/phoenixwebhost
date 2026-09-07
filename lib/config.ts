@@ -15,6 +15,8 @@ export const PRICING = {
   monthlyCents: 6_900,
   setupLabel: "$200",
   monthlyLabel: "$69",
+  extraEditCents: 4_900,
+  extraEditLabel: "$49",
   boostSetupCents: 9_900,
   boostMonthlyCents: 7_900,
   boostSetupLabel: "$99",

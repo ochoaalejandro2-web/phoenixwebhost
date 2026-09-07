@@ -21,6 +21,7 @@ import {
 import { parseTemplateId } from "@/lib/demo";
 import { parseExtraPicks } from "@/lib/extra-picks";
 import { t } from "@/lib/i18n";
+import { parsePackageId } from "@/lib/packages";
 import {
   parseQuotedPicks,
   sanitizeWalkInKind,
@@ -39,9 +40,10 @@ export default async function RequestPage({
     template?: string;
     quoted?: string | string[];
     other?: string;
+    package?: string;
   }>;
 }) {
-  const { ads, extra, business, template, quoted, other } = await searchParams;
+  const { ads, extra, business, template, quoted, other, package: packageParam } = await searchParams;
   const c = t("en");
   return (
     <StudioShell>
@@ -50,12 +52,13 @@ export default async function RequestPage({
         <div>
           <h1 className="font-display text-4xl text-ink-black">{c.requestTitle}</h1>
           <p className="mt-5 text-lg text-body">{c.requestLead}</p>
-          <p className="price-lime mt-8 text-lg">$200 to launch · $69/month to keep it live</p>
+          <p className="price-lime mt-8 text-lg">Starter $99 + $29.95/mo · Pro $200 + $69/mo · Premium $349 + $99.95/mo</p>
           <p className="mt-2 max-w-lg text-sm leading-relaxed text-body">
-            First payment is $269 if you pay launch and the first month together.
-            This demo starts from a proven template — we do not invent a brand-new
-            custom design for $200. Basic local SEO is included: setup and
-            visibility, not paid ads or ranking guarantees.
+            Pro is most popular. Demo checkout is Pro ($269 if you pay launch and
+            the first month together). We start from a proven template — we do not
+            invent a brand-new custom design for Starter or Pro. Extra edits beyond
+            the package cap are $49, or upgrade. Never unlimited edits. Basic local
+            SEO is included: setup and visibility, not paid ads or ranking guarantees.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             Optional Local Boost: $99 once plus $79/month extra for Google Business
@@ -77,11 +80,11 @@ export default async function RequestPage({
             customers take you seriously — not magic.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
-            The AI receptionist chat is included in $200 + $69. Optional extras:
-            register a .com (~$20 first year), Book a job $49 + $19/mo,
+            The AI receptionist chat is included in Pro and Premium — not Starter.
+            Optional extras: register a .com (~$20 first year), Book a job $49 + $19/mo,
             missed-call text-back $49 + $29/mo, review texts $29/mo, voice
-            receptionist $99 + $79/mo. Those are not the included chat. If you
-            already have a domain, skip domain register.
+            receptionist $99 + $79/mo. Premium includes one of booking, review texts,
+            or missed-call text-back. If you already have a domain, skip domain register.
           </p>
           <p className="mt-6 text-sm text-body">
             {c.callPrompt}{" "}
@@ -106,6 +109,7 @@ export default async function RequestPage({
           initialTemplate={parseTemplateId(template) || ""}
           initialQuoted={parseQuotedPicks(quoted)}
           initialOther={sanitizeWalkInKind(other)}
+          initialPackage={parsePackageId(packageParam)}
         />
       </main>
       <SiteFooter locale="en" />

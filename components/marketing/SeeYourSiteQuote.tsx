@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { AdsTierPicker } from "@/components/marketing/AdsTierPicker";
+import { PackagePicker } from "@/components/marketing/PackagePicker";
 import { AddonToggle } from "@/components/marketing/RequestForm";
 import { COMPANY } from "@/lib/config";
 import { previewPath, t } from "@/lib/i18n";
@@ -34,9 +35,12 @@ export function SeeYourSiteQuote({
     businessName,
     type,
     kind,
-    ads: flags.ads,
+    ads: flags.packageId === "starter" ? "none" : flags.ads,
     extras: selectedExtraPicks(flags),
-    quoted: selectedQuotedPicks(flags),
+    quoted: selectedQuotedPicks(flags).filter(
+      (id) => !(id === "spanish" && flags.packageId === "premium"),
+    ),
+    packageId: flags.packageId,
   });
 
   function setFlag<K extends keyof WalkInQuoteFlags>(key: K, value: WalkInQuoteFlags[K]) {
@@ -74,19 +78,39 @@ export function SeeYourSiteQuote({
       </div>
 
       <div className="grid gap-3 p-5 sm:p-6">
+        <PackagePicker
+          value={flags.packageId}
+          locale={locale}
+          onChange={(packageId) =>
+            setFlags((current) => ({
+              ...current,
+              packageId,
+              ads: packageId === "starter" ? "none" : current.ads,
+            }))
+          }
+        />
+
         <div className="rounded-2xl border border-lime/40 bg-lime/10 px-4 py-3">
           <p className="font-medium text-ink-black">{c.seeSiteBaseLabel}</p>
           <p className="mt-1 text-sm text-body">{c.seeSiteBaseHelp}</p>
         </div>
 
-        <AdsTierPicker
-          value={flags.ads}
-          onChange={(ads) => setFlag("ads", ads)}
-          boostReady
-          trafficReady
-          loudReady
-          locale={locale}
-        />
+        {flags.packageId === "starter" ? (
+          <p className="rounded-2xl border border-zinc-200 bg-zinc-50/80 px-4 py-3 text-sm text-body">
+            {locale === "es"
+              ? "Starter no incluye anuncios. Si necesita anuncios, elija Pro o Premium."
+              : "Starter does not include ads. If you need ads, pick Pro or Premium."}
+          </p>
+        ) : (
+          <AdsTierPicker
+            value={flags.ads}
+            onChange={(ads) => setFlag("ads", ads)}
+            boostReady
+            trafficReady
+            loudReady
+            locale={locale}
+          />
+        )}
 
         <AddonToggle
           checked={flags.book}

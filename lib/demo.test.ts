@@ -168,7 +168,7 @@ test("demo tweaks stay capped to one extra page and optional logo text", () => {
   assert.match(preview.about, /Licensed in Arizona/);
 });
 
-test("plan price is still $200 launch + $69/month, with no $100 public down payment", () => {
+test("Pro checkout price is still $200 launch + $69/month, with no $100 public down payment", () => {
   assert.equal(PRICING.setupCents, 20_000);
   assert.equal(PRICING.monthlyCents, 6_900);
   assert.equal(PRICING.setupLabel, "$200");

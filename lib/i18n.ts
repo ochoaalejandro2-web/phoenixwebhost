@@ -19,30 +19,47 @@ export const copy = {
     heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
     heroTitle: "A straightforward website for your Arizona small business.",
     heroAccent: "straightforward",
-    proofLine: "Arizona small-business websites · $200 launch",
+    proofLine: "Arizona small-business websites · packages from $99",
     heroLead:
-      "One price to launch. One price to keep it live. No unlimited-change packages, no surprise retainers — just a clean site, hosting, and small monthly care.",
+      "Three packages. No unlimited-change retainers — a clean site, hosting, and capped monthly care. Extra edits are $49, or upgrade.",
     ctaPrimary: "Request a demo",
     ctaSecondary: "See pricing",
     ownerLine: "Owner-operated by Alex Ochoa in Phoenix.",
     callPrompt: "Prefer to talk? Call",
     priceLaunch: "$200",
-    priceLaunchHint: "one-time, to launch",
+    priceLaunchHint: "Pro launch — most popular",
     priceMonth: "$69",
-    priceMonthHint: "per month, to stay live",
-    launchTitle: "Launch — $200 once",
+    priceMonthHint: "Pro, per month",
+    heroPriceFrom: "From $99",
+    heroPriceFromHint: "Starter launch",
+    heroPricePopular: "Pro $200 + $69/mo",
+    heroPricePopularHint: "most popular",
+    packagesKicker: "Website packages",
+    packagesTitle: "Starter, Pro, and Premium",
+    packagesLead:
+      "Pick a package. Live hosting and basic SEO are in every plan. Extra edits beyond the cap are $49 each, or upgrade. We never sell unlimited edits.",
+    packagesOverage:
+      "Extra edits beyond the package cap are $49 flat, or upgrade to the next package. Never unlimited changes.",
+    packageMostPopular: "Most Popular",
+    packageCtaRequest: "Request this package",
+    packageCtaContact: "Request / Contact",
+    packagePayMonthly: "Pay monthly care",
+    packageLaunchHint: "one-time, to launch",
+    packageMonthHint: "per month, to stay live",
+    launchTitle: "Launch — from $99",
     launchBody:
-      "A simple small-business website from a professional template: your name, phone, hours, address, a short story, and a photo-ready layout. An AI receptionist is included — visitors can ask about your services, hours, and phone. Built for contractors, handymen, carpenters, salons, restaurants, landscapers, tax offices, and local offices.",
-    monthTitle: "Stay live — $69 / month",
+      "Starter is $99 once. Pro (most popular) is $200. Premium is $349. We start from a professional template: your name, phone, hours, address, and a photo-ready layout. Built for contractors, handymen, carpenters, salons, restaurants, landscapers, tax offices, and local offices.",
+    monthTitle: "Stay live — from $29.95 / month",
     monthBody:
-      "Keeps the site online, covers small care, includes an AI receptionist, and includes basic local SEO (setup and visibility — not paid ads). This is not unlimited work.",
-    includedTitle: "What $69/month covers",
-    includedLead: "Limited monthly care. Basic local SEO is included. Never unlimited changes.",
+      "Starter $29.95, Pro $69, Premium $99.95. Keeps the site online, covers capped monthly care, and includes basic local SEO (setup and visibility — not paid ads). This is not unlimited work.",
+    includedTitle: "Monthly care — not unlimited",
+    includedLead:
+      "Each package has a monthly edit cap. Extra edits are $49, or upgrade. Basic local SEO is included. Never unlimited changes.",
     included: [
-      "Basic local SEO included — setup and visibility basics (Google-friendly pages, business info, contact, mobile, Google Business Profile help). Not paid ads or ranking guarantees.",
-      "An AI receptionist on your site — answers from your services, hours, and phone. Included, not an extra.",
+      "Basic local SEO included — setup and visibility basics (Google-friendly pages, business info, contact, mobile). Pro and Premium also include Google Business Profile help. Not paid ads or ranking guarantees.",
+      "An AI receptionist on Pro and Premium — answers from your services, hours, and phone. Included on those packages, not an extra.",
       "The site stays live, with SSL",
-      "Up to 30 minutes of small edits per month — or 2 small requests",
+      "Edit cap by package: Starter 1 small edit/month, Pro 2, Premium 4 priority. Extra edits are billed separately, or upgrade — never unlimited.",
       "Hours, phone, address, prices, a sentence or two, or swapping a photo you send",
       "One contact form",
       "Backups, uptime watch, and basic security",
@@ -52,10 +69,11 @@ export const copy = {
     notIncludedTitle: "Not included — quoted separately",
     notIncluded: [
       "A new page or live Instagram feed: $75–$150",
-      "Many photos: quoted",
+      "Extra edits beyond the package cap: $49 each, or upgrade",
+      "Many photos: quoted (Premium includes photo polish help)",
       "A shop: quoted",
       "A logo: $100–$300",
-      "Magic SEO or guaranteed rankings — we do not sell that. Free basic SEO on the plan is setup and visibility, not paid ads or ranking promises.",
+      "Magic SEO or guaranteed rankings — we do not sell that. Free basic SEO on every package is setup and visibility, not paid ads or ranking promises.",
       "Unlimited changes — we do not sell that",
     ],
     unpaidTitle: "If a month goes unpaid",
@@ -67,7 +85,7 @@ export const copy = {
     ],
     templatesTitle: "Nine professional starting points",
     templatesLead:
-      "We do not invent a brand-new design for $200. We start from a proven layout and fill it with your business.",
+      "We do not invent a brand-new design for Starter or Pro. We start from a proven layout and fill it with your business.",
     searchLabel: "Search live demos",
     searchPlaceholder: "Carpentry, handyman, cleaning…",
     searchHint: "Tap a result to open that live demo site.",
@@ -87,8 +105,8 @@ export const copy = {
       },
       {
         n: "3",
-        t: "Pay $200 to launch, then $69/month",
-        d: "First payment is $269 if you pay launch and the first month together. Optional Local Boost, Traffic, or Loud (pick one ads level) and Business Email can be added in the same checkout.",
+        t: "Pick a package and go live",
+        d: "Starter $99 + $29.95/mo, Pro $200 + $69/mo (most popular), or Premium $349 + $99.95/mo. Demo checkout is Pro. First Pro payment is $269 if you pay launch and the first month together. Optional ads (not on Starter) and extras can be added in the same checkout.",
       },
     ],
     aboutTitle: "A Phoenix company, not a faceless host",
@@ -96,7 +114,7 @@ export const copy = {
       "Phoenixwebhost Inc. is owned by Alex Ochoa in Phoenix, Arizona. We build websites for Arizona small businesses and then keep those sites live. If you write in, a person who knows your site answers.",
     requestTitle: "Request a demo",
     requestLead:
-      "Tell us about the business. We fill a proven template and show you a live demo — an idea of how the site will look. We do not invent a brand-new custom design for $200. If you like it, pay $200 to launch and $69/month to keep it live. First payment is $269 if you pay launch and the first month together.",
+      "Tell us about the business and which package you want: Starter $99 + $29.95/mo, Pro $200 + $69/mo (most popular), or Premium $349 + $99.95/mo. We fill a proven template and show you a live demo. We do not invent a brand-new custom design for Starter or Pro. The demo checkout is Pro. Extra edits beyond the package cap are $49, or upgrade — never unlimited.",
     formName: "Your name",
     formBusiness: "Business name",
     formEmail: "Email",
@@ -106,7 +124,7 @@ export const copy = {
     formMessage: "What should the site say?",
     formTemplate: "What kind of business?",
     formSubmit: "See my demo",
-    formPay: "Purchase / Go live — $200 + $69/month",
+    formPay: "Purchase / Go live — Pro $200 + $69/month",
     formPayBoost: "Go live with Local Boost",
     formPayTraffic: "Go live with Traffic",
     formPayLoud: "Go live with Loud",
@@ -119,7 +137,7 @@ export const copy = {
     demoBanner:
       "A proven template filled with your business — not a brand-new custom design.",
     demoPrice:
-      "$200 to launch + $69/month to keep it live. First payment is $269 if you pay launch and the first month together.",
+      "Pro (most popular): $200 to launch + $69/month. Starter is $99 + $29.95/mo. Premium is $349 + $99.95/mo. Demo checkout is Pro. First Pro payment is $269 if you pay launch and the first month together.",
     demoQuoted:
       "Extra pages ($75–$150) and logos ($100–$300) stay quoted. We do not sell unlimited AI design.",
     demoChatTitle: "Try a few tweaks",
@@ -132,7 +150,7 @@ export const copy = {
     demoChatCapped:
       "This preview already has one extra page. More pages and a full redesign are quoted — $75–$150 per page, $100–$300 for a logo.",
     demoChatQuote:
-      "That stays quoted. Extra pages are $75–$150, logos $100–$300. We start from this template; we do not invent a brand-new design for $200.",
+      "That stays quoted. Extra pages are $75–$150, logos $100–$300. Extra edits beyond the package cap are $49, or upgrade. We start from this template; we do not invent a brand-new design for Starter or Pro.",
     demoChatSaved: "Updated this preview. Extra pages and logos on the live site are still quoted.",
     demoPurchaseTitle: "Like it? Go live",
     demoEmailNote: "We also emailed you this preview link.",
@@ -145,12 +163,12 @@ export const copy = {
     boostBody:
       "Local Google visibility for Phoenix small businesses: we set up your Google Business Profile and a small local ad that points to your own site. The monthly extra keeps that listing and ad in care. The website plan already includes free basic SEO. Local Boost is optional paid ads — not magic SEO, and it does not promise rankings.",
     boostSeoNote:
-      "The $200 + $69 plan includes free basic SEO. Local Boost is optional paid ads for faster local visibility.",
+      "Every website package includes free basic SEO. Local Boost is optional paid ads for faster local visibility. Ads are not included on Starter.",
     boostSetupHint: "one-time, Google profile + small ad",
     boostMonthHint: "per month extra, listing and ad care",
     boostCheckbox: "Add Local Boost — $99 now + $79/month extra",
     boostCheckboxHelp:
-      "Optional paid ads, separate from the website. The base plan already includes free basic SEO. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
+      "Optional paid ads, separate from the website. Every package already includes free basic SEO. Ads are not included on Starter. Leave this unchecked to buy only a website package.",
     boostMissing:
       "Local Boost checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
     adsPickOne: "Pick one ads level — or none.",
@@ -163,7 +181,7 @@ export const copy = {
     trafficMonthHint: "per month extra, bigger ad",
     trafficCheckbox: "Add Traffic — $199/month extra",
     trafficCheckboxHelp:
-      "The middle ads level. More ad than Local Boost. Pick only one ads level. Optional and on top of the $200 launch and $69/month website plan.",
+      "The middle ads level. More ad than Local Boost. Pick only one ads level. Optional and on top of a website package — not included on Starter.",
     trafficMissing:
       "Traffic checkout is not connected yet. Pick Local Boost or the website only, or wait until Alex connects it.",
     loudKicker: "Optional add-on",
@@ -173,7 +191,7 @@ export const copy = {
     loudMonthHint: "per month extra, louder ads",
     loudCheckbox: "Add Loud — $349/month extra",
     loudCheckboxHelp:
-      "The loud ads level. Pick only one ads level. Optional and on top of the $200 launch and $69/month website plan.",
+      "The loud ads level. Pick only one ads level. Optional and on top of a website package — not included on Starter.",
     loudMissing:
       "Loud checkout is not connected yet. Pick Local Boost or Traffic, or wait until Alex connects it.",
     emailKicker: "Optional add-on",
@@ -184,13 +202,13 @@ export const copy = {
     emailMonthHint: "per month extra, keep the inbox working",
     emailCheckbox: "Add Business Email — $49 now + $19/month extra",
     emailCheckboxHelp:
-      "Optional and separate. Leave this unchecked to buy only the $200 launch and $69/month hosting-and-care plan.",
+      "Optional and separate. Leave this unchecked to buy only a website package.",
     emailMissing:
       "Business Email checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
     includedSplit: "Included in the website",
     includedSplitHelp:
-      "Custom site, AI receptionist chat, and basic local SEO. The owner gets the lead by email.",
-    extrasSplit: "Optional extras — not in the $200 + $69 website",
+      "Custom site and basic local SEO. Pro and Premium include an AI receptionist. Starter does not. The owner gets the lead by email.",
+    extrasSplit: "Optional extras — add-ons, not in Starter or Pro",
     bookKicker: "Optional add-on",
     bookTitle: "Book a job — $49 once + $19/month extra",
     bookBody:
@@ -199,7 +217,7 @@ export const copy = {
     bookMonthHint: "per month extra, keep the booking form live",
     bookCheckbox: "Add Book a job — $49 now + $19/month extra",
     bookCheckboxHelp:
-      "Optional. Leave unchecked to buy only the website (which already includes the AI receptionist).",
+      "Optional. Leave unchecked to buy only the website. Booking is an add-on on Pro. Premium includes one add-on you pick.",
     bookMissing:
       "Book a job checkout is not connected yet. Uncheck it to pay for the website, or wait until it is connected.",
     missedKicker: "Optional add-on",
@@ -229,7 +247,7 @@ export const copy = {
     voiceMonthHint: "per month extra, 150 minutes included",
     voiceCheckbox: "Add voice receptionist — $99 now + $79/month extra",
     voiceCheckboxHelp:
-      "Optional paid voice line. The on-site chat receptionist stays included in $200 + $69.",
+      "Optional paid voice line. The on-site chat receptionist is included in Pro and Premium — not Starter.",
     voiceMissing:
       "Voice receptionist checkout is not connected yet. Uncheck it to pay for the website.",
     domainKicker: "Optional add-on",
@@ -239,19 +257,19 @@ export const copy = {
     domainYearHint: "first year, .com",
     domainCheckbox: "Register a .com for me — about $20 for the first year",
     domainCheckboxHelp:
-      "Optional. Skip if you already have a domain. Not required for the $200 launch and $69/month website.",
+      "Optional. Skip if you already have a domain. Not required for any website package.",
     domainMissing:
       "Domain checkout is not connected yet. Uncheck it to pay for the website, or wait until it is connected.",
     extrasMenuTitle: "Optional extras you can pick",
     extrasMenuLead:
-      "The $200 launch and $69/month site stand alone. Pick only what you need.",
+      "Website packages stand alone. Booking, missed-call texts, and review texts are add-ons on Pro. Premium includes one of those three. Pick only what you need.",
     extrasPick: "Pick this extra",
     affiliatesTitle: "Sell Phoenixwebhost",
     affiliatesLead:
-      "If you send a customer who pays, Alex pays you the $200 launch. He keeps the $69/month and any add-ons.",
+      "If you send a customer who pays, Alex pays you the launch fee for that package (Pro is $200). He keeps the monthly care and any add-ons.",
     affiliatesPayTitle: "How it pays",
     affiliatesPayBody:
-      "You get the $200 launch fee only after Stripe payment succeeds. There is no automatic payout from Stripe. Alex records who sold it and pays you. Monthly hosting and extras stay with Phoenixwebhost.",
+      "You get the launch fee only after Stripe payment succeeds. There is no automatic payout from Stripe. Alex records who sold it and pays you. Monthly hosting and extras stay with Phoenixwebhost. Pro launch is $200.",
     affiliatesLinkTitle: "How to get a link",
     affiliatesLinkBody:
       "Call or email Alex. He adds you in the owner panel and gives you a unique URL. Anyone who opens that link is tied to you for the demo request and the paid checkout.",
@@ -291,7 +309,8 @@ export const copy = {
       "A proven template with your name on it. The phone is a placeholder until you give us yours.",
     seeSitePriceTitle: "Clear pricing — no hidden fees",
     seeSiteBaseLabel: "Website",
-    seeSiteBaseHelp: "$200 to launch + $69/month. Basic local SEO included. Always on this quote.",
+    seeSiteBaseHelp:
+      "Pro (most popular): $200 to launch + $69/month. Starter $99 + $29.95/mo. Premium $349 + $99.95/mo. Basic local SEO included.",
     seeSiteDueNow: "Due to launch",
     seeSitePerMonth: "Then every month",
     seeSiteFirstPay: "First payment if you pay launch + first month together",
@@ -302,7 +321,8 @@ export const copy = {
     seeSiteCtaCall: "Call",
     seeSiteCtaText: "Text",
     seeSiteCtaRequest: "Request a demo",
-    seeSiteNoFees: "No hidden fees. The $200 launch and $69/month stay on screen.",
+    seeSiteNoFees:
+      "No hidden fees. Starter, Pro, and Premium stay on screen. Extra edits beyond the cap are $49, or upgrade.",
     seeSiteTypeSalon: "Barber / salon",
     seeSiteTypeRestaurant: "Restaurant",
     seeSiteTypeHandyman: "Handyman",
@@ -326,6 +346,9 @@ export const copy = {
     seeSiteSpanishHelp:
       "Quoted. This marketing site already toggles English / Español.",
     seeSiteAdsNone: "No ads package",
+    packagePickerTitle: "Which website package?",
+    packagePickerHelp:
+      "Pro is most popular. Starter has no AI receptionist, booking, or ads. Premium includes one add-on you pick.",
   },
   es: {
     langName: "Español",
@@ -345,30 +368,47 @@ export const copy = {
     heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
     heroTitle: "Un sitio web claro para su negocio pequeño en Arizona.",
     heroAccent: "claro",
-    proofLine: "Sitios para negocios pequeños en Arizona · lanzamiento $200",
+    proofLine: "Sitios para negocios pequeños en Arizona · paquetes desde $99",
     heroLead:
-      "Un precio para lanzarlo. Un precio para mantenerlo en línea. Sin paquetes de cambios ilimitados ni retenedores sorpresa — un sitio limpio, hospedaje y cuidado mensual pequeño.",
+      "Tres paquetes. Sin retenedores de cambios ilimitados — un sitio limpio, hospedaje y cuidado mensual con tope. Cambios extra $49, o suba de paquete.",
     ctaPrimary: "Pedir una demo",
     ctaSecondary: "Ver precios",
     ownerLine: "Operado por Alex Ochoa en Phoenix.",
     callPrompt: "¿Prefiere hablar? Llame al",
     priceLaunch: "$200",
-    priceLaunchHint: "un solo pago, para lanzar",
+    priceLaunchHint: "lanzamiento Pro — el más popular",
     priceMonth: "$69",
-    priceMonthHint: "al mes, para mantenerlo en línea",
-    launchTitle: "Lanzamiento — $200 una vez",
+    priceMonthHint: "Pro, al mes",
+    heroPriceFrom: "Desde $99",
+    heroPriceFromHint: "Lanzamiento Starter",
+    heroPricePopular: "Pro $200 + $69/mes",
+    heroPricePopularHint: "el más popular",
+    packagesKicker: "Paquetes de sitio",
+    packagesTitle: "Starter, Pro y Premium",
+    packagesLead:
+      "Elija un paquete. Hospedaje en línea y SEO básico van en todos. Cambios extra sobre el tope son $49 cada uno, o suba de paquete. Nunca vendemos cambios ilimitados.",
+    packagesOverage:
+      "Los cambios extra sobre el tope del paquete son $49 fijos, o suba al siguiente paquete. Nunca cambios ilimitados.",
+    packageMostPopular: "El más popular",
+    packageCtaRequest: "Pedir este paquete",
+    packageCtaContact: "Contactar / Pedir",
+    packagePayMonthly: "Pagar el cuidado mensual",
+    packageLaunchHint: "un solo pago, para lanzar",
+    packageMonthHint: "al mes, para mantenerlo en línea",
+    launchTitle: "Lanzamiento — desde $99",
     launchBody:
-      "Un sitio sencillo para un negocio pequeño, desde una plantilla profesional: nombre, teléfono, horario, dirección, una historia corta y un diseño listo para fotos. Incluye una recepcionista de IA — los visitantes pueden preguntar por servicios, horario y teléfono. Para contratistas, manitas, carpinteros, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
-    monthTitle: "Mantenerlo en línea — $69 / mes",
+      "Starter es $99 una vez. Pro (el más popular) es $200. Premium es $349. Partimos de una plantilla profesional: nombre, teléfono, horario, dirección y un diseño listo para fotos. Para contratistas, manitas, carpinteros, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
+    monthTitle: "Mantenerlo en línea — desde $29.95 / mes",
     monthBody:
-      "Mantiene el sitio publicado, cubre el cuidado pequeño, incluye una recepcionista de IA y SEO local básico (configuración y visibilidad — no anuncios de pago). Esto no es trabajo ilimitado.",
-    includedTitle: "Qué cubre el plan de $69 al mes",
-    includedLead: "Cuidado mensual limitado. El SEO local básico va incluido. Nunca cambios ilimitados.",
+      "Starter $29.95, Pro $69, Premium $99.95. Mantiene el sitio publicado, cubre el cuidado mensual con tope e incluye SEO local básico (configuración y visibilidad — no anuncios de pago). Esto no es trabajo ilimitado.",
+    includedTitle: "Cuidado mensual — no ilimitado",
+    includedLead:
+      "Cada paquete tiene un tope de cambios al mes. Cambios extra $49, o suba de paquete. El SEO local básico va incluido. Nunca cambios ilimitados.",
     included: [
-      "SEO local básico incluido — configuración y visibilidad (páginas claras para Google, datos del negocio, contacto, móvil, ayuda con el Perfil de Empresa en Google). No son anuncios de pago ni garantías de posición.",
-      "Una recepcionista de IA en su sitio — responde con sus servicios, horario y teléfono. Incluida, no es un extra.",
+      "SEO local básico incluido — configuración y visibilidad (páginas claras para Google, datos del negocio, contacto, móvil). Pro y Premium también incluyen ayuda con el Perfil de Empresa en Google. No son anuncios de pago ni garantías de posición.",
+      "Una recepcionista de IA incluida en Pro y Premium — responde con sus servicios, horario y teléfono. No va en Starter.",
       "El sitio permanece en línea, con SSL",
-      "Hasta 30 minutos de cambios pequeños al mes — o 2 solicitudes pequeñas",
+      "Tope de cambios por paquete: Starter 1 al mes, Pro 2, Premium 4 prioritarios. Cambios extra se cobran aparte, o suba de paquete — nunca ilimitados.",
       "Horario, teléfono, dirección, precios, una o dos frases, o cambiar una foto que usted envíe",
       "Un formulario de contacto",
       "Copias de seguridad, vigilancia de actividad y seguridad básica",
@@ -378,10 +418,11 @@ export const copy = {
     notIncludedTitle: "No incluido — se cotiza aparte",
     notIncluded: [
       "Una página nueva o un feed de Instagram: $75–$150",
-      "Muchas fotos: se cotiza",
+      "Cambios extra sobre el tope del paquete: $49 cada uno, o suba de paquete",
+      "Muchas fotos: se cotiza (Premium incluye ayuda para pulir fotos)",
       "Una tienda: se cotiza",
       "Un logotipo: $100–$300",
-      "SEO mágico o posiciones garantizadas — no vendemos eso. El SEO local básico del plan es configuración y visibilidad, no anuncios de pago ni promesas de posiciones.",
+      "SEO mágico o posiciones garantizadas — no vendemos eso. El SEO local básico de cada paquete es configuración y visibilidad, no anuncios de pago ni promesas de posiciones.",
       "Cambios ilimitados — no vendemos eso",
     ],
     unpaidTitle: "Si un mes no se paga",
@@ -393,7 +434,7 @@ export const copy = {
     ],
     templatesTitle: "Nueve puntos de partida profesionales",
     templatesLead:
-      "Con $200 no inventamos una marca nueva. Partimos de un diseño comprobado y lo llenamos con su negocio.",
+      "Con Starter o Pro no inventamos una marca nueva. Partimos de un diseño comprobado y lo llenamos con su negocio.",
     searchLabel: "Buscar demos en vivo",
     searchPlaceholder: "Carpintería, manitas, limpieza…",
     searchHint: "Toque un resultado para abrir esa demo en vivo.",
@@ -413,8 +454,8 @@ export const copy = {
       },
       {
         n: "3",
-        t: "Paga $200 para lanzar, luego $69 al mes",
-        d: "El primer pago es $269 si paga el lanzamiento y el primer mes juntos. Local Boost, Traffic o Loud (un solo nivel de anuncios) y Business Email son opcionales y se pueden agregar en el mismo pago.",
+        t: "Elija un paquete y publíquelo",
+        d: "Starter $99 + $29.95 al mes, Pro $200 + $69 al mes (el más popular), o Premium $349 + $99.95 al mes. El pago de la demo es Pro. El primer pago Pro es $269 si paga el lanzamiento y el primer mes juntos. Anuncios opcionales (no en Starter) y extras se pueden agregar en el mismo pago.",
       },
     ],
     aboutTitle: "Una empresa en Phoenix, no un host sin cara",
@@ -422,7 +463,7 @@ export const copy = {
       "Phoenixwebhost Inc. es de Alex Ochoa en Phoenix, Arizona. Hacemos sitios para negocios pequeños de Arizona y los mantenemos en línea. Si escribe, responde alguien que conoce su sitio.",
     requestTitle: "Pedir una demo",
     requestLead:
-      "Cuéntenos del negocio. Llenamos una plantilla comprobada y le mostramos una demo en vivo — una idea de cómo se verá el sitio. Con $200 no inventamos un diseño a medida nuevo. Si le gusta, paga $200 para lanzar y $69 al mes para mantenerlo en línea. El primer pago es $269 si paga el lanzamiento y el primer mes juntos.",
+      "Cuéntenos del negocio y qué paquete quiere: Starter $99 + $29.95 al mes, Pro $200 + $69 al mes (el más popular), o Premium $349 + $99.95 al mes. Llenamos una plantilla comprobada y le mostramos una demo en vivo. Con Starter o Pro no inventamos un diseño a medida nuevo. El pago de la demo es Pro. Cambios extra sobre el tope son $49, o suba de paquete — nunca ilimitados.",
     formName: "Su nombre",
     formBusiness: "Nombre del negocio",
     formEmail: "Correo",
@@ -432,7 +473,7 @@ export const copy = {
     formMessage: "¿Qué debe decir el sitio?",
     formTemplate: "¿Qué tipo de negocio?",
     formSubmit: "Ver mi demo",
-    formPay: "Comprar / Publicar — $200 + $69 al mes",
+    formPay: "Comprar / Publicar — Pro $200 + $69 al mes",
     formPayBoost: "Publicar con Local Boost",
     formPayTraffic: "Publicar con Traffic",
     formPayLoud: "Publicar con Loud",
@@ -445,7 +486,7 @@ export const copy = {
     demoBanner:
       "Una plantilla comprobada llena con su negocio — no un diseño a medida nuevo.",
     demoPrice:
-      "$200 para lanzar + $69 al mes para mantenerlo en línea. El primer pago es $269 si paga el lanzamiento y el primer mes juntos.",
+      "Pro (el más popular): $200 para lanzar + $69 al mes. Starter es $99 + $29.95 al mes. Premium es $349 + $99.95 al mes. El pago de la demo es Pro. El primer pago Pro es $269 si paga el lanzamiento y el primer mes juntos.",
     demoQuoted:
       "Páginas extra ($75–$150) y logotipos ($100–$300) se cotizan. No vendemos diseño ilimitado con IA.",
     demoChatTitle: "Pruebe unos cambios",
@@ -458,7 +499,7 @@ export const copy = {
     demoChatCapped:
       "Esta vista ya tiene una página extra. Más páginas y un rediseño se cotizan — $75–$150 por página, $100–$300 por un logo.",
     demoChatQuote:
-      "Eso se cotiza. Páginas extra $75–$150, logotipos $100–$300. Partimos de esta plantilla; no inventamos un diseño nuevo por $200.",
+      "Eso se cotiza. Páginas extra $75–$150, logotipos $100–$300. Cambios extra sobre el tope del paquete son $49, o suba de paquete. Partimos de esta plantilla; no inventamos un diseño nuevo para Starter o Pro.",
     demoChatSaved: "Actualizamos esta vista. En el sitio real, páginas extra y logotipos se cotizan.",
     demoPurchaseTitle: "¿Le gusta? Publíquelo",
     demoEmailNote: "También le enviamos este enlace por correo.",
@@ -471,12 +512,12 @@ export const copy = {
     boostBody:
       "Visibilidad local en Google para negocios pequeños de Phoenix: configuramos su Perfil de Empresa en Google y un anuncio local pequeño que apunta a su propio sitio. El cargo mensual extra cuida ese listado y anuncio. El plan del sitio ya incluye SEO local básico gratis. Local Boost es un anuncio de pago opcional — no es SEO mágico y no promete posiciones.",
     boostSeoNote:
-      "El plan de $200 + $69 incluye SEO local básico gratis. Local Boost es un anuncio de pago opcional para más visibilidad local.",
+      "Cada paquete de sitio incluye SEO local básico gratis. Local Boost es un anuncio de pago opcional para más visibilidad local. Los anuncios no van en Starter.",
     boostSetupHint: "un solo pago, perfil de Google + anuncio pequeño",
     boostMonthHint: "al mes extra, cuidado del listado y anuncio",
     boostCheckbox: "Agregar Local Boost — $99 ahora + $79 al mes extra",
     boostCheckboxHelp:
-      "Anuncios de pago opcionales, aparte del sitio. El plan base ya incluye SEO local básico gratis. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
+      "Anuncios de pago opcionales, aparte del sitio. Cada paquete ya incluye SEO local básico gratis. Los anuncios no van en Starter. Si no lo marca, solo compra un paquete de sitio.",
     boostMissing:
       "El pago de Local Boost aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
     adsPickOne: "Elija un nivel de anuncios — o ninguno.",
@@ -489,7 +530,7 @@ export const copy = {
     trafficMonthHint: "al mes extra, anuncio más grande",
     trafficCheckbox: "Agregar Traffic — $199 al mes extra",
     trafficCheckboxHelp:
-      "El nivel de en medio. Más anuncio que Local Boost. Elija solo un nivel de anuncios. Opcional y aparte del lanzamiento de $200 y el plan de $69 al mes.",
+      "El nivel de en medio. Más anuncio que Local Boost. Elija solo un nivel de anuncios. Opcional y aparte del paquete de sitio — no va en Starter.",
     trafficMissing:
       "El pago de Traffic aún no está conectado. Elija Local Boost o el sitio solo, o espere a que Alex lo active.",
     loudKicker: "Complemento opcional",
@@ -499,7 +540,7 @@ export const copy = {
     loudMonthHint: "al mes extra, anuncios fuertes",
     loudCheckbox: "Agregar Loud — $349 al mes extra",
     loudCheckboxHelp:
-      "El nivel más fuerte. Elija solo un nivel de anuncios. Opcional y aparte del lanzamiento de $200 y el plan de $69 al mes.",
+      "El nivel más fuerte. Elija solo un nivel de anuncios. Opcional y aparte del paquete de sitio — no va en Starter.",
     loudMissing:
       "El pago de Loud aún no está conectado. Elija Local Boost o Traffic, o espere a que Alex lo active.",
     emailKicker: "Complemento opcional",
@@ -510,13 +551,13 @@ export const copy = {
     emailMonthHint: "al mes extra, para mantener el buzón",
     emailCheckbox: "Agregar Business Email — $49 ahora + $19 al mes extra",
     emailCheckboxHelp:
-      "Opcional y aparte. Si no lo marca, solo compra el lanzamiento de $200 y el plan de $69 al mes.",
+      "Opcional y aparte. Si no lo marca, solo compra un paquete de sitio.",
     emailMissing:
       "El pago de Business Email aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
     includedSplit: "Incluido en el sitio",
     includedSplitHelp:
-      "Sitio a la medida, recepcionista de IA en el chat y SEO local básico. El dueño recibe el lead por correo.",
-    extrasSplit: "Extras opcionales — no van en el sitio de $200 + $69",
+      "Sitio a la medida y SEO local básico. Pro y Premium incluyen recepcionista de IA. Starter no. El dueño recibe el lead por correo.",
+    extrasSplit: "Extras opcionales — no van en Starter ni en Pro",
     bookKicker: "Complemento opcional",
     bookTitle: "Reservar un trabajo — $49 una vez + $19 al mes extra",
     bookBody:
@@ -525,7 +566,7 @@ export const copy = {
     bookMonthHint: "al mes extra, para mantener el formulario",
     bookCheckbox: "Agregar Reservar un trabajo — $49 ahora + $19 al mes extra",
     bookCheckboxHelp:
-      "Opcional. Si no lo marca, solo compra el sitio (que ya incluye la recepcionista de IA).",
+      "Opcional. Si no lo marca, solo compra el sitio. Las reservas son un extra en Pro. Premium incluye un extra que usted elige.",
     bookMissing:
       "El pago de Reservar un trabajo aún no está conectado. Desmárquelo para pagar el sitio.",
     missedKicker: "Complemento opcional",
@@ -555,7 +596,7 @@ export const copy = {
     voiceMonthHint: "al mes extra, 150 minutos incluidos",
     voiceCheckbox: "Agregar recepcionista de voz — $99 ahora + $79 al mes extra",
     voiceCheckboxHelp:
-      "Línea de voz de pago. El chat del sitio sigue incluido en $200 + $69.",
+      "Línea de voz de pago. El chat del sitio va incluido en Pro y Premium — no en Starter.",
     voiceMissing:
       "El pago de recepcionista de voz aún no está conectado. Desmárquelo para pagar el sitio.",
     domainKicker: "Complemento opcional",
@@ -565,19 +606,19 @@ export const copy = {
     domainYearHint: "primer año, .com",
     domainCheckbox: "Regístrenme un .com — unos $20 el primer año",
     domainCheckboxHelp:
-      "Opcional. Omítalo si ya tiene un dominio. No es obligatorio para el lanzamiento de $200 y el sitio de $69 al mes.",
+      "Opcional. Omítalo si ya tiene un dominio. No es obligatorio para ningún paquete de sitio.",
     domainMissing:
       "El pago del dominio aún no está conectado. Desmárquelo para pagar el sitio.",
     extrasMenuTitle: "Extras opcionales que puede elegir",
     extrasMenuLead:
-      "El lanzamiento de $200 y el sitio de $69 al mes van solos. Elija solo lo que necesite.",
+      "Los paquetes de sitio van solos. Reservas, textos de llamada perdida y textos de reseña son extras en Pro. Premium incluye uno de esos tres. Elija solo lo que necesite.",
     extrasPick: "Elegir este extra",
     affiliatesTitle: "Venda Phoenixwebhost",
     affiliatesLead:
-      "Si manda un cliente que paga, Alex le paga el lanzamiento de $200. Él se queda con los $69 al mes y los extras.",
+      "Si manda un cliente que paga, Alex le paga el lanzamiento de ese paquete (Pro es $200). Él se queda con el cuidado mensual y los extras.",
     affiliatesPayTitle: "Cómo se paga",
     affiliatesPayBody:
-      "Recibe los $200 del lanzamiento solo después de que Stripe cobre. No hay pago automático desde Stripe. Alex anota quién lo vendió y le paga. El hospedaje mensual y los extras se quedan con Phoenixwebhost.",
+      "Recibe el lanzamiento solo después de que Stripe cobre. No hay pago automático desde Stripe. Alex anota quién lo vendió y le paga. El hospedaje mensual y los extras se quedan con Phoenixwebhost. El lanzamiento Pro es $200.",
     affiliatesLinkTitle: "Cómo obtener un enlace",
     affiliatesLinkBody:
       "Llame o escriba a Alex. Él lo agrega en el panel y le da una URL única. Quien abra ese enlace queda ligado a usted en la demo y en el pago.",
@@ -623,7 +664,8 @@ export const copy = {
       "Una plantilla comprobada con su nombre. El teléfono es de muestra hasta que nos dé el suyo.",
     seeSitePriceTitle: "Precios claros — sin cargos ocultos",
     seeSiteBaseLabel: "Sitio web",
-    seeSiteBaseHelp: "$200 para lanzar + $69 al mes. SEO local básico incluido. Siempre en esta cotización.",
+    seeSiteBaseHelp:
+      "Pro (el más popular): $200 para lanzar + $69 al mes. Starter $99 + $29.95 al mes. Premium $349 + $99.95 al mes. SEO local básico incluido.",
     seeSiteDueNow: "Para lanzar",
     seeSitePerMonth: "Luego cada mes",
     seeSiteFirstPay: "Primer pago si paga el lanzamiento y el primer mes juntos",
@@ -634,7 +676,8 @@ export const copy = {
     seeSiteCtaCall: "Llamar",
     seeSiteCtaText: "Texto",
     seeSiteCtaRequest: "Pedir una demo",
-    seeSiteNoFees: "Sin cargos ocultos. El lanzamiento de $200 y los $69 al mes se quedan en pantalla.",
+    seeSiteNoFees:
+      "Sin cargos ocultos. Starter, Pro y Premium se quedan en pantalla. Cambios extra sobre el tope son $49, o suba de paquete.",
     seeSiteTypeSalon: "Barbería / salón",
     seeSiteTypeRestaurant: "Restaurante",
     seeSiteTypeHandyman: "Manitas",
@@ -652,6 +695,9 @@ export const copy = {
     seeSiteSpanishHelp:
       "Se cotiza. Este sitio de marketing ya cambia entre English / Español.",
     seeSiteAdsNone: "Sin paquete de anuncios",
+    packagePickerTitle: "¿Qué paquete de sitio?",
+    packagePickerHelp:
+      "Pro es el más popular. Starter no incluye recepcionista de IA, reservas ni anuncios. Premium incluye un extra que usted elige.",
   },
 } as const;
 

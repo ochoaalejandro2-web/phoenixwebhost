@@ -21,6 +21,7 @@ import {
 import { parseTemplateId } from "@/lib/demo";
 import { parseExtraPicks } from "@/lib/extra-picks";
 import { t } from "@/lib/i18n";
+import { parsePackageId } from "@/lib/packages";
 import {
   parseQuotedPicks,
   sanitizeWalkInKind,
@@ -39,9 +40,10 @@ export default async function RequestEsPage({
     template?: string;
     quoted?: string | string[];
     other?: string;
+    package?: string;
   }>;
 }) {
-  const { ads, extra, business, template, quoted, other } = await searchParams;
+  const { ads, extra, business, template, quoted, other, package: packageParam } = await searchParams;
   const c = t("es");
   return (
     <StudioShell>
@@ -50,13 +52,14 @@ export default async function RequestEsPage({
         <div>
           <h1 className="font-display text-4xl text-ink-black">{c.requestTitle}</h1>
           <p className="mt-5 text-lg text-body">{c.requestLead}</p>
-          <p className="price-lime mt-8 text-lg">$200 para lanzar · $69 al mes para mantenerlo en línea</p>
+          <p className="price-lime mt-8 text-lg">Starter $99 + $29.95/mes · Pro $200 + $69/mes · Premium $349 + $99.95/mes</p>
           <p className="mt-2 max-w-lg text-sm leading-relaxed text-body">
-            El primer pago es $269 si paga el lanzamiento y el primer mes juntos.
-            Esta demo parte de una plantilla comprobada — no inventamos un diseño
-            a medida nuevo por $200. El SEO local básico va incluido:
-            configuración y visibilidad, no anuncios de pago ni garantías de
-            posición.
+            Pro es el más popular. El pago de la demo es Pro ($269 si paga el
+            lanzamiento y el primer mes juntos). Esta demo parte de una plantilla
+            comprobada — no inventamos un diseño a medida nuevo para Starter o Pro.
+            Cambios extra sobre el tope son $49, o suba de paquete. Nunca cambios
+            ilimitados. El SEO local básico va incluido: configuración y visibilidad,
+            no anuncios de pago ni garantías de posición.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
             Local Boost opcional: $99 una vez más $79 al mes extra para el Perfil
@@ -80,11 +83,12 @@ export default async function RequestEsPage({
             que lo tomen en serio — no es magia.
           </p>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-body">
-            La recepcionista de IA en el chat va incluida en $200 + $69. Extras
-            opcionales: registrar un .com (unos $20 el primer año), Reservar un
-            trabajo $49 + $19 al mes, texto de llamada perdida $49 + $29 al mes,
-            textos de reseña $29 al mes, recepcionista de voz $99 + $79 al mes.
-            Eso no es el chat incluido. Si ya tiene un dominio, omita el registro.
+            La recepcionista de IA en el chat va incluida en Pro y Premium — no en
+            Starter. Extras opcionales: registrar un .com (unos $20 el primer año),
+            Reservar un trabajo $49 + $19 al mes, texto de llamada perdida $49 + $29
+            al mes, textos de reseña $29 al mes, recepcionista de voz $99 + $79 al
+            mes. Premium incluye uno de: reservas, textos de reseña o texto si no
+            contestan. Si ya tiene un dominio, omita el registro.
           </p>
           <p className="mt-6 text-sm text-body">
             {c.callPrompt}{" "}
@@ -109,6 +113,7 @@ export default async function RequestEsPage({
           initialTemplate={parseTemplateId(template) || ""}
           initialQuoted={parseQuotedPicks(quoted)}
           initialOther={sanitizeWalkInKind(other)}
+          initialPackage={parsePackageId(packageParam)}
         />
       </main>
       <SiteFooter locale="es" />

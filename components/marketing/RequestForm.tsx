@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { AdsTierPicker } from "@/components/marketing/AdsTierPicker";
+import { PackagePicker } from "@/components/marketing/PackagePicker";
 import { adsFlagsFromTier, type AdsTier } from "@/lib/ads";
 import { TEMPLATES } from "@/lib/config";
 import { t } from "@/lib/i18n";
 import { extraFlagsFromPicks, type ExtraPick } from "@/lib/extra-picks";
+import { PACKAGES, parsePackageId, type PackageId } from "@/lib/packages";
 import type { Locale, TemplateId } from "@/lib/types";
 import {
   otherTypeNote,
@@ -66,6 +68,7 @@ export function RequestForm({
   initialTemplate = "",
   initialQuoted = [],
   initialOther = "",
+  initialPackage = "pro",
 }: {
   locale: Locale;
   boostReady?: boolean;
@@ -83,13 +86,19 @@ export function RequestForm({
   initialTemplate?: TemplateId | "";
   initialQuoted?: QuotedPick[];
   initialOther?: string;
+  initialPackage?: PackageId;
 }) {
   const c = t(locale);
   const initial = extraFlagsFromPicks(initialExtras);
   const quotedNote = quotedMessageNote(initialQuoted, locale);
   const customTypeNote = otherTypeNote(initialOther, locale);
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
-  const [adsTier, setAdsTier] = useState<AdsTier>(initialAds);
+  const [packageId, setPackageId] = useState<PackageId>(
+    parsePackageId(initialPackage),
+  );
+  const [adsTier, setAdsTier] = useState<AdsTier>(
+    parsePackageId(initialPackage) === "starter" ? "none" : initialAds,
+  );
   const [includeEmail, setIncludeEmail] = useState(initial.includeEmail);
   const [includeBook, setIncludeBook] = useState(initial.includeBook);
   const [includeMissed, setIncludeMissed] = useState(initial.includeMissed);
@@ -101,6 +110,11 @@ export function RequestForm({
     event.preventDefault();
     setStatus("saving");
     const form = new FormData(event.currentTarget);
+    const pkg = PACKAGES[packageId];
+    const packageNote =
+      locale === "es"
+        ? `Paquete: ${pkg.copy.es.name} (${pkg.setupLabel} + ${pkg.monthlyLabel}/mes).`
+        : `Package: ${pkg.copy.en.name} (${pkg.setupLabel} + ${pkg.monthlyLabel}/mo).`;
     const res = await fetch("/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -110,12 +124,12 @@ export function RequestForm({
         email: form.get("email"),
         phone: form.get("phone"),
         city: form.get("city"),
-        message: [form.get("message"), customTypeNote, quotedNote]
+        message: [packageNote, form.get("message"), customTypeNote, quotedNote]
           .filter(Boolean)
           .join(" "),
         template: form.get("template"),
         locale,
-        ...adsFlagsFromTier(adsTier),
+        ...adsFlagsFromTier(packageId === "starter" ? "none" : adsTier),
         wantsBusinessEmail: includeEmail,
         wantsBookAJob: includeBook,
         wantsMissedCall: includeMissed,
@@ -206,14 +220,30 @@ export function RequestForm({
         {c.formMessage}
         <textarea name="message" rows={4} className="field-studio" />
       </label>
-      <AdsTierPicker
-        value={adsTier}
-        onChange={setAdsTier}
-        boostReady={boostReady}
-        trafficReady={trafficReady}
-        loudReady={loudReady}
+      <PackagePicker
+        value={packageId}
         locale={locale}
+        onChange={(id) => {
+          setPackageId(id);
+          if (id === "starter") setAdsTier("none");
+        }}
       />
+      {packageId === "starter" ? (
+        <p className="rounded-2xl border border-zinc-200 bg-zinc-50/80 px-4 py-3 text-sm text-body">
+          {locale === "es"
+            ? "Starter no incluye anuncios. Si necesita anuncios, elija Pro o Premium."
+            : "Starter does not include ads. If you need ads, pick Pro or Premium."}
+        </p>
+      ) : (
+        <AdsTierPicker
+          value={adsTier}
+          onChange={setAdsTier}
+          boostReady={boostReady}
+          trafficReady={trafficReady}
+          loudReady={loudReady}
+          locale={locale}
+        />
+      )}
       <div className="rounded-2xl border border-zinc-200 bg-white p-4">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime">
           {c.extrasSplit}

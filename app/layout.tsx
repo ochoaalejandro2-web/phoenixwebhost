@@ -28,11 +28,11 @@ export const metadata: Metadata = {
     template: "%s · Phoenixwebhost",
   },
   description:
-    "Phoenixwebhost Inc. builds simple websites for Arizona small businesses. $200 to launch, $69/month to keep it live. Call (480) 953-2393. Owner: Alex Ochoa, Phoenix, AZ.",
+    "Phoenixwebhost Inc. builds simple websites for Arizona small businesses. Packages: Starter $99 + $29.95/mo, Pro $200 + $69/mo (most popular), Premium $349 + $99.95/mo. Call (480) 953-2393. Owner: Alex Ochoa, Phoenix, AZ.",
   metadataBase: new URL("https://phoenixwebhost.com"),
   openGraph: {
     title: "Phoenixwebhost Inc.",
-    description: "$200 to launch a small-business website. $69/month to keep it live. Call (480) 953-2393.",
+    description: "Starter $99, Pro $200 + $69/mo (most popular), Premium $349. Call (480) 953-2393.",
     url: "https://phoenixwebhost.com",
     siteName: "Phoenixwebhost Inc.",
     locale: "en_US",

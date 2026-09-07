@@ -1,8 +1,15 @@
 import type { AdsTier } from "./ads.ts";
 import { PRICING } from "./config.ts";
+import {
+  DEFAULT_PACKAGE_ID,
+  PACKAGES,
+  formatMoney,
+  type PackageId,
+} from "./packages.ts";
 import type { WalkInTypeId } from "./walk-in-preview.ts";
 
 export type WalkInQuoteFlags = {
+  packageId: PackageId;
   ads: AdsTier;
   book: boolean;
   missed: boolean;
@@ -29,6 +36,7 @@ export type QuoteLine = {
 
 export function emptyWalkInFlags(): WalkInQuoteFlags {
   return {
+    packageId: DEFAULT_PACKAGE_ID,
     ads: "none",
     book: false,
     missed: false,
@@ -44,8 +52,7 @@ export function emptyWalkInFlags(): WalkInQuoteFlags {
 }
 
 export function formatUsd(cents: number) {
-  const dollars = cents / 100;
-  return `$${dollars.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+  return formatMoney(cents);
 }
 
 export function formatUsdRange(minCents: number, maxCents: number) {
@@ -54,23 +61,25 @@ export function formatUsdRange(minCents: number, maxCents: number) {
 }
 
 export function walkInQuote(flags: WalkInQuoteFlags) {
+  const pkg = PACKAGES[flags.packageId ?? DEFAULT_PACKAGE_ID];
   const lines: QuoteLine[] = [
     {
       id: "base",
-      setupCents: PRICING.setupCents,
-      monthlyCents: PRICING.monthlyCents,
+      setupCents: pkg.setupCents,
+      monthlyCents: pkg.monthlyCents,
     },
   ];
 
-  if (flags.ads === "boost") {
+  const allowAds = flags.packageId !== "starter";
+  if (allowAds && flags.ads === "boost") {
     lines.push({
       id: "boost",
       setupCents: PRICING.boostSetupCents,
       monthlyCents: PRICING.boostMonthlyCents,
     });
-  } else if (flags.ads === "traffic") {
+  } else if (allowAds && flags.ads === "traffic") {
     lines.push({ id: "traffic", monthlyCents: PRICING.trafficMonthlyCents });
-  } else if (flags.ads === "loud") {
+  } else if (allowAds && flags.ads === "loud") {
     lines.push({ id: "loud", monthlyCents: PRICING.loudMonthlyCents });
   }
 
@@ -118,7 +127,9 @@ export function walkInQuote(flags: WalkInQuoteFlags) {
   }
   if (flags.extraPage) lines.push({ id: "page", quoted: true });
   if (flags.photos) lines.push({ id: "photos", quoted: true });
-  if (flags.spanish) lines.push({ id: "spanish", quoted: true });
+  if (flags.spanish && flags.packageId !== "premium") {
+    lines.push({ id: "spanish", quoted: true });
+  }
 
   let setupMin = 0;
   let setupMax = 0;

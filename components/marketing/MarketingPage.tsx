@@ -11,6 +11,7 @@ import { SeeYourSiteForm } from "@/components/marketing/SeeYourSiteForm";
 import { StudioFlare } from "@/components/marketing/StudioFlare";
 import { RequestForm } from "@/components/marketing/RequestForm";
 import { ReviewsSection } from "@/components/marketing/ReviewsSection";
+import { PackagesSection } from "@/components/marketing/PackagesSection";
 import { StartingPoints } from "@/components/marketing/StartingPoints";
 import {
   COMPANY,
@@ -104,17 +105,19 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               >
                 {c.ctaPrimary}
               </Link>
-              <div className="flex gap-8">
+              <a href="#pricing" className="flex flex-wrap items-end gap-8">
                 <div>
-                  <p className="price-lime font-display text-4xl">{c.priceLaunch}</p>
-                  <p className="text-xs text-body">{c.priceLaunchHint}</p>
+                  <p className="price-lime font-display text-4xl">{c.heroPriceFrom}</p>
+                  <p className="text-xs text-body">{c.heroPriceFromHint}</p>
                 </div>
                 <div className="w-px bg-zinc-200" />
                 <div>
-                  <p className="price-lime font-display text-4xl">{c.priceMonth}</p>
-                  <p className="text-xs text-body">{c.priceMonthHint}</p>
+                  <p className="price-lime font-display text-3xl sm:text-4xl">
+                    {c.heroPricePopular}
+                  </p>
+                  <p className="text-xs text-body">{c.heroPricePopularHint}</p>
                 </div>
-              </div>
+              </a>
             </div>
             <p className="mt-8 text-sm text-body">{c.ownerLine}</p>
             <p className="mt-2 text-sm text-body">
@@ -152,18 +155,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
       </section>
 
       <section id="pricing" className="border-y border-zinc-100 bg-zinc-50/80">
-        <div className="mx-auto grid max-w-6xl gap-px px-6 py-0 md:grid-cols-2">
-          <article className="py-16 md:pr-12">
-            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.priceLaunch}</p>
-            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.launchTitle}</h2>
-            <p className="mt-5 max-w-md leading-relaxed text-body">{c.launchBody}</p>
-          </article>
-          <article className="border-t border-zinc-200 py-16 md:border-l md:border-t-0 md:pl-12">
-            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.priceMonth}</p>
-            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.monthTitle}</h2>
-            <p className="mt-5 max-w-md leading-relaxed text-body">{c.monthBody}</p>
-          </article>
-        </div>
+        <PackagesSection locale={locale} />
         <div className="mx-auto max-w-6xl border-t border-zinc-200 px-6 pt-10">
           <p className="text-sm text-body">{c.adsLadderHelp}</p>
           <p className="mt-2 text-xs text-body">{c.adsPickOne}</p>

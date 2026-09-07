@@ -159,6 +159,7 @@ export function walkInRequestHref(
     ads?: string;
     extras?: string[];
     quoted?: QuotedPick[];
+    packageId?: string;
   },
 ) {
   const params = new URLSearchParams();
@@ -166,6 +167,9 @@ export function walkInRequestHref(
   params.set("template", walkInTemplate(input.type));
   const kind = sanitizeWalkInKind(input.kind);
   if (input.type === "other" && kind) params.set("other", kind);
+  if (input.packageId && input.packageId !== "pro") {
+    params.set("package", input.packageId);
+  }
   if (input.ads && input.ads !== "none") params.set("ads", input.ads);
   if (input.extras?.length) params.set("extra", input.extras.join(","));
   if (input.quoted?.length) params.set("quoted", input.quoted.join(","));
