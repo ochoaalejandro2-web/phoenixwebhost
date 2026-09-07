@@ -90,6 +90,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Demo cleaning (sample) | `/s/desert-sparkle-cleaning` (paid, live) |
 | Premium Carpentry Designs | `/s/premium-carpentry-designs` (paid, live) — shareable phone URL |
 | Hola Tax (tax office template) | `/s/hola-tax-service` (paid, live) · client portal `/s/hola-tax-service/portal` |
+| P&A Financial LLC | `/s/pa-financial` (paid, live) · later `pataxesllc.com` |
 
 **Owner login**
 

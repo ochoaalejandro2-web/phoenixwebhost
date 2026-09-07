@@ -139,6 +139,300 @@ body {
   letter-spacing: -0.03em;
 }
 
+/* P&A Financial — classic navy + gold, this shop only. */
+.theme-pa-financial {
+  --pa-navy: #1b3a6b;
+  --pa-navy-deep: #0f4c81;
+  --pa-navy-ink: #0c2244;
+  --pa-gold: #c9a04a;
+  --pa-gold-soft: #e4c878;
+  --pa-paper: #f8f4ec;
+  --pa-ink: #152033;
+  color: var(--pa-ink);
+  background: var(--pa-paper);
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+.theme-pa-financial .shop-header {
+  background: rgba(251, 247, 239, 0.96);
+  border-bottom-color: var(--pa-navy);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--pa-gold) 50%, transparent);
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+}
+
+.theme-pa-financial footer {
+  background: #ffffff;
+}
+
+.theme-pa-financial .text-\[\#00E840\] {
+  color: var(--pa-navy-deep);
+}
+
+.theme-pa-financial .text-\[\#00FF66\] {
+  color: var(--pa-gold);
+  text-shadow: none;
+}
+
+.theme-pa-financial .bg-\[\#00FF66\],
+.theme-pa-financial .bg-\[\#00E840\],
+.theme-pa-financial .site-cta {
+  background: linear-gradient(180deg, var(--pa-gold-soft) 0%, var(--pa-gold) 100%);
+  color: var(--pa-navy-ink);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--pa-gold) 38%, transparent);
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.theme-pa-financial .hover\:bg-\[\#00E840\]:hover {
+  background: var(--pa-navy);
+  color: #ffffff;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--pa-navy) 28%, transparent);
+  transform: translateY(-1px);
+}
+
+.theme-pa-financial .hover\:bg-\[\#00FF66\]:hover {
+  background: var(--pa-navy-deep);
+  color: #ffffff;
+}
+
+.theme-pa-financial .hover\:bg-\[\#00FF66\]\/10:hover {
+  background: color-mix(in srgb, var(--pa-navy) 8%, #ffffff);
+}
+
+.theme-pa-financial .border-\[\#00FF66\] {
+  border-color: var(--pa-navy);
+}
+
+.theme-pa-financial .hover\:text-\[\#00E840\]:hover {
+  color: var(--pa-navy-deep);
+}
+
+.theme-pa-financial .hover\:text-\[\#00FF66\]:hover {
+  color: var(--pa-gold);
+}
+
+.theme-pa-financial input:focus,
+.theme-pa-financial textarea:focus {
+  border-color: var(--pa-navy-deep);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-gold) 38%, transparent);
+}
+
+.theme-pa-financial .pa-kicker {
+  color: var(--pa-navy-deep);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.theme-pa-financial .pa-services .pa-kicker {
+  color: var(--pa-gold-soft);
+}
+
+.theme-pa-financial .pa-hero {
+  border-bottom: 1px solid color-mix(in srgb, var(--pa-navy) 12%, #e6eaf0);
+  background: linear-gradient(180deg, #fbf7ef 0%, var(--pa-paper) 100%);
+}
+
+.theme-pa-financial .pa-btn,
+.theme-pa-financial .pa-service-cta,
+.theme-pa-financial .site-cta {
+  border-radius: 0.7rem;
+}
+
+.theme-pa-financial .pa-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pa-navy);
+  border-radius: 0.7rem;
+  color: var(--pa-navy);
+  background: transparent;
+}
+
+.theme-pa-financial .pa-btn-ghost:hover {
+  background: var(--pa-navy);
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-portrait-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 1.35rem;
+  background: #d7dde6;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--pa-gold) 45%, #ffffff),
+    0 22px 48px rgba(12, 34, 68, 0.14);
+}
+
+.theme-pa-financial .pa-portrait-caption {
+  margin-top: 0.85rem;
+  color: color-mix(in srgb, var(--pa-ink) 62%, transparent);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.theme-pa-financial .pa-services {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background: #0c2244;
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-services-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-pa-financial .pa-chevron {
+  display: none;
+  color: #ffffff;
+  font-size: 2.4rem;
+  font-weight: 200;
+  line-height: 1;
+}
+
+@media (min-width: 900px) {
+  .theme-pa-financial .pa-chevron {
+    display: block;
+  }
+}
+
+.theme-pa-financial .pa-service-card {
+  background: #132a52;
+  border: 1px solid color-mix(in srgb, var(--pa-gold) 55%, var(--pa-navy));
+  border-radius: 0.95rem;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--pa-gold) 35%, transparent),
+    0 0 34px color-mix(in srgb, var(--pa-gold) 28%, transparent);
+}
+
+.theme-pa-financial .pa-service-icon {
+  border-radius: 999px;
+  background: var(--pa-gold);
+  color: var(--pa-navy-ink);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--pa-gold) 55%, transparent);
+}
+
+.theme-pa-financial .pa-service-cta {
+  min-width: min(18rem, 100%);
+  justify-content: center;
+  background: linear-gradient(180deg, var(--pa-gold-soft) 0%, var(--pa-gold) 100%);
+  color: var(--pa-navy-ink);
+  font-weight: 700;
+  padding: 0.95rem 1.8rem;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--pa-gold) 36%, transparent);
+}
+
+.theme-pa-financial .pa-service-cta:hover {
+  background: #ffffff;
+  color: var(--pa-navy);
+}
+
+.theme-pa-financial .pa-panel {
+  border: 1px solid color-mix(in srgb, var(--pa-navy) 14%, #e6eaf0);
+  border-radius: 1.1rem;
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(12, 34, 68, 0.06);
+}
+
+.theme-pa-financial .pa-field {
+  border: 1px solid color-mix(in srgb, var(--pa-navy) 18%, #d5dbe4);
+  border-radius: 0.7rem;
+  background: #ffffff;
+  color: var(--pa-ink);
+  padding: 0.7rem 0.85rem;
+  outline: none;
+}
+
+.theme-pa-financial .pa-field:focus {
+  border-color: var(--pa-navy-deep);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-gold) 38%, transparent);
+}
+
+.theme-pa-financial .pa-brand-logo {
+  height: 3.15rem;
+  width: 3.15rem;
+}
+
+.theme-pa-financial .pa-brand-name {
+  color: var(--pa-navy);
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .theme-pa-financial .pa-brand-logo {
+    height: 3.85rem;
+    width: 3.85rem;
+  }
+
+  .theme-pa-financial .pa-brand-name {
+    font-size: 2.65rem;
+  }
+}
+
+.theme-pa-financial .shop-header nav,
+.theme-pa-financial .shop-header .text-sm {
+  font-size: 1.125rem;
+}
+
+.theme-pa-financial .pa-appoint {
+  background: #102445;
+  border-top: 14px solid var(--pa-navy);
+  border-bottom: 14px solid var(--pa-navy);
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-appoint-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 0.75rem 1rem;
+  background: #ffffff;
+  border-radius: 1.15rem;
+  padding: 1rem 1.15rem;
+}
+
+.theme-pa-financial .pa-appoint-btn {
+  display: inline-flex;
+  min-width: 4.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--pa-navy-ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.theme-pa-financial .pa-appoint-btn:hover {
+  color: var(--pa-gold);
+}
+
+.theme-pa-financial .pa-appoint-wordmark {
+  color: #ffffff;
+}
+
+.theme-pa-financial footer.pa-footer {
+  background: var(--pa-navy);
+  border-top: none;
+  color: #ffffff;
+}
+
+.theme-pa-financial footer.pa-footer a:hover {
+  color: var(--pa-gold-soft);
+}
+
 /* Marketing homepage first-visit flare — lime/gold, not a game overlay. */
 .studio-flare {
   --flare-x: 50%;

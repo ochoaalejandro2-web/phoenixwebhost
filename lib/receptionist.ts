@@ -8,6 +8,13 @@ import {
   holaTaxTagline,
   withHolaTaxListedServices,
 } from "./hola-tax-i18n.ts";
+import {
+  PA_FINANCIAL_SLUG,
+  paFinancialAbout,
+  paFinancialHours,
+  paFinancialServiceLabel,
+  paFinancialTagline,
+} from "./pa-financial-i18n.ts";
 import { normalizeSearchText } from "./public-demos.ts";
 import { serviceBlurb, serviceName } from "./shop-content.ts";
 import { siteSupportsI18n } from "./site-locale.ts";
@@ -238,6 +245,9 @@ function clientServiceKeys(client: Client): string[] {
 
 function clientServiceLabels(client: Client, locale: Locale): string[] {
   const keys = clientServiceKeys(client);
+  if (client.slug === PA_FINANCIAL_SLUG) {
+    return keys.map((name) => paFinancialServiceLabel(name, locale));
+  }
   if (client.slug === HOLA_TAX_SLUG || client.template === "tax") {
     return keys.map((name) => holaTaxServiceLabel(name, locale));
   }
@@ -252,15 +262,22 @@ export function buildClientFacts(
   const useLocale = bilingual ? locale : "en";
   const keys = clientServiceKeys(client);
   const services = clientServiceLabels(client, useLocale);
-  const hours = displayHours(client.hours, client.template, useLocale);
+  const hours =
+    client.slug === PA_FINANCIAL_SLUG
+      ? paFinancialHours(useLocale)
+      : displayHours(client.hours, client.template, useLocale);
   const tagline =
     client.slug === HOLA_TAX_SLUG
       ? holaTaxTagline(client.tagline, useLocale)
-      : client.tagline;
+      : client.slug === PA_FINANCIAL_SLUG
+        ? paFinancialTagline(client.tagline, useLocale)
+        : client.tagline;
   const about =
     client.slug === HOLA_TAX_SLUG
       ? holaTaxAbout(client.about, useLocale)
-      : client.about;
+      : client.slug === PA_FINANCIAL_SLUG
+        ? paFinancialAbout(client.about, useLocale)
+        : client.about;
   const phone = String(client.phone || "").trim();
   return {
     kind: "client",

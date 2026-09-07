@@ -4,6 +4,12 @@ import {
   holaTaxTagline,
 } from "@/lib/hola-tax-i18n";
 import { HOLA_TAX_SLUG } from "@/lib/client-themes";
+import {
+  PA_FINANCIAL_SLUG,
+  paFinancialAbout,
+  paFinancialServiceLabel,
+  paFinancialTagline,
+} from "@/lib/pa-financial-i18n";
 import { TAX_LABEL_COPY, type TaxDocLabel } from "@/lib/tax-office";
 import type { Locale } from "@/lib/types";
 
@@ -14,6 +20,10 @@ const servicesEs: Record<string, string> = {
   "ITIN applications": "Solicitudes de ITIN",
   Bookkeeping: "Contabilidad",
   "Year-round tax support": "Apoyo con impuestos todo el año",
+  "Income Tax Preparation": "Preparación de impuestos sobre la renta",
+  "ITIN Number Processing and Renewal":
+    "Trámite y renovación de número ITIN",
+  "Business Registration": "Registro de negocios",
 };
 
 export const taxOfficeCopy = {
@@ -271,7 +281,11 @@ export function tTaxOffice(locale: Locale) {
 
 export function taxOfficeServiceLabel(service: string, locale: Locale) {
   if (locale === "en") return service;
-  return servicesEs[service] ?? holaTaxServiceLabel(service, locale);
+  return (
+    servicesEs[service] ??
+    paFinancialServiceLabel(service, locale) ??
+    holaTaxServiceLabel(service, locale)
+  );
 }
 
 export function taxOfficeTagline(
@@ -280,11 +294,13 @@ export function taxOfficeTagline(
   locale: Locale,
 ) {
   if (slug === HOLA_TAX_SLUG) return holaTaxTagline(english, locale);
+  if (slug === PA_FINANCIAL_SLUG) return paFinancialTagline(english, locale);
   return english;
 }
 
 export function taxOfficeAbout(slug: string, english: string, locale: Locale) {
   if (slug === HOLA_TAX_SLUG) return holaTaxAbout(english, locale);
+  if (slug === PA_FINANCIAL_SLUG) return paFinancialAbout(english, locale);
   return english;
 }
 

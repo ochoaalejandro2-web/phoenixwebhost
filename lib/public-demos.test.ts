@@ -25,6 +25,10 @@ test("public demos are the real repo starting points, not invented shops", () =>
     assert.equal(demo.href.startsWith("/demo/"), false);
   }
   assert.equal(
+    PUBLIC_DEMOS.some((demo) => demo.slug === "pa-financial"),
+    false,
+  );
+  assert.equal(
     PUBLIC_DEMOS.find((demo) => demo.slug === "ironwood-handyman")?.hostLabel,
     "ironwood.phoenixwebhost.com",
   );

@@ -3,6 +3,7 @@ import {
   applySeedDemoBookJob,
   mergeMissingBySlug,
   refreshDesertSparkleDemoCopy,
+  refreshPaFinancialArizonaCopy,
   restoreMesaStreetKitchenDemo,
 } from "@/lib/seed-merge";
 import type { AppState, Client } from "@/lib/types";
@@ -444,6 +445,57 @@ function demoClients(): Client[] {
       editRequests: [],
       createdAt: isoDaysFromNow(-30),
     },
+    {
+      id: "cli_pa_financial",
+      businessName: "P&A Financial LLC",
+      slug: "pa-financial",
+      contactName: "Patricia Escobedo",
+      email: "pafinancial19@gmail.com",
+      phone: "(720) 501-0501",
+      address: "",
+      city: "Arizona",
+      hours: "By appointment — call to schedule",
+      tagline: "Expert tax & financial services for the Hispanic community",
+      about:
+        "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and helps Hispanic and Latino families and small businesses with clear, personal tax and financial guidance.",
+      services: [
+        "Income Tax Preparation",
+        "ITIN Number Processing and Renewal",
+        "Business Registration",
+      ],
+      template: "tax",
+      customDomain: null,
+      siteStatus: "live",
+      paymentStatus: "paid",
+      lastPaymentAt: isoDaysFromNow(-1),
+      nextInvoiceAt: isoDaysFromNow(29),
+      stripeCustomerId: null,
+      stripeSubscriptionId: null,
+      stripeBoostSubscriptionId: null,
+      localBoost: false,
+      stripeTrafficSubscriptionId: null,
+      trafficAds: false,
+      stripeLoudSubscriptionId: null,
+      loudAds: false,
+      stripeEmailSubscriptionId: null,
+      businessEmail: false,
+      bookAJob: false,
+      reminderSentAt: null,
+      overdueSince: null,
+      offlineAt: null,
+      filesKeptUntil: null,
+      takenDownAt: null,
+      notes: [
+        {
+          id: "note_pa_1",
+          body: "Real paying client — not a demo. $200 launch paid cash. Tax-office template. Custom domain later: pataxesllc.com (CNAME www to cname.vercel-dns.com, add in Vercel, set Custom domain in Admin to www.pataxesllc.com).",
+          createdAt: isoDaysFromNow(-1),
+        },
+      ],
+      editRequests: [],
+      createdAt: isoDaysFromNow(-1),
+      logoText: "P&A Financial",
+    },
   ];
 }
 
@@ -456,10 +508,17 @@ export function mergeMissingSeedClients(state: AppState): {
   const flags = applySeedDemoBookJob(missing.items, seed);
   const restored = restoreMesaStreetKitchenDemo(flags.items);
   const sparkle = refreshDesertSparkleDemoCopy(restored.items, seed);
-  if (!missing.added && !flags.added && !restored.added && !sparkle.added) {
+  const pa = refreshPaFinancialArizonaCopy(sparkle.items, seed);
+  if (
+    !missing.added &&
+    !flags.added &&
+    !restored.added &&
+    !sparkle.added &&
+    !pa.added
+  ) {
     return { state, added: false };
   }
-  return { state: { ...state, clients: sparkle.items }, added: true };
+  return { state: { ...state, clients: pa.items }, added: true };
 }
 
 export function createSeedState(): AppState {

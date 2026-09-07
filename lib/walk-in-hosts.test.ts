@@ -49,6 +49,14 @@ test("hola-tax custom hosts stay on the tax office, not a demo subdomain", () =>
   assert.equal(resolveKnownCustomDomain("phoenixwebhost.com"), null);
 });
 
+test("pataxesllc.com maps to the P&A Financial tax-office client", () => {
+  assert.deepEqual(resolveKnownCustomDomain("pataxesllc.com"), {
+    slug: "pa-financial",
+    customDomain: "www.pataxesllc.com",
+  });
+  assert.equal(resolveWalkInHostSlug("pataxesllc"), "pa-financial");
+});
+
 test("walk-in hosts rewrite to /s/[canonical] the same way custom domains do", () => {
   assert.deepEqual(
     clientHostDecision({

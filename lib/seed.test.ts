@@ -5,6 +5,7 @@ import {
   applySeedDemoBookJob,
   mergeMissingBySlug,
   refreshDesertSparkleDemoCopy,
+  refreshPaFinancialArizonaCopy,
   restoreMesaStreetKitchenDemo,
 } from "./seed-merge.ts";
 
@@ -106,6 +107,69 @@ test("mesa street kitchen seed is a live paid restaurant demo", () => {
   assert.match(chunk, /paymentStatus: "paid"/);
   assert.doesNotMatch(chunk, /siteStatus: "offline"/);
   assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
+});
+
+test("P&A Financial seed is a real paying tax-office client, not a demo", () => {
+  const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
+  const start = src.indexOf('id: "cli_pa_financial"');
+  assert.ok(start > 0);
+  const end = src.indexOf("export function mergeMissingSeedClients", start);
+  const chunk = src.slice(start, end > start ? end : start + 2800);
+  assert.match(chunk, /businessName: "P&A Financial LLC"/);
+  assert.match(chunk, /slug: "pa-financial"/);
+  assert.match(chunk, /contactName: "Patricia Escobedo"/);
+  assert.match(chunk, /pafinancial19@gmail.com/);
+  assert.match(chunk, /\(720\) 501-0501/);
+  assert.match(chunk, /template: "tax"/);
+  assert.match(chunk, /siteStatus: "live"/);
+  assert.match(chunk, /paymentStatus: "paid"/);
+  assert.match(chunk, /Income Tax Preparation/);
+  assert.match(chunk, /ITIN Number Processing and Renewal/);
+  assert.match(chunk, /Business Registration/);
+  assert.match(chunk, /By appointment/);
+  assert.match(chunk, /Real paying client/);
+  assert.match(chunk, /\$200 launch paid cash/);
+  assert.match(chunk, /pataxesllc.com/);
+  assert.match(chunk, /city: "Arizona"/);
+  assert.doesNotMatch(chunk, /Colorado/);
+  assert.doesNotMatch(chunk, /sample: true/);
+  assert.doesNotMatch(chunk, /cus_demo_/);
+  assert.doesNotMatch(chunk, /sub_demo_/);
+  assert.doesNotMatch(chunk, /\.example/);
+  assert.doesNotMatch(chunk, /siteStatus: "offline"/);
+  assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
+});
+
+test("stale P&A Financial Colorado copy is swapped to Arizona", () => {
+  const seed = [
+    {
+      slug: "pa-financial",
+      city: "Arizona",
+      about:
+        "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona.",
+    },
+    { slug: "hola-tax-service", city: "Phoenix", about: "Hola stays." },
+  ];
+  const stale = [
+    {
+      slug: "pa-financial",
+      city: "Colorado",
+      about:
+        "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Colorado.",
+    },
+    { slug: "hola-tax-service", city: "Phoenix", about: "Hola stays." },
+  ];
+  const next = refreshPaFinancialArizonaCopy(stale, seed);
+  assert.equal(next.added, true);
+  const pa = next.items.find((row) => row.slug === "pa-financial");
+  assert.equal(pa?.city, "Arizona");
+  assert.match(String(pa?.about), /Arizona/);
+  assert.equal(String(pa?.about).includes("Colorado"), false);
+  assert.equal(
+    next.items.find((row) => row.slug === "hola-tax-service")?.about,
+    "Hola stays.",
+  );
+  assert.equal(refreshPaFinancialArizonaCopy(next.items, seed).added, false);
 });
 
 test("stale offline mesa street kitchen is restored without touching other clients", () => {
