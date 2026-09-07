@@ -253,6 +253,66 @@ body {
   background: #000000;
 }
 
+.theme-pa-financial .pa-brand-name {
+  color: #111111;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+@media (min-width: 640px) {
+  .theme-pa-financial .pa-brand-name {
+    font-size: 2rem;
+  }
+}
+
+.theme-pa-financial .shop-header nav,
+.theme-pa-financial .shop-header .text-sm {
+  font-size: 1rem;
+}
+
+.theme-pa-financial .pa-owner-photo {
+  border-radius: 18px;
+  box-shadow: 0 16px 32px rgba(15, 11, 10, 0.16);
+}
+
+.theme-pa-financial .pa-appoint {
+  background: #0b0b0b;
+  color: #ffffff;
+}
+
+.theme-pa-financial .pa-appoint-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: var(--pa-wine);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.7rem 1.15rem;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--pa-wine) 40%, transparent);
+}
+
+.theme-pa-financial .pa-appoint-btn:hover {
+  background: #000000;
+}
+
+.theme-pa-financial .pa-appoint-mark {
+  border-radius: 999px;
+  box-shadow: 0 0 36px color-mix(in srgb, var(--pa-wine) 45%, transparent);
+}
+
+.theme-pa-financial footer.pa-footer {
+  background: var(--pa-wine);
+  border-top: none;
+  color: #ffffff;
+}
+
+.theme-pa-financial footer.pa-footer a:hover {
+  color: var(--pa-gold-soft);
+}
+
 /* Marketing homepage first-visit flare — lime/gold, not a game overlay. */
 .studio-flare {
   --flare-x: 50%;

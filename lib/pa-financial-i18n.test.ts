@@ -2,8 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   PA_FINANCIAL_LEGAL,
+  PA_FINANCIAL_LOGO,
+  PA_FINANCIAL_OWNER,
   PA_FINANCIAL_SLUG,
   paFinancialAbout,
+  paFinancialCopy,
   paFinancialSeo,
   paFinancialServiceBlurb,
   paFinancialServiceLabel,
@@ -29,5 +32,8 @@ test("P&A Financial copy stays on this shop", () => {
   const seo = paFinancialSeo("en");
   assert.equal(seo.brand, PA_FINANCIAL_LEGAL);
   assert.equal(seo.icon, "/clients/pa-financial/icon.png");
+  assert.equal(PA_FINANCIAL_LOGO, "/clients/pa-financial/logo-circle.jpg");
+  assert.equal(PA_FINANCIAL_OWNER, "/clients/pa-financial/patricia.jpg");
+  assert.equal(paFinancialCopy("en").scheduleTitle, "Schedule Your Appointment");
   assert.equal(JSON.stringify(seo).includes("Phoenixwebhost"), false);
 });

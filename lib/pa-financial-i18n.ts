@@ -3,8 +3,13 @@ import type { Locale } from "@/lib/types";
 export const PA_FINANCIAL_SLUG = "pa-financial";
 export const PA_FINANCIAL_LEGAL = "P&A Financial LLC";
 export const PA_FINANCIAL_PHONE = "(720) 501-0501";
-export const PA_FINANCIAL_LOGO = "/clients/pa-financial/logo.png";
+export const PA_FINANCIAL_EMAIL = "pafinancial19@gmail.com";
+export const PA_FINANCIAL_LOGO = "/clients/pa-financial/logo-circle.jpg";
+export const PA_FINANCIAL_OWNER = "/clients/pa-financial/patricia.jpg";
 export const PA_FINANCIAL_ICON = "/clients/pa-financial/icon.png";
+export const PA_FINANCIAL_WHATSAPP = "https://wa.me/17205010501";
+export const PA_FINANCIAL_INSTAGRAM = "https://www.instagram.com/pafin_ancial";
+export const PA_FINANCIAL_FACEBOOK = "#";
 
 const servicesEs: Record<string, string> = {
   "Income Tax Preparation": "Preparación de impuestos sobre la renta",
@@ -21,6 +26,20 @@ const copy = {
     hours: "By appointment — call to schedule",
     servicesTitle: "Our Services",
     contactUs: "Contact Us",
+    aboutTitle: "About",
+    aboutKicker: "Meet the owner",
+    ownerName: "Patricia Escobedo",
+    ownerRole: "Owner",
+    scheduleTitle: "Schedule Your Appointment",
+    scheduleBlurb:
+      "P&A Financial LLC helps with income tax preparation, ITIN processing, and business registration. Call or send a message to schedule.",
+    footerLinks: "Links",
+    footerContact: "Contact",
+    footerSocial: "Social",
+    navHome: "Home",
+    navAbout: "About",
+    navServices: "Services",
+    navContact: "Contact",
     blurbs: {
       "Income Tax Preparation":
         "Ensure your taxes are filed accurately and on time with our expert guidance.",
@@ -38,6 +57,20 @@ const copy = {
     hours: "Con cita — llame para agendar",
     servicesTitle: "Nuestros servicios",
     contactUs: "Contáctenos",
+    aboutTitle: "Acerca de",
+    aboutKicker: "Conozca a la propietaria",
+    ownerName: "Patricia Escobedo",
+    ownerRole: "Propietaria",
+    scheduleTitle: "Programe su cita",
+    scheduleBlurb:
+      "P&A Financial LLC ayuda con la preparación de impuestos, trámites de ITIN y registro de negocios. Llame o envíe un mensaje para agendar.",
+    footerLinks: "Enlaces",
+    footerContact: "Contacto",
+    footerSocial: "Redes",
+    navHome: "Inicio",
+    navAbout: "Acerca de",
+    navServices: "Servicios",
+    navContact: "Contacto",
     blurbs: {
       "Income Tax Preparation":
         "Asegúrese de que sus impuestos se presenten a tiempo y de forma correcta, con nuestra guía.",
@@ -72,6 +105,10 @@ export function paFinancialServicesTitle(locale: Locale) {
 
 export function paFinancialContactUs(locale: Locale) {
   return copy[locale].contactUs;
+}
+
+export function paFinancialCopy(locale: Locale) {
+  return copy[locale];
 }
 
 export function paFinancialServiceBlurb(service: string, locale: Locale) {

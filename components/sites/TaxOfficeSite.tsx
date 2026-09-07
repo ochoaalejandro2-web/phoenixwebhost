@@ -4,9 +4,15 @@ import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
 import {
+  PA_FINANCIAL_EMAIL,
+  PA_FINANCIAL_FACEBOOK,
+  PA_FINANCIAL_INSTAGRAM,
   PA_FINANCIAL_LOGO,
+  PA_FINANCIAL_OWNER,
   PA_FINANCIAL_SLUG,
+  PA_FINANCIAL_WHATSAPP,
   paFinancialContactUs,
+  paFinancialCopy,
   paFinancialHours,
   paFinancialServiceBlurb,
   paFinancialServicesTitle,
@@ -143,6 +149,38 @@ function PaServiceIcon({ service }: { service: string }) {
   );
 }
 
+function SocialGlyph({ kind }: { kind: "whatsapp" | "email" | "facebook" | "instagram" }) {
+  if (kind === "whatsapp") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+        <path d="M12.04 4.5A7.46 7.46 0 0 0 4.6 11.9c0 1.32.35 2.6 1 3.72L4.5 19.5l4.02-1.05a7.5 7.5 0 0 0 3.52.87 7.46 7.46 0 0 0 0-14.82Zm0 13.55a6.08 6.08 0 0 1-3.1-.85l-.22-.13-2.39.63.64-2.32-.14-.24a6.05 6.05 0 1 1 5.21 2.91Zm3.33-4.54c.18-.09 1.07-.53 1.22-.59.16-.06.27-.09.39.09.11.18.44.59.48.63.04.05.07.18-.04.35-.11.18-.33.41-.65.64-.22.16-.76.7-1.82.97-1.06.26-1.96.04-2.28-.13-.32-.16-1.22-.45-2.32-1.43-1.1-.98-1.42-1.77-1.58-2.07-.16-.3-.02-.48.12-.63.13-.13.29-.35.43-.52.15-.18.2-.3.29-.5.1-.2.05-.37-.02-.52-.07-.15-.38-.95-.53-1.3-.14-.35-.28-.3-.39-.3h-.33c-.11 0-.3.04-.45.22-.16.18-.59.57-.59 1.4 0 .82.61 1.61.69 1.72.09.11 1.2 1.83 2.9 2.57 1.7.74 1.7.49 2.01.46.3-.03 1.07-.44 1.22-.86.15-.43.15-.79.11-.86-.04-.08-.15-.13-.33-.22Z" />
+      </svg>
+    );
+  }
+  if (kind === "email") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current stroke-[1.7]">
+        <rect x="3.5" y="5.5" width="17" height="13" rx="1.6" />
+        <path d="m4.2 7.2 7.8 6.2 7.8-6.2" />
+      </svg>
+    );
+  }
+  if (kind === "facebook") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+        <path d="M14.2 20v-7.1h2.4l.36-2.78h-2.76V8.4c0-.8.22-1.35 1.38-1.35H17V4.57A18.6 18.6 0 0 0 14.7 4.4c-2.3 0-3.87 1.4-3.87 3.98v2.22H8.4V12.9h2.43V20h3.37Z" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current stroke-[1.7]">
+      <rect x="4" y="4" width="16" height="16" rx="4.5" />
+      <circle cx="12" cy="12" r="3.6" />
+      <circle cx="17.1" cy="6.9" r="0.7" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 function PaFinancialServices({
   services,
   locale,
@@ -151,7 +189,7 @@ function PaFinancialServices({
   locale: Locale;
 }) {
   return (
-    <div className="pa-services">
+    <div id="services" className="pa-services">
       <div className="mx-auto max-w-5xl px-5 py-16 text-center">
         <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
           {paFinancialServicesTitle(locale)}
@@ -179,6 +217,130 @@ function PaFinancialServices({
   );
 }
 
+function PaFinancialAppointment({ locale }: { locale: Locale }) {
+  const pa = paFinancialCopy(locale);
+  return (
+    <section id="appointment" className="pa-appoint" aria-labelledby="pa-appoint-title">
+      <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-16 md:grid-cols-[1fr_auto]">
+        <div>
+          <h2 id="pa-appoint-title" className="font-display text-3xl tracking-tight text-white sm:text-4xl">
+            {pa.scheduleTitle}
+          </h2>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
+            {pa.scheduleBlurb}
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <a href={PA_FINANCIAL_WHATSAPP} className="pa-appoint-btn" target="_blank" rel="noreferrer">
+              <SocialGlyph kind="whatsapp" />
+              WhatsApp
+            </a>
+            <a href={`mailto:${PA_FINANCIAL_EMAIL}`} className="pa-appoint-btn">
+              <SocialGlyph kind="email" />
+              Email
+            </a>
+            <a href={PA_FINANCIAL_FACEBOOK} className="pa-appoint-btn">
+              <SocialGlyph kind="facebook" />
+              Facebook
+            </a>
+            <a
+              href={PA_FINANCIAL_INSTAGRAM}
+              className="pa-appoint-btn"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <SocialGlyph kind="instagram" />
+              Instagram
+            </a>
+          </div>
+        </div>
+        <Image
+          src={PA_FINANCIAL_LOGO}
+          alt=""
+          width={1042}
+          height={1042}
+          className="pa-appoint-mark mx-auto h-40 w-40 sm:h-48 sm:w-48 md:h-56 md:w-56"
+        />
+      </div>
+    </section>
+  );
+}
+
+function PaFinancialFooter({
+  locale,
+  home,
+  phone,
+  staff,
+}: {
+  locale: Locale;
+  home: string;
+  phone: string;
+  staff: string;
+}) {
+  const pa = paFinancialCopy(locale);
+  const c = tTaxOffice(locale);
+  return (
+    <footer className="pa-footer mt-auto px-5 py-10 text-sm text-white">
+      <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <a href={home} className="inline-flex items-center">
+          <Image
+            src={PA_FINANCIAL_LOGO}
+            alt="P&A Financial LLC"
+            width={1042}
+            height={1042}
+            className="h-20 w-20"
+          />
+        </a>
+        <div>
+          <p className="font-display text-base font-semibold tracking-tight">{pa.footerLinks}</p>
+          <ul className="mt-3 grid gap-1.5">
+            <li>
+              <a href={home}>{pa.navHome}</a>
+            </li>
+            <li>
+              <a href="#about">{pa.navAbout}</a>
+            </li>
+            <li>
+              <a href="#services">{pa.navServices}</a>
+            </li>
+            <li>
+              <a href="#contact">{pa.navContact}</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p className="font-display text-base font-semibold tracking-tight">{pa.footerContact}</p>
+          <ul className="mt-3 grid gap-1.5">
+            {phone ? (
+              <li>
+                <a href={telHref(phone)}>{phone}</a>
+              </li>
+            ) : null}
+            <li>
+              <a href={`mailto:${PA_FINANCIAL_EMAIL}`}>{PA_FINANCIAL_EMAIL}</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p className="font-display text-base font-semibold tracking-tight">{pa.footerSocial}</p>
+          <ul className="mt-3 grid gap-1.5">
+            <li>
+              <a href={PA_FINANCIAL_INSTAGRAM} target="_blank" rel="noreferrer">
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a href={PA_FINANCIAL_FACEBOOK}>Facebook</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <p className="mx-auto mt-8 max-w-5xl text-white/60">
+        <a href={staff}>{c.staffLogin}</a>
+      </p>
+    </footer>
+  );
+}
+
 function BrandMark({
   client,
   locale,
@@ -203,15 +365,17 @@ function BrandMark({
     );
   }
   if (client.slug === PA_FINANCIAL_SLUG) {
+    const brand = client.logoText?.trim() || "P&A Financial";
     return (
-      <a href={home} className="inline-flex shrink-0 items-center">
+      <a href={home} className="pa-brand inline-flex shrink-0 items-center gap-3">
         <Image
           src={PA_FINANCIAL_LOGO}
-          alt="P&A Financial LLC"
-          width={1024}
-          height={1024}
-          className="h-10 w-10 sm:h-12 sm:w-12"
+          alt=""
+          width={1042}
+          height={1042}
+          className="pa-brand-logo h-12 w-12 sm:h-14 sm:w-14"
         />
+        <span className="pa-brand-name">{brand}</span>
       </a>
     );
   }
@@ -231,6 +395,8 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
   const c = tTaxOffice(locale);
   const hola = tHolaTax(locale);
   const isHola = client.slug === HOLA_TAX_SLUG;
+  const isPaFinancial = client.slug === PA_FINANCIAL_SLUG;
+  const pa = isPaFinancial ? paFinancialCopy(locale) : null;
   const preview = isPreviewClient(client);
   const home = preview
     ? siteHomeHref(client)
@@ -413,6 +579,30 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               />
             </div>
           </>
+        ) : isPaFinancial && pa ? (
+          <aside id="about" className="mb-10 grid items-center gap-6 sm:grid-cols-2">
+            <SiteStill
+              src={PA_FINANCIAL_OWNER}
+              alt={`${pa.ownerName}, ${pa.ownerRole} of P&A Financial LLC`}
+              sizes="(max-width: 640px) 100vw, 480px"
+              className="pa-owner-photo aspect-square"
+            />
+            <div>
+              <p className="text-sm uppercase tracking-[0.22em] text-[#00E840]">
+                {pa.aboutKicker}
+              </p>
+              <h2 className="mt-2 font-display text-3xl tracking-tight text-black">
+                {pa.aboutTitle}
+              </h2>
+              <p className="mt-4 text-black/85">
+                {taxOfficeAbout(client.slug, client.about, locale)}
+              </p>
+              <p className="mt-5 font-display text-xl tracking-tight text-black">
+                {pa.ownerName}
+              </p>
+              <p className="text-sm text-black/70">{pa.ownerRole}</p>
+            </div>
+          </aside>
         ) : (
           <div className="mb-10 grid grid-cols-2 gap-3 md:grid-cols-4">
             {taxPhotos.gallery.map((photo) => (
@@ -695,6 +885,11 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
         ) : null}
       </section>
 
+      {isPaFinancial ? <PaFinancialAppointment locale={locale} /> : null}
+
+      {isPaFinancial ? (
+        <PaFinancialFooter locale={locale} home={home} phone={phone} staff={staff} />
+      ) : (
       <footer className="mt-auto border-t border-[#00FF66] bg-white px-5 py-8 text-sm text-black/80">
         <div className="mx-auto flex max-w-5xl flex-col gap-2 sm:flex-row sm:justify-between">
           <p>
@@ -712,6 +907,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
           </p>
         )}
       </footer>
+      )}
     </div>
   );
 }
