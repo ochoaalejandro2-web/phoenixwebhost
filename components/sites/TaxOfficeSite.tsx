@@ -188,40 +188,30 @@ function SocialGlyph({
   );
 }
 
+function PaSpinLogo({
+  className,
+  alt,
+}: {
+  className?: string;
+  alt: string;
+}) {
+  return (
+    <span className={`pa-logo-spin ${className ?? ""}`.trim()}>
+      <Image
+        src={PA_FINANCIAL_LOGO}
+        alt={alt}
+        width={1024}
+        height={1024}
+        unoptimized
+      />
+    </span>
+  );
+}
+
 function PaFinancialWordmark() {
   return (
-    <div className="pa-appoint-wordmark text-center text-white">
-      <svg viewBox="0 0 120 120" aria-hidden="true" className="mx-auto h-28 w-28 sm:h-36 sm:w-36">
-        <polygon
-          points="60,8 104,34 104,86 60,112 16,86 16,34"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="4"
-        />
-        <rect x="40" y="30" width="40" height="58" rx="5" fill="none" stroke="currentColor" strokeWidth="3" />
-        <rect x="46" y="36" width="28" height="14" rx="2" fill="currentColor" />
-        <text
-          x="60"
-          y="47"
-          textAnchor="middle"
-          fill="#111111"
-          fontSize="8"
-          fontWeight="700"
-        >
-          1040
-        </text>
-        <path
-          d="M48 58h6M57 58h6M66 58h6M48 66h6M57 66h6M66 66h6M48 74h6M57 74h6M66 74h6"
-          stroke="currentColor"
-          strokeWidth="2.2"
-        />
-      </svg>
-      <p className="mt-3 font-display text-xl font-semibold tracking-[0.08em] sm:text-2xl">
-        P&A FINANCIAL LLC
-      </p>
-      <p className="mt-1 text-[0.7rem] tracking-[0.22em] text-white/80">
-        INCOME TAXES AND BOOKKEEPING
-      </p>
+    <div className="pa-appoint-wordmark flex justify-center">
+      <PaSpinLogo className="pa-appoint-logo" alt="P&A Financial LLC" />
     </div>
   );
 }
@@ -328,8 +318,15 @@ function PaFinancialRefundHelp({ locale }: { locale: Locale }) {
   );
 }
 
-function PaFinancialAppointment({ locale }: { locale: Locale }) {
+function PaFinancialAppointment({
+  locale,
+  phone,
+}: {
+  locale: Locale;
+  phone: string;
+}) {
   const pa = paFinancialCopy(locale);
+  const c = tTaxOffice(locale);
   return (
     <section id="appointment" className="pa-appoint" aria-labelledby="pa-appoint-title">
       <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-16 md:grid-cols-[1.15fr_0.85fr]">
@@ -340,6 +337,16 @@ function PaFinancialAppointment({ locale }: { locale: Locale }) {
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-white sm:text-base">
             {pa.scheduleBlurb}
           </p>
+          <p className="mt-5 text-sm font-semibold text-white sm:text-base">
+            {pa.readyCta}
+          </p>
+          {phone ? (
+            <div className="mt-5">
+              <a href={telHref(phone)} className="site-cta pa-btn px-6 py-2.5 text-sm font-semibold">
+                {c.call(phone)}
+              </a>
+            </div>
+          ) : null}
           <div className="pa-appoint-card mt-7">
             <a href={PA_FINANCIAL_WHATSAPP} className="pa-appoint-btn" target="_blank" rel="noreferrer">
               <SocialGlyph kind="whatsapp" className="h-6 w-6" />
@@ -387,13 +394,7 @@ function PaFinancialFooter({
     <footer className="pa-footer mt-auto px-5 py-10 text-sm text-white">
       <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
         <a href={home} className="inline-flex items-center">
-          <Image
-            src={PA_FINANCIAL_LOGO}
-            alt="P&A Financial LLC"
-            width={1042}
-            height={1042}
-            className="h-24 w-24 sm:h-28 sm:w-28"
-          />
+          <PaSpinLogo className="pa-footer-logo" alt="P&A Financial LLC" />
         </a>
         <div>
           <p className="font-display text-base font-semibold tracking-tight">{pa.footerLinks}</p>
@@ -495,13 +496,7 @@ function BrandMark({
     const brand = client.logoText?.trim() || "P&A Financial";
     return (
       <a href={home} className="pa-brand inline-flex shrink-0 items-center gap-3">
-        <Image
-          src={PA_FINANCIAL_LOGO}
-          alt=""
-          width={1042}
-          height={1042}
-          className="pa-brand-logo h-12 w-12 sm:h-14 sm:w-14"
-        />
+        <PaSpinLogo className="pa-brand-logo" alt="" />
         <span className="pa-brand-name">{brand}</span>
       </a>
     );
@@ -542,14 +537,17 @@ function PaFinancialHero({
           <p className="mt-5 max-w-lg text-base leading-relaxed text-black/72 sm:text-lg">
             {pa.heroLede}
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <p className="mt-6 text-sm font-semibold tracking-tight text-black sm:text-base">
+            {pa.readyCta}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
             {phone ? (
               <a href={telHref(phone)} className="site-cta pa-btn px-6 py-2.5 text-sm font-semibold">
                 {c.call(phone)}
               </a>
             ) : null}
-            <a href="#contact" className="pa-btn-ghost px-6 py-2.5 text-sm font-semibold">
-              {c.ctaMessage}
+            <a href="#appointment" className="pa-btn-ghost px-6 py-2.5 text-sm font-semibold">
+              {pa.scheduleCta}
             </a>
           </div>
         </div>
@@ -771,7 +769,18 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               {pa.aboutTitle}
             </h2>
             <p className="mt-5 text-base leading-relaxed text-black/75">
-              {taxOfficeAbout(client.slug, client.about, locale)}
+              {pa.aboutLead}
+            </p>
+            <ul className="pa-do-list mt-7">
+              {pa.whatWeDo.map((item) => (
+                <li key={item.title}>
+                  <p className="font-display text-lg tracking-tight text-black">{item.title}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-black/70">{item.blurb}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-7 text-base leading-relaxed text-black/75">
+              {pa.about}
             </p>
             <p className="mt-6 font-display text-xl tracking-tight text-black">
               {pa.ownerName}
@@ -1063,7 +1072,7 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
       </section>
 
       {isPaFinancial ? <PaFinancialRefundHelp locale={locale} /> : null}
-      {isPaFinancial ? <PaFinancialAppointment locale={locale} /> : null}
+      {isPaFinancial ? <PaFinancialAppointment locale={locale} phone={phone} /> : null}
 
       {isPaFinancial ? (
         <PaFinancialFooter locale={locale} home={home} phone={phone} staff={staff} />

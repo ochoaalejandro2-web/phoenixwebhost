@@ -454,10 +454,10 @@ function demoClients(): Client[] {
       phone: "(720) 501-0501",
       address: "",
       city: "Arizona",
-      hours: "By appointment — call to schedule",
+      hours: "By appointment — call or schedule",
       tagline: "Expert tax & financial services for the Hispanic community",
       about:
-        "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and helps Hispanic and Latino families and small businesses with clear, personal tax and financial guidance.",
+        "Income tax preparation, ITIN processing and renewal, and business registration for Hispanic and Latino families and small businesses. Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona.",
       services: [
         "Income Tax Preparation",
         "ITIN Number Processing and Renewal",

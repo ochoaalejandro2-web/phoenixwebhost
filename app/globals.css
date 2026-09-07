@@ -373,9 +373,54 @@ body {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-neon) 38%, transparent);
 }
 
+@keyframes pa-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.theme-pa-financial .pa-logo-spin {
+  display: inline-flex;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  transform-origin: 50% 50%;
+  animation: pa-logo-spin 16s linear infinite;
+}
+
+.theme-pa-financial .pa-logo-spin img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
 .theme-pa-financial .pa-brand-logo {
   height: 3.15rem;
   width: 3.15rem;
+}
+
+.theme-pa-financial .pa-appoint-logo {
+  width: 11rem;
+  height: 11rem;
+}
+
+.theme-pa-financial .pa-footer-logo {
+  width: 6rem;
+  height: 6rem;
+}
+
+.theme-pa-financial .pa-do-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.theme-pa-financial .pa-do-list li {
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--pa-neon);
 }
 
 .theme-pa-financial .pa-brand-name {
@@ -396,6 +441,16 @@ body {
 
   .theme-pa-financial .pa-brand-name {
     font-size: 2.65rem;
+  }
+
+  .theme-pa-financial .pa-footer-logo {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .theme-pa-financial .pa-appoint-logo {
+    width: 13rem;
+    height: 13rem;
   }
 }
 
@@ -631,5 +686,9 @@ html[data-studio-flare="play"] .studio-hero-photo {
   html[data-studio-flare="play"] .studio-hero-photo {
     animation: none !important;
     filter: none !important;
+  }
+
+  .theme-pa-financial .pa-logo-spin {
+    animation: none;
   }
 }

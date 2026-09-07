@@ -3,8 +3,9 @@ import type { Locale } from "@/lib/types";
 export const PA_FINANCIAL_SLUG = "pa-financial";
 export const PA_FINANCIAL_LEGAL = "P&A Financial LLC";
 export const PA_FINANCIAL_PHONE = "(720) 501-0501";
+export const PA_FINANCIAL_TEL = "tel:7205010501";
 export const PA_FINANCIAL_EMAIL = "pafinancial19@gmail.com";
-export const PA_FINANCIAL_LOGO = "/clients/pa-financial/logo-circle.jpg";
+export const PA_FINANCIAL_LOGO = "/clients/pa-financial/logo-brand.svg";
 export const PA_FINANCIAL_OWNER = "/clients/pa-financial/patricia.jpg";
 export const PA_FINANCIAL_ICON = "/clients/pa-financial/icon.png";
 export const PA_FINANCIAL_WHATSAPP = "https://wa.me/17205010501";
@@ -26,20 +27,38 @@ const copy = {
     tagline: "Expert tax & financial services for the Hispanic community",
     heroLede:
       "Trusted, bilingual help for Latino families and small businesses — income taxes, ITIN processing, and business registration, by appointment.",
+    aboutLead:
+      "Income tax preparation, ITIN processing and renewal, and business registration for Hispanic and Latino families and small businesses — in English and Spanish. Straightforward bookkeeping when the books need a simple, clear hand.",
     about:
-      "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and helps Hispanic and Latino families and small businesses with clear, personal tax and financial guidance.",
-    hours: "By appointment — call to schedule",
+      "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish, with clear personal guidance.",
+    hours: "By appointment — call or schedule",
     servicesTitle: "Our Services",
     servicesLead:
       "Tax and financial help for families and small businesses in our community.",
     contactUs: "Contact Us",
-    aboutTitle: "About",
+    aboutTitle: "What we do",
     aboutKicker: "For the Latino community",
+    whatWeDo: [
+      {
+        title: "Income tax preparation",
+        blurb: "Household returns filed on time, with care.",
+      },
+      {
+        title: "ITIN processing and renewal",
+        blurb: "Step-by-step help obtaining or renewing an ITIN.",
+      },
+      {
+        title: "Business registration",
+        blurb: "Paperwork to get a small business on the books.",
+      },
+    ],
     ownerName: "Patricia Escobedo",
     ownerRole: "Owner",
+    readyCta: "Ready to call or schedule an appointment?",
+    scheduleCta: "Schedule appointment",
     scheduleTitle: "Schedule Your Appointment",
     scheduleBlurb:
-      "Take the first step toward financial clarity with P&A Financial LLC. We help Latino families and small businesses with taxes and paperwork, in English and Spanish.",
+      "Call or schedule an appointment with P&A Financial LLC. We help Latino families and small businesses with taxes and paperwork, in English and Spanish.",
     footerLinks: "Links",
     footerContact: "Contact",
     footerSocial: "Social Media",
@@ -50,7 +69,7 @@ const copy = {
     footerInstagram: "instagram.com/pafin_ancial",
     footerFacebook: "facebook.com/",
     navHome: "Home",
-    navAbout: "About Us",
+    navAbout: "What we do",
     navServices: "Services",
     navContact: "Contact",
     blurbs: {
@@ -66,20 +85,38 @@ const copy = {
     tagline: "Servicios fiscales y financieros para la comunidad latina",
     heroLede:
       "Ayuda de confianza, en inglés y español, para familias y negocios latinos — impuestos, trámites de ITIN y registro de negocios, con cita.",
+    aboutLead:
+      "Preparación de impuestos, trámite y renovación de ITIN, y registro de negocios para familias y negocios hispanos y latinos — en inglés y español. Contabilidad sencilla cuando hay que tener los libros en orden.",
     about:
-      "Patricia Escobedo lleva más de ocho años preparando impuestos. Su camino comenzó en Arizona. Trabaja en inglés y español y ayuda a familias y negocios hispanos y latinos con orientación clara y personal de impuestos y finanzas.",
-    hours: "Con cita — llame para agendar",
+      "Patricia Escobedo lleva más de ocho años preparando impuestos. Su camino comenzó en Arizona. Trabaja en inglés y español, con orientación clara y personal.",
+    hours: "Con cita — llame o programe",
     servicesTitle: "Nuestros servicios",
     servicesLead:
       "Ayuda de impuestos y finanzas para familias y negocios de nuestra comunidad.",
     contactUs: "Contáctenos",
-    aboutTitle: "Acerca de",
+    aboutTitle: "Qué hacemos",
     aboutKicker: "Para la comunidad latina",
+    whatWeDo: [
+      {
+        title: "Preparación de impuestos sobre la renta",
+        blurb: "Declaraciones del hogar, a tiempo y con cuidado.",
+      },
+      {
+        title: "Trámite y renovación de ITIN",
+        blurb: "Ayuda paso a paso para obtener o renovar un ITIN.",
+      },
+      {
+        title: "Registro de negocios",
+        blurb: "Le ayudamos a registrar un negocio pequeño.",
+      },
+    ],
     ownerName: "Patricia Escobedo",
     ownerRole: "Propietaria",
+    readyCta: "¿Listo para llamar o programar una cita?",
+    scheduleCta: "Programar una cita",
     scheduleTitle: "Programe su cita",
     scheduleBlurb:
-      "Dé el primer paso hacia claridad financiera con P&A Financial LLC. Ayudamos a familias y negocios latinos con impuestos y papeleo, en inglés y español.",
+      "Llame o programe una cita con P&A Financial LLC. Ayudamos a familias y negocios latinos con impuestos y papeleo, en inglés y español.",
     footerLinks: "Enlaces",
     footerContact: "Contacto",
     footerSocial: "Redes sociales",
@@ -90,7 +127,7 @@ const copy = {
     footerInstagram: "instagram.com/pafin_ancial",
     footerFacebook: "facebook.com/",
     navHome: "Inicio",
-    navAbout: "Nosotros",
+    navAbout: "Qué hacemos",
     navServices: "Servicios",
     navContact: "Contacto",
     blurbs: {
@@ -114,7 +151,8 @@ export function paFinancialTagline(_english: string, locale: Locale) {
 }
 
 export function paFinancialAbout(_english: string, locale: Locale) {
-  return copy[locale].about;
+  const c = copy[locale];
+  return `${c.aboutLead} ${c.about}`;
 }
 
 export function paFinancialHours(locale: Locale) {
@@ -148,7 +186,7 @@ export function paFinancialServiceBlurb(service: string, locale: Locale) {
 }
 
 export function paFinancialSeo(locale: Locale) {
-  const about = copy[locale].about;
+  const about = paFinancialAbout("", locale);
   return {
     brand: PA_FINANCIAL_LEGAL,
     title:
