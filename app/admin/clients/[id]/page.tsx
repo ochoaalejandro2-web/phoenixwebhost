@@ -433,6 +433,7 @@ export default async function ClientDetailPage({
                 instagram: client.instagram,
                 facebook: client.facebook,
                 whatsapp: client.whatsapp,
+                googleReviewUrl: client.googleReviewUrl,
               }}
             />
           ) : null}

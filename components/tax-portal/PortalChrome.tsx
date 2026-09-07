@@ -1,8 +1,10 @@
+import { LeaveReviewCta } from "@/components/sites/LeaveReviewCta";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { clientThemeClass } from "@/lib/client-themes";
 import { withSiteLangPath } from "@/lib/site-locale";
 import { portalPath } from "@/lib/tax-office";
 import { tTaxOffice } from "@/lib/tax-office-i18n";
+import { taxOfficeGoogleReviewUrl } from "@/lib/tax-office-layout";
 import type { Client, Locale } from "@/lib/types";
 
 export const taxFieldClass =
@@ -16,13 +18,16 @@ export function PortalChrome({
   children,
   nav,
   locale,
+  showReviewCta = false,
 }: {
   client: Client;
   children: React.ReactNode;
   nav?: React.ReactNode;
   locale: Locale;
+  showReviewCta?: boolean;
 }) {
   const c = tTaxOffice(locale);
+  const reviewUrl = showReviewCta ? taxOfficeGoogleReviewUrl(client) : "";
   return (
     <div
       lang={locale}
@@ -43,6 +48,11 @@ export function PortalChrome({
               label={c.langNav}
             />
             {nav}
+            <LeaveReviewCta
+              href={reviewUrl}
+              locale={locale}
+              className="font-semibold hover:text-[#00E840]"
+            />
             <a
               href={withSiteLangPath(portalPath(client.slug), locale)}
               className="font-semibold hover:text-[#00E840]"

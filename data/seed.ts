@@ -7,6 +7,7 @@ import {
   refreshPaFinancialListedOfferings,
   restoreMesaStreetKitchenDemo,
 } from "@/lib/seed-merge";
+import { paFinancialGoogleReviewUrlFromEnv } from "@/lib/tax-office-layout";
 import type { AppState, Client } from "@/lib/types";
 
 function isoDaysFromNow(days: number) {
@@ -502,6 +503,7 @@ function demoClients(): Client[] {
       ownerPhotoSrc: "/clients/pa-financial/patricia.jpg",
       instagram: "https://www.instagram.com/pafin_ancial",
       whatsapp: "https://wa.me/17205010501",
+      googleReviewUrl: paFinancialGoogleReviewUrlFromEnv() || undefined,
     },
   ];
 }

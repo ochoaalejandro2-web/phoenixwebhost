@@ -38,6 +38,7 @@ export const taxOfficeCopy = {
   en: {
     langNav: "Language",
     clientLogin: "Client login / Upload documents",
+    leaveReview: "Leave a review",
     call: (phone: string) => `Call ${phone}`,
     ctaMessage: "Send a message",
     portalHint:
@@ -201,6 +202,7 @@ export const taxOfficeCopy = {
   es: {
     langNav: "Idioma",
     clientLogin: "Iniciar sesión / Subir documentos",
+    leaveReview: "Deja una reseña",
     call: (phone: string) => `Llame al ${phone}`,
     ctaMessage: "Enviar un mensaje",
     portalHint:

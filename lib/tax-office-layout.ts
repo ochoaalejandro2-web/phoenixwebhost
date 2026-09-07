@@ -110,6 +110,7 @@ export type TaxProBrand = {
   email: string;
   socials: TaxProSocialLink[];
   refundLinks: { href: string; label: string }[];
+  googleReviewUrl: string;
 };
 
 export function isHolaTaxLayout(slug: string) {
@@ -320,13 +321,35 @@ export function taxProBrand(client: Client, locale: Locale): TaxProBrand {
     email,
     socials,
     refundLinks: taxProRefundLinks(client, locale),
+    googleReviewUrl: taxOfficeGoogleReviewUrl(client),
   };
 }
 
 export type TaxBrandFields = Pick<
   Client,
-  "logoText" | "logoSrc" | "ownerPhotoSrc" | "instagram" | "facebook" | "whatsapp"
+  | "logoText"
+  | "logoSrc"
+  | "ownerPhotoSrc"
+  | "instagram"
+  | "facebook"
+  | "whatsapp"
+  | "googleReviewUrl"
 >;
+
+/** Optional Vercel/env bootstrap for Patricia’s shop until Admin has a URL. */
+export function paFinancialGoogleReviewUrlFromEnv() {
+  return sanitizeHttpUrl(process.env.PA_FINANCIAL_GOOGLE_REVIEW_URL || "");
+}
+
+/** Client brand field first; P&A can fall back to env. Empty means hide the CTA. */
+export function taxOfficeGoogleReviewUrl(
+  client: Pick<Client, "slug" | "googleReviewUrl">,
+) {
+  const fromClient = sanitizeHttpUrl(String(client.googleReviewUrl || ""));
+  if (fromClient) return fromClient;
+  if (isPaFinancialSlug(client.slug)) return paFinancialGoogleReviewUrlFromEnv();
+  return "";
+}
 
 /** Admin create/save: optional brand fields for the tax Pro layout. */
 export function readTaxBrandFields(formData: FormData): TaxBrandFields {
@@ -338,6 +361,9 @@ export function readTaxBrandFields(formData: FormData): TaxBrandFields {
   const instagram = sanitizeHttpUrl(String(formData.get("instagram") || ""));
   const facebook = sanitizeHttpUrl(String(formData.get("facebook") || ""));
   const whatsapp = sanitizeHttpUrl(String(formData.get("whatsapp") || ""));
+  const googleReviewUrl = sanitizeHttpUrl(
+    String(formData.get("googleReviewUrl") || ""),
+  );
   return {
     logoText: logoText || undefined,
     logoSrc: logoSrc || undefined,
@@ -345,5 +371,6 @@ export function readTaxBrandFields(formData: FormData): TaxBrandFields {
     instagram: instagram || undefined,
     facebook: facebook || undefined,
     whatsapp: whatsapp || undefined,
+    googleReviewUrl: googleReviewUrl || undefined,
   };
 }
