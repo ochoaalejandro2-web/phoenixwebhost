@@ -2,6 +2,7 @@ import { publicSiteUrl } from "@/lib/config";
 import { demoUrl, templateLabel } from "@/lib/demo";
 import { isPreviewClient } from "@/lib/demo";
 import { STUDIO_INBOX } from "@/lib/site-addons";
+import { staffResetEmailBodies } from "@/lib/tax-staff-reset";
 import type { Client, ContactMessage, Lead, Review } from "@/lib/types";
 
 export type SiteContactStatus = "sent" | "no-email" | "send-failed";
@@ -587,4 +588,32 @@ export function twoFactorProvidersReady() {
       process.env.TWILIO_FROM?.trim(),
   );
   return email || sms;
+}
+
+export function notifyEmailReady() {
+  return Boolean(process.env.RESEND_API_KEY?.trim());
+}
+
+export async function notifyStaffPasswordReset(input: {
+  to: string;
+  businessName: string;
+  resetUrl: string;
+  locale: "en" | "es";
+}) {
+  const to = usableEmail(input.to);
+  if (!to) {
+    console.warn("[notify] skipping staff reset email: invalid address");
+    return false;
+  }
+  try {
+    const { subject, html, text } = staffResetEmailBodies({
+      businessName: input.businessName,
+      resetUrl: input.resetUrl,
+      locale: input.locale,
+    });
+    return await deliverEmail(subject, html, text, { to: [to] });
+  } catch (error) {
+    console.error("[notify] unexpected error (staff reset)", error);
+    return false;
+  }
 }

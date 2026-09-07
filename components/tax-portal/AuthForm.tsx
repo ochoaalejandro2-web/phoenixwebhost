@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { taxButtonClass, taxFieldClass } from "@/components/tax-portal/PortalChrome";
 import { withSiteLangPath } from "@/lib/site-locale";
+import { portalPath } from "@/lib/tax-office";
 import { tTaxOffice } from "@/lib/tax-office-i18n";
 import type { Locale } from "@/lib/types";
 
@@ -118,6 +120,16 @@ export function AuthForm({
             ? c.create
             : c.login}
       </button>
+      {mode === "staff" ? (
+        <p className="text-sm">
+          <Link
+            href={withSiteLangPath(portalPath(slug, "/staff/forgot"), locale)}
+            className="hover:text-black"
+          >
+            {c.forgotPassword}
+          </Link>
+        </p>
+      ) : null}
       {error ? (
         <p role="alert" className="text-sm">
           {error}
