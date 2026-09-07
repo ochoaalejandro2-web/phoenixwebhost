@@ -12,11 +12,7 @@ import {
 } from "@/lib/tax-db";
 import { loadLiveTaxOffice } from "@/lib/tax-guard";
 import { usableEmail } from "@/lib/notify";
-import {
-  HOLA_TAX_SLUG,
-  holaTaxStaffBootstrap,
-  portalPath,
-} from "@/lib/tax-office";
+import { portalPath, taxOfficeStaffBootstrap } from "@/lib/tax-office";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -79,9 +75,8 @@ export async function POST(
       return NextResponse.json({ ok: true, redirect: portalPath(slug, "/staff") });
     }
 
-    const boot = holaTaxStaffBootstrap();
+    const boot = taxOfficeStaffBootstrap(client.slug);
     const bootstrapOk =
-      client.slug === HOLA_TAX_SLUG &&
       Boolean(boot.password) &&
       email === boot.email &&
       sameSecret(password, boot.password);

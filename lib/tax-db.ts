@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import { hash } from "bcryptjs";
 import type { TaxPortalRole } from "@/lib/tax-access";
-import type { TaxDocLabel } from "@/lib/tax-office";
+import type { TaxDocLabel, TaxFileKind } from "@/lib/tax-office";
 
 const BCRYPT_ROUNDS = 12;
 const SCHEMA_KEY = "__tax_portal_schema_ready__";
@@ -76,6 +76,10 @@ async function migrate() {
   )`;
   await client`CREATE INDEX IF NOT EXISTS tax_portal_files_owner_idx
     ON tax_portal_files (client_id, user_id)`;
+  await client`ALTER TABLE tax_portal_files
+    ADD COLUMN IF NOT EXISTS kind TEXT NOT NULL DEFAULT 'intake'`;
+  await client`ALTER TABLE tax_portal_files
+    ADD COLUMN IF NOT EXISTS tax_year INTEGER`;
   await client`CREATE TABLE IF NOT EXISTS tax_portal_auth_lock (
     client_id TEXT NOT NULL,
     email TEXT NOT NULL,
@@ -229,6 +233,8 @@ export type TaxFileRow = {
   clientId: string;
   userId: string;
   label: string;
+  kind: TaxFileKind;
+  taxYear: number | null;
   filename: string;
   contentType: string;
   sizeBytes: number;
@@ -241,6 +247,8 @@ type FileSql = {
   client_id: string;
   user_id: string;
   label: string;
+  kind?: string | null;
+  tax_year?: number | null;
   filename: string;
   content_type: string;
   size_bytes: number;
@@ -249,11 +257,18 @@ type FileSql = {
 };
 
 function mapFile(row: FileSql): TaxFileRow {
+  const kind: TaxFileKind = row.kind === "filed" ? "filed" : "intake";
+  const taxYear =
+    row.tax_year == null || Number.isNaN(Number(row.tax_year))
+      ? null
+      : Number(row.tax_year);
   return {
     id: row.id,
     clientId: row.client_id,
     userId: row.user_id,
     label: row.label,
+    kind,
+    taxYear,
     filename: row.filename,
     contentType: row.content_type,
     sizeBytes: Number(row.size_bytes),
@@ -267,8 +282,8 @@ function mapFile(row: FileSql): TaxFileRow {
 
 export async function listTaxFiles(clientId: string, userId: string) {
   const db = await sql();
-  const rows = (await db`SELECT id, client_id, user_id, label, filename,
-      content_type, size_bytes, blob_pathname, created_at
+  const rows = (await db`SELECT id, client_id, user_id, label, kind, tax_year,
+      filename, content_type, size_bytes, blob_pathname, created_at
     FROM tax_portal_files
     WHERE client_id = ${clientId} AND user_id = ${userId}
     ORDER BY created_at DESC`) as FileSql[];
@@ -277,8 +292,8 @@ export async function listTaxFiles(clientId: string, userId: string) {
 
 export async function getTaxFile(clientId: string, fileId: string) {
   const db = await sql();
-  const rows = (await db`SELECT id, client_id, user_id, label, filename,
-      content_type, size_bytes, blob_pathname, created_at
+  const rows = (await db`SELECT id, client_id, user_id, label, kind, tax_year,
+      filename, content_type, size_bytes, blob_pathname, created_at
     FROM tax_portal_files
     WHERE client_id = ${clientId} AND id = ${fileId}
     LIMIT 1`) as FileSql[];
@@ -289,15 +304,19 @@ export async function insertTaxFile(input: {
   clientId: string;
   userId: string;
   label: TaxDocLabel;
+  kind?: TaxFileKind;
+  taxYear?: number | null;
   filename: string;
   contentType: string;
   sizeBytes: number;
   blobPathname: string;
 }) {
   const db = await sql();
+  const kind: TaxFileKind = input.kind === "filed" ? "filed" : "intake";
+  const taxYear = kind === "filed" && input.taxYear != null ? input.taxYear : null;
   const existing =
-    (await db`SELECT id, client_id, user_id, label, filename, content_type,
-      size_bytes, blob_pathname, created_at
+    (await db`SELECT id, client_id, user_id, label, kind, tax_year, filename,
+      content_type, size_bytes, blob_pathname, created_at
       FROM tax_portal_files
       WHERE blob_pathname = ${input.blobPathname}
       LIMIT 1`) as FileSql[];
@@ -307,6 +326,8 @@ export async function insertTaxFile(input: {
     }
     await db`UPDATE tax_portal_files
       SET label = ${input.label},
+          kind = ${kind},
+          tax_year = ${taxYear},
           filename = ${input.filename},
           content_type = ${input.contentType},
           size_bytes = CASE
@@ -318,10 +339,34 @@ export async function insertTaxFile(input: {
   }
   const id = `taxf_${crypto.randomUUID()}`;
   await db`INSERT INTO tax_portal_files
-    (id, client_id, user_id, label, filename, content_type, size_bytes, blob_pathname)
+    (id, client_id, user_id, label, kind, tax_year, filename, content_type, size_bytes, blob_pathname)
     VALUES (${id}, ${input.clientId}, ${input.userId}, ${input.label},
-      ${input.filename}, ${input.contentType}, ${input.sizeBytes}, ${input.blobPathname})`;
+      ${kind}, ${taxYear}, ${input.filename}, ${input.contentType}, ${input.sizeBytes},
+      ${input.blobPathname})`;
   return getTaxFile(input.clientId, id);
+}
+
+export async function deleteTaxFile(clientId: string, fileId: string) {
+  const file = await getTaxFile(clientId, fileId);
+  if (!file) return null;
+  const db = await sql();
+  await db`DELETE FROM tax_portal_files
+    WHERE client_id = ${clientId} AND id = ${fileId}`;
+  return file;
+}
+
+export async function deleteTaxCustomer(clientId: string, userId: string) {
+  const person = await findTaxUserById(clientId, userId);
+  if (!person || person.role !== "customer") return null;
+  const files = await listTaxFiles(clientId, userId);
+  const db = await sql();
+  await db`DELETE FROM tax_portal_files
+    WHERE client_id = ${clientId} AND user_id = ${userId}`;
+  await db`DELETE FROM tax_portal_auth_lock
+    WHERE client_id = ${clientId} AND email = ${person.email}`;
+  await db`DELETE FROM tax_portal_users
+    WHERE client_id = ${clientId} AND id = ${userId} AND role = 'customer'`;
+  return { user: person, files };
 }
 
 export async function countTaxCustomers(clientId: string) {

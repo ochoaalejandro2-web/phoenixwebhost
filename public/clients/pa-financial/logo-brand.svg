@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="paBrandTitle">
+  <title id="paBrandTitle">P&amp;A Financial LLC — Income Taxes and Bookkeeping</title>
+  <defs>
+    <path id="paTopArc" d="M 168,512 A 344,344 0 0 1 856,512" />
+    <clipPath id="paHexClip">
+      <polygon points="512,248 732,375 732,629 512,756 292,629 292,375" />
+    </clipPath>
+  </defs>
+  <circle cx="512" cy="512" r="506" fill="#ffffff" />
+  <circle cx="512" cy="512" r="498" fill="none" stroke="#111111" stroke-width="8" />
+  <circle cx="512" cy="512" r="478" fill="none" stroke="#111111" stroke-width="2.5" />
+  <text
+    fill="#111111"
+    font-family="ui-sans-serif, system-ui, 'Segoe UI', sans-serif"
+    font-size="36"
+    font-weight="700"
+    letter-spacing="6"
+  >
+    <textPath href="#paTopArc" startOffset="50%" text-anchor="middle">
+      INCOME TAXES AND BOOKKEEPING
+    </textPath>
+  </text>
+  <path
+    d="M 132,512 A 380,380 0 0 0 892,512"
+    fill="none"
+    stroke="#7A1E32"
+    stroke-width="7"
+    stroke-linecap="round"
+  />
+  <polygon
+    points="512,248 732,375 732,629 512,756 292,629 292,375"
+    fill="#111111"
+  />
+  <g clip-path="url(#paHexClip)">
+    <path d="M 300,390 C 380,320 460,360 512,330 C 580,292 650,330 730,300 L 730,430 L 300,460 Z" fill="#1a1a1a" />
+  </g>
+  <rect x="404" y="332" width="216" height="292" rx="22" fill="#ffffff" />
+  <rect x="424" y="352" width="176" height="62" rx="8" fill="#f4e9ec" />
+  <text
+    x="512"
+    y="398"
+    text-anchor="middle"
+    fill="#7A1E32"
+    font-family="ui-sans-serif, system-ui, 'Segoe UI', sans-serif"
+    font-size="42"
+    font-weight="800"
+    letter-spacing="2"
+  >
+    1040
+  </text>
+  <g fill="#7A1E32">
+    <circle cx="452" cy="450" r="12" />
+    <circle cx="512" cy="450" r="12" />
+    <circle cx="572" cy="450" r="12" />
+    <circle cx="452" cy="500" r="12" />
+    <circle cx="512" cy="500" r="12" />
+    <circle cx="572" cy="500" r="12" />
+    <circle cx="452" cy="550" r="12" />
+    <circle cx="512" cy="550" r="12" />
+    <circle cx="572" cy="550" r="12" />
+  </g>
+  <g
+    font-family="ui-sans-serif, system-ui, 'Segoe UI', sans-serif"
+    font-weight="800"
+  >
+    <rect x="344" y="788" width="86" height="44" rx="4" fill="#111111" />
+    <text x="387" y="818" text-anchor="middle" fill="#ffffff" font-size="22" letter-spacing="1">P&amp;A</text>
+    <text x="442" y="818" fill="#111111" font-size="26" letter-spacing="1.4">FINANCIAL LLC</text>
+  </g>
+</svg>

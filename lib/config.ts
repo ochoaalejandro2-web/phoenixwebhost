@@ -130,7 +130,7 @@ export const TEMPLATES: {
     name: "Tax office",
     nameEs: "Oficina de impuestos",
     blurb:
-      "A tax-prep shop site plus a private client drop box for W-2s, 1099s, and IDs. Not tax software.",
+      "A tax-prep shop in the P&A Pro layout (swap colors, logo, and photos) plus a private client drop box for W-2s, 1099s, and IDs. Not tax software.",
     blurbEs:
       "Sitio para una oficina de impuestos y un buzón privado para W-2, 1099 e identificaciones. No es software de impuestos.",
   },

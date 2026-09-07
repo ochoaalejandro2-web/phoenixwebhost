@@ -2,22 +2,6 @@ import Image from "next/image";
 import { BookJobForm } from "@/components/sites/BookJobForm";
 import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
 import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
-import { HOLA_TAX_SLUG, clientThemeClass } from "@/lib/client-themes";
-import {
-  PA_FINANCIAL_EMAIL,
-  PA_FINANCIAL_FACEBOOK,
-  PA_FINANCIAL_INSTAGRAM,
-  PA_FINANCIAL_LOGO,
-  PA_FINANCIAL_OWNER,
-  PA_FINANCIAL_SLUG,
-  PA_FINANCIAL_WHATSAPP,
-  paFinancialContactUs,
-  paFinancialCopy,
-  paFinancialHours,
-  paFinancialRefundLinks,
-  paFinancialServiceBlurb,
-  paFinancialServicesTitle,
-} from "@/lib/pa-financial-i18n";
 import { displayHours, isPreviewClient, isSamplePhone, previewLeadId, siteHomeHref } from "@/lib/demo";
 import { clientShowsBookJob } from "@/lib/site-addons";
 import {
@@ -25,7 +9,7 @@ import {
   tHolaTax,
   withHolaTaxListedServices,
 } from "@/lib/hola-tax-i18n";
-import { DEMO_REVIEWS, photoAlt, SHOP_PHOTOS } from "@/lib/shop-content";
+import { DEMO_REVIEWS } from "@/lib/shop-content";
 import { tShop } from "@/lib/shop-i18n";
 import { withSiteLangPath } from "@/lib/site-locale";
 import { portalPath } from "@/lib/tax-office";
@@ -35,6 +19,17 @@ import {
   taxOfficeServiceLabel,
   taxOfficeTagline,
 } from "@/lib/tax-office-i18n";
+import {
+  isHolaTaxLayout,
+  isTaxProLayout,
+  taxOfficeThemeClass,
+  taxProBrand,
+  taxProCopy,
+  taxProServiceBlurb,
+  telHref,
+  type TaxProBrand,
+  type TaxProCopy,
+} from "@/lib/tax-office-layout";
 import type { Client, ContactNotice, Locale } from "@/lib/types";
 
 const HOLA_PHOTOS = {
@@ -51,10 +46,6 @@ type SiteView = {
   notice?: ContactNotice | null;
   locale: Locale;
 };
-
-function telHref(phone: string) {
-  return `tel:${phone.replace(/[^\d+]/g, "")}`;
-}
 
 function SiteStill({
   src,
@@ -108,6 +99,22 @@ function ContactNoticeBanner({
 }
 
 function PaServiceIcon({ service }: { service: string }) {
+  if (/bookkeep|contab/i.test(service)) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
+        <rect x="5" y="4" width="14" height="16" rx="1.4" />
+        <path d="M8 8h8M8 11.5h8M8 15h5" />
+      </svg>
+    );
+  }
+  if (/llc/i.test(service)) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
+        <path d="M4.5 19.5V10l7.5-5 7.5 5v9.5" />
+        <path d="M10 19.5v-5h4v5" />
+      </svg>
+    );
+  }
   if (/itin/i.test(service)) {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
@@ -120,7 +127,7 @@ function PaServiceIcon({ service }: { service: string }) {
       </svg>
     );
   }
-  if (/business/i.test(service)) {
+  if (/registration|registro/i.test(service)) {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-none stroke-white stroke-[1.6]">
         <rect x="5" y="4" width="11" height="15" rx="1.2" />
@@ -188,51 +195,46 @@ function SocialGlyph({
   );
 }
 
-function PaFinancialWordmark() {
+function TaxProSpinLogo({
+  src,
+  className,
+  alt,
+}: {
+  src: string;
+  className?: string;
+  alt: string;
+}) {
   return (
-    <div className="pa-appoint-wordmark text-center text-white">
-      <svg viewBox="0 0 120 120" aria-hidden="true" className="mx-auto h-28 w-28 sm:h-36 sm:w-36">
-        <polygon
-          points="60,8 104,34 104,86 60,112 16,86 16,34"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="4"
-        />
-        <rect x="40" y="30" width="40" height="58" rx="5" fill="none" stroke="currentColor" strokeWidth="3" />
-        <rect x="46" y="36" width="28" height="14" rx="2" fill="currentColor" />
-        <text
-          x="60"
-          y="47"
-          textAnchor="middle"
-          fill="#111111"
-          fontSize="8"
-          fontWeight="700"
-        >
-          1040
-        </text>
-        <path
-          d="M48 58h6M57 58h6M66 58h6M48 66h6M57 66h6M66 66h6M48 74h6M57 74h6M66 74h6"
-          stroke="currentColor"
-          strokeWidth="2.2"
-        />
-      </svg>
-      <p className="mt-3 font-display text-xl font-semibold tracking-[0.08em] sm:text-2xl">
-        P&A FINANCIAL LLC
-      </p>
-      <p className="mt-1 text-[0.7rem] tracking-[0.22em] text-white/80">
-        INCOME TAXES AND BOOKKEEPING
-      </p>
+    <span className={`pa-logo-spin ${className ?? ""}`.trim()}>
+      <Image
+        src={src}
+        alt={alt}
+        width={1024}
+        height={1024}
+        unoptimized
+      />
+    </span>
+  );
+}
+
+function TaxProWordmark({ src, alt }: { src: string; alt: string }) {
+  if (!src) return null;
+  return (
+    <div className="pa-appoint-wordmark flex justify-center">
+      <TaxProSpinLogo className="pa-appoint-logo" src={src} alt={alt} />
     </div>
   );
 }
 
-function PaOwnerPortrait({
+function TaxProOwnerPortrait({
+  src,
   alt,
   sizes,
   caption,
   className,
   preload,
 }: {
+  src: string;
   alt: string;
   sizes: string;
   caption?: string;
@@ -243,7 +245,7 @@ function PaOwnerPortrait({
     <figure className={`pa-portrait ${className ?? ""}`}>
       <div className="pa-portrait-frame">
         <Image
-          src={PA_FINANCIAL_OWNER}
+          src={src}
           alt={alt}
           fill
           sizes={sizes}
@@ -256,25 +258,29 @@ function PaOwnerPortrait({
   );
 }
 
-function PaFinancialServices({
+function TaxProServices({
+  client,
   services,
   locale,
+  copy,
 }: {
+  client: Client;
   services: string[];
   locale: Locale;
+  copy: TaxProCopy;
 }) {
   return (
     <div id="services" className="pa-services">
       <div className="mx-auto max-w-5xl px-5 py-16 text-center sm:py-20">
-        <p className="pa-kicker">{paFinancialCopy(locale).servicesLead}</p>
+        <p className="pa-kicker">{copy.servicesLead}</p>
         <h2 className="mt-3 font-display text-3xl tracking-tight text-white sm:text-4xl">
-          {paFinancialServicesTitle(locale)}
+          {copy.servicesTitle}
         </h2>
         <div className="pa-services-row mt-12">
           <span className="pa-chevron" aria-hidden="true">
             ‹
           </span>
-          <ul className="grid flex-1 gap-6 md:grid-cols-3">
+          <ul className="grid flex-1 gap-6 sm:grid-cols-2">
             {services.map((service) => (
               <li key={service} className="pa-service-card px-6 py-9 text-center">
                 <span className="pa-service-icon mx-auto inline-flex h-14 w-14 items-center justify-center">
@@ -284,7 +290,7 @@ function PaFinancialServices({
                   {taxOfficeServiceLabel(service, locale)}
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-white/75">
-                  {paFinancialServiceBlurb(service, locale)}
+                  {taxProServiceBlurb(client, service, locale)}
                 </p>
               </li>
             ))}
@@ -294,23 +300,28 @@ function PaFinancialServices({
           </span>
         </div>
         <a href="#contact" className="pa-service-cta mt-12 inline-flex">
-          {paFinancialContactUs(locale)}
+          {copy.contactUs}
         </a>
       </div>
     </div>
   );
 }
 
-function PaFinancialRefundHelp({ locale }: { locale: Locale }) {
-  const pa = paFinancialCopy(locale);
+function TaxProRefundHelp({
+  copy,
+  brand,
+}: {
+  copy: TaxProCopy;
+  brand: TaxProBrand;
+}) {
   return (
-    <section className="px-5 py-10" aria-labelledby="pa-refund-title">
+    <section className="px-5 py-10" aria-labelledby="tax-refund-title">
       <div className="pa-panel mx-auto flex max-w-5xl flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-7">
-        <h2 id="pa-refund-title" className="font-display text-xl tracking-tight">
-          {pa.refundTitle}
+        <h2 id="tax-refund-title" className="font-display text-xl tracking-tight">
+          {copy.refundTitle}
         </h2>
         <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-end">
-          {paFinancialRefundLinks(locale).map((link) => (
+          {brand.refundLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
@@ -328,89 +339,118 @@ function PaFinancialRefundHelp({ locale }: { locale: Locale }) {
   );
 }
 
-function PaFinancialAppointment({ locale }: { locale: Locale }) {
-  const pa = paFinancialCopy(locale);
+function TaxProAppointment({
+  client,
+  locale,
+  phone,
+  copy,
+  brand,
+}: {
+  client: Client;
+  locale: Locale;
+  phone: string;
+  copy: TaxProCopy;
+  brand: TaxProBrand;
+}) {
+  const c = tTaxOffice(locale);
   return (
-    <section id="appointment" className="pa-appoint" aria-labelledby="pa-appoint-title">
-      <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-16 md:grid-cols-[1.15fr_0.85fr]">
+    <section id="appointment" className="pa-appoint" aria-labelledby="tax-appoint-title">
+      <div className={`mx-auto grid max-w-5xl items-center gap-10 px-5 py-16${brand.logoSrc ? " md:grid-cols-[1.15fr_0.85fr]" : ""}`}>
         <div>
-          <h2 id="pa-appoint-title" className="font-display text-3xl tracking-tight text-white sm:text-4xl">
-            {pa.scheduleTitle}
+          <h2 id="tax-appoint-title" className="font-display text-3xl tracking-tight text-white sm:text-4xl">
+            {copy.scheduleTitle}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-white sm:text-base">
-            {pa.scheduleBlurb}
+            {copy.scheduleBlurb}
           </p>
-          <div className="pa-appoint-card mt-7">
-            <a href={PA_FINANCIAL_WHATSAPP} className="pa-appoint-btn" target="_blank" rel="noreferrer">
-              <SocialGlyph kind="whatsapp" className="h-6 w-6" />
-              WhatsApp
-            </a>
-            <a href={`mailto:${PA_FINANCIAL_EMAIL}`} className="pa-appoint-btn">
-              <SocialGlyph kind="email" className="h-6 w-6" />
-              Email
-            </a>
-            <a href={PA_FINANCIAL_FACEBOOK} className="pa-appoint-btn">
-              <SocialGlyph kind="facebook" className="h-6 w-6" />
-              Facebook
-            </a>
-            <a
-              href={PA_FINANCIAL_INSTAGRAM}
-              className="pa-appoint-btn"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <SocialGlyph kind="instagram" className="h-6 w-6" />
-              Instagram
-            </a>
-          </div>
+          <p className="mt-5 text-sm font-semibold text-white sm:text-base">
+            {copy.readyCta}
+          </p>
+          {phone ? (
+            <div className="mt-5">
+              <a href={telHref(phone)} className="site-cta pa-btn px-6 py-2.5 text-sm font-semibold">
+                {c.call(phone)}
+              </a>
+            </div>
+          ) : null}
+          {brand.socials.length ? (
+            <div className="pa-appoint-card mt-7">
+              {brand.socials.map((row) => {
+                const external = /^https?:/i.test(row.href);
+                return (
+                <a
+                  key={row.kind}
+                  href={row.href}
+                  className="pa-appoint-btn"
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noreferrer" : undefined}
+                >
+                  <SocialGlyph kind={row.kind} className="h-6 w-6" />
+                  {row.kind === "whatsapp"
+                    ? "WhatsApp"
+                    : row.kind === "email"
+                      ? "Email"
+                      : row.kind === "facebook"
+                        ? "Facebook"
+                        : "Instagram"}
+                </a>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
-        <PaFinancialWordmark />
+        <TaxProWordmark src={brand.logoSrc} alt={client.businessName} />
       </div>
     </section>
   );
 }
 
-function PaFinancialFooter({
+function TaxProFooter({
+  client,
   locale,
   home,
   phone,
   staff,
+  copy,
+  brand,
 }: {
+  client: Client;
   locale: Locale;
   home: string;
   phone: string;
   staff: string;
+  copy: TaxProCopy;
+  brand: TaxProBrand;
 }) {
-  const pa = paFinancialCopy(locale);
   const c = tTaxOffice(locale);
+  const instagram = brand.socials.find((row) => row.kind === "instagram");
+  const facebook = brand.socials.find((row) => row.kind === "facebook");
   return (
     <footer className="pa-footer mt-auto px-5 py-10 text-sm text-white">
       <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
         <a href={home} className="inline-flex items-center">
-          <Image
-            src={PA_FINANCIAL_LOGO}
-            alt="P&A Financial LLC"
-            width={1042}
-            height={1042}
-            className="h-24 w-24 sm:h-28 sm:w-28"
-          />
+          {brand.logoSrc ? (
+            <TaxProSpinLogo className="pa-footer-logo" src={brand.logoSrc} alt={client.businessName} />
+          ) : (
+            <span className="font-display text-lg tracking-tight">{client.logoText?.trim() || client.businessName}</span>
+          )}
         </a>
         <div>
-          <p className="font-display text-base font-semibold tracking-tight">{pa.footerLinks}</p>
+          <p className="font-display text-base font-semibold tracking-tight">{copy.footerLinks}</p>
           <ul className="mt-3 grid gap-1.5">
             <li>
-              <a href={home}>{pa.navHome}</a>
+              <a href={home}>{copy.navHome}</a>
             </li>
             <li>
-              <a href="#about">{pa.navAbout}</a>
+              <a href="#about">{copy.navAbout}</a>
             </li>
             <li>
-              <a href="#services">{pa.navServices}</a>
+              <a href="#services">{copy.navServices}</a>
             </li>
             <li>
-              <a href="#contact">{pa.navContact}</a>
+              <a href="#contact">{copy.navContact}</a>
             </li>
-            {paFinancialRefundLinks(locale).map((link) => (
+            {brand.refundLinks.map((link) => (
               <li key={link.href}>
                 <a href={link.href} target="_blank" rel="noopener noreferrer">
                   {link.label}
@@ -420,7 +460,7 @@ function PaFinancialFooter({
           </ul>
         </div>
         <div>
-          <p className="font-display text-base font-semibold tracking-tight">{pa.footerContact}</p>
+          <p className="font-display text-base font-semibold tracking-tight">{copy.footerContact}</p>
           <ul className="mt-3 grid gap-2">
             {phone ? (
               <li>
@@ -430,36 +470,44 @@ function PaFinancialFooter({
                 </a>
               </li>
             ) : null}
-            <li>
-              <a href={`mailto:${PA_FINANCIAL_EMAIL}`} className="inline-flex items-center gap-2">
-                <SocialGlyph kind="email" className="h-4 w-4" />
-                {PA_FINANCIAL_EMAIL}
-              </a>
-            </li>
+            {brand.email ? (
+              <li>
+                <a href={`mailto:${brand.email}`} className="inline-flex items-center gap-2">
+                  <SocialGlyph kind="email" className="h-4 w-4" />
+                  {brand.email}
+                </a>
+              </li>
+            ) : null}
           </ul>
         </div>
-        <div>
-          <p className="font-display text-base font-semibold tracking-tight">{pa.footerSocial}</p>
-          <ul className="mt-3 grid gap-2">
-            <li>
-              <a
-                href={PA_FINANCIAL_INSTAGRAM}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2"
-              >
-                <SocialGlyph kind="instagram" className="h-4 w-4" />
-                {pa.footerInstagram}
-              </a>
-            </li>
-            <li>
-              <a href={PA_FINANCIAL_FACEBOOK} className="inline-flex items-center gap-2">
-                <SocialGlyph kind="facebook" className="h-4 w-4" />
-                {pa.footerFacebook}
-              </a>
-            </li>
-          </ul>
-        </div>
+        {instagram || facebook ? (
+          <div>
+            <p className="font-display text-base font-semibold tracking-tight">{copy.footerSocial}</p>
+            <ul className="mt-3 grid gap-2">
+              {instagram ? (
+                <li>
+                  <a
+                    href={instagram.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2"
+                  >
+                    <SocialGlyph kind="instagram" className="h-4 w-4" />
+                    {instagram.label}
+                  </a>
+                </li>
+              ) : null}
+              {facebook ? (
+                <li>
+                  <a href={facebook.href} className="inline-flex items-center gap-2">
+                    <SocialGlyph kind="facebook" className="h-4 w-4" />
+                    {facebook.label}
+                  </a>
+                </li>
+              ) : null}
+            </ul>
+          </div>
+        ) : null}
       </div>
       <p className="mx-auto mt-8 max-w-5xl text-white/60">
         <a href={staff}>{c.staffLogin}</a>
@@ -472,13 +520,15 @@ function BrandMark({
   client,
   locale,
   home,
+  brand,
 }: {
   client: Client;
   locale: Locale;
   home: string;
+  brand?: TaxProBrand | null;
 }) {
   const hola = tHolaTax(locale);
-  if (client.slug === HOLA_TAX_SLUG) {
+  if (isHolaTaxLayout(client.slug)) {
     return (
       <a href={home} className="inline-flex shrink-0 items-center">
         <Image
@@ -491,18 +541,12 @@ function BrandMark({
       </a>
     );
   }
-  if (client.slug === PA_FINANCIAL_SLUG) {
-    const brand = client.logoText?.trim() || "P&A Financial";
+  if (isTaxProLayout(client) && brand?.logoSrc) {
+    const name = client.logoText?.trim() || client.businessName;
     return (
       <a href={home} className="pa-brand inline-flex shrink-0 items-center gap-3">
-        <Image
-          src={PA_FINANCIAL_LOGO}
-          alt=""
-          width={1042}
-          height={1042}
-          className="pa-brand-logo h-12 w-12 sm:h-14 sm:w-14"
-        />
-        <span className="pa-brand-name">{brand}</span>
+        <TaxProSpinLogo className="pa-brand-logo" src={brand.logoSrc} alt="" />
+        <span className="pa-brand-name">{name}</span>
       </a>
     );
   }
@@ -513,79 +557,100 @@ function BrandMark({
   );
 }
 
-function PaFinancialHero({
+function TaxProHero({
   client,
   locale,
   phone,
+  copy,
+  brand,
 }: {
   client: Client;
   locale: Locale;
   phone: string;
+  copy: TaxProCopy;
+  brand: TaxProBrand;
 }) {
   const c = tTaxOffice(locale);
-  const pa = paFinancialCopy(locale);
+  const ownerAlt = copy.ownerName
+    ? `${copy.ownerName}, ${copy.ownerRole} of ${client.businessName}`
+    : client.businessName;
   return (
-    <section className="pa-hero" aria-labelledby="pa-hero-title">
-      <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-14 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
+    <section className="pa-hero" aria-labelledby="tax-hero-title">
+      <div className={`mx-auto grid max-w-5xl items-center gap-10 px-5 py-14 sm:py-16 lg:py-20${brand.ownerPhotoSrc ? " lg:grid-cols-[1.05fr_0.95fr]" : ""}`}>
         <div>
           <p className="pa-kicker">
             {client.city}
-            {" · "}
-            {pa.hours}
+            {copy.hours ? ` · ${copy.hours}` : ""}
           </p>
           <h1
-            id="pa-hero-title"
+            id="tax-hero-title"
             className="mt-4 max-w-xl font-display text-4xl leading-[1.08] tracking-tight text-black sm:text-5xl"
           >
             {taxOfficeTagline(client.slug, client.tagline, locale)}
           </h1>
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-black/72 sm:text-lg">
-            {pa.heroLede}
+          {copy.heroLede ? (
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-black/72 sm:text-lg">
+              {copy.heroLede}
+            </p>
+          ) : null}
+          <p className="mt-6 text-sm font-semibold tracking-tight text-black sm:text-base">
+            {copy.readyCta}
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             {phone ? (
               <a href={telHref(phone)} className="site-cta pa-btn px-6 py-2.5 text-sm font-semibold">
                 {c.call(phone)}
               </a>
             ) : null}
-            <a href="#contact" className="pa-btn-ghost px-6 py-2.5 text-sm font-semibold">
-              {c.ctaMessage}
+            <a href="#appointment" className="pa-btn-ghost px-6 py-2.5 text-sm font-semibold">
+              {copy.scheduleCta}
             </a>
           </div>
         </div>
-        <PaOwnerPortrait
-          alt={`${pa.ownerName}, ${pa.ownerRole} of P&A Financial LLC`}
-          sizes="(max-width: 1024px) 100vw, 520px"
-          caption={`${pa.ownerName} · ${pa.ownerRole}`}
-          className="pa-hero-portrait"
-          preload
-        />
+        {brand.ownerPhotoSrc ? (
+          <TaxProOwnerPortrait
+            src={brand.ownerPhotoSrc}
+            alt={ownerAlt}
+            sizes="(max-width: 1024px) 100vw, 520px"
+            caption={
+              copy.ownerName ? `${copy.ownerName} · ${copy.ownerRole}` : undefined
+            }
+            className="pa-hero-portrait"
+            preload
+          />
+        ) : null}
       </div>
     </section>
   );
 }
 
 /**
- * Tax office template: white / black / neon, plus a private client drop box.
- * Hola Tax (first live shop) also gets its logo, favicon, and photo hero.
- * English | Español uses the shared site toggle (`?lang=` + per-slug cookie).
+ * Tax office template: private client drop box plus a public shop page.
+ * Hola Tax keeps its photo-hero / bookkeeping layout.
+ * Every other tax client uses the Pro layout (P&A Financial reference):
+ * navy/neon, What we do, dual Call / Schedule, IRS refund helpers, white
+ * circular brand logo when `logoSrc` is set (spin only the large appointment
+ * seal). Swap colors with `.theme-{slug}`.
+ * Patricia-only copy and socials stay behind the pa-financial slug / client fields.
+ * Do not fork this file for the next tax client.
  */
 export function TaxOfficeSite({ client, notice, locale }: SiteView) {
   const c = tTaxOffice(locale);
   const hola = tHolaTax(locale);
-  const isHola = client.slug === HOLA_TAX_SLUG;
-  const isPaFinancial = client.slug === PA_FINANCIAL_SLUG;
-  const pa = isPaFinancial ? paFinancialCopy(locale) : null;
+  const isHola = isHolaTaxLayout(client.slug);
+  const isPro = isTaxProLayout(client);
+  const copy = isPro ? taxProCopy(client, locale) : null;
+  const brand = isPro ? taxProBrand(client, locale) : null;
   const preview = isPreviewClient(client);
   const home = preview
     ? siteHomeHref(client)
     : withSiteLangPath(`/s/${client.slug}`, locale);
   const portal = withSiteLangPath(portalPath(client.slug), locale);
   const staff = withSiteLangPath(portalPath(client.slug, "/staff/login"), locale);
-  const field = isPaFinancial
+  const field = isPro
     ? "pa-field"
     : "rounded-none border border-[#00FF66] bg-white px-3 py-2 text-black outline-none focus:shadow-[0_0_0_3px_rgba(0,255,102,0.25)]";
-  const panel = isPaFinancial
+  const panel = isPro
     ? "pa-panel"
     : "border border-[#00FF66] bg-white";
   const phone = String(client.phone || "").trim();
@@ -594,21 +659,24 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
     ? withHolaTaxListedServices(listedServices)
     : listedServices;
   const shop = tShop(locale);
-  const taxPhotos = SHOP_PHOTOS.tax;
   const reviews = preview ? DEMO_REVIEWS.tax : [];
-  const hours =
-    client.slug === PA_FINANCIAL_SLUG
-      ? paFinancialHours(locale)
-      : displayHours(client.hours, "tax", locale);
+  const hours = isPro && copy
+    ? copy.hours || displayHours(client.hours, "tax", locale)
+    : displayHours(client.hours, "tax", locale);
   return (
     <div
       data-template="tax"
       lang={locale}
-      className={`${clientThemeClass("tax")}${client.slug === PA_FINANCIAL_SLUG ? " theme-pa-financial" : ""} flex min-h-full flex-col bg-white text-black`}
+      className={`${taxOfficeThemeClass(client)} flex min-h-full flex-col bg-white text-black`}
     >
-      <header className="shop-header sticky top-0 z-40 border-b border-[#00FF66] bg-white/95 px-5 py-3 backdrop-blur">
+      <header className="shop-header sticky top-0 z-40 border-b border-[#00FF66] bg-white/95 px-5 py-4 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-2">
-          <BrandMark client={client} locale={locale} home={home} />
+          <BrandMark
+            client={client}
+            locale={locale}
+            home={home}
+            brand={brand}
+          />
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             {preview ? null : (
               <SiteLangToggle
@@ -639,9 +707,15 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
         </div>
       </header>
 
-      {isPaFinancial && pa ? (
-        <PaFinancialHero client={client} locale={locale} phone={phone} />
-      ) : isHola ? (
+      {isPro && copy && brand ? (
+        <TaxProHero
+          client={client}
+          locale={locale}
+          phone={phone}
+          copy={copy}
+          brand={brand}
+        />
+      ) : (
         <section className="relative isolate min-h-[70vh] overflow-hidden border-b border-[#00FF66] lg:min-h-[calc(100svh-4.75rem)]">
           <Image
             src={HOLA_PHOTOS.office}
@@ -694,48 +768,6 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
             </p>
           </div>
         </section>
-      ) : (
-        <section className="relative isolate min-h-[70vh] overflow-hidden border-b border-[#00FF66] lg:min-h-[calc(100svh-4.75rem)]">
-          <Image
-            src={taxPhotos.hero.src}
-            alt={photoAlt(taxPhotos.hero, locale)}
-            fill
-            preload
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div
-            className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/15"
-            aria-hidden="true"
-          />
-          <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-5xl flex-col justify-center px-5 py-16 lg:min-h-[calc(100svh-4.75rem)] lg:py-20">
-            <p className="text-sm uppercase tracking-[0.22em] text-[#00FF66]">
-              {client.city}
-            </p>
-            <h1 className="mt-4 max-w-3xl font-display text-4xl leading-tight tracking-tight text-white sm:text-5xl">
-              {taxOfficeTagline(client.slug, client.tagline, locale)}
-            </h1>
-            <p className="mt-5 max-w-xl text-base text-white/90 sm:text-lg">
-              {taxOfficeAbout(client.slug, client.about, locale)}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              {phone ? (
-                <a
-                  href={telHref(client.phone)}
-                  className="site-cta bg-[#00FF66] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#00E840]"
-                >
-                  {c.call(client.phone)}
-                </a>
-              ) : null}
-              <a
-                href="#contact"
-                className="border border-[#00FF66] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#00FF66] hover:text-black"
-              >
-                {c.ctaMessage}
-              </a>
-            </div>
-          </div>
-        </section>
       )}
 
       <section className="mx-auto w-full max-w-5xl px-5 py-14">
@@ -764,37 +796,55 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
               />
             </div>
           </>
-        ) : isPaFinancial && pa ? (
+        ) : isPro && copy ? (
           <aside id="about" className="pa-about mb-14 max-w-3xl">
-            <p className="pa-kicker">{pa.aboutKicker}</p>
+            <p className="pa-kicker">{copy.aboutKicker}</p>
             <h2 className="mt-3 font-display text-3xl tracking-tight text-black sm:text-4xl">
-              {pa.aboutTitle}
+              {copy.aboutTitle}
             </h2>
-            <p className="mt-5 text-base leading-relaxed text-black/75">
-              {taxOfficeAbout(client.slug, client.about, locale)}
-            </p>
-            <p className="mt-6 font-display text-xl tracking-tight text-black">
-              {pa.ownerName}
-            </p>
-            <p className="mt-1 text-sm tracking-[0.12em] uppercase text-black/55">
-              {pa.ownerRole}
-            </p>
+            {copy.aboutLead ? (
+              <p className="mt-5 text-base leading-relaxed text-black/75">
+                {copy.aboutLead}
+              </p>
+            ) : null}
+            {copy.whatWeDo.length ? (
+              <ul className="pa-do-list mt-7">
+                {copy.whatWeDo.map((item) => (
+                  <li key={item.title}>
+                    <p className="font-display text-lg tracking-tight text-black">
+                      {taxOfficeServiceLabel(item.title, locale)}
+                    </p>
+                    {item.blurb ? (
+                      <p className="mt-1 text-sm leading-relaxed text-black/70">{item.blurb}</p>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            {copy.about ? (
+              <p className="mt-7 text-base leading-relaxed text-black/75">
+                {copy.about}
+              </p>
+            ) : null}
+            {copy.ownerName ? (
+              <>
+                <p className="mt-6 font-display text-xl tracking-tight text-black">
+                  {copy.ownerName}
+                </p>
+                <p className="mt-1 text-sm tracking-[0.12em] uppercase text-black/55">
+                  {copy.ownerRole}
+                </p>
+              </>
+            ) : null}
           </aside>
-        ) : (
-          <div className="mb-10 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {taxPhotos.gallery.map((photo) => (
-              <SiteStill
-                key={photo.src}
-                src={photo.src}
-                alt={photoAlt(photo, locale)}
-                sizes="(max-width: 768px) 50vw, 256px"
-                className="aspect-[4/5]"
-              />
-            ))}
-          </div>
-        )}
-        {client.slug === PA_FINANCIAL_SLUG ? (
-          <PaFinancialServices services={services} locale={locale} />
+        ) : null}
+        {isPro && copy ? (
+          <TaxProServices
+            client={client}
+            services={services}
+            locale={locale}
+            copy={copy}
+          />
         ) : (
           <>
             <h2 className="font-display text-3xl tracking-tight text-black">
@@ -1062,11 +1112,27 @@ export function TaxOfficeSite({ client, notice, locale }: SiteView) {
         ) : null}
       </section>
 
-      {isPaFinancial ? <PaFinancialRefundHelp locale={locale} /> : null}
-      {isPaFinancial ? <PaFinancialAppointment locale={locale} /> : null}
+      {isPro && copy && brand ? <TaxProRefundHelp copy={copy} brand={brand} /> : null}
+      {isPro && copy && brand ? (
+        <TaxProAppointment
+          client={client}
+          locale={locale}
+          phone={phone}
+          copy={copy}
+          brand={brand}
+        />
+      ) : null}
 
-      {isPaFinancial ? (
-        <PaFinancialFooter locale={locale} home={home} phone={phone} staff={staff} />
+      {isPro && copy && brand ? (
+        <TaxProFooter
+          client={client}
+          locale={locale}
+          home={home}
+          phone={phone}
+          staff={staff}
+          copy={copy}
+          brand={brand}
+        />
       ) : (
       <footer className="mt-auto border-t border-[#00FF66] bg-white px-5 py-8 text-sm text-black/80">
         <div className="mx-auto flex max-w-5xl flex-col gap-2 sm:flex-row sm:justify-between">

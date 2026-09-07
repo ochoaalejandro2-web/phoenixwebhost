@@ -4,6 +4,7 @@ import {
   mergeMissingBySlug,
   refreshDesertSparkleDemoCopy,
   refreshPaFinancialArizonaCopy,
+  refreshPaFinancialListedOfferings,
   restoreMesaStreetKitchenDemo,
 } from "@/lib/seed-merge";
 import type { AppState, Client } from "@/lib/types";
@@ -454,14 +455,15 @@ function demoClients(): Client[] {
       phone: "(720) 501-0501",
       address: "",
       city: "Arizona",
-      hours: "By appointment — call to schedule",
+      hours: "By appointment — call or schedule",
       tagline: "Expert tax & financial services for the Hispanic community",
       about:
-        "Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona. She works in English and Spanish and helps Hispanic and Latino families and small businesses with clear, personal tax and financial guidance.",
+        "Personal and business income taxes, LLC formation, and bookkeeping for Hispanic and Latino families and small businesses. Patricia Escobedo has prepared taxes for more than eight years. Her journey began in Arizona.",
       services: [
-        "Income Tax Preparation",
-        "ITIN Number Processing and Renewal",
-        "Business Registration",
+        "Personal Income Taxes",
+        "Business Income Taxes",
+        "LLC Formation",
+        "Bookkeeping",
       ],
       template: "tax",
       customDomain: null,
@@ -495,6 +497,10 @@ function demoClients(): Client[] {
       editRequests: [],
       createdAt: isoDaysFromNow(-1),
       logoText: "P&A Financial",
+      logoSrc: "/clients/pa-financial/logo-brand.png",
+      ownerPhotoSrc: "/clients/pa-financial/patricia.jpg",
+      instagram: "https://www.instagram.com/pafin_ancial",
+      whatsapp: "https://wa.me/17205010501",
     },
   ];
 }
@@ -509,16 +515,18 @@ export function mergeMissingSeedClients(state: AppState): {
   const restored = restoreMesaStreetKitchenDemo(flags.items);
   const sparkle = refreshDesertSparkleDemoCopy(restored.items, seed);
   const pa = refreshPaFinancialArizonaCopy(sparkle.items, seed);
+  const offerings = refreshPaFinancialListedOfferings(pa.items, seed);
   if (
     !missing.added &&
     !flags.added &&
     !restored.added &&
     !sparkle.added &&
-    !pa.added
+    !pa.added &&
+    !offerings.added
   ) {
     return { state, added: false };
   }
-  return { state: { ...state, clients: pa.items }, added: true };
+  return { state: { ...state, clients: offerings.items }, added: true };
 }
 
 export function createSeedState(): AppState {

@@ -11,10 +11,10 @@ import {
 import {
   MAX_SCAN_PAGES,
   MAX_UPLOAD_BYTES,
-  TAX_DOC_LABELS,
+  TAX_INTAKE_LABELS,
   scanPdfFilename,
   taxBlobPrefix,
-  type TaxDocLabel,
+  type TaxIntakeLabel,
 } from "@/lib/tax-office";
 import { tTaxOffice, taxDocLabel } from "@/lib/tax-office-i18n";
 import type { Locale } from "@/lib/types";
@@ -140,7 +140,7 @@ export function ScanUpload({
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const pagesRef = useRef<ScanPage[]>([]);
-  const [label, setLabel] = useState<TaxDocLabel>("W-2");
+  const [label, setLabel] = useState<TaxIntakeLabel>("W-2");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
@@ -377,9 +377,9 @@ export function ScanUpload({
         <select
           className={taxFieldClass}
           value={label}
-          onChange={(event) => setLabel(event.target.value as TaxDocLabel)}
+          onChange={(event) => setLabel(event.target.value as TaxIntakeLabel)}
         >
-          {TAX_DOC_LABELS.map((item) => (
+          {TAX_INTAKE_LABELS.map((item) => (
             <option key={item} value={item}>
               {taxDocLabel(item, locale)}
             </option>

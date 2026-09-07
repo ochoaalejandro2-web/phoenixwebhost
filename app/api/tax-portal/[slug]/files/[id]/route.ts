@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
-import { canReadTaxFile } from "@/lib/tax-access";
+import { canDeleteTaxFile, canReadTaxFile } from "@/lib/tax-access";
 import { sessionForClient } from "@/lib/tax-auth";
-import { TaxPortalUnavailableError, getTaxFile } from "@/lib/tax-db";
-import { getPrivateTaxBlob } from "@/lib/tax-blob";
+import {
+  TaxPortalUnavailableError,
+  deleteTaxFile,
+  getTaxFile,
+} from "@/lib/tax-db";
+import { deletePrivateTaxBlobs, getPrivateTaxBlob } from "@/lib/tax-blob";
 import { loadLiveTaxOffice } from "@/lib/tax-guard";
 
 export const runtime = "nodejs";
@@ -46,5 +50,46 @@ export async function GET(
     }
     console.error("[tax-portal] download failed", error);
     return NextResponse.json({ error: "not found" }, { status: 404 });
+  }
+}
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ slug: string; id: string }> },
+) {
+  const { slug, id } = await params;
+  const client = await loadLiveTaxOffice(slug);
+  if (!client) {
+    return NextResponse.json({ error: "not found" }, { status: 404 });
+  }
+  const session = await sessionForClient(client.id);
+  if (!session) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  if (session.role !== "staff") {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+
+  try {
+    const file = await getTaxFile(client.id, id);
+    if (!file || !canDeleteTaxFile(session, file)) {
+      return NextResponse.json({ error: "not found" }, { status: 404 });
+    }
+    const removed = await deleteTaxFile(client.id, file.id);
+    if (!removed) {
+      return NextResponse.json({ error: "not found" }, { status: 404 });
+    }
+    try {
+      await deletePrivateTaxBlobs([removed.blobPathname]);
+    } catch (error) {
+      console.error("[tax-portal] file blob delete failed", removed.id, error);
+    }
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    if (error instanceof TaxPortalUnavailableError) {
+      return NextResponse.json({ error: "unavailable" }, { status: 503 });
+    }
+    console.error("[tax-portal] file delete failed", error);
+    return NextResponse.json({ error: "unavailable" }, { status: 503 });
   }
 }

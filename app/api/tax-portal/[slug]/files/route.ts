@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
-import { blobPathAllowed, canUploadAsCustomer } from "@/lib/tax-access";
+import {
+  blobPathAllowed,
+  canUploadAsCustomer,
+  canUploadAsStaff,
+} from "@/lib/tax-access";
 import { sessionForClient } from "@/lib/tax-auth";
 import {
   TaxPortalUnavailableError,
+  findTaxUserById,
   insertTaxFile,
   listTaxFiles,
   taxPortalBlobReady,
@@ -11,9 +16,12 @@ import {
 import { getPrivateTaxBlob } from "@/lib/tax-blob";
 import { loadLiveTaxOffice } from "@/lib/tax-guard";
 import {
+  FILED_COPY_LABEL,
   MAX_UPLOAD_BYTES,
   isAllowedContentType,
-  isTaxDocLabel,
+  isTaxReturnYear,
+  resolveTaxFileKind,
+  resolveTaxIntakeLabel,
   safeUploadFilename,
 } from "@/lib/tax-office";
 
@@ -30,13 +38,27 @@ export async function GET(
     return NextResponse.json({ error: "not found" }, { status: 404 });
   }
   const session = await sessionForClient(client.id);
-  if (!session || session.role !== "customer") {
+  if (!session || (session.role !== "customer" && session.role !== "staff")) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   if (!taxPortalDbReady()) {
     return NextResponse.json({ error: "unavailable" }, { status: 503 });
   }
-  const files = await listTaxFiles(client.id, session.userId);
+  const ownerUserId =
+    session.role === "staff"
+      ? String(
+          new URL(_request.url).searchParams.get("userId") || "",
+        )
+      : session.userId;
+  if (session.role === "staff") {
+    const owner = ownerUserId
+      ? await findTaxUserById(client.id, ownerUserId)
+      : null;
+    if (!owner || owner.role !== "customer") {
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    }
+  }
+  const files = await listTaxFiles(client.id, ownerUserId);
   return NextResponse.json({
     files: files.map((file) => ({
       id: file.id,
@@ -63,7 +85,9 @@ export async function POST(
     return NextResponse.json({ error: "unavailable" }, { status: 503 });
   }
   const session = await sessionForClient(client.id);
-  if (!session || !canUploadAsCustomer(session, client.id)) {
+  const staff = Boolean(session && canUploadAsStaff(session, client.id));
+  const customer = Boolean(session && canUploadAsCustomer(session, client.id));
+  if (!session || (!staff && !customer)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
@@ -73,6 +97,9 @@ export async function POST(
     contentType?: string;
     sizeBytes?: number;
     pathname?: string;
+    kind?: string;
+    taxYear?: number;
+    ownerUserId?: string;
   };
   try {
     body = (await request.json()) as typeof body;
@@ -80,13 +107,32 @@ export async function POST(
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
 
-  const label = String(body.label || "");
+  const ownerUserId = staff
+    ? String(body.ownerUserId || "")
+    : session.userId;
+  if (staff) {
+    const owner = await findTaxUserById(client.id, ownerUserId);
+    if (!owner || owner.role !== "customer") {
+      return NextResponse.json({ error: "invalid" }, { status: 400 });
+    }
+  }
+
+  const kind = resolveTaxFileKind(staff, body.kind);
+  const intake = resolveTaxIntakeLabel(String(body.label || ""));
+  const label = kind === "filed" ? FILED_COPY_LABEL : intake;
   const pathname = String(body.pathname || "");
   const filename = safeUploadFilename(String(body.filename || "document.pdf"));
   const contentType = String(body.contentType || "application/pdf");
   const sizeBytes = Number(body.sizeBytes || 0);
+  const taxYear = kind === "filed" ? Number(body.taxYear) : null;
 
-  if (!isTaxDocLabel(label) || !pathname || !blobPathAllowed(session, pathname)) {
+  if (!label) {
+    return NextResponse.json({ error: "invalid" }, { status: 400 });
+  }
+  if (kind === "filed" && !isTaxReturnYear(taxYear)) {
+    return NextResponse.json({ error: "invalid" }, { status: 400 });
+  }
+  if (!pathname || !blobPathAllowed(session, pathname, ownerUserId)) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
   if (!isAllowedContentType(contentType) && contentType !== "application/pdf") {
@@ -103,8 +149,10 @@ export async function POST(
     }
     const stored = await insertTaxFile({
       clientId: session.clientId,
-      userId: session.userId,
+      userId: ownerUserId,
       label,
+      kind,
+      taxYear,
       filename,
       contentType: blob.blob.contentType || contentType,
       sizeBytes: blob.blob.size || sizeBytes,

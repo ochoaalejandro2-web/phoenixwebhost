@@ -40,10 +40,48 @@ export function canUploadAsCustomer(
   );
 }
 
-export function blobPathAllowed(
-  session: Pick<TaxSession, "clientId" | "userId">,
-  pathname: string,
+export function canUploadAsStaff(
+  session: Pick<TaxSession, "role" | "clientId">,
+  clientId: string,
 ) {
-  const prefix = `tax-portal/${session.clientId}/${session.userId}/`;
-  return pathname.startsWith(prefix) && !pathname.includes("..");
+  return session.role === "staff" && session.clientId === clientId;
+}
+
+/** Staff may delete a file only inside their own tax office. Customers cannot. */
+export function canDeleteTaxFile(
+  session: Pick<TaxSession, "role" | "clientId">,
+  file: Pick<TaxFileRecord, "clientId">,
+) {
+  return session.role === "staff" && session.clientId === file.clientId;
+}
+
+/** Staff may delete a customer profile only inside their own tax office. */
+export function canDeleteTaxCustomer(
+  session: Pick<TaxSession, "role" | "clientId" | "userId">,
+  person: Pick<TaxSession, "role" | "clientId" | "userId">,
+) {
+  return (
+    session.role === "staff" &&
+    person.role === "customer" &&
+    session.clientId === person.clientId &&
+    session.userId !== person.userId
+  );
+}
+
+export function blobPathAllowed(
+  session: Pick<TaxSession, "role" | "clientId" | "userId">,
+  pathname: string,
+  ownerUserId?: string,
+) {
+  if (!pathname || pathname.includes("..")) return false;
+  if (session.role === "staff") {
+    const owner = ownerUserId || "";
+    const prefix = owner
+      ? `tax-portal/${session.clientId}/${owner}/`
+      : `tax-portal/${session.clientId}/`;
+    return pathname.startsWith(prefix);
+  }
+  return pathname.startsWith(
+    `tax-portal/${session.clientId}/${session.userId}/`,
+  );
 }

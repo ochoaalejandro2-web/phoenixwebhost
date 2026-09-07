@@ -139,6 +139,8 @@ Copy `.env.example` to `.env.local`. Do not commit secrets.
 | `BLOB_READ_WRITE_TOKEN` | for tax portal uploads and Admin Sign a PDF | Vercel Blob token. Private files only. Uploads fail closed on Vercel if missing |
 | `HOLA_TAX_STAFF_EMAIL` | no | Staff email bootstrap for Hola Tax Service. Default `ochoa.alejandro2@gmail.com` |
 | `HOLA_TAX_STAFF_PASSWORD` | for Hola Tax staff login | Staff password for that one shop. Separate from `ADMIN_PASSWORD`. Other tax-office clients set staff in Admin |
+| `PA_FINANCIAL_STAFF_EMAIL` | no | Staff email bootstrap for P&A Financial. Default `pafinancial19@gmail.com` |
+| `PA_FINANCIAL_STAFF_PASSWORD` | for P&A staff login | Patricia’s staff password for `/s/pa-financial/portal/staff/login` only. Separate from Hola and `ADMIN_PASSWORD` |
 
 Local data is saved to `data/store.json`. On Vercel, set `DATABASE_URL` (Neon or any Postgres) so client records survive deploys. The owner panel shows a warning if that URL is missing.
 
@@ -207,11 +209,25 @@ Unpaid / paused sites render the “temporarily offline” page. After 30 days t
 
 ## Tax office template
 
-The **Tax office** template is a sellable Phoenixwebhost layout (white / black / neon) plus a private document drop box for that shop’s tax customers. It is not tax-prep software.
+The **Tax office** template is a sellable Phoenixwebhost layout plus a private document drop box for that shop’s tax customers. New shops (except Hola Tax) use the P&A Pro look — navy/neon, few colors, clone and swap brand. It is not tax-prep software.
+
+**P&A Financial** (`/s/pa-financial`) is the live Pro reference. Every new Tax office client (except Hola Tax) now starts from that layout: navy/neon, What we do, dual Call / Schedule appointment, IRS refund helper, white circular brand logo when a logo path is set (the large appointment seal spins; the header stays still and larger so the letters stay readable). Hola Tax stays its own live shop — do not copy Hola’s bookkeeping promo onto P&A, or P&A’s brand onto Hola.
+
+To spin the next tax client in one pass:
+
+1. Admin → New client → Tax office template. Fill services, hours, phone, about, and the **Tax office brand** fields (header name, circular logo path, optional owner photo / Instagram / Facebook / WhatsApp).
+2. Put the circular logo (and optional owner photo) in `public/clients/{slug}/`. Logo path example: `/clients/{slug}/logo-brand.png`.
+3. Default colors are navy/neon (`.theme-tax-pro`). To swap brand colors, copy that CSS block in `app/globals.css` to `.theme-{slug}` and change the `--pa-*` variables. The page already adds `theme-{slug}` on the root.
+4. Patricia-only sentences stay in `lib/pa-financial-i18n.ts`. The next shop’s English copy comes from Admin seed fields; bilingual chrome (What we do, Call, Schedule) is shared. Add a small slug-gated i18n module only if they need custom EN/ES sentences. Do not fork `TaxOfficeSite.tsx`.
+5. Set staff on **Admin → that client → Tax portal staff login**, or add `{SLUG}_STAFF_EMAIL` / `{SLUG}_STAFF_PASSWORD` like Hola and P&A. Never reuse `ADMIN_PASSWORD` or another shop’s staff password.
+6. Portal URLs: `/s/{slug}/portal` (client), `/s/{slug}/portal/staff/login` (staff).
 
 - Public site: `/s/{slug}` (custom domain works the same way as other clients)
-- Client login / upload: `/s/{slug}/portal`. On a phone, **Scan document** opens the rear camera; 1–5 photos become one private PDF.
+- Client login / upload: `/s/{slug}/portal`. On a phone, **Scan document** opens the rear camera; 1–5 photos become one private PDF. Intake labels stay W-2 / 1099 / ID / Other.
+- **Filed copies by tax year:** each customer folder has Tax {current} plus the previous three years (rolls forward). Staff uploads the filed return / client copy into the correct year. Clients can download those copies; they cannot upload into the year buckets.
+- **Staff delete:** on a client folder, staff can delete one file or the whole client profile (confirm first). Shared by Hola Tax, P&A Financial, and every tax-office shop. Customers cannot delete. Shop A cannot delete shop B.
 - Staff login: `/s/{slug}/portal/staff/login` — that shop’s folders only
+- **P&A Financial staff:** `/s/pa-financial/portal/staff/login` with email `pafinancial19@gmail.com`. Set `PA_FINANCIAL_STAFF_PASSWORD` on Vercel (Production + Preview). Do not reuse `HOLA_TAX_STAFF_PASSWORD` or `ADMIN_PASSWORD`. You can also set the password in Admin → P&A Financial client → Tax portal staff login.
 - Customers of shop A cannot see shop B. Staff of shop A cannot see shop B.
 - Files go to Vercel Blob with **private** access. Downloads require a signed-in session. Nothing is stored in git or `/public`.
 - Needs `DATABASE_URL` and `BLOB_READ_WRITE_TOKEN`. If either is missing, the portal fails closed and will not take uploads.

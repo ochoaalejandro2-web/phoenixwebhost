@@ -24,6 +24,9 @@ const servicesEs: Record<string, string> = {
   "ITIN Number Processing and Renewal":
     "Trámite y renovación de número ITIN",
   "Business Registration": "Registro de negocios",
+  "Personal Income Taxes": "Impuestos personales sobre la renta",
+  "Business Income Taxes": "Impuestos de negocios sobre la renta",
+  "LLC Formation": "Formación de LLC",
 };
 
 export const taxOfficeCopy = {
@@ -84,16 +87,38 @@ export const taxOfficeCopy = {
       `Documents you upload here stay in a private folder at ${name}. Only you and this tax office can open them. On a phone you can scan a W-2, 1099, or ID with the camera; we save the pages as one PDF. This is not tax-prep software — just a secure drop box.`,
     storageDown:
       "Document storage is not connected. This office cannot take uploads yet. Call the office.",
-    filesTitle: "Files",
+    filesTitle: "Documents you sent",
     emptyFolder: "No documents in this folder yet.",
     download: "Download",
+    filedTitle: "Your filed copies",
+    filedLead:
+      "Returns this office filed for you. Download a copy by tax year.",
+    filedYear: (year: number) => `Tax ${year}`,
+    emptyYear: "No filed copy for this year yet.",
+    staffFiledTitle: "Upload filed copy",
+    staffFiledLead:
+      "After filing, put the client copy in the correct tax year. Clients can download it; they cannot upload here.",
+    staffIntakeTitle: "Documents the client sent",
+    yearLabel: "Tax year",
+    uploadFiled: "Upload filed copy",
     staffFoldersTitle: "Client folders",
     staffFoldersLead: (name: string) =>
-      `${name} only. Open a folder to download what that client uploaded.`,
+      `${name} only. Open a folder to see intake documents and upload filed copies by tax year.`,
     noClients: "No client accounts yet.",
     fileCount: (n: number) => (n === 1 ? "1 file" : `${n} files`),
     noFilesYet: "No files yet",
     allClients: "All clients",
+    deleteFile: "Delete",
+    deleting: "Deleting…",
+    deleteFileConfirm: (name: string) =>
+      `Delete ${name}? This cannot be undone.`,
+    deleteFileFailed: "Could not delete that file.",
+    deleteProfile: "Delete client profile",
+    deleteProfileLead:
+      "Remove this client and every file in their folder. Only staff of this office can do that. This cannot be undone.",
+    deleteProfileConfirm: (name: string) =>
+      `Delete ${name} and every file in this folder? This cannot be undone.`,
+    deleteProfileFailed: "Could not delete that client profile.",
     auth: {
       name: "Name",
       phone: "Phone",
@@ -206,16 +231,38 @@ export const taxOfficeCopy = {
       `Los documentos que suba aquí quedan en una carpeta privada en ${name}. Solo usted y esta oficina de impuestos pueden abrirlos. En el teléfono puede escanear un W-2, 1099 o identificación con la cámara; guardamos las páginas en un PDF. Esto no es un programa de impuestos, solo un buzón seguro.`,
     storageDown:
       "El almacenamiento de documentos no está conectado. Esta oficina aún no puede recibir archivos. Llame a la oficina.",
-    filesTitle: "Archivos",
+    filesTitle: "Documentos que usted envió",
     emptyFolder: "Aún no hay documentos en esta carpeta.",
     download: "Descargar",
+    filedTitle: "Sus copias presentadas",
+    filedLead:
+      "Declaraciones que esta oficina presentó por usted. Descargue una copia por año fiscal.",
+    filedYear: (year: number) => `Impuestos ${year}`,
+    emptyYear: "Aún no hay copia presentada para este año.",
+    staffFiledTitle: "Subir copia presentada",
+    staffFiledLead:
+      "Después de presentar, ponga la copia del cliente en el año fiscal correcto. El cliente puede descargarla; no puede subir aquí.",
+    staffIntakeTitle: "Documentos que envió el cliente",
+    yearLabel: "Año fiscal",
+    uploadFiled: "Subir copia presentada",
     staffFoldersTitle: "Carpetas de clientes",
     staffFoldersLead: (name: string) =>
-      `Solo ${name}. Abra una carpeta para descargar lo que subió ese cliente.`,
+      `Solo ${name}. Abra una carpeta para ver lo que subió el cliente y cargar copias presentadas por año fiscal.`,
     noClients: "Aún no hay cuentas de clientes.",
     fileCount: (n: number) => (n === 1 ? "1 archivo" : `${n} archivos`),
     noFilesYet: "Aún no hay archivos",
     allClients: "Todos los clientes",
+    deleteFile: "Eliminar",
+    deleting: "Eliminando…",
+    deleteFileConfirm: (name: string) =>
+      `¿Eliminar ${name}? Esto no se puede deshacer.`,
+    deleteFileFailed: "No se pudo eliminar ese archivo.",
+    deleteProfile: "Eliminar perfil del cliente",
+    deleteProfileLead:
+      "Elimina a este cliente y todos los archivos de su carpeta. Solo el personal de esta oficina puede hacerlo. Esto no se puede deshacer.",
+    deleteProfileConfirm: (name: string) =>
+      `¿Eliminar a ${name} y todos los archivos de esta carpeta? Esto no se puede deshacer.`,
+    deleteProfileFailed: "No se pudo eliminar el perfil de ese cliente.",
     auth: {
       name: "Nombre",
       phone: "Teléfono",

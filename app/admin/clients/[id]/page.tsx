@@ -12,6 +12,7 @@ import {
   sendReminderAction,
   setSiteStatusAction,
 } from "@/app/admin/actions";
+import { TaxBrandFields } from "@/components/admin/TaxTemplateFields";
 import { clientHasAdsTier } from "@/lib/ads";
 import { editsThisMonth } from "@/lib/billing";
 import { isTaxOfficeTemplate } from "@/lib/client-themes";
@@ -423,6 +424,18 @@ export default async function ClientDetailPage({
             About
             <textarea name="about" rows={4} defaultValue={client.about} className={field} />
           </label>
+          {taxOffice ? (
+            <TaxBrandFields
+              defaults={{
+                logoText: client.logoText,
+                logoSrc: client.logoSrc,
+                ownerPhotoSrc: client.ownerPhotoSrc,
+                instagram: client.instagram,
+                facebook: client.facebook,
+                whatsapp: client.whatsapp,
+              }}
+            />
+          ) : null}
           <label className="text-sm">
             Custom domain
             <input

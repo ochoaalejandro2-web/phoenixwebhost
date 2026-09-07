@@ -78,6 +78,57 @@ export function refreshDesertSparkleDemoCopy<T extends { slug: string; about?: s
   return { items, added };
 }
 
+const PA_STALE_LOGOS = [
+  "/clients/pa-financial/logo-circle.jpg",
+  "/clients/pa-financial/logo-brand.svg",
+  "/clients/pa-financial/logo.png",
+];
+
+function paListedServicesNeedRefresh(services?: string[]) {
+  const text = (services || []).join(" ");
+  return (
+    !/bookkeeping/i.test(text) ||
+    !/llc/i.test(text) ||
+    !/personal/i.test(text) ||
+    !/business/i.test(text)
+  );
+}
+
+/** Existing P&A rows keep the black / weak logos and the old three-service list. */
+export function refreshPaFinancialListedOfferings<
+  T extends {
+    slug: string;
+    services?: string[];
+    about?: string;
+    logoSrc?: string;
+  },
+>(existing: T[], seed: T[]): { items: T[]; added: boolean } {
+  const fresh = seed.find((row) => row.slug === PA_FINANCIAL_SEED_SLUG);
+  if (!fresh) return { items: existing, added: false };
+  let added = false;
+  const items = existing.map((client) => {
+    if (client.slug !== PA_FINANCIAL_SEED_SLUG) return client;
+    const servicesNeed = paListedServicesNeedRefresh(client.services);
+    const logoNeed =
+      !client.logoSrc || PA_STALE_LOGOS.includes(String(client.logoSrc));
+    const aboutNeed =
+      typeof client.about === "string" &&
+      (!/bookkeeping/i.test(client.about) ||
+        !/llc/i.test(client.about) ||
+        !/personal/i.test(client.about) ||
+        !/business/i.test(client.about));
+    if (!servicesNeed && !logoNeed && !aboutNeed) return client;
+    added = true;
+    return {
+      ...client,
+      ...(servicesNeed && fresh.services ? { services: fresh.services } : {}),
+      ...(logoNeed && fresh.logoSrc ? { logoSrc: fresh.logoSrc } : {}),
+      ...(aboutNeed && fresh.about ? { about: fresh.about } : {}),
+    };
+  });
+  return { items, added };
+}
+
 /** Existing P&A rows keep Colorado if they were seeded before the Arizona swap. */
 export function refreshPaFinancialArizonaCopy<
   T extends { slug: string; city?: string; about?: string },
