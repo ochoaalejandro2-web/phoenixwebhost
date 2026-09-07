@@ -6,6 +6,7 @@ import {
   EXTRA_EDIT_CENTS,
   EXTRA_EDIT_LABEL,
   PACKAGES,
+  PACKAGE_BUY_URLS,
   PACKAGE_IDS,
   PRO_MONTHLY_CARE_URL,
   formatMoney,
@@ -23,7 +24,8 @@ test("official website packages are Starter, Pro, and Premium with the published
   assert.equal(PACKAGES.starter.monthlyCents, 2_995);
   assert.equal(PACKAGES.starter.editsPerMonth, 1);
   assert.equal(PACKAGES.starter.popular, false);
-  assert.equal(PACKAGES.starter.monthlyCareUrl, null);
+  assert.equal(PACKAGES.starter.buyUrl, PACKAGE_BUY_URLS.starter);
+  assert.match(PACKAGES.starter.copy.en.includes.join(" "), /Home \(front\) \+ contact/i);
 
   assert.equal(PACKAGES.pro.setupLabel, "$200");
   assert.equal(PACKAGES.pro.monthlyLabel, "$69");
@@ -31,7 +33,8 @@ test("official website packages are Starter, Pro, and Premium with the published
   assert.equal(PACKAGES.pro.monthlyCents, 6_900);
   assert.equal(PACKAGES.pro.editsPerMonth, 2);
   assert.equal(PACKAGES.pro.popular, true);
-  assert.equal(PACKAGES.pro.monthlyCareUrl, PRO_MONTHLY_CARE_URL);
+  assert.equal(PACKAGES.pro.buyUrl, PACKAGE_BUY_URLS.pro);
+  assert.equal(PACKAGES.pro.buyUrl, PRO_MONTHLY_CARE_URL);
 
   assert.equal(PACKAGES.premium.setupLabel, "$349");
   assert.equal(PACKAGES.premium.monthlyLabel, "$99.95");
@@ -39,7 +42,26 @@ test("official website packages are Starter, Pro, and Premium with the published
   assert.equal(PACKAGES.premium.monthlyCents, 9_995);
   assert.equal(PACKAGES.premium.editsPerMonth, 4);
   assert.equal(PACKAGES.premium.popular, false);
-  assert.equal(PACKAGES.premium.monthlyCareUrl, null);
+  assert.equal(PACKAGES.premium.buyUrl, PACKAGE_BUY_URLS.premium);
+});
+
+test("each package card has a click-to-buy Stripe Payment Link", () => {
+  assert.equal(
+    PACKAGE_BUY_URLS.starter,
+    "https://buy.stripe.com/3cI9AS0VjcYX4Tv6Pq6wE04",
+  );
+  assert.equal(
+    PACKAGE_BUY_URLS.pro,
+    "https://buy.stripe.com/9B600i7jHgb94Tv0r26wE02",
+  );
+  assert.equal(
+    PACKAGE_BUY_URLS.premium,
+    "https://buy.stripe.com/5kQ5kC7jHf752Lnc9K6wE05",
+  );
+  for (const id of PACKAGE_IDS) {
+    assert.equal(PACKAGES[id].buyUrl, PACKAGE_BUY_URLS[id]);
+    assert.match(PACKAGES[id].buyUrl, /^https:\/\/buy\.stripe\.com\//);
+  }
 });
 
 test("Pro launch stays $200 — Labor Day $29.99 is not the package price", () => {
@@ -65,6 +87,15 @@ test("extra edits beyond the package cap are $49 flat, never unlimited", () => {
     assert.equal(/unlimited/i.test(blob), false);
     assert.equal(/ilimitad/i.test(blob), false);
   }
+});
+
+test("Starter is a home-plus-contact card for barbers, handymen, and realtors", () => {
+  const en = [...PACKAGES.starter.copy.en.includes, PACKAGES.starter.copy.en.blurb].join(" ");
+  assert.match(en, /Home \(front\) \+ contact/i);
+  assert.match(en, /barbers/i);
+  assert.match(en, /handymen/i);
+  assert.match(en, /real estate/i);
+  assert.match(en, /\$1 a day/i);
 });
 
 test("Starter does not include AI receptionist, booking, or ads", () => {

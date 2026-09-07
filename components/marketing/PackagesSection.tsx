@@ -84,7 +84,9 @@ export function PackagesSection({ locale }: { locale: Locale }) {
                 <p className="font-display text-2xl text-ink-black">
                   {pkg.monthlyLabel}
                 </p>
-                <p className="pb-0.5 text-xs text-body">{c.packageMonthHint}</p>
+                <p className="pb-0.5 text-xs text-body">
+                  {id === "starter" ? c.packageStarterMonthHint : c.packageMonthHint}
+                </p>
               </div>
               <p className="mt-4 text-sm leading-relaxed text-body">{copy.blurb}</p>
               <ul className="mt-6 grid gap-2.5">
@@ -102,27 +104,18 @@ export function PackagesSection({ locale }: { locale: Locale }) {
                 ))}
               </ul>
               <div className="mt-8 flex flex-col gap-3">
+                <a
+                  href={pkg.buyUrl}
+                  className="btn-lime inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm"
+                >
+                  {c.packageCtaBuy}
+                </a>
                 <Link
                   href={requestWithPackage(locale, id)}
-                  className="btn-lime inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm"
+                  className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-zinc-200 px-5 py-2.5 text-sm text-ink-black hover:border-lime"
                 >
                   {c.packageCtaRequest}
                 </Link>
-                {pkg.monthlyCareUrl ? (
-                  <a
-                    href={pkg.monthlyCareUrl}
-                    className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-zinc-200 px-5 py-2.5 text-sm text-ink-black hover:border-lime"
-                  >
-                    {c.packagePayMonthly}
-                  </a>
-                ) : (
-                  <Link
-                    href={requestWithPackage(locale, id)}
-                    className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-zinc-200 px-5 py-2.5 text-sm text-body hover:border-lime hover:text-ink-black"
-                  >
-                    {c.packageCtaContact}
-                  </Link>
-                )}
               </div>
             </article>
           );

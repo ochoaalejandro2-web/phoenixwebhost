@@ -41,11 +41,13 @@ export const copy = {
     packagesOverage:
       "Extra edits beyond the package cap are $49 flat, or upgrade to the next package. Never unlimited changes.",
     packageMostPopular: "Most Popular",
+    packageCtaBuy: "Buy",
     packageCtaRequest: "Request this package",
     packageCtaContact: "Request / Contact",
     packagePayMonthly: "Pay monthly care",
     packageLaunchHint: "one-time, to launch",
     packageMonthHint: "per month, to stay live",
+    packageStarterMonthHint: "per month — about $1 a day",
     launchTitle: "Launch — from $99",
     launchBody:
       "Starter is $99 once. Pro (most popular) is $200. Premium is $349. We start from a professional template: your name, phone, hours, address, and a photo-ready layout. Built for contractors, handymen, carpenters, salons, restaurants, landscapers, tax offices, and local offices.",
@@ -390,11 +392,13 @@ export const copy = {
     packagesOverage:
       "Los cambios extra sobre el tope del paquete son $49 fijos, o suba al siguiente paquete. Nunca cambios ilimitados.",
     packageMostPopular: "El más popular",
+    packageCtaBuy: "Comprar",
     packageCtaRequest: "Pedir este paquete",
     packageCtaContact: "Contactar / Pedir",
     packagePayMonthly: "Pagar el cuidado mensual",
     packageLaunchHint: "un solo pago, para lanzar",
     packageMonthHint: "al mes, para mantenerlo en línea",
+    packageStarterMonthHint: "al mes — unos $1 al día",
     launchTitle: "Lanzamiento — desde $99",
     launchBody:
       "Starter es $99 una vez. Pro (el más popular) es $200. Premium es $349. Partimos de una plantilla profesional: nombre, teléfono, horario, dirección y un diseño listo para fotos. Para contratistas, manitas, carpinteros, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",

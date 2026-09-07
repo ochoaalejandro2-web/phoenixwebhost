@@ -9,9 +9,14 @@ export const DEFAULT_PACKAGE_ID: PackageId = "pro";
 export const EXTRA_EDIT_CENTS = 4_900;
 export const EXTRA_EDIT_LABEL = "$49";
 
-/** Pro monthly care Payment Link. Starter / Premium monthly links are not created yet. */
-export const PRO_MONTHLY_CARE_URL =
-  "https://buy.stripe.com/9B600i7jHgb94Tv0r26wE02";
+export const PACKAGE_BUY_URLS = {
+  starter: "https://buy.stripe.com/3cI9AS0VjcYX4Tv6Pq6wE04",
+  pro: "https://buy.stripe.com/9B600i7jHgb94Tv0r26wE02",
+  premium: "https://buy.stripe.com/5kQ5kC7jHf752Lnc9K6wE05",
+} as const;
+
+/** @deprecated use PACKAGE_BUY_URLS.pro */
+export const PRO_MONTHLY_CARE_URL = PACKAGE_BUY_URLS.pro;
 
 type PackageCopy = {
   name: string;
@@ -28,6 +33,7 @@ export type SitePackage = {
   monthlyLabel: string;
   editsPerMonth: number;
   popular: boolean;
+  buyUrl: string;
   monthlyCareUrl: string | null;
   copy: { en: PackageCopy; es: PackageCopy };
 };
@@ -41,13 +47,15 @@ export const PACKAGES: Record<PackageId, SitePackage> = {
     monthlyLabel: "$29.95",
     editsPerMonth: 1,
     popular: false,
-    monthlyCareUrl: null,
+    buyUrl: PACKAGE_BUY_URLS.starter,
+    monthlyCareUrl: PACKAGE_BUY_URLS.starter,
     copy: {
       en: {
         name: "Starter",
-        blurb: "A small live site for phone, hours, and the map.",
+        blurb:
+          "Look nice. Call me. For barbers, handymen, and real estate agents — about $1 a day.",
         includes: [
-          "1–3 pages",
+          "Home (front) + contact — a simple shop card",
           "Phone, hours, and map",
           "Live site, SSL, and basic SEO",
           "1 small edit per month",
@@ -60,9 +68,10 @@ export const PACKAGES: Record<PackageId, SitePackage> = {
       },
       es: {
         name: "Starter",
-        blurb: "Un sitio pequeño en línea para teléfono, horario y el mapa.",
+        blurb:
+          "Se ve bien. Llame. Para barberos, manitas y agentes de bienes raíces — unos $1 al día.",
         includes: [
-          "1–3 páginas",
+          "Inicio (portada) + contacto — una tarjeta sencilla del negocio",
           "Teléfono, horario y mapa",
           "Sitio en línea, SSL y SEO básico",
           "1 cambio pequeño al mes",
@@ -83,7 +92,8 @@ export const PACKAGES: Record<PackageId, SitePackage> = {
     monthlyLabel: "$69",
     editsPerMonth: 2,
     popular: true,
-    monthlyCareUrl: PRO_MONTHLY_CARE_URL,
+    buyUrl: PACKAGE_BUY_URLS.pro,
+    monthlyCareUrl: PACKAGE_BUY_URLS.pro,
     copy: {
       en: {
         name: "Pro",
@@ -123,7 +133,8 @@ export const PACKAGES: Record<PackageId, SitePackage> = {
     monthlyLabel: "$99.95",
     editsPerMonth: 4,
     popular: false,
-    monthlyCareUrl: null,
+    buyUrl: PACKAGE_BUY_URLS.premium,
+    monthlyCareUrl: PACKAGE_BUY_URLS.premium,
     copy: {
       en: {
         name: "Premium",
