@@ -155,6 +155,8 @@ body {
   background: color-mix(in srgb, var(--pa-cream) 86%, #ffffff);
   border-bottom-color: var(--pa-wine);
   box-shadow: 0 1px 0 color-mix(in srgb, var(--pa-gold) 55%, transparent);
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
 }
 
 .theme-pa-financial footer {
@@ -253,23 +255,35 @@ body {
   background: #000000;
 }
 
+.theme-pa-financial .pa-brand-logo {
+  height: 3.15rem;
+  width: 3.15rem;
+}
+
 .theme-pa-financial .pa-brand-name {
   color: #111111;
-  font-size: 1.55rem;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  white-space: nowrap;
 }
 
 @media (min-width: 640px) {
+  .theme-pa-financial .pa-brand-logo {
+    height: 3.85rem;
+    width: 3.85rem;
+  }
+
   .theme-pa-financial .pa-brand-name {
-    font-size: 2rem;
+    font-size: 2.65rem;
   }
 }
 
 .theme-pa-financial .shop-header nav,
 .theme-pa-financial .shop-header .text-sm {
-  font-size: 1rem;
+  font-size: 1.125rem;
 }
 
 .theme-pa-financial .pa-owner-photo {
