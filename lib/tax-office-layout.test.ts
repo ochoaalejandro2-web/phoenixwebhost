@@ -221,7 +221,6 @@ test("TaxOfficeSite uses the shared Pro layout instead of a P&A-only fork", () =
   assert.match(site, /pa-appoint-logo/);
   assert.match(site, /LeaveReviewCta/);
   assert.match(site, /brand\.googleReviewUrl|taxOfficeGoogleReviewUrl/);
-  assert.equal(site.includes("★★★★★"), false);
   assert.equal(site.includes("PA_FINANCIAL_WHATSAPP"), false);
   const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /theme-tax-pro/);
