@@ -57,7 +57,6 @@ export function RequestForm({
   trafficReady = false,
   loudReady = false,
   emailReady = false,
-  bookReady = false,
   missedReady = false,
   reviewsReady = false,
   voiceReady = false,
@@ -75,7 +74,6 @@ export function RequestForm({
   trafficReady?: boolean;
   loudReady?: boolean;
   emailReady?: boolean;
-  bookReady?: boolean;
   missedReady?: boolean;
   reviewsReady?: boolean;
   voiceReady?: boolean;
@@ -100,7 +98,6 @@ export function RequestForm({
     parsePackageId(initialPackage) === "starter" ? "none" : initialAds,
   );
   const [includeEmail, setIncludeEmail] = useState(initial.includeEmail);
-  const [includeBook, setIncludeBook] = useState(initial.includeBook);
   const [includeMissed, setIncludeMissed] = useState(initial.includeMissed);
   const [includeReviews, setIncludeReviews] = useState(initial.includeReviews);
   const [includeVoice, setIncludeVoice] = useState(initial.includeVoice);
@@ -131,7 +128,7 @@ export function RequestForm({
         locale,
         ...adsFlagsFromTier(packageId === "starter" ? "none" : adsTier),
         wantsBusinessEmail: includeEmail,
-        wantsBookAJob: includeBook,
+        wantsBookAJob: false,
         wantsMissedCall: includeMissed,
         wantsReviewTexts: includeReviews,
         wantsVoice: includeVoice,
@@ -265,14 +262,6 @@ export function RequestForm({
         title={c.emailCheckbox}
         help={c.emailCheckboxHelp}
         missing={c.emailMissing}
-      />
-      <AddonToggle
-        checked={includeBook}
-        onChange={setIncludeBook}
-        ready={bookReady}
-        title={c.bookCheckbox}
-        help={c.bookCheckboxHelp}
-        missing={c.bookMissing}
       />
       <AddonToggle
         checked={includeMissed}
