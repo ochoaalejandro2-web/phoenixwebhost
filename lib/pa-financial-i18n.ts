@@ -2,13 +2,13 @@ import type { Locale } from "@/lib/types";
 
 export const PA_FINANCIAL_SLUG = "pa-financial";
 export const PA_FINANCIAL_LEGAL = "P&A Financial LLC";
-export const PA_FINANCIAL_PHONE = "(720) 501-0501";
-export const PA_FINANCIAL_TEL = "tel:7205010501";
+export const PA_FINANCIAL_PHONE = "(602) 554-7507";
+export const PA_FINANCIAL_TEL = "tel:6025547507";
 export const PA_FINANCIAL_EMAIL = "pafinancial19@gmail.com";
 export const PA_FINANCIAL_LOGO = "/clients/pa-financial/logo-brand.png";
 export const PA_FINANCIAL_OWNER = "/clients/pa-financial/patricia.jpg";
 export const PA_FINANCIAL_ICON = "/clients/pa-financial/icon.png";
-export const PA_FINANCIAL_WHATSAPP = "https://wa.me/17205010501";
+export const PA_FINANCIAL_WHATSAPP = "https://wa.me/16025547507";
 export const PA_FINANCIAL_INSTAGRAM = "https://www.instagram.com/pafin_ancial";
 export const PA_FINANCIAL_FACEBOOK = "https://www.facebook.com/PattyJafra";
 export const PA_FINANCIAL_IRS_REFUND = "https://sa.www4.irs.gov/wmr/";

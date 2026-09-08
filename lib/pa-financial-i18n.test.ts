@@ -40,7 +40,7 @@ test("P&A Financial copy stays on this shop", () => {
   assert.equal(seo.brand, PA_FINANCIAL_LEGAL);
   assert.equal(seo.icon, "/clients/pa-financial/icon.png");
   assert.equal(PA_FINANCIAL_LOGO, "/clients/pa-financial/logo-brand.png");
-  assert.equal(PA_FINANCIAL_TEL, "tel:7205010501");
+  assert.equal(PA_FINANCIAL_TEL, "tel:6025547507");
   assert.match(PA_FINANCIAL_OWNER, /\/clients\/pa-financial\/patricia\.jpg/);
   assert.equal(paFinancialCopy("en").scheduleTitle, "Schedule Your Appointment");
   assert.match(paFinancialCopy("en").scheduleBlurb, /Call or schedule/);
@@ -118,7 +118,7 @@ test("P&A Financial offers call and schedule appointment in both languages", () 
   assert.match(en.hours, /call or schedule/);
   assert.match(es.hours, /llame o programe/);
   assert.equal(paFinancialHours("en"), en.hours);
-  assert.equal(PA_FINANCIAL_TEL, "tel:7205010501");
+  assert.equal(PA_FINANCIAL_TEL, "tel:6025547507");
 });
 
 test("P&A Financial refund helper links stay public and bilingual", () => {
