@@ -135,6 +135,7 @@ export function SeeYourSiteForm({
       >
         {c.seeSiteNext}
       </button>
+      <p className="mt-3 text-xs text-body">{c.seeSiteNoFees}</p>
     </form>
   );
 }
