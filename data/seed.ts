@@ -453,7 +453,7 @@ function demoClients(): Client[] {
       slug: "pa-financial",
       contactName: "Patricia Escobedo",
       email: "pafinancial19@gmail.com",
-      phone: "(720) 501-0501",
+      phone: "(602) 554-7507",
       address: "",
       city: "Arizona",
       hours: "By appointment — call or schedule",
