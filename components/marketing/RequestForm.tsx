@@ -57,7 +57,6 @@ export function RequestForm({
   trafficReady = false,
   loudReady = false,
   emailReady = false,
-  bookReady = false,
   missedReady = false,
   reviewsReady = false,
   voiceReady = false,
@@ -75,7 +74,6 @@ export function RequestForm({
   trafficReady?: boolean;
   loudReady?: boolean;
   emailReady?: boolean;
-  bookReady?: boolean;
   missedReady?: boolean;
   reviewsReady?: boolean;
   voiceReady?: boolean;
@@ -131,7 +129,7 @@ export function RequestForm({
         locale,
         ...adsFlagsFromTier(packageId === "starter" ? "none" : adsTier),
         wantsBusinessEmail: includeEmail,
-        wantsBookAJob: includeBook,
+        wantsBookAJob: false,
         wantsMissedCall: includeMissed,
         wantsReviewTexts: includeReviews,
         wantsVoice: includeVoice,
