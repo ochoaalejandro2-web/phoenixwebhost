@@ -15,7 +15,6 @@ import { PackagesSection } from "@/components/marketing/PackagesSection";
 import { StartingPoints } from "@/components/marketing/StartingPoints";
 import {
   COMPANY,
-  stripeBookConfigured,
   stripeBoostConfigured,
   stripeDomainConfigured,
   stripeEmailConfigured,
@@ -268,26 +267,25 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
               {c.emailCheckbox}
             </Link>
           </article>
-          <article id="book-a-job" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-8">
-            <p className="text-xs uppercase tracking-[0.18em] text-lime">{c.bookKicker}</p>
-            <h2 className="mt-3 font-display text-3xl text-ink-black">{c.bookTitle}</h2>
-            <p className="mt-5 max-w-3xl leading-relaxed text-body">{c.bookBody}</p>
-            <div className="mt-8 flex flex-wrap gap-10">
-              <div>
-                <p className="price-lime font-display text-4xl">$49</p>
-                <p className="text-xs text-body">{c.bookSetupHint}</p>
-              </div>
-              <div className="w-px bg-zinc-200" />
-              <div>
-                <p className="price-lime font-display text-4xl">$19</p>
-                <p className="text-xs text-body">{c.bookMonthHint}</p>
-              </div>
-            </div>
+          <article id="starter-dollar-day" className="border-t border-zinc-200 px-6 py-14 md:border-l md:border-t-0 md:pl-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">
+              {locale === "es" ? "PLAN STARTER" : "STARTER PLAN"}
+            </p>
+            <h2 className="mt-3 font-display text-3xl text-ink-black">
+              {locale === "es"
+                ? "About $1 al día — $99 de lanzamiento + $29.95/mes"
+                : "About $1 a day — $99 launch + $29.95/mo"}
+            </h2>
+            <p className="mt-5 max-w-3xl leading-relaxed text-body">
+              {locale === "es"
+                ? "Portada + contacto para barberos, handyman y agentes de bienes raíces. Se ve bien, la gente llama. Sin recepcionista de IA en Starter — puede subir a Pro después."
+                : "Home + contact for barbers, handyman, and realtors. Looks sharp, people call. No AI receptionist on Starter — upgrade to Pro later."}
+            </p>
             <Link
-              href={requestWithExtra(locale, "book")}
+              href="#pricing"
               className="btn-lime mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm sm:w-auto"
             >
-              {c.bookCheckbox}
+              {locale === "es" ? "Ver paquetes" : "See packages"}
             </Link>
           </article>
         </div>
@@ -438,7 +436,6 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             trafficReady={stripeTrafficConfigured()}
             loudReady={stripeLoudConfigured()}
             emailReady={stripeEmailConfigured()}
-            bookReady={stripeBookConfigured()}
             missedReady={stripeMissedCallConfigured()}
             reviewsReady={stripeReviewTextsConfigured()}
             voiceReady={stripeVoiceConfigured()}
