@@ -264,14 +264,6 @@ export function RequestForm({
         missing={c.emailMissing}
       />
       <AddonToggle
-        checked={includeBook}
-        onChange={setIncludeBook}
-        ready={bookReady}
-        title={c.bookCheckbox}
-        help={c.bookCheckboxHelp}
-        missing={c.bookMissing}
-      />
-      <AddonToggle
         checked={includeMissed}
         onChange={setIncludeMissed}
         ready={missedReady}
