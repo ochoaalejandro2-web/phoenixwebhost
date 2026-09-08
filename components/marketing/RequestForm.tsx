@@ -98,7 +98,6 @@ export function RequestForm({
     parsePackageId(initialPackage) === "starter" ? "none" : initialAds,
   );
   const [includeEmail, setIncludeEmail] = useState(initial.includeEmail);
-  const [includeBook, setIncludeBook] = useState(initial.includeBook);
   const [includeMissed, setIncludeMissed] = useState(initial.includeMissed);
   const [includeReviews, setIncludeReviews] = useState(initial.includeReviews);
   const [includeVoice, setIncludeVoice] = useState(initial.includeVoice);
