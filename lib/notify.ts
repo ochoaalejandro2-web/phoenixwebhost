@@ -1,9 +1,15 @@
-import { publicSiteUrl } from "@/lib/config";
-import { demoUrl, templateLabel } from "@/lib/demo";
-import { isPreviewClient } from "@/lib/demo";
-import { STUDIO_INBOX } from "@/lib/site-addons";
-import { staffResetEmailBodies } from "@/lib/tax-staff-reset";
-import type { Client, ContactMessage, Lead, Review } from "@/lib/types";
+import { publicSiteUrl } from "./config.ts";
+import { demoUrl, templateLabel } from "./demo.ts";
+import {
+  isOwnerManagedSite,
+  siteInquiryNotifyPlan,
+  usableEmail,
+  type InquiryClient,
+} from "./site-inquiry-notify.ts";
+import { staffResetEmailBodies } from "./tax-staff-reset.ts";
+import type { ContactMessage, Lead, Review } from "./types.ts";
+
+export { usableEmail, usableSmsPhone } from "./site-inquiry-notify.ts";
 
 export type SiteContactStatus = "sent" | "no-email" | "send-failed";
 
@@ -166,14 +172,6 @@ function smsBody(alert: Alert) {
   return text.length <= 320 ? text : `${text.slice(0, 319).trimEnd()}…`;
 }
 
-export function usableEmail(value: string | undefined | null) {
-  const trimmed = (value || "").trim();
-  if (!trimmed || trimmed.length > 200) return null;
-  if (/\s/.test(trimmed)) return null;
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return null;
-  return trimmed;
-}
-
 function clientInquiryBodies(businessName: string, message: ContactMessage) {
   const chat = message.source === "chat";
   const booking = message.source === "booking";
@@ -252,10 +250,15 @@ async function deliverEmail(
   }
 }
 
-async function deliverSms(body: string) {
+async function deliverSms(body: string, to = notifyPhone()) {
   const sid = process.env.TWILIO_ACCOUNT_SID?.trim();
   const token = process.env.TWILIO_AUTH_TOKEN?.trim();
   const from = process.env.TWILIO_FROM?.trim();
+  const dest = to.trim();
+  if (!dest) {
+    console.warn("[notify] skipping SMS: no recipient");
+    return false;
+  }
   if (!sid || !token || !from) {
     console.warn(
       "[notify] skipping SMS: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM is not set",
@@ -272,7 +275,7 @@ async function deliverSms(body: string) {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
-          To: notifyPhone(),
+          To: dest,
           From: from,
           Body: body,
         }),
@@ -415,7 +418,7 @@ export async function notifyCustomerDemo(lead: Lead) {
 }
 
 function ownerContactAlert(
-  client: Pick<Client, "id" | "businessName">,
+  client: Pick<InquiryClient, "id" | "businessName">,
   message: ContactMessage,
 ): Alert {
   return {
@@ -432,61 +435,106 @@ function ownerContactAlert(
   };
 }
 
+function clientContactAlert(
+  client: Pick<InquiryClient, "businessName">,
+  message: ContactMessage,
+): Alert {
+  const chat = message.source === "chat";
+  const booking = message.source === "booking";
+  return {
+    subject: chat
+      ? `New website chat for ${client.businessName}`
+      : booking
+        ? `New book-a-job request for ${client.businessName}`
+        : `New website message for ${client.businessName}`,
+    intro: chat
+      ? "Someone used the receptionist on your website. Call or email them if they left a number."
+      : booking
+        ? "Someone asked to book a job from your website. Call them back."
+        : "Someone wrote in from your website.",
+    name: message.name,
+    phone: message.phone,
+    email: message.email,
+    business: client.businessName,
+    message: message.message,
+    createdAt: message.createdAt,
+  };
+}
+
 async function notifyOwnerSiteContact(
-  client: Pick<Client, "id" | "businessName">,
+  client: Pick<InquiryClient, "id" | "businessName">,
   message: ContactMessage,
 ) {
   try {
     await sendBoth(ownerContactAlert(client, message));
   } catch (error) {
-    console.error("[notify] unexpected error (contact owner copy)", error);
+    console.error("[notify] unexpected error (owner fallback)", error);
+  }
+}
+
+async function notifyLiveClientInquiry(
+  client: InquiryClient,
+  message: ContactMessage,
+  plan: Extract<ReturnType<typeof siteInquiryNotifyPlan>, { kind: "client" }>,
+): Promise<SiteContactStatus> {
+  const inquiry = clientInquiryBodies(client.businessName, message);
+  const replyTo = usableEmail(message.email) ?? undefined;
+  const sms = plan.smsTo
+    ? deliverSms(smsBody(clientContactAlert(client, message)), plan.smsTo)
+    : Promise.resolve(false);
+  const email = plan.emailTo
+    ? deliverEmail(inquiry.subject, inquiry.html, inquiry.text, {
+        to: [plan.emailTo],
+        replyTo,
+      })
+    : Promise.resolve(false);
+
+  try {
+    const [emailResult, smsResult] = await Promise.allSettled([email, sms]);
+    const emailOk =
+      emailResult.status === "fulfilled" && Boolean(emailResult.value);
+    const smsOk = smsResult.status === "fulfilled" && Boolean(smsResult.value);
+    if (emailOk || smsOk) return "sent";
+    if (!plan.emailTo) return "no-email";
+    console.warn(
+      "[notify] live client inquiry did not send",
+      client.id,
+      client.businessName,
+    );
+    return "send-failed";
+  } catch (error) {
+    console.error("[notify] unexpected error (contact)", error);
+    return "send-failed";
   }
 }
 
 export async function notifySiteContact(
-  client: Pick<Client, "id" | "businessName" | "email">,
+  client: InquiryClient,
   message: ContactMessage,
 ): Promise<SiteContactStatus> {
-  const clientEmail = usableEmail(client.email);
-  if (!clientEmail) {
+  const plan = siteInquiryNotifyPlan({ client });
+  if (plan.kind === "owner") {
+    if (plan.reason === "no-client-contact") {
+      console.warn(
+        "[notify] live client has no usable email or phone; falling back to owner",
+        client.id,
+        client.businessName,
+      );
+    }
     await notifyOwnerSiteContact(client, message);
-    return "no-email";
+    return plan.reason === "no-client-contact" ? "no-email" : "sent";
   }
-  try {
-    const inquiry = clientInquiryBodies(client.businessName, message);
-    const replyTo = usableEmail(message.email) ?? undefined;
-    const [clientResult] = await Promise.allSettled([
-      deliverEmail(inquiry.subject, inquiry.html, inquiry.text, {
-        to: [clientEmail],
-        replyTo,
-      }),
-      notifyOwnerSiteContact(client, message),
-    ]);
-    if (clientResult.status === "fulfilled" && clientResult.value) {
-      return "sent";
-    }
-    return "send-failed";
-  } catch (error) {
-    console.error("[notify] unexpected error (contact)", error);
-    try {
-      await notifyOwnerSiteContact(client, message);
-    } catch (copyError) {
-      console.error("[notify] unexpected error (contact owner copy)", copyError);
-    }
-    return "send-failed";
-  }
+  return notifyLiveClientInquiry(client, message, plan);
 }
 
 export async function notifyChatLead(input: {
-  client?: Pick<Client, "id" | "businessName" | "email"> | null;
+  client?: InquiryClient | null;
   inboxId: string;
   message: ContactMessage;
   locale?: "en" | "es";
 }) {
   const client = input.client;
-  const studio =
-    input.inboxId === STUDIO_INBOX || !client || isPreviewClient(client);
-  if (studio) {
+  if (!client || isOwnerManagedSite({ client, inboxId: input.inboxId })) {
     try {
       await sendBoth({
         subject: "New Phoenixwebhost chat lead",
@@ -510,10 +558,10 @@ export async function notifyChatLead(input: {
 }
 
 export async function notifyBookingLead(
-  client: Pick<Client, "id" | "businessName" | "email">,
+  client: InquiryClient,
   message: ContactMessage,
 ) {
-  if (isPreviewClient(client) || client.id === STUDIO_INBOX) {
+  if (isOwnerManagedSite({ client })) {
     try {
       await sendBoth({
         subject: `Book-a-job request for ${client.businessName}`,
