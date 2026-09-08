@@ -98,7 +98,31 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             <div className="mt-8 max-w-lg">
               <SeeYourSiteForm locale={locale} variant="hero" />
             </div>
-
+            <div className="mt-10 max-w-lg">
+              <p className="font-display text-2xl leading-snug text-ink-black sm:text-3xl">
+                {locale === "es"
+                  ? "Usted dice una palabra — y lo hacemos realidad."
+                  : "You say the word — we make it happen."}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-body">
+                {locale === "es"
+                  ? "Díganos el negocio. Nosotros armamos el sitio y lo dejamos vivo."
+                  : "Tell us the shop. We build the site and get it live."}
+              </p>
+              <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-zinc-200 shadow-[0_18px_40px_rgba(10,10,10,0.10)]">
+                <Image
+                  src="/hero-vibe.jpg"
+                  alt={
+                    locale === "es"
+                      ? "Diseñando un sitio web en vivo"
+                      : "Building a website live"
+                  }
+                  width={1600}
+                  height={900}
+                  className="h-44 w-full object-cover sm:h-52"
+                />
+              </div>
+            </div>
           </div>
           <div className="pb-10 lg:pb-6">
             <div className="relative overflow-hidden rounded-[2rem]">
