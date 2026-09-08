@@ -287,14 +287,6 @@ body {
     0 22px 48px rgba(12, 34, 68, 0.14);
 }
 
-:is(.theme-tax-pro, .theme-pa-financial) .pa-portrait-caption {
-  margin-top: 0.85rem;
-  color: color-mix(in srgb, var(--pa-ink) 62%, transparent);
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 :is(.theme-tax-pro, .theme-pa-financial) .pa-services {
   width: 100vw;
   margin-left: calc(50% - 50vw);

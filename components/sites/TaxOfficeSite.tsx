@@ -242,14 +242,12 @@ function TaxProOwnerPortrait({
   src,
   alt,
   sizes,
-  caption,
   className,
   preload,
 }: {
   src: string;
   alt: string;
   sizes: string;
-  caption?: string;
   className?: string;
   preload?: boolean;
 }) {
@@ -265,7 +263,6 @@ function TaxProOwnerPortrait({
           className="object-cover object-[50%_18%]"
         />
       </div>
-      {caption ? <figcaption className="pa-portrait-caption">{caption}</figcaption> : null}
     </figure>
   );
 }
@@ -629,9 +626,6 @@ function TaxProHero({
             src={brand.ownerPhotoSrc}
             alt={ownerAlt}
             sizes="(max-width: 1024px) 100vw, 520px"
-            caption={
-              copy.ownerName ? `${copy.ownerName} · ${copy.ownerRole}` : undefined
-            }
             className="pa-hero-portrait"
             preload
           />
