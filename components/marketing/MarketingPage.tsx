@@ -98,35 +98,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
             <div className="mt-8 max-w-lg">
               <SeeYourSiteForm locale={locale} variant="hero" />
             </div>
-            <div className="mt-10 flex flex-wrap items-end gap-10">
-              <Link
-                href={requestPath(locale)}
-                className="btn-lime rounded-full px-8 py-3.5 text-sm"
-              >
-                {c.ctaPrimary}
-              </Link>
-              <a href="#pricing" className="flex flex-wrap items-end gap-8">
-                <div>
-                  <p className="price-lime font-display text-4xl">{c.heroPriceFrom}</p>
-                  <p className="text-xs text-body">{c.heroPriceFromHint}</p>
-                </div>
-                <div className="w-px bg-zinc-200" />
-                <div>
-                  <p className="price-lime font-display text-3xl sm:text-4xl">
-                    {c.heroPricePopular}
-                  </p>
-                  <p className="text-xs text-body">{c.heroPricePopularHint}</p>
-                </div>
-              </a>
-            </div>
-            <p className="mt-8 text-sm text-body">{c.ownerLine}</p>
-            <p className="mt-2 text-sm text-body">
-              <CompanyPhone className="font-medium text-ink-black hover:text-lime" />
-              {" · "}
-              <a href={`mailto:${COMPANY.email}`} className="hover:text-lime">
-                {COMPANY.email}
-              </a>
-            </p>
+
           </div>
           <div className="pb-10 lg:pb-6">
             <div className="relative overflow-hidden rounded-[2rem]">
