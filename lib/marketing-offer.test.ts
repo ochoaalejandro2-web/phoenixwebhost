@@ -20,6 +20,9 @@ function homepageOfferBlob() {
     en.packageMonthHint,
     en.requestLead,
     en.packagePickerHelp,
+    en.seeSiteNoFees,
+    en.includedSplitHelp,
+    en.extrasMenuLead,
     en.howSteps.map((step) => `${step.t} ${step.d}`).join(" "),
     PACKAGES.starter.copy.en.blurb,
     PACKAGES.pro.copy.en.blurb,
@@ -43,6 +46,9 @@ test("homepage hero and plan copy match the 30-day free Starter-or-Pro offer", (
   assert.match(en.packagesLead, /after the trial/i);
   assert.match(en.requestLead, /30 days free/i);
   assert.equal(/Premium/i.test(en.requestLead), false);
+  assert.equal(/Premium/i.test(en.seeSiteNoFees), false);
+  assert.equal(/Premium/i.test(en.included.join(" ")), false);
+  assert.equal(/Premium/i.test(en.extrasMenuLead), false);
 
   assert.match(es.heroKicker, /30 días gratis/i);
   assert.match(es.heroTitle, /Starter o Pro/i);

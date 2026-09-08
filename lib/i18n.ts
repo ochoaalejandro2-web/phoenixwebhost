@@ -58,10 +58,10 @@ export const copy = {
     includedLead:
       "Each package has a monthly edit cap. Extra edits are $49, or upgrade. Basic local SEO is included. Never unlimited changes.",
     included: [
-      "Basic local SEO included — setup and visibility basics (Google-friendly pages, business info, contact, mobile). Pro and Premium also include Google Business Profile help. Not paid ads or ranking guarantees.",
-      "An AI receptionist on Pro and Premium — answers from your services, hours, and phone. Included on those packages, not an extra.",
+      "Basic local SEO included — setup and visibility basics (Google-friendly pages, business info, contact, mobile). Pro also includes Google Business Profile help. Not paid ads or ranking guarantees.",
+      "An AI receptionist on Pro — answers from your services, hours, and phone. Included on Pro, not an extra.",
       "The site stays live, with SSL",
-      "Edit cap by package: Starter 1 small edit/month, Pro 2, Premium 4 priority. Extra edits are billed separately, or upgrade — never unlimited.",
+      "Edit cap by package: Starter 1 small edit/month, Pro 2. Extra edits are billed separately, or upgrade — never unlimited.",
       "Hours, phone, address, prices, a sentence or two, or swapping a photo you send",
       "One contact form",
       "Backups, uptime watch, and basic security",
@@ -72,7 +72,7 @@ export const copy = {
     notIncluded: [
       "A new page or live Instagram feed: $75–$150",
       "Extra edits beyond the package cap: $49 each, or upgrade",
-      "Many photos: quoted (Premium includes photo polish help)",
+      "Many photos: quoted",
       "A shop: quoted",
       "A logo: $100–$300",
       "Magic SEO or guaranteed rankings — we do not sell that. Free basic SEO on every package is setup and visibility, not paid ads or ranking promises.",
@@ -219,7 +219,7 @@ export const copy = {
     bookMonthHint: "per month extra, keep the booking form live",
     bookCheckbox: "Add Book a job — $49 now + $19/month extra",
     bookCheckboxHelp:
-      "Optional. Leave unchecked to buy only the website. Booking is an add-on on Pro. Premium includes one add-on you pick.",
+      "Optional. Leave unchecked to buy only the website. Booking is an add-on on Pro.",
     bookMissing:
       "Book a job checkout is not connected yet. Uncheck it to pay for the website, or wait until it is connected.",
     missedKicker: "Optional add-on",
@@ -249,7 +249,7 @@ export const copy = {
     voiceMonthHint: "per month extra, 150 minutes included",
     voiceCheckbox: "Add voice receptionist — $99 now + $79/month extra",
     voiceCheckboxHelp:
-      "Optional paid voice line. The on-site chat receptionist is included in Pro and Premium — not Starter.",
+      "Optional paid voice line. The on-site chat receptionist is included in Pro — not Starter.",
     voiceMissing:
       "Voice receptionist checkout is not connected yet. Uncheck it to pay for the website.",
     domainKicker: "Optional add-on",
@@ -264,7 +264,7 @@ export const copy = {
       "Domain checkout is not connected yet. Uncheck it to pay for the website, or wait until it is connected.",
     extrasMenuTitle: "Optional extras you can pick",
     extrasMenuLead:
-      "Website packages stand alone. Booking, missed-call texts, and review texts are add-ons on Pro. Premium includes one of those three. Pick only what you need.",
+      "Website packages stand alone. Booking, missed-call texts, and review texts are add-ons on Pro. Pick only what you need.",
     extrasPick: "Pick this extra",
     affiliatesTitle: "Sell Phoenixwebhost",
     affiliatesLead:
@@ -324,7 +324,7 @@ export const copy = {
     seeSiteCtaText: "Text",
     seeSiteCtaRequest: "Request a demo",
     seeSiteNoFees:
-      "No hidden fees. Starter, Pro, and Premium stay on screen. Extra edits beyond the cap are $49, or upgrade.",
+      "No hidden fees. After the trial, pick Starter or Pro. Extra edits beyond the cap are $49, or upgrade.",
     seeSiteTypeSalon: "Barber / salon",
     seeSiteTypeRestaurant: "Restaurant",
     seeSiteTypeHandyman: "Handyman",
@@ -409,10 +409,10 @@ export const copy = {
     includedLead:
       "Cada paquete tiene un tope de cambios al mes. Cambios extra $49, o suba de paquete. El SEO local básico va incluido. Nunca cambios ilimitados.",
     included: [
-      "SEO local básico incluido — configuración y visibilidad (páginas claras para Google, datos del negocio, contacto, móvil). Pro y Premium también incluyen ayuda con el Perfil de Empresa en Google. No son anuncios de pago ni garantías de posición.",
-      "Una recepcionista de IA incluida en Pro y Premium — responde con sus servicios, horario y teléfono. No va en Starter.",
+      "SEO local básico incluido — configuración y visibilidad (páginas claras para Google, datos del negocio, contacto, móvil). Pro también incluye ayuda con el Perfil de Empresa en Google. No son anuncios de pago ni garantías de posición.",
+      "Una recepcionista de IA incluida en Pro — responde con sus servicios, horario y teléfono. No va en Starter.",
       "El sitio permanece en línea, con SSL",
-      "Tope de cambios por paquete: Starter 1 al mes, Pro 2, Premium 4 prioritarios. Cambios extra se cobran aparte, o suba de paquete — nunca ilimitados.",
+      "Tope de cambios por paquete: Starter 1 al mes, Pro 2. Cambios extra se cobran aparte, o suba de paquete — nunca ilimitados.",
       "Horario, teléfono, dirección, precios, una o dos frases, o cambiar una foto que usted envíe",
       "Un formulario de contacto",
       "Copias de seguridad, vigilancia de actividad y seguridad básica",
@@ -423,7 +423,7 @@ export const copy = {
     notIncluded: [
       "Una página nueva o un feed de Instagram: $75–$150",
       "Cambios extra sobre el tope del paquete: $49 cada uno, o suba de paquete",
-      "Muchas fotos: se cotiza (Premium incluye ayuda para pulir fotos)",
+      "Muchas fotos: se cotiza",
       "Una tienda: se cotiza",
       "Un logotipo: $100–$300",
       "SEO mágico o posiciones garantizadas — no vendemos eso. El SEO local básico de cada paquete es configuración y visibilidad, no anuncios de pago ni promesas de posiciones.",
@@ -570,7 +570,7 @@ export const copy = {
     bookMonthHint: "al mes extra, para mantener el formulario",
     bookCheckbox: "Agregar Reservar un trabajo — $49 ahora + $19 al mes extra",
     bookCheckboxHelp:
-      "Opcional. Si no lo marca, solo compra el sitio. Las reservas son un extra en Pro. Premium incluye un extra que usted elige.",
+      "Opcional. Si no lo marca, solo compra el sitio. Las reservas son un extra en Pro.",
     bookMissing:
       "El pago de Reservar un trabajo aún no está conectado. Desmárquelo para pagar el sitio.",
     missedKicker: "Complemento opcional",
@@ -600,7 +600,7 @@ export const copy = {
     voiceMonthHint: "al mes extra, 150 minutos incluidos",
     voiceCheckbox: "Agregar recepcionista de voz — $99 ahora + $79 al mes extra",
     voiceCheckboxHelp:
-      "Línea de voz de pago. El chat del sitio va incluido en Pro y Premium — no en Starter.",
+      "Línea de voz de pago. El chat del sitio va incluido en Pro — no en Starter.",
     voiceMissing:
       "El pago de recepcionista de voz aún no está conectado. Desmárquelo para pagar el sitio.",
     domainKicker: "Complemento opcional",
@@ -615,7 +615,7 @@ export const copy = {
       "El pago del dominio aún no está conectado. Desmárquelo para pagar el sitio.",
     extrasMenuTitle: "Extras opcionales que puede elegir",
     extrasMenuLead:
-      "Los paquetes de sitio van solos. Reservas, textos de llamada perdida y textos de reseña son extras en Pro. Premium incluye uno de esos tres. Elija solo lo que necesite.",
+      "Los paquetes de sitio van solos. Reservas, textos de llamada perdida y textos de reseña son extras en Pro. Elija solo lo que necesite.",
     extrasPick: "Elegir este extra",
     affiliatesTitle: "Venda Phoenixwebhost",
     affiliatesLead:
@@ -681,7 +681,7 @@ export const copy = {
     seeSiteCtaText: "Texto",
     seeSiteCtaRequest: "Pedir una demo",
     seeSiteNoFees:
-      "Sin cargos ocultos. Starter, Pro y Premium se quedan en pantalla. Cambios extra sobre el tope son $49, o suba de paquete.",
+      "Sin cargos ocultos. Después de la prueba, elija Starter o Pro. Cambios extra sobre el tope son $49, o suba de paquete.",
     seeSiteTypeSalon: "Barbería / salón",
     seeSiteTypeRestaurant: "Restaurante",
     seeSiteTypeHandyman: "Manitas",
