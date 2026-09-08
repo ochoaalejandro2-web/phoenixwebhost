@@ -27,6 +27,7 @@ import {
 } from "@/lib/config";
 import { requestWithExtra } from "@/lib/extra-picks";
 import { requestPath, t } from "@/lib/i18n";
+import { OFFER_PACKAGE_IDS } from "@/lib/packages";
 import { ensureLiveExtraPrices } from "@/lib/stripe-extra-prices";
 import { listPublicReviews } from "@/lib/store";
 import type { Locale } from "@/lib/types";
@@ -430,6 +431,7 @@ export async function MarketingPage({ locale }: { locale: Locale }) {
           </div>
           <RequestForm
             locale={locale}
+            packageIds={OFFER_PACKAGE_IDS}
             boostReady={stripeBoostConfigured()}
             trafficReady={stripeTrafficConfigured()}
             loudReady={stripeLoudConfigured()}

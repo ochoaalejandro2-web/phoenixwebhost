@@ -8,20 +8,23 @@ export function PackagePicker({
   value,
   onChange,
   locale,
+  packageIds = PACKAGE_IDS,
 }: {
   value: PackageId;
   onChange: (id: PackageId) => void;
   locale: Locale;
+  packageIds?: readonly PackageId[];
 }) {
   const c = t(locale);
+  const columns = packageIds.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3";
   return (
     <fieldset className="grid gap-3">
       <legend className="text-sm font-medium text-ink-black">
         {c.packagePickerTitle}
       </legend>
       <p className="text-sm text-body">{c.packagePickerHelp}</p>
-      <div className="grid gap-3 sm:grid-cols-3">
-        {PACKAGE_IDS.map((id) => {
+      <div className={`grid gap-3 ${columns}`}>
+        {packageIds.map((id) => {
           const pkg = PACKAGES[id];
           const copy = pkg.copy[locale];
           const selected = value === id;

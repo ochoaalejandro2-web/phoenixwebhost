@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PACKAGES, PACKAGE_IDS, requestWithPackage } from "@/lib/packages";
+import { PACKAGES, OFFER_PACKAGE_IDS, requestWithPackage } from "@/lib/packages";
 import { t } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
@@ -54,8 +54,8 @@ export function PackagesSection({ locale }: { locale: Locale }) {
       </h2>
       <p className="mt-4 max-w-2xl leading-relaxed text-body">{c.packagesLead}</p>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-3">
-        {PACKAGE_IDS.map((id) => {
+      <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        {OFFER_PACKAGE_IDS.map((id) => {
           const pkg = PACKAGES[id];
           const copy = pkg.copy[locale];
           const popular = pkg.popular;

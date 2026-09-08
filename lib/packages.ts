@@ -4,6 +4,10 @@ import type { Locale } from "./types.ts";
 export const PACKAGE_IDS = ["starter", "pro", "premium"] as const;
 export type PackageId = (typeof PACKAGE_IDS)[number];
 
+/** Facebook / homepage offer: 30 days free, then Starter or Pro only. */
+export const OFFER_PACKAGE_IDS = ["starter", "pro"] as const;
+export type OfferPackageId = (typeof OFFER_PACKAGE_IDS)[number];
+
 export const DEFAULT_PACKAGE_ID: PackageId = "pro";
 
 export const EXTRA_EDIT_CENTS = 4_900;
@@ -53,7 +57,7 @@ export const PACKAGES: Record<PackageId, SitePackage> = {
       en: {
         name: "Starter",
         blurb:
-          "Look nice. Call me. For barbers, handymen, and real estate agents — about $1 a day.",
+          "A simple couple-page site for barbers, handymen, and real estate agents. After the trial: launch + $29.95/mo — about $1 a day.",
         includes: [
           "Home (front) + contact — a simple shop card",
           "Phone, hours, and map",
@@ -69,7 +73,7 @@ export const PACKAGES: Record<PackageId, SitePackage> = {
       es: {
         name: "Starter",
         blurb:
-          "Se ve bien. Llame. Para barberos, manitas y agentes de bienes raíces — unos $1 al día.",
+          "Un sitio sencillo de un par de páginas para barberos, manitas y agentes de bienes raíces. Después de la prueba: lanzamiento + $29.95 al mes — unos $1 al día.",
         includes: [
           "Inicio (portada) + contacto — una tarjeta sencilla del negocio",
           "Teléfono, horario y mapa",
@@ -97,7 +101,8 @@ export const PACKAGES: Record<PackageId, SitePackage> = {
     copy: {
       en: {
         name: "Pro",
-        blurb: "A multi-page custom look with an AI receptionist.",
+        blurb:
+          "A multi-page custom look with an AI receptionist, built from the polished tax-office style template. After the trial: $200 launch + $69/mo.",
         includes: [
           "Multi-page custom look",
           "SEO and Google Business help",
@@ -111,7 +116,8 @@ export const PACKAGES: Record<PackageId, SitePackage> = {
       },
       es: {
         name: "Pro",
-        blurb: "Varias páginas a la medida, con recepcionista de IA.",
+        blurb:
+          "Varias páginas a la medida, con recepcionista de IA, a partir de la plantilla pulida de oficina de impuestos. Después de la prueba: $200 de lanzamiento + $69 al mes.",
         includes: [
           "Varias páginas, aspecto a la medida",
           "SEO y ayuda con Google Business",

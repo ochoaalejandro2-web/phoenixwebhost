@@ -5,6 +5,7 @@ import {
   DEFAULT_PACKAGE_ID,
   EXTRA_EDIT_CENTS,
   EXTRA_EDIT_LABEL,
+  OFFER_PACKAGE_IDS,
   PACKAGES,
   PACKAGE_BUY_URLS,
   PACKAGE_IDS,
@@ -89,13 +90,20 @@ test("extra edits beyond the package cap are $49 flat, never unlimited", () => {
   }
 });
 
-test("Starter is a home-plus-contact card for barbers, handymen, and realtors", () => {
+test("homepage offer cards are Starter and Pro only", () => {
+  assert.deepEqual(OFFER_PACKAGE_IDS, ["starter", "pro"]);
+  assert.equal(OFFER_PACKAGE_IDS.includes("premium" as never), false);
+});
+
+test("Starter is a simple couple-page site for barbers, handymen, and realtors", () => {
   const en = [...PACKAGES.starter.copy.en.includes, PACKAGES.starter.copy.en.blurb].join(" ");
   assert.match(en, /Home \(front\) \+ contact/i);
+  assert.match(en, /couple-page/i);
   assert.match(en, /barbers/i);
   assert.match(en, /handymen/i);
   assert.match(en, /real estate/i);
   assert.match(en, /\$1 a day/i);
+  assert.match(en, /After the trial/i);
 });
 
 test("Starter does not include AI receptionist, booking, or ads", () => {
@@ -112,6 +120,8 @@ test("Starter does not include AI receptionist, booking, or ads", () => {
 
 test("Pro marks Most Popular and lists receptionist; booking is an add-on", () => {
   assert.equal(PACKAGES.pro.popular, true);
+  assert.match(PACKAGES.pro.copy.en.blurb, /multi-page custom look/i);
+  assert.match(PACKAGES.pro.copy.en.blurb, /tax-office style template/i);
   assert.match(PACKAGES.pro.copy.en.includes.join(" "), /AI receptionist/i);
   assert.match(PACKAGES.pro.copy.en.notIncluded.join(" "), /add-on/i);
   assert.match(PACKAGES.premium.copy.en.includes.join(" "), /Everything in Pro/i);

@@ -7,7 +7,12 @@ import { adsFlagsFromTier, type AdsTier } from "@/lib/ads";
 import { TEMPLATES } from "@/lib/config";
 import { t } from "@/lib/i18n";
 import { extraFlagsFromPicks, type ExtraPick } from "@/lib/extra-picks";
-import { PACKAGES, parsePackageId, type PackageId } from "@/lib/packages";
+import {
+  PACKAGES,
+  PACKAGE_IDS,
+  parsePackageId,
+  type PackageId,
+} from "@/lib/packages";
 import type { Locale, TemplateId } from "@/lib/types";
 import {
   otherTypeNote,
@@ -69,6 +74,7 @@ export function RequestForm({
   initialQuoted = [],
   initialOther = "",
   initialPackage = "pro",
+  packageIds = PACKAGE_IDS,
 }: {
   locale: Locale;
   boostReady?: boolean;
@@ -87,15 +93,17 @@ export function RequestForm({
   initialQuoted?: QuotedPick[];
   initialOther?: string;
   initialPackage?: PackageId;
+  packageIds?: readonly PackageId[];
 }) {
   const c = t(locale);
   const initial = extraFlagsFromPicks(initialExtras);
   const quotedNote = quotedMessageNote(initialQuoted, locale);
   const customTypeNote = otherTypeNote(initialOther, locale);
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
-  const [packageId, setPackageId] = useState<PackageId>(
-    parsePackageId(initialPackage),
-  );
+  const [packageId, setPackageId] = useState<PackageId>(() => {
+    const parsed = parsePackageId(initialPackage);
+    return packageIds.includes(parsed) ? parsed : packageIds[0] ?? "pro";
+  });
   const [adsTier, setAdsTier] = useState<AdsTier>(
     parsePackageId(initialPackage) === "starter" ? "none" : initialAds,
   );
@@ -223,6 +231,7 @@ export function RequestForm({
       <PackagePicker
         value={packageId}
         locale={locale}
+        packageIds={packageIds}
         onChange={(id) => {
           setPackageId(id);
           if (id === "starter") setAdsTier("none");
@@ -231,8 +240,8 @@ export function RequestForm({
       {packageId === "starter" ? (
         <p className="rounded-2xl border border-zinc-200 bg-zinc-50/80 px-4 py-3 text-sm text-body">
           {locale === "es"
-            ? "Starter no incluye anuncios. Si necesita anuncios, elija Pro o Premium."
-            : "Starter does not include ads. If you need ads, pick Pro or Premium."}
+            ? "Starter no incluye anuncios. Si necesita anuncios, elija Pro."
+            : "Starter does not include ads. If you need ads, pick Pro."}
         </p>
       ) : (
         <AdsTierPicker

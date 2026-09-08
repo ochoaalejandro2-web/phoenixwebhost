@@ -16,12 +16,12 @@ export const copy = {
       affiliates: "Sell with us",
       owner: "Owner login",
     },
-    heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
-    heroTitle: "A straightforward website for your Arizona small business.",
-    heroAccent: "straightforward",
-    proofLine: "Arizona small-business websites · packages from $99",
+    heroKicker: "30 days free. Cancel anytime.",
+    heroTitle: "30 days free. Then Starter or Pro.",
+    heroAccent: "30 days free",
+    proofLine: "30 days free · then Starter or Pro",
     heroLead:
-      "Three packages. No unlimited-change retainers — a clean site, hosting, and capped monthly care. Extra edits are $49, or upgrade.",
+      "Cancel anytime. After the trial, buy your domain and choose Starter or Pro. Starter is a simple couple-page site. Pro is a multi-page custom look with an AI receptionist, built from the polished tax-office style template.",
     ctaPrimary: "Request a demo",
     ctaSecondary: "See pricing",
     ownerLine: "Owner-operated by Alex Ochoa in Phoenix.",
@@ -34,10 +34,10 @@ export const copy = {
     heroPriceFromHint: "Starter launch",
     heroPricePopular: "Pro $200 + $69/mo",
     heroPricePopularHint: "most popular",
-    packagesKicker: "Website packages",
-    packagesTitle: "Starter, Pro, and Premium",
+    packagesKicker: "After the 30-day trial",
+    packagesTitle: "Starter or Pro",
     packagesLead:
-      "Pick a package. Live hosting and basic SEO are in every plan. Extra edits beyond the cap are $49 each, or upgrade. We never sell unlimited edits.",
+      "After 30 days free, buy your domain and pick Starter or Pro. Prices below are what you pay after the trial. Extra edits beyond the cap are $49 each, or upgrade. We never sell unlimited edits.",
     packagesOverage:
       "Extra edits beyond the package cap are $49 flat, or upgrade to the next package. Never unlimited changes.",
     packageMostPopular: "Most Popular",
@@ -45,9 +45,9 @@ export const copy = {
     packageCtaRequest: "Request this package",
     packageCtaContact: "Request / Contact",
     packagePayMonthly: "Pay monthly care",
-    packageLaunchHint: "one-time, to launch",
-    packageMonthHint: "per month, to stay live",
-    packageStarterMonthHint: "per month — about $1 a day",
+    packageLaunchHint: "after the trial, to launch",
+    packageMonthHint: "per month after the trial",
+    packageStarterMonthHint: "per month after the trial — about $1 a day",
     launchTitle: "Launch — from $99",
     launchBody:
       "Starter is $99 once. Pro (most popular) is $200. Premium is $349. We start from a professional template: your name, phone, hours, address, and a photo-ready layout. Built for contractors, handymen, carpenters, salons, restaurants, landscapers, tax offices, and local offices.",
@@ -107,8 +107,8 @@ export const copy = {
       },
       {
         n: "3",
-        t: "Pick a package and go live",
-        d: "Starter $99 + $29.95/mo, Pro $200 + $69/mo (most popular), or Premium $349 + $99.95/mo. Demo checkout is Pro. First Pro payment is $269 if you pay launch and the first month together. Optional ads (not on Starter) and extras can be added in the same checkout.",
+        t: "After 30 days, pick Starter or Pro",
+        d: "Buy your domain and choose Starter ($99 + $29.95/mo) or Pro ($200 + $69/mo). Pro includes the AI receptionist and a polished multi-page look from the tax-office style template. Cancel anytime during the trial.",
       },
     ],
     aboutTitle: "A Phoenix company, not a faceless host",
@@ -116,7 +116,7 @@ export const copy = {
       "Phoenixwebhost Inc. is owned by Alex Ochoa in Phoenix, Arizona. We build websites for Arizona small businesses and then keep those sites live. If you write in, a person who knows your site answers.",
     requestTitle: "Request a demo",
     requestLead:
-      "Tell us about the business and which package you want: Starter $99 + $29.95/mo, Pro $200 + $69/mo (most popular), or Premium $349 + $99.95/mo. We fill a proven template and show you a live demo. We do not invent a brand-new custom design for Starter or Pro. The demo checkout is Pro. Extra edits beyond the package cap are $49, or upgrade — never unlimited.",
+      "Tell us about the business. Start with 30 days free — cancel anytime. After the trial, buy your domain and choose Starter ($99 + $29.95/mo) or Pro ($200 + $69/mo). We fill a proven template and show you a live demo. Extra edits beyond the package cap are $49, or upgrade — never unlimited.",
     formName: "Your name",
     formBusiness: "Business name",
     formEmail: "Email",
@@ -209,7 +209,7 @@ export const copy = {
       "Business Email checkout is not connected yet. Uncheck the add-on to pay for the website, or wait until Alex connects it.",
     includedSplit: "Included in the website",
     includedSplitHelp:
-      "Custom site and basic local SEO. Pro and Premium include an AI receptionist. Starter does not. The owner gets the lead by email.",
+      "Custom site and basic local SEO. Pro includes an AI receptionist. Starter does not. The owner gets the lead by email.",
     extrasSplit: "Optional extras — add-ons, not in Starter or Pro",
     bookKicker: "Optional add-on",
     bookTitle: "Book a job — $49 once + $19/month extra",
@@ -350,7 +350,7 @@ export const copy = {
     seeSiteAdsNone: "No ads package",
     packagePickerTitle: "Which website package?",
     packagePickerHelp:
-      "Pro is most popular. Starter has no AI receptionist, booking, or ads. Premium includes one add-on you pick.",
+      "After the 30-day trial, pick Starter or Pro. Starter is a simple couple-page site. Pro is a multi-page custom look with an AI receptionist.",
   },
   es: {
     langName: "Español",
@@ -367,12 +367,12 @@ export const copy = {
       affiliates: "Venda con nosotros",
       owner: "Acceso del dueño",
     },
-    heroKicker: "Phoenix, Arizona · Phoenixwebhost Inc.",
-    heroTitle: "Un sitio web claro para su negocio pequeño en Arizona.",
-    heroAccent: "claro",
-    proofLine: "Sitios para negocios pequeños en Arizona · paquetes desde $99",
+    heroKicker: "30 días gratis. Cancele cuando quiera.",
+    heroTitle: "30 días gratis. Luego Starter o Pro.",
+    heroAccent: "30 días gratis",
+    proofLine: "30 días gratis · luego Starter o Pro",
     heroLead:
-      "Tres paquetes. Sin retenedores de cambios ilimitados — un sitio limpio, hospedaje y cuidado mensual con tope. Cambios extra $49, o suba de paquete.",
+      "Cancele cuando quiera. Después de la prueba, compre su dominio y elija Starter o Pro. Starter es un sitio sencillo de un par de páginas. Pro es un look a la medida de varias páginas, con recepcionista de IA, a partir de la plantilla pulida de oficina de impuestos.",
     ctaPrimary: "Pedir una demo",
     ctaSecondary: "Ver precios",
     ownerLine: "Operado por Alex Ochoa en Phoenix.",
@@ -385,10 +385,10 @@ export const copy = {
     heroPriceFromHint: "Lanzamiento Starter",
     heroPricePopular: "Pro $200 + $69/mes",
     heroPricePopularHint: "el más popular",
-    packagesKicker: "Paquetes de sitio",
-    packagesTitle: "Starter, Pro y Premium",
+    packagesKicker: "Después de la prueba de 30 días",
+    packagesTitle: "Starter o Pro",
     packagesLead:
-      "Elija un paquete. Hospedaje en línea y SEO básico van en todos. Cambios extra sobre el tope son $49 cada uno, o suba de paquete. Nunca vendemos cambios ilimitados.",
+      "Después de 30 días gratis, compre su dominio y elija Starter o Pro. Los precios de abajo son lo que paga después de la prueba. Cambios extra sobre el tope son $49 cada uno, o suba de paquete. Nunca vendemos cambios ilimitados.",
     packagesOverage:
       "Los cambios extra sobre el tope del paquete son $49 fijos, o suba al siguiente paquete. Nunca cambios ilimitados.",
     packageMostPopular: "El más popular",
@@ -396,9 +396,9 @@ export const copy = {
     packageCtaRequest: "Pedir este paquete",
     packageCtaContact: "Contactar / Pedir",
     packagePayMonthly: "Pagar el cuidado mensual",
-    packageLaunchHint: "un solo pago, para lanzar",
-    packageMonthHint: "al mes, para mantenerlo en línea",
-    packageStarterMonthHint: "al mes — unos $1 al día",
+    packageLaunchHint: "después de la prueba, para lanzar",
+    packageMonthHint: "al mes, después de la prueba",
+    packageStarterMonthHint: "al mes después de la prueba — unos $1 al día",
     launchTitle: "Lanzamiento — desde $99",
     launchBody:
       "Starter es $99 una vez. Pro (el más popular) es $200. Premium es $349. Partimos de una plantilla profesional: nombre, teléfono, horario, dirección y un diseño listo para fotos. Para contratistas, manitas, carpinteros, salones, restaurantes, jardineros, oficinas de impuestos y oficinas locales.",
@@ -458,8 +458,8 @@ export const copy = {
       },
       {
         n: "3",
-        t: "Elija un paquete y publíquelo",
-        d: "Starter $99 + $29.95 al mes, Pro $200 + $69 al mes (el más popular), o Premium $349 + $99.95 al mes. El pago de la demo es Pro. El primer pago Pro es $269 si paga el lanzamiento y el primer mes juntos. Anuncios opcionales (no en Starter) y extras se pueden agregar en el mismo pago.",
+        t: "Después de 30 días, elija Starter o Pro",
+        d: "Compre su dominio y elija Starter ($99 + $29.95 al mes) o Pro ($200 + $69 al mes). Pro incluye la recepcionista de IA y un look pulido de varias páginas, a partir de la plantilla de oficina de impuestos. Cancele cuando quiera durante la prueba.",
       },
     ],
     aboutTitle: "Una empresa en Phoenix, no un host sin cara",
@@ -467,7 +467,7 @@ export const copy = {
       "Phoenixwebhost Inc. es de Alex Ochoa en Phoenix, Arizona. Hacemos sitios para negocios pequeños de Arizona y los mantenemos en línea. Si escribe, responde alguien que conoce su sitio.",
     requestTitle: "Pedir una demo",
     requestLead:
-      "Cuéntenos del negocio y qué paquete quiere: Starter $99 + $29.95 al mes, Pro $200 + $69 al mes (el más popular), o Premium $349 + $99.95 al mes. Llenamos una plantilla comprobada y le mostramos una demo en vivo. Con Starter o Pro no inventamos un diseño a medida nuevo. El pago de la demo es Pro. Cambios extra sobre el tope son $49, o suba de paquete — nunca ilimitados.",
+      "Cuéntenos del negocio. Empiece con 30 días gratis — cancele cuando quiera. Después de la prueba, compre su dominio y elija Starter ($99 + $29.95 al mes) o Pro ($200 + $69 al mes). Llenamos una plantilla comprobada y le mostramos una demo en vivo. Cambios extra sobre el tope son $49, o suba de paquete — nunca ilimitados.",
     formName: "Su nombre",
     formBusiness: "Nombre del negocio",
     formEmail: "Correo",
@@ -560,7 +560,7 @@ export const copy = {
       "El pago de Business Email aún no está conectado. Desmarque el complemento para pagar el sitio, o espere a que Alex lo active.",
     includedSplit: "Incluido en el sitio",
     includedSplitHelp:
-      "Sitio a la medida y SEO local básico. Pro y Premium incluyen recepcionista de IA. Starter no. El dueño recibe el lead por correo.",
+      "Sitio a la medida y SEO local básico. Pro incluye recepcionista de IA. Starter no. El dueño recibe el lead por correo.",
     extrasSplit: "Extras opcionales — no van en Starter ni en Pro",
     bookKicker: "Complemento opcional",
     bookTitle: "Reservar un trabajo — $49 una vez + $19 al mes extra",
@@ -701,7 +701,7 @@ export const copy = {
     seeSiteAdsNone: "Sin paquete de anuncios",
     packagePickerTitle: "¿Qué paquete de sitio?",
     packagePickerHelp:
-      "Pro es el más popular. Starter no incluye recepcionista de IA, reservas ni anuncios. Premium incluye un extra que usted elige.",
+      "Después de la prueba de 30 días, elija Starter o Pro. Starter es un sitio sencillo de un par de páginas. Pro es un look a la medida de varias páginas, con recepcionista de IA.",
   },
 } as const;
 
