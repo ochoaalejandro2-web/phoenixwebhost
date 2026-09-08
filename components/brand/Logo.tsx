@@ -15,7 +15,7 @@ export function Logo({
         className={`leading-tight ${compactOnMobile ? "hidden sm:block" : ""}`}
       >
         <span
-          className={`block font-display text-[1.05rem] font-semibold tracking-tight ${onDark ? "text-white" : "text-ink-black"}`}
+          className={`block whitespace-nowrap font-display text-[1.05rem] font-semibold tracking-tight ${onDark ? "text-white" : "text-ink-black"}`}
         >
           Phoenixwebhost
         </span>

@@ -71,47 +71,51 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   const home = homePath(locale);
   return (
     <header className="sticky top-0 z-30 bg-header">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-        <Link href={home} aria-label="Phoenixwebhost home" className="min-w-0 shrink">
-          <Logo tone="dark" compactOnMobile />
-        </Link>
-        <nav className="hidden items-center gap-7 text-sm text-white/85 lg:flex">
-          <Link href={previewPath(locale)} className="hover:text-lime">
-            {c.nav.seeSite}
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-6 py-4">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-10 gap-y-2">
+          <Link href={home} aria-label="Phoenixwebhost home" className="shrink-0">
+            <Logo tone="dark" compactOnMobile />
           </Link>
-          <a href={`${home}#work`} className="hover:text-lime">
-            {locale === "es" ? "Trabajo" : "Work"}
-          </a>
-          <a href={`${home}#reviews`} className="hover:text-lime">
-            {c.nav.reviews}
-          </a>
-          <a href={`${home}#pricing`} className="hover:text-lime">
-            {c.nav.pricing}
-          </a>
-          <a href={`${home}#extras`} className="hover:text-lime">
-            {c.nav.extras}
-          </a>
-          <Link href={c.otherHref} className="hover:text-lime">
-            {c.otherLang}
-          </Link>
-        </nav>
-        <div className="hidden min-w-[12rem] max-w-sm flex-1 md:block">
-          <DemoSearch locale={locale} variant="header" />
+          <nav className="hidden items-center gap-x-7 text-sm text-white/85 lg:flex">
+            <Link href={previewPath(locale)} className="whitespace-nowrap hover:text-lime">
+              {c.nav.seeSite}
+            </Link>
+            <a href={`${home}#work`} className="whitespace-nowrap hover:text-lime">
+              {locale === "es" ? "Trabajo" : "Work"}
+            </a>
+            <a href={`${home}#reviews`} className="whitespace-nowrap hover:text-lime">
+              {c.nav.reviews}
+            </a>
+            <a href={`${home}#pricing`} className="whitespace-nowrap hover:text-lime">
+              {c.nav.pricing}
+            </a>
+            <a href={`${home}#extras`} className="whitespace-nowrap hover:text-lime">
+              {c.nav.extras}
+            </a>
+            <Link href={c.otherHref} className="whitespace-nowrap hover:text-lime">
+              {c.otherLang}
+            </Link>
+          </nav>
         </div>
-        <div className="flex items-center gap-4">
-          <CompanyPhone className="hidden whitespace-nowrap text-sm font-medium text-lime hover:text-white md:inline" />
-          <Link
-            href="/login"
-            className="hidden text-xs text-white/60 hover:text-lime sm:inline"
-          >
-            {c.nav.owner}
-          </Link>
-          <Link
-            href={previewPath(locale)}
-            className="btn-lime rounded-full px-4 py-2 text-sm"
-          >
-            {c.nav.seeSite}
-          </Link>
+        <div className="flex min-w-0 flex-1 basis-56 flex-wrap items-center justify-end gap-x-4 gap-y-2">
+          <div className="hidden min-w-[10rem] max-w-sm flex-1 md:block">
+            <DemoSearch locale={locale} variant="header" />
+          </div>
+          <div className="flex shrink-0 items-center gap-4">
+            <CompanyPhone className="hidden whitespace-nowrap text-sm font-medium text-lime hover:text-white md:inline" />
+            <Link
+              href="/login"
+              className="hidden text-xs text-white/60 hover:text-lime sm:inline"
+            >
+              {c.nav.owner}
+            </Link>
+            <Link
+              href={previewPath(locale)}
+              className="btn-lime whitespace-nowrap rounded-full px-4 py-2 text-sm"
+            >
+              {c.nav.seeSite}
+            </Link>
+          </div>
         </div>
       </div>
       <div className="border-t border-white/10 px-6 py-2 md:hidden">
