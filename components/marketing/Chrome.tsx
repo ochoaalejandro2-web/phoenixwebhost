@@ -91,7 +91,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             </a>
             <a href={`${home}#extras`} className="whitespace-nowrap hover:text-lime">
               {c.nav.extras}
-            </a>
+            </a><a href="/marketing-blast" className="whitespace-nowrap hover:text-lime">Marketing Blast</a>
             <Link href={c.otherHref} className="whitespace-nowrap hover:text-lime">
               {c.otherLang}
             </Link>
