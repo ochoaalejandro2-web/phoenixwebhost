@@ -17,7 +17,7 @@ import {
   paFinancialTagline,
 } from "./pa-financial-i18n.ts";
 import { normalizeSearchText } from "./public-demos.ts";
-import { serviceBlurb, serviceName } from "./shop-content.ts";
+import { serviceBlurb, serviceName, shopClientAbout, shopClientTagline } from "./shop-content.ts";
 import { siteSupportsI18n } from "./site-locale.ts";
 import type { Client, Locale } from "./types.ts";
 
@@ -276,13 +276,13 @@ export function buildClientFacts(
       ? holaTaxTagline(client.tagline, useLocale)
       : client.slug === PA_FINANCIAL_SLUG
         ? paFinancialTagline(client.tagline, useLocale)
-        : client.tagline;
+        : shopClientTagline(client, useLocale);
   const about =
     client.slug === HOLA_TAX_SLUG
       ? holaTaxAbout(client.about, useLocale)
       : client.slug === PA_FINANCIAL_SLUG
         ? paFinancialAbout(client.about, useLocale)
-        : client.about;
+        : shopClientAbout(client, useLocale);
   const phone = String(client.phone || "").trim();
   return {
     kind: "client",

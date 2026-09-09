@@ -19,6 +19,7 @@ test("public demos are the real repo starting points, not invented shops", () =>
     "mesa-street-kitchen",
     "palo-verde-yards",
     "premium-carpentry-designs",
+    "the-sharp-cut",
   ]);
   for (const demo of PUBLIC_DEMOS) {
     assert.equal(demo.href, `/s/${demo.slug}`);
@@ -115,6 +116,18 @@ test("trade, city, name, and synonym queries find the matching live demo", () =>
   assert.equal(filterPublicDemos("hair")[0]?.slug, "casa-luna-salon");
   assert.equal(filterPublicDemos("nails")[0]?.slug, "casa-luna-salon");
   assert.equal(filterPublicDemos("Scottsdale")[0]?.slug, "casa-luna-salon");
+  assert.equal(filterPublicDemos("barber")[0]?.slug, "the-sharp-cut");
+  assert.equal(filterPublicDemos("barbershop")[0]?.slug, "the-sharp-cut");
+  assert.equal(filterPublicDemos("fade")[0]?.slug, "the-sharp-cut");
+  assert.equal(filterPublicDemos("barberia")[0]?.slug, "the-sharp-cut");
+  assert.equal(filterPublicDemos("The Sharp Cut")[0]?.slug, "the-sharp-cut");
+  assert.ok(
+    filterPublicDemos("Phoenix").some((row) => row.slug === "the-sharp-cut"),
+  );
+  assert.equal(
+    PUBLIC_DEMOS.find((demo) => demo.slug === "the-sharp-cut")?.hostLabel,
+    "sharpcut.phoenixwebhost.com",
+  );
 
   assert.equal(filterPublicDemos("restaurant")[0]?.slug, "mesa-street-kitchen");
   assert.equal(filterPublicDemos("food")[0]?.slug, "mesa-street-kitchen");
@@ -154,6 +167,8 @@ test("template starting points stay mapped to those live demo URLs", () => {
   assert.ok(filterTemplates("cleaning").includes("cleaning"));
   assert.ok(filterTemplates("maid").includes("cleaning"));
   assert.ok(filterTemplates("limpieza").includes("cleaning"));
+  assert.ok(filterTemplates("barber").includes("salon"));
+  assert.ok(filterTemplates("barberia").includes("salon"));
 });
 
 test("plan copy on the public site keeps Pro at $200 launch + $69/month", () => {

@@ -300,6 +300,7 @@ export async function resetDemoAction() {
   revalidatePath("/es/reviews");
   revalidatePath("/s/desert-peak-roofing");
   revalidatePath("/s/casa-luna-salon");
+  revalidatePath("/s/the-sharp-cut");
   revalidatePath("/s/mesa-street-kitchen");
   revalidatePath("/s/palo-verde-yards");
   revalidatePath("/s/ironwood-handyman");

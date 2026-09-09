@@ -222,6 +222,55 @@ test("fallback answers carpentry cabinet questions from that site’s services",
   assert.equal(/unavailable/i.test(reply), false);
 });
 
+test("fallback answers barber fade questions from the sharp cut services", () => {
+  const facts = buildClientFacts(
+    client({
+      businessName: "The Sharp Cut",
+      slug: "the-sharp-cut",
+      template: "salon",
+      phone: "(602) 555-0174",
+      city: "Phoenix, AZ",
+      hours: "Tue–Sat 9:00am–7:00pm",
+      tagline: "Precision is a ritual.",
+      about: "A Phoenix barbershop for people who treat a haircut like a craft.",
+      services: [
+        "Executive Haircut",
+        "Straight Razor Shave",
+        "Beard Sculpting & Steam",
+        "The Complete Reset",
+      ],
+    }),
+    "en",
+  );
+  assert.ok(matchListedServices(facts, "do you do fades?").length >= 1);
+  const reply = fallbackAnswer(facts, "do you do fades?");
+  assert.match(reply, /Executive Haircut|Complete Reset/i);
+  assert.match(reply, /The Sharp Cut/);
+  assert.match(reply, /\(602\) 555-0174/);
+  assert.equal(reply.includes(COMPANY.phone), false);
+  const es = buildClientFacts(
+    client({
+      businessName: "The Sharp Cut",
+      slug: "the-sharp-cut",
+      template: "salon",
+      phone: "(602) 555-0174",
+      city: "Phoenix, AZ",
+      hours: "Tue–Sat 9:00am–7:00pm",
+      tagline: "Precision is a ritual.",
+      about: "A Phoenix barbershop for people who treat a haircut like a craft.",
+      services: [
+        "Executive Haircut",
+        "Straight Razor Shave",
+        "Beard Sculpting & Steam",
+        "The Complete Reset",
+      ],
+    }),
+    "es",
+  );
+  assert.match(es.tagline, /rito/i);
+  assert.match(es.about, /barbería|Phoenix/i);
+});
+
 test("fallback answers cleaning questions from that site’s services", () => {
   const facts = buildClientFacts(
     client({

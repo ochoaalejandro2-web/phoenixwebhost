@@ -11,11 +11,11 @@ export function siteLangCookieName(slug: string) {
   return `pwh_lang_${slug}`;
 }
 
-const I18N_SLUGS = new Set(["hola-tax-service"]);
+const I18N_SLUGS = new Set(["hola-tax-service", "the-sharp-cut"]);
 
 /**
- * Hola Tax by slug (same as the dedicated i18n PR) plus every Tax office
- * template site. Other templates stay English-only.
+ * Hola Tax, The Sharp Cut barber demo, and every Tax office template site.
+ * Other shop templates stay English-only unless listed here.
  */
 export function siteSupportsI18n(slug: string, template?: string) {
   return I18N_SLUGS.has(slug) || template === "tax";

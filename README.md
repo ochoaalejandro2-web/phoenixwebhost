@@ -86,6 +86,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Sign a PDF (customer, no login) | `/sign` |
 | Demo contractor | `/s/desert-peak-roofing` (paid, live) |
 | Demo salon | `/s/casa-luna-salon` (paid, live) |
+| Demo barbershop | `/s/the-sharp-cut` (paid, live) — Phoenix Sharp Cut marketing demo |
 | Demo restaurant | `/s/mesa-street-kitchen` (paid, live) |
 | Demo landscaping (sample) | `/s/palo-verde-yards` (paid, live) |
 | Demo handyman (sample) | `/s/ironwood-handyman` (paid, live) |
