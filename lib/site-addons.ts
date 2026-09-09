@@ -5,6 +5,7 @@ const WALK_IN_BOOK_SLUGS = new Set([
   "desert-peak-roofing",
   "ironwood-handyman",
   "casa-luna-salon",
+  "the-sharp-cut",
   "mesa-street-kitchen",
   "palo-verde-yards",
   "desert-sparkle-cleaning",

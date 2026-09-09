@@ -139,6 +139,18 @@ body {
   letter-spacing: -0.03em;
 }
 
+/* The Sharp Cut — wide architectural sans on the salon layout. */
+.shop-sharp {
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+.shop-sharp .font-display {
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
 /* Tax office Pro layout (P&A Financial reference). Default class
    `theme-tax-pro`. Clone colors with `.theme-{slug}` after this block. */
 :is(.theme-tax-pro, .theme-pa-financial) {

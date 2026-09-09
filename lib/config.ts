@@ -96,8 +96,8 @@ export const TEMPLATES: {
     id: "salon",
     name: "Salon & beauty",
     nameEs: "Salón y belleza",
-    blurb: "Hair, nails, spa, and appointment-based shops.",
-    blurbEs: "Cabello, uñas, spa y citas.",
+    blurb: "Hair, barbershops, nails, spa, and appointment-based shops.",
+    blurbEs: "Cabello, barberías, uñas, spa y citas.",
   },
   {
     id: "restaurant",

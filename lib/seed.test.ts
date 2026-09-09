@@ -120,7 +120,7 @@ test("P&A Financial seed is a real paying tax-office client, not a demo", () => 
   assert.match(chunk, /slug: "pa-financial"/);
   assert.match(chunk, /contactName: "Patricia Escobedo"/);
   assert.match(chunk, /pafinancial19@gmail.com/);
-  assert.match(chunk, /\(720\) 501-0501/);
+  assert.match(chunk, /\(602\) 554-7507/);
   assert.match(chunk, /template: "tax"/);
   assert.match(chunk, /siteStatus: "live"/);
   assert.match(chunk, /paymentStatus: "paid"/);
@@ -236,6 +236,30 @@ test("stale P&A Financial services and black/weak logos refresh from seed", () =
     "Hola stays.",
   );
   assert.equal(refreshPaFinancialListedOfferings(next.items, seed).added, false);
+});
+
+test("the sharp cut seed is a live paid Phoenix barber demo on the salon template", () => {
+  const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
+  const start = src.indexOf('id: "cli_the_sharp_cut"');
+  assert.ok(start > 0);
+  const end = src.indexOf('id: "cli_mesa_street"', start);
+  const chunk = src.slice(start, end > start ? end : start + 2800);
+  assert.match(chunk, /businessName: "The Sharp Cut"/);
+  assert.match(chunk, /slug: "the-sharp-cut"/);
+  assert.match(chunk, /template: "salon"/);
+  assert.match(chunk, /siteStatus: "live"/);
+  assert.match(chunk, /paymentStatus: "paid"/);
+  assert.match(chunk, /bookAJob: true/);
+  assert.match(chunk, /city: "Phoenix, AZ"/);
+  assert.match(chunk, /1820 E Camelback Rd/);
+  assert.match(chunk, /Executive Haircut/);
+  assert.match(chunk, /Straight Razor Shave/);
+  assert.match(chunk, /Beard Sculpting & Steam/);
+  assert.match(chunk, /The Complete Reset/);
+  assert.match(chunk, /Precision is a ritual/);
+  assert.doesNotMatch(chunk, /New York/);
+  assert.doesNotMatch(chunk, /siteStatus: "offline"/);
+  assert.doesNotMatch(chunk, /paymentStatus: "overdue"/);
 });
 
 test("stale offline mesa street kitchen is restored without touching other clients", () => {

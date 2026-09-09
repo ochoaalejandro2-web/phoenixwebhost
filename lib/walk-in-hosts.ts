@@ -25,6 +25,10 @@ export const WALK_IN_HOST_ALIASES: Record<string, string> = {
   "casa-luna": "casa-luna-salon",
   casalunasalon: "casa-luna-salon",
   "casa-luna-salon": "casa-luna-salon",
+  sharpcut: "the-sharp-cut",
+  "sharp-cut": "the-sharp-cut",
+  thesharpcut: "the-sharp-cut",
+  "the-sharp-cut": "the-sharp-cut",
   mesastreet: "mesa-street-kitchen",
   "mesa-street": "mesa-street-kitchen",
   mesastreetkitchen: "mesa-street-kitchen",
@@ -47,6 +51,7 @@ export const WALK_IN_DISPLAY_HOST: Record<string, string> = {
   "palo-verde-yards": "paloverde.phoenixwebhost.com",
   "desert-peak-roofing": "desertpeak.phoenixwebhost.com",
   "desert-sparkle-cleaning": "desertsparkle.phoenixwebhost.com",
+  "the-sharp-cut": "sharpcut.phoenixwebhost.com",
 };
 
 const HOLA_TAX_CUSTOM = {

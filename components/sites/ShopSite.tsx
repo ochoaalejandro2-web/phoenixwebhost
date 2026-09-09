@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { BookJobForm } from "@/components/sites/BookJobForm";
 import { PreviewContactForm } from "@/components/sites/PreviewContactForm";
+import { SiteLangToggle } from "@/components/sites/SiteLangToggle";
 import { isPreviewClient, previewLeadId, siteHomeHref, displayHours, isSamplePhone } from "@/lib/demo";
 import { clientShowsBookJob } from "@/lib/site-addons";
+import { siteSupportsI18n } from "@/lib/site-locale";
 import {
   CLEANING_AREAS,
   CLEANING_PLANS,
@@ -11,10 +13,13 @@ import {
   photoAlt,
   serviceBlurb,
   serviceName,
-  SHOP_PHOTOS,
-  SHOP_THEMES,
+  SHARP_CUT_SLUG,
+  shopClientAbout,
+  shopClientKicker,
+  shopClientTagline,
   shopLayoutReviews,
-  type ShopTheme,
+  shopPhotosFor,
+  shopThemeFor,
 } from "@/lib/shop-content";
 import { tShop } from "@/lib/shop-i18n";
 import type { Client, ContactNotice, Locale, TemplateId } from "@/lib/types";
@@ -180,8 +185,8 @@ export function ShopSite({
   locale: Locale;
 }) {
   const template = client.template as Exclude<TemplateId, "tax">;
-  const theme: ShopTheme = SHOP_THEMES[template] ?? SHOP_THEMES.professional;
-  const photos = SHOP_PHOTOS[client.template] ?? SHOP_PHOTOS.professional;
+  const theme = shopThemeFor(client.slug, template);
+  const photos = shopPhotosFor(client.slug, client.template);
   const c = tShop(locale);
   const preview = isPreviewClient(client);
   const home = siteHomeHref(client);
@@ -191,6 +196,11 @@ export function ShopSite({
   const hours = displayHours(client.hours, client.template, locale);
   const reviews = shopLayoutReviews(client, preview);
   const isCleaning = client.template === "cleaning";
+  const isSharpCut = client.slug === SHARP_CUT_SLUG;
+  const bilingual = siteSupportsI18n(client.slug, client.template);
+  const tagline = shopClientTagline(client, locale);
+  const about = shopClientAbout(client, locale);
+  const kicker = shopClientKicker(client, locale);
   const callLabel = phone ? c.call(phone) : c.callShort;
   const ctaBtn = `inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold`;
   const submitBtn = isCleaning
@@ -215,7 +225,10 @@ export function ShopSite({
       ];
 
   return (
-    <div className={`flex min-h-full flex-col ${theme.page}`}>
+    <div
+      lang={bilingual ? locale : undefined}
+      className={`flex min-h-full flex-col ${theme.page}${isSharpCut ? " shop-sharp" : ""}`}
+    >
       <header
         className={`shop-header sticky top-0 z-40 border-b backdrop-blur ${theme.header} ${theme.headerBorder}`}
       >
@@ -225,6 +238,12 @@ export function ShopSite({
             className={`min-w-0 font-display text-base leading-snug sm:text-lg ${theme.name}`}
           >
             {displayName}
+            {isSharpCut ? (
+              <span
+                className="ml-2 inline-block h-2 w-2 rotate-45 bg-[#e23b2c] align-middle"
+                aria-hidden="true"
+              />
+            ) : null}
           </a>
           <div className="flex shrink-0 items-center gap-3 sm:gap-4">
             <nav className="hidden items-center gap-4 text-sm lg:flex">
@@ -234,7 +253,28 @@ export function ShopSite({
                 </a>
               ))}
             </nav>
-            {phone ? (
+            {bilingual ? (
+              <SiteLangToggle
+                slug={client.slug}
+                locale={locale}
+                label={c.langNav}
+                activeClass={isSharpCut ? "font-semibold text-white" : undefined}
+                idleClass={
+                  isSharpCut
+                    ? "font-semibold text-white/50 hover:text-white"
+                    : undefined
+                }
+                dividerClass={isSharpCut ? "text-white/30" : undefined}
+              />
+            ) : null}
+            {isSharpCut ? (
+              <a
+                href="#book"
+                className={`site-cta inline-flex min-h-11 items-center justify-center rounded-full px-3.5 py-2 text-sm font-semibold sm:px-4 ${theme.call} ${theme.callHover}`}
+              >
+                {c.bookChair}
+              </a>
+            ) : phone ? (
               <a
                 href={telHref(phone)}
                 className={`site-phone site-cta inline-flex min-h-11 items-center justify-center rounded-full px-3.5 py-2 text-sm font-semibold sm:px-4 ${theme.call} ${theme.callHover}`}
@@ -272,16 +312,33 @@ export function ShopSite({
         <div className={`absolute inset-0 ${theme.overlay}`} aria-hidden="true" />
         <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-5xl flex-col justify-center px-5 py-16 text-white lg:min-h-[calc(100svh-4.75rem)] lg:py-20">
           <p className={`text-sm uppercase tracking-[0.22em] ${theme.kicker}`}>
-            {client.city}
+            {kicker}
           </p>
           <h1 className={`mt-4 max-w-3xl font-display text-4xl leading-tight sm:text-5xl ${theme.heroTitle ?? "text-white"}`}>
-            {client.tagline}
+            {tagline}
           </h1>
           <p className={`mt-5 max-w-xl text-base sm:text-lg ${theme.heroLead ?? "text-white/90"}`}>
-            {client.about}
+            {about}
           </p>
           <div className="mt-8 flex w-full max-w-md flex-col gap-3 sm:max-w-xl sm:flex-row sm:flex-wrap sm:items-center">
-            {isCleaning ? (
+            {isSharpCut ? (
+              <>
+                <a
+                  href="#book"
+                  className={`${ctaBtn} w-full sm:w-auto ${theme.call} ${theme.callHover}`}
+                >
+                  {c.bookChair}
+                </a>
+                {phone ? (
+                  <a
+                    href={telHref(phone)}
+                    className={`site-cta ${ctaBtn} w-full sm:w-auto ${theme.ghostBtn}`}
+                  >
+                    {callLabel}
+                  </a>
+                ) : null}
+              </>
+            ) : isCleaning ? (
               <>
                 <a
                   href="#contact"
@@ -339,8 +396,13 @@ export function ShopSite({
 
       <section id="services" className="mx-auto w-full max-w-5xl px-5 py-16">
         <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>
-          {c.servicesTitle(client.template)}
+          {c.servicesTitle(client.template, client.slug)}
         </h2>
+        {isSharpCut ? (
+          <p className={`mt-3 max-w-2xl text-sm leading-relaxed ${theme.muted}`}>
+            {c.sharpServicesLead}
+          </p>
+        ) : null}
         <ul className="mt-8 grid gap-4 sm:grid-cols-2">
           {services.map((service) => {
             const blurb = serviceBlurb(service, locale);
@@ -430,7 +492,7 @@ export function ShopSite({
         />
         <div>
           <h2 className={`font-display text-3xl ${theme.sectionTitle}`}>{c.aboutTitle}</h2>
-          <p className={`mt-4 text-lg leading-relaxed ${theme.muted}`}>{client.about}</p>
+          <p className={`mt-4 text-lg leading-relaxed ${theme.muted}`}>{about}</p>
           {phone ? (
             <a
               href={telHref(phone)}

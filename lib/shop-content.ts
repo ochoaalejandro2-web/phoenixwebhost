@@ -461,6 +461,118 @@ export const SHOP_THEMES: Record<Exclude<TemplateId, "tax">, ShopTheme> = {
   },
 };
 
+/** Phoenix barber marketing demo. Salon template + a dark high-contrast overlay. */
+export const SHARP_CUT_SLUG = "the-sharp-cut";
+
+const SHARP_CUT_THEME: ShopTheme = {
+  page: "bg-[#f4f4f2] text-[#111111]",
+  header: "bg-[#111111]/95 text-[#f4f4f2]",
+  headerBorder: "border-white/10",
+  name: "text-[#f4f4f2]",
+  nav: "text-white/70 hover:text-white",
+  call: "bg-[#e23b2c] text-white",
+  callHover: "hover:bg-[#c43226]",
+  kicker: "text-[#e23b2c]",
+  body: "text-[#111111]",
+  muted: "text-[#4a4744]",
+  card: "bg-white",
+  cardBorder: "border-[#e4e0dc]",
+  sectionTitle: "text-[#111111]",
+  overlay: "bg-gradient-to-r from-black/85 via-black/55 to-black/20",
+  footer: "text-[#5c574e]",
+  footerBorder: "border-[#e4e0dc]",
+  field: "rounded-lg border border-[#e4e0dc] bg-white px-3 py-2 text-ink",
+  ghostBtn: "border border-white/80 text-white hover:bg-white hover:text-[#111111]",
+};
+
+const SHARP_CUT_PHOTOS = {
+  hero: {
+    src: "/clients/the-sharp-cut/hero.jpg",
+    alt: "Barber lining a fade with a straight razor",
+    altEs: "Barbero marcando un fade con navaja",
+  },
+  gallery: [
+    {
+      src: "/clients/the-sharp-cut/photo-1.jpg",
+      alt: "Black barber chairs in a brick-and-tile Phoenix shop",
+      altEs: "Sillones negros de barbería en un local de ladrillo en Phoenix",
+    },
+    {
+      src: "/clients/the-sharp-cut/photo-2.jpg",
+      alt: "A measured fade being cut in the chair",
+      altEs: "Un fade medido cortado en el sillón",
+    },
+    {
+      src: "/clients/the-sharp-cut/photo-3.jpg",
+      alt: "Clippers, shears, and product laid out for the chair",
+      altEs: "Máquinas, tijeras y producto listos para el sillón",
+    },
+    {
+      src: "/clients/the-sharp-cut/photo-4.jpg",
+      alt: "Hot lather for a straight-razor shave",
+      altEs: "Espuma caliente para un afeitado con navaja",
+    },
+  ],
+};
+
+const CLIENT_SHOP_THEMES: Record<string, ShopTheme> = {
+  [SHARP_CUT_SLUG]: SHARP_CUT_THEME,
+};
+
+const CLIENT_SHOP_PHOTOS: Record<string, { hero: ShopPhoto; gallery: ShopPhoto[] }> = {
+  [SHARP_CUT_SLUG]: SHARP_CUT_PHOTOS,
+};
+
+export function shopThemeFor(
+  slug: string,
+  template: Exclude<TemplateId, "tax">,
+): ShopTheme {
+  return CLIENT_SHOP_THEMES[slug] ?? SHOP_THEMES[template] ?? SHOP_THEMES.professional;
+}
+
+export function shopPhotosFor(slug: string, template: TemplateId) {
+  return CLIENT_SHOP_PHOTOS[slug] ?? SHOP_PHOTOS[template] ?? SHOP_PHOTOS.professional;
+}
+
+const SHARP_CUT_COPY = {
+  tagline: {
+    en: "Precision is a ritual.",
+    es: "La precisión es un rito.",
+  },
+  kicker: {
+    en: "The Sharp Cut — architectural grooming",
+    es: "The Sharp Cut — grooming de arquitectura",
+  },
+  about: {
+    en: "A Phoenix barbershop for people who treat a haircut like a craft. Measured fades, hot-towel shaves, and a chair that starts on time.",
+    es: "Una barbería en Phoenix para quien trata el corte como un oficio. Fades medidos, afeitados con toalla caliente y un sillón que empieza a tiempo.",
+  },
+} as const;
+
+export function shopClientTagline(
+  client: { slug: string; tagline: string },
+  locale: Locale,
+) {
+  if (client.slug === SHARP_CUT_SLUG) return SHARP_CUT_COPY.tagline[locale];
+  return client.tagline;
+}
+
+export function shopClientAbout(
+  client: { slug: string; about: string },
+  locale: Locale,
+) {
+  if (client.slug === SHARP_CUT_SLUG) return SHARP_CUT_COPY.about[locale];
+  return client.about;
+}
+
+export function shopClientKicker(
+  client: { slug: string; city: string },
+  locale: Locale,
+) {
+  if (client.slug === SHARP_CUT_SLUG) return SHARP_CUT_COPY.kicker[locale];
+  return client.city;
+}
+
 export const SERVICE_BLURBS: Record<
   string,
   { blurb: string; blurbEs: string; nameEs: string }
@@ -584,6 +696,26 @@ export const SERVICE_BLURBS: Record<
     nameEs: "Citas",
     blurb: "Call to book. If we are full, we will say so.",
     blurbEs: "Llame para agendar. Si estamos llenos, se lo decimos.",
+  },
+  "Executive Haircut": {
+    nameEs: "Corte ejecutivo",
+    blurb: "Consultation, a measured fade or scissor cut, and a styled finish. The signature, start to end.",
+    blurbEs: "Consulta, un fade medido o corte de tijera, y un acabado peinado. El de siempre, de principio a fin.",
+  },
+  "Straight Razor Shave": {
+    nameEs: "Afeitado con navaja",
+    blurb: "Hot towel, straight razor, and a clean line. Not a hurry-up foam shave.",
+    blurbEs: "Toalla caliente, navaja y una línea limpia. No es un afeitado de prisa.",
+  },
+  "Beard Sculpting & Steam": {
+    nameEs: "Barba, forma y vapor",
+    blurb: "Shape, steam, and oil. The beard is part of the cut, not an afterthought.",
+    blurbEs: "Forma, vapor y aceite. La barba es parte del corte, no un extra.",
+  },
+  "The Complete Reset": {
+    nameEs: "El reinicio completo",
+    blurb: "Haircut, shave, and beard in one chair. When you want the whole ritual.",
+    blurbEs: "Corte, afeitado y barba en un sillón. Cuando quiere el rito completo.",
   },
   "Lunch plates": {
     nameEs: "Platos de almuerzo",
@@ -1062,10 +1194,35 @@ export function photoAlt(photo: ShopPhoto, locale: Locale) {
 /** Walk-in prospect preview that should look finished, including neighbor quotes. */
 export const PREMIUM_CARPENTRY_SLUG = "premium-carpentry-designs";
 
+const SHARP_CUT_REVIEWS = [
+  {
+    name: "Diego R.",
+    city: "Phoenix",
+    stars: 5,
+    body: "Fade stayed tight for three weeks and they started when they said. That is the chair.",
+    bodyEs: "El fade aguantó tres semanas y empezaron cuando dijeron. Ese es el sillón.",
+  },
+  {
+    name: "Andre K.",
+    city: "Central Phoenix",
+    stars: 5,
+    body: "Hot-towel shave, no rush. I booked the same barber again from the site.",
+    bodyEs: "Afeitado con toalla caliente, sin prisa. Volví a agendar al mismo barbero desde el sitio.",
+  },
+  {
+    name: "Luis M.",
+    city: "Arcadia",
+    stars: 4,
+    body: "Straight talk on the complete reset. An hour in the chair and I left looking finished.",
+    bodyEs: "El reinicio completo, claro. Una hora en el sillón y salí terminado.",
+  },
+];
+
 export function shopLayoutReviews(
   client: { slug: string; template: TemplateId; sample?: boolean },
   preview: boolean,
 ) {
+  if (client.slug === SHARP_CUT_SLUG) return SHARP_CUT_REVIEWS;
   if (preview || client.sample || client.slug === PREMIUM_CARPENTRY_SLUG) {
     return DEMO_REVIEWS[client.template] ?? [];
   }

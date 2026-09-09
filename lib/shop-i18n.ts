@@ -14,7 +14,12 @@ const shop = {
     callShort: "Call",
     message: "Send a message",
     estimate: "Get a free estimate",
-    servicesTitle: (template: TemplateId) => {
+    bookChair: "Book a chair",
+    langNav: "Language",
+    sharpServicesLead:
+      "Pick a service and book a chair below — we only take the time that is on the card.",
+    servicesTitle: (template: TemplateId, slug?: string) => {
+      if (slug === "the-sharp-cut") return "The menu, in four sharp movements.";
       if (template === "restaurant") return "From the kitchen";
       if (template === "landscaping") return "Yard work";
       if (template === "handyman") return "Around the house";
@@ -71,7 +76,12 @@ const shop = {
     callShort: "Llamar",
     message: "Enviar un mensaje",
     estimate: "Pida un presupuesto gratis",
-    servicesTitle: (template: TemplateId) => {
+    bookChair: "Reserve un sillón",
+    langNav: "Idioma",
+    sharpServicesLead:
+      "Elija un servicio y reserve un sillón abajo — solo tomamos el tiempo que está en la tarjeta.",
+    servicesTitle: (template: TemplateId, slug?: string) => {
+      if (slug === "the-sharp-cut") return "El menú, en cuatro cortes.";
       if (template === "restaurant") return "De la cocina";
       if (template === "landscaping") return "Trabajo de jardín";
       if (template === "handyman") return "En la casa";

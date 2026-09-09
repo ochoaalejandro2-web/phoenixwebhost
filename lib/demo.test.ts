@@ -15,7 +15,13 @@ import {
   previewLeadId,
   siteHomeHref,
 } from "./demo.ts";
-import { SHOP_PHOTOS, SHOP_THEMES } from "./shop-content.ts";
+import {
+  SHOP_PHOTOS,
+  SHOP_THEMES,
+  SHARP_CUT_SLUG,
+  shopPhotosFor,
+  shopThemeFor,
+} from "./shop-content.ts";
 import type { Lead, TemplateId } from "./types.ts";
 
 function sampleLead(overrides: Partial<Lead> = {}): Lead {
@@ -206,6 +212,20 @@ test("contractor theme is sun-bright like the marketing site, not a dark cave", 
   assert.doesNotMatch(theme.page, /#111816|#1b2420/);
   assert.doesNotMatch(theme.overlay, /from-black/);
   assert.doesNotMatch(theme.call, /#c45c26/);
+});
+
+test("the sharp cut overlay is dark high-contrast and does not restyle Casa Luna", () => {
+  const sharp = shopThemeFor(SHARP_CUT_SLUG, "salon");
+  const salon = SHOP_THEMES.salon;
+  assert.match(sharp.call, /#e23b2c/);
+  assert.match(sharp.header, /#111111/);
+  assert.match(sharp.overlay, /from-black/);
+  assert.doesNotMatch(salon.call, /#e23b2c/);
+  assert.match(salon.call, /#9c4a6a/);
+  const photos = shopPhotosFor(SHARP_CUT_SLUG, "salon");
+  assert.match(photos.hero.src, /\/clients\/the-sharp-cut\//);
+  assert.equal(photos.gallery.length, 4);
+  assert.match(SHOP_PHOTOS.salon.hero.src, /\/templates\/salon\//);
 });
 
 test("each trade has a local hero photo and a four-photo gallery", () => {

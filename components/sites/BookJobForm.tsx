@@ -28,6 +28,31 @@ const copy = {
   },
 } as const;
 
+const sharpCut = {
+  en: {
+    title: "Book a chair",
+    lead: "Pick a day, leave your name and phone, and which service you want. We will call you back.",
+    name: "Name",
+    phone: "Phone",
+    day: "Day you want",
+    note: "Haircut, shave, beard, or the full reset",
+    send: "Request this chair",
+    thanks: "We have the request. We will call you back.",
+    missing: "Name, phone, and a day are required.",
+  },
+  es: {
+    title: "Reserve un sillón",
+    lead: "Elija un día, deje nombre y teléfono y el servicio que quiere. Lo llamamos.",
+    name: "Nombre",
+    phone: "Teléfono",
+    day: "Día que quiere",
+    note: "Corte, afeitado, barba o el reinicio completo",
+    send: "Pedir este sillón",
+    thanks: "Recibimos la solicitud. Lo llamamos.",
+    missing: "Se requieren nombre, teléfono y un día.",
+  },
+} as const;
+
 export function BookJobForm({
   slug,
   locale,
@@ -41,7 +66,7 @@ export function BookJobForm({
   fieldClass: string;
   buttonClass: string;
 }) {
-  const c = copy[locale];
+  const c = slug === "the-sharp-cut" ? sharpCut[locale] : copy[locale];
   const [status, setStatus] = useState<"idle" | "saving" | "sent" | "error">(
     "idle",
   );

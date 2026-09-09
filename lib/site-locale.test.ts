@@ -41,11 +41,14 @@ test("language cookie is per slug so shops do not share it", () => {
   );
 });
 
-test("i18n is on for Hola Tax and the tax-office template only", () => {
+test("i18n is on for Hola Tax, The Sharp Cut, and the tax-office template", () => {
   assert.equal(siteSupportsI18n("hola-tax-service"), true);
+  assert.equal(siteSupportsI18n("the-sharp-cut"), true);
+  assert.equal(siteSupportsI18n("the-sharp-cut", "salon"), true);
   assert.equal(siteSupportsI18n("desert-peak-roofing"), false);
   assert.equal(siteSupportsI18n("any-shop", "tax"), true);
   assert.equal(siteSupportsI18n("any-shop", "contractor"), false);
+  assert.equal(siteSupportsI18n("casa-luna-salon", "salon"), false);
   assert.equal(siteSupportsI18n("premium-carpentry-designs", "carpentry"), false);
 });
 

@@ -13,6 +13,8 @@ const WALK_IN_HOST_REWRITES: Array<{ host: string; slug: string }> = [
     slug: "desert-sparkle-cleaning",
   },
   { host: "casa-luna-salon.phoenixwebhost.com", slug: "casa-luna-salon" },
+  { host: "sharpcut.phoenixwebhost.com", slug: "the-sharp-cut" },
+  { host: "the-sharp-cut.phoenixwebhost.com", slug: "the-sharp-cut" },
   { host: "mesa-street-kitchen.phoenixwebhost.com", slug: "mesa-street-kitchen" },
 ];
 
