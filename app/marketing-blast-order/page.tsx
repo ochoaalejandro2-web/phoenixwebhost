@@ -264,7 +264,7 @@ const bodyHTML = `
         <div id="card-element" class="mb-1"></div>
         <p id="card-errors" class="text-red-500 text-sm mt-1 min-h-[20px]"></p>
 
-        <button type="button" id="payBtn" class="w-full mt-6 bg-brand hover:bg-brand-dark text-white font-bold py-4 rounded-xl text-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+        <button type="button" id="payBtn" class="w-full mt-6 bg-brand hover:bg-lime-deep text-white font-bold py-4 rounded-xl text-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
           <svg class="w-5 h-5 animate-spin hidden" id="paySpinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
           <span id="payBtnText">Pay Now</span>
         </button>
@@ -297,7 +297,7 @@ const bodyHTML = `
     <div class="flex items-center justify-between mt-8" id="navBtns">
       <button type="button" id="prevBtn" class="hidden px-6 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold hover:border-gray-400 transition">← Back</button>
       <div class="flex-1"></div>
-      <button type="button" id="nextBtn" class="px-8 py-3 rounded-xl bg-brand hover:bg-brand-dark text-white font-bold text-lg transition">Next →</button>
+      <button type="button" id="nextBtn" class="px-8 py-3 rounded-xl bg-brand hover:bg-lime-deep text-white font-bold text-lg transition">Next →</button>
     </div>
 
   </main>
@@ -636,9 +636,9 @@ export default function MarketingBlastOrderPage() {
     const tailwindScript = document.createElement('script');
     tailwindScript.src = 'https://cdn.tailwindcss.com';
     tailwindScript.onload = () => {
-      const configScript = document.createElement('script');
-      configScript.textContent = `
-        tailwind.config = {
+      const tw = (window as Window & { tailwind?: { config: Record<string, unknown> } }).tailwind;
+      if (tw) {
+        tw.config = {
           theme: {
             extend: {
               colors: {
@@ -649,9 +649,8 @@ export default function MarketingBlastOrderPage() {
               }
             }
           }
-        }
-      `;
-      document.head.appendChild(configScript);
+        };
+      }
 
       // Run page logic after Tailwind and DOM are ready
       const pageScript = document.createElement('script');

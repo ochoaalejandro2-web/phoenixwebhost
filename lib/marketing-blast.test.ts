@@ -14,6 +14,13 @@ function read(rel: (typeof blastFiles)[number]) {
 }
 
 test("marketing blast pages share the enriched site lime tokens", () => {
+  const theme = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.match(theme, /--brand-green: #00c851/);
+  assert.match(theme, /--brand-green-hover: #00b34a/);
+  assert.match(theme, /--brand-green-deep: #008738/);
+  assert.match(theme, /--brand-green-light: #d7f4e3/);
+  assert.match(theme, /--color-brand-green:/);
+
   for (const file of blastFiles) {
     const src = read(file);
     assert.match(src, /#00c851/, `${file} should use site lime #00c851`);

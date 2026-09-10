@@ -310,9 +310,9 @@ export default function MarketingBlastPage() {
     const tailwindScript = document.createElement('script');
     tailwindScript.src = 'https://cdn.tailwindcss.com';
     tailwindScript.onload = () => {
-      const configScript = document.createElement('script');
-      configScript.textContent = `
-        tailwind.config = {
+      const tw = (window as Window & { tailwind?: { config: Record<string, unknown> } }).tailwind;
+      if (tw) {
+        tw.config = {
           theme: {
             extend: {
               colors: {
@@ -337,9 +337,8 @@ export default function MarketingBlastPage() {
               }
             }
           }
-        }
-      `;
-      document.head.appendChild(configScript);
+        };
+      }
     };
     document.head.appendChild(tailwindScript);
   }, []);

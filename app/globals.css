@@ -9,6 +9,21 @@
   --sage: #3d5a4c;
   --mesa: #8b3a2a;
   --line: #e4dccf;
+  /* Marketing Blast — same lime as .studio / --color-lime, not pastel green-500 */
+  --brand: #00c851;
+  --brand-green: #00c851;
+  --brand-green-hover: #00b34a;
+  --brand-green-deep: #008738;
+  --brand-green-deep-hover: #006e2e;
+  --brand-green-light: #d7f4e3;
+  --brand-green-border: #6fc492;
+  --brand-dark: #111111;
+  --brand-nav: #0a0a0a;
+  --brand-muted: #6b7280;
+  --brand-subtle: #9ca3af;
+  --brand-border: #e5e7eb;
+  --brand-card-bg: #ffffff;
+  --brand-page-bg: #fafafa;
 }
 
 @theme inline {
@@ -26,6 +41,22 @@
   --color-lime: #00c851;
   --color-lime-deep: #00b34a;
   --color-header: #050505;
+  --color-brand: var(--brand);
+  --color-brand-green: var(--brand-green);
+  --color-brand-greenHover: var(--brand-green-hover);
+  --color-brand-greenDeep: var(--brand-green-deep);
+  --color-brand-greenDeepHover: var(--brand-green-deep-hover);
+  --color-brand-greenLight: var(--brand-green-light);
+  --color-brand-greenBorder: var(--brand-green-border);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-nav: var(--brand-nav);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-subtle: var(--brand-subtle);
+  --color-brand-border: var(--brand-border);
+  --color-brand-cardBg: var(--brand-card-bg);
+  --color-brand-pageBg: var(--brand-page-bg);
+  --color-brand-deep: var(--brand-green-deep);
+  --color-brand-light: var(--brand-green-light);
   --font-sans: var(--font-source);
   --font-display: var(--font-fraunces);
 }
