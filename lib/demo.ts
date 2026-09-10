@@ -1,3 +1,4 @@
+import { closerLeadNote } from "./closers.ts";
 import type {
   Client,
   DemoAccent,
@@ -494,7 +495,7 @@ export function buildClientFromLead(
   if (lead.closerCode) {
     notes.push({
       id: `note_${crypto.randomUUID()}`,
-      body: `Closer code ${lead.closerCode}. Pay them the $200 launch only after Stripe succeeds. Alex keeps $69/month and add-ons.`,
+      body: closerLeadNote(lead.closerCode),
       createdAt: new Date().toISOString(),
     });
   }

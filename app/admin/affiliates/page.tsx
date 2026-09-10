@@ -18,9 +18,12 @@ export default async function AffiliatesAdminPage() {
     <div>
       <h1 className="font-display text-3xl">Affiliates / closers</h1>
       <p className="mt-2 max-w-2xl text-ink-soft">
-        Unique sell links for people who send Phoenixwebhost customers. They
-        get the $200 launch only after Stripe succeeds. Alex keeps $69/month
-        and add-ons. No automatic Stripe payout.
+        Unique sell links for people who send Phoenixwebhost customers. After
+        Stripe succeeds, fulfill Missed-call text-back on the referrer’s own
+        account: 6 months free, then 1 year at 50% off. After that, $49 setup +
+        $29/month. Alex keeps monthly care and other add-ons from the new
+        customer. No automatic Stripe payout — apply the promo by hand. Not a
+        cash launch-fee payout.
       </p>
 
       <form
@@ -90,8 +93,10 @@ export default async function AffiliatesAdminPage() {
                 </p>
                 <p className="mt-2 text-sm text-ink-soft">
                   {demos.length} demo request{demos.length === 1 ? "" : "s"} ·{" "}
-                  {paid.length} paid checkout{paid.length === 1 ? "" : "s"} ·
-                  pay ${paid.length * 200} launch if Stripe already succeeded
+                  {paid.length} paid checkout{paid.length === 1 ? "" : "s"}
+                  {paid.length
+                    ? " · fulfill missed-call promo if Stripe already succeeded"
+                    : ""}
                 </p>
                 {demos.length ? (
                   <ul className="mt-3 space-y-1 text-sm">
@@ -110,7 +115,7 @@ export default async function AffiliatesAdminPage() {
                   <ul className="mt-3 space-y-1 text-sm">
                     {paid.map((client) => (
                       <li key={client.id}>
-                        Paid: {client.businessName} · $200 launch due to{" "}
+                        Paid: {client.businessName} · missed-call promo due to{" "}
                         {closer.name}
                       </li>
                     ))}

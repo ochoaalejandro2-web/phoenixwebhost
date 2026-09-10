@@ -35,7 +35,11 @@ import {
   updateLead,
   upsertClient,
 } from "@/lib/store";
-import { sanitizeCloserCode, launchSoldNote } from "@/lib/closers";
+import {
+  sanitizeCloserCode,
+  launchSoldNote,
+  isCloserSoldNote,
+} from "@/lib/closers";
 import { getStripe } from "@/lib/stripe";
 import type { Client } from "@/lib/types";
 
@@ -422,7 +426,7 @@ async function applyCloserSold(
   const closerCode = sanitizeCloserCode(code) || sanitizeCloserCode(client.closerCode);
   if (!closerCode) return client;
   if (client.closerCode === closerCode) {
-    if (client.notes.some((row) => row.body.includes("Pay them the $200 launch"))) {
+    if (client.notes.some((row) => isCloserSoldNote(row.body))) {
       return client;
     }
   }

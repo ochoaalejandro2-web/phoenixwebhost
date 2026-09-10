@@ -268,10 +268,15 @@ export const copy = {
     extrasPick: "Pick this extra",
     affiliatesTitle: "Sell Phoenixwebhost",
     affiliatesLead:
-      "If you send a customer who pays, Alex pays you the launch fee for that package (Pro is $200). He keeps the monthly care and any add-ons.",
+      "When you refer a customer who pays, you receive Missed-call text-back as a product gift on your own Phoenixwebhost account. It is a service credit for your business — not a cash payout. Alex keeps monthly care and other add-ons from the new customer.",
+    affiliatesRewardTitle: "What you receive",
+    affiliatesRewardFree: "6 months of Missed-call text-back at no charge",
+    affiliatesRewardHalf: "Then 1 year at 50% off the normal monthly rate",
+    affiliatesRewardAfter:
+      "After that promo, regular pricing applies: $49 setup + $29/month",
     affiliatesPayTitle: "How it pays",
     affiliatesPayBody:
-      "You get the launch fee only after Stripe payment succeeds. There is no automatic payout from Stripe. Alex records who sold it and pays you. Monthly hosting and extras stay with Phoenixwebhost. Pro launch is $200.",
+      "The gift is fulfilled only after the referred customer’s Stripe payment succeeds. Stripe does not send an automatic payout. Alex records your unique affiliate link and applies the missed-call promo on your account by hand.",
     affiliatesLinkTitle: "How to get a link",
     affiliatesLinkBody:
       "Call or email Alex. He adds you in the owner panel and gives you a unique URL. Anyone who opens that link is tied to you for the demo request and the paid checkout.",
@@ -619,10 +624,15 @@ export const copy = {
     extrasPick: "Elegir este extra",
     affiliatesTitle: "Venda Phoenixwebhost",
     affiliatesLead:
-      "Si manda un cliente que paga, Alex le paga el lanzamiento de ese paquete (Pro es $200). Él se queda con el cuidado mensual y los extras.",
-    affiliatesPayTitle: "Cómo se paga",
+      "Cuando recomienda a un cliente que paga, usted recibe Texto si no contestan como un regalo de producto en su propia cuenta de Phoenixwebhost. Es un crédito de servicio para su negocio, no un pago en efectivo. Alex se queda con el cuidado mensual y los demás extras del cliente nuevo.",
+    affiliatesRewardTitle: "Qué recibe",
+    affiliatesRewardFree: "6 meses de Texto si no contestan sin cargo",
+    affiliatesRewardHalf: "Luego 1 año al 50% de la tarifa mensual normal",
+    affiliatesRewardAfter:
+      "Después de esa promoción, aplica el precio regular: $49 de instalación + $29 al mes",
+    affiliatesPayTitle: "Cómo se entrega",
     affiliatesPayBody:
-      "Recibe el lanzamiento solo después de que Stripe cobre. No hay pago automático desde Stripe. Alex anota quién lo vendió y le paga. El hospedaje mensual y los extras se quedan con Phoenixwebhost. El lanzamiento Pro es $200.",
+      "El crédito se aplica solo después de que el pago Stripe del cliente recomendado se complete. Stripe no envía un pago automático. Alex anota su enlace de afiliado y activa la promoción de Texto si no contestan en su cuenta a mano.",
     affiliatesLinkTitle: "Cómo obtener un enlace",
     affiliatesLinkBody:
       "Llame o escriba a Alex. Él lo agrega en el panel y le da una URL única. Quien abra ese enlace queda ligado a usted en la demo y en el pago.",

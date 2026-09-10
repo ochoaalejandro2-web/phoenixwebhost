@@ -23,6 +23,16 @@ export function AffiliatesPage({ locale }: { locale: Locale }) {
         <p className="mt-6 text-lg leading-relaxed text-body">{c.affiliatesLead}</p>
         <section className="mt-14">
           <h2 className="font-display text-2xl text-ink-black">
+            {c.affiliatesRewardTitle}
+          </h2>
+          <ul className="mt-4 list-disc space-y-2 pl-5 leading-relaxed text-body">
+            <li>{c.affiliatesRewardFree}</li>
+            <li>{c.affiliatesRewardHalf}</li>
+            <li>{c.affiliatesRewardAfter}</li>
+          </ul>
+        </section>
+        <section className="mt-12">
+          <h2 className="font-display text-2xl text-ink-black">
             {c.affiliatesPayTitle}
           </h2>
           <p className="mt-4 leading-relaxed text-body">{c.affiliatesPayBody}</p>
