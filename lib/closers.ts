@@ -57,5 +57,16 @@ export function closerCookieOptions(secure: boolean) {
 }
 
 export function launchSoldNote(label: string) {
-  return `Sold by ${label}. Pay them the $200 launch after Stripe succeeded. Alex keeps $69/month and add-ons. Do not auto-payout.`;
+  return `Sold by ${label}. After Stripe succeeded, fulfill Missed-call text-back on the referrer’s Phoenixwebhost account: 6 months free, then 1 year at 50% off. After that, $49 setup + $29/month. Alex keeps monthly care and other add-ons from the new customer. Do not auto-payout — not a cash launch-fee payout.`;
+}
+
+export function closerLeadNote(code: string) {
+  return `Closer code ${code}. After Stripe succeeds, fulfill Missed-call text-back on the referrer’s Phoenixwebhost account: 6 months free, then 1 year at 50% off. Alex keeps monthly care and other add-ons. Not a cash launch-fee payout.`;
+}
+
+export function isCloserSoldNote(body: string) {
+  return (
+    body.includes("Pay them the $200 launch") ||
+    body.includes("fulfill Missed-call text-back")
+  );
 }
