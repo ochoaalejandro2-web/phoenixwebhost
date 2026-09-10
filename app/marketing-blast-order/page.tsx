@@ -20,7 +20,7 @@ const bodyHTML = `
   </nav>
 
   <!-- MAIN -->
-  <main class="flex-1 max-w-3xl mx-auto w-full px-4 py-8">
+  <main class="flex-1 max-w-3xl mx-auto w-full px-4 pt-12 sm:pt-16 pb-8">
 
     <!-- HEADER -->
     <div class="text-center mb-8">
@@ -83,7 +83,7 @@ const bodyHTML = `
           </div>
           <div>
             <input type="radio" name="service" id="svc-bundle" value="bundle" class="hidden peer" checked>
-            <label for="svc-bundle" class="radio-card block border-2 border-brand rounded-xl p-4 relative overflow-hidden bg-green-50">
+            <label for="svc-bundle" class="radio-card block border-2 border-brand rounded-xl p-4 relative overflow-hidden bg-brand-light">
               <span class="absolute top-0 right-0 bg-brand text-white text-[10px] font-bold uppercase px-3 py-0.5 rounded-bl-lg">Best Value</span>
               <div class="flex items-center justify-between">
                 <div>
@@ -104,7 +104,7 @@ const bodyHTML = `
             <input type="checkbox" id="addonConfirmation" class="mt-1 w-5 h-5 accent-brand rounded">
             <div>
               <span class="font-semibold">✅ Appointment Confirmation Calls</span>
-              <p class="text-sm text-gray-500 mt-0.5">$49 one-time setup + $29/month recurring</p>
+              <p class="text-sm font-semibold text-gray-700 mt-0.5">$49 setup, then $29/mo · cancel anytime</p>
             </div>
           </label>
         </div>
@@ -238,7 +238,7 @@ const bodyHTML = `
         </div>
 
         <!-- PRIVACY DISCLOSURE -->
-        <div class="mt-8 bg-green-50 border border-green-200 rounded-xl p-5">
+        <div class="mt-8 bg-brand-light border border-brand/30 rounded-xl p-5">
           <p class="font-bold text-sm mb-2">🔒 Your Privacy is Protected</p>
           <p class="text-sm text-gray-600 leading-relaxed">Phoenixwebhost Inc. will never sell, share, or disclose your contact list or customer data to any third party. Your list is used solely to execute your campaign and is permanently deleted after delivery. By proceeding, you agree to our terms of service.</p>
           <label class="flex items-start gap-2 mt-4 cursor-pointer">
@@ -264,7 +264,7 @@ const bodyHTML = `
         <div id="card-element" class="mb-1"></div>
         <p id="card-errors" class="text-red-500 text-sm mt-1 min-h-[20px]"></p>
 
-        <button type="button" id="payBtn" class="w-full mt-6 bg-brand hover:bg-brand-dark text-white font-bold py-4 rounded-xl text-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+        <button type="button" id="payBtn" class="w-full mt-6 bg-brand hover:bg-lime-deep text-white font-bold py-4 rounded-xl text-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
           <svg class="w-5 h-5 animate-spin hidden" id="paySpinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
           <span id="payBtnText">Pay Now</span>
         </button>
@@ -297,7 +297,7 @@ const bodyHTML = `
     <div class="flex items-center justify-between mt-8" id="navBtns">
       <button type="button" id="prevBtn" class="hidden px-6 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold hover:border-gray-400 transition">← Back</button>
       <div class="flex-1"></div>
-      <button type="button" id="nextBtn" class="px-8 py-3 rounded-xl bg-brand hover:bg-brand-dark text-white font-bold text-lg transition">Next →</button>
+      <button type="button" id="nextBtn" class="px-8 py-3 rounded-xl bg-brand hover:bg-lime-deep text-white font-bold text-lg transition">Next →</button>
     </div>
 
   </main>
@@ -504,11 +504,11 @@ const inlineScript = `
     browseLink.addEventListener('click', () => fileUpload.click());
     dropZone.addEventListener('click', () => fileUpload.click());
 
-    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('border-brand', 'bg-green-50'); });
-    dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-brand', 'bg-green-50'); });
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('border-brand', 'bg-brand-light'); });
+    dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-brand', 'bg-brand-light'); });
     dropZone.addEventListener('drop', e => {
       e.preventDefault();
-      dropZone.classList.remove('border-brand', 'bg-green-50');
+      dropZone.classList.remove('border-brand', 'bg-brand-light');
       if (e.dataTransfer.files.length) {
         fileUpload.files = e.dataTransfer.files;
         handleFile(e.dataTransfer.files[0]);
@@ -636,20 +636,21 @@ export default function MarketingBlastOrderPage() {
     const tailwindScript = document.createElement('script');
     tailwindScript.src = 'https://cdn.tailwindcss.com';
     tailwindScript.onload = () => {
-      const configScript = document.createElement('script');
-      configScript.textContent = `
-        tailwind.config = {
+      const tw = (window as Window & { tailwind?: { config: Record<string, unknown> } }).tailwind;
+      if (tw) {
+        tw.config = {
           theme: {
             extend: {
               colors: {
-                brand: '#22c55e',
-                'brand-dark': '#16a34a',
+                brand: '#00c851',
+                'brand-dark': '#00b34a',
+                'brand-deep': '#008738',
+                'brand-light': '#d7f4e3',
               }
             }
           }
-        }
-      `;
-      document.head.appendChild(configScript);
+        };
+      }
 
       // Run page logic after Tailwind and DOM are ready
       const pageScript = document.createElement('script');
@@ -676,17 +677,18 @@ export default function MarketingBlastOrderPage() {
           background: #fff;
           transition: border-color 0.15s;
         }
-        .StripeElement--focus { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.15); }
+        .StripeElement--focus { border-color: #00c851; box-shadow: 0 0 0 3px rgba(0,200,81,0.18); }
         .StripeElement--invalid { border-color: #ef4444; }
         input[type="radio"]:checked + label,
-        input[type="radio"]:checked + label > div { border-color: #22c55e !important; background: #f0fdf4 !important; }
-        .step-active { background: #22c55e; color: #fff; }
-        .step-done { background: #22c55e; color: #fff; }
+        input[type="radio"]:checked + label > div { border-color: #00c851 !important; background: #d7f4e3 !important; }
+        .step-active { background: #00c851; color: #fff; }
+        .step-done { background: #00c851; color: #fff; }
         .step-pending { background: #e5e7eb; color: #6b7280; }
         .fade-in { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .radio-card { cursor: pointer; transition: all 0.15s; }
-        .radio-card:hover { border-color: #22c55e; }
+        .radio-card:hover { border-color: #00c851; }
+        html { scroll-padding-top: 5rem; }
       `}</style>
       <div
         className="bg-white text-gray-900 min-h-screen flex flex-col"

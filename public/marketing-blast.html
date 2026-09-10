@@ -11,10 +11,12 @@
         extend: {
           colors: {
             brand: {
-              green: '#22c55e',
-              greenHover: '#16a34a',
-              greenLight: '#f0fdf4',
-              greenBorder: '#bbf7d0',
+              green: '#00c851',
+              greenHover: '#00b34a',
+              greenDeep: '#008738',
+              greenDeepHover: '#006e2e',
+              greenLight: '#d7f4e3',
+              greenBorder: '#6fc492',
               dark: '#111111',
               nav: '#0a0a0a',
               muted: '#6b7280',
@@ -36,19 +38,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-    .green-glow { box-shadow: 0 4px 20px rgba(34,197,94,0.25); }
-    .green-glow:hover { box-shadow: 0 6px 30px rgba(34,197,94,0.4); }
+    .green-glow { box-shadow: 0 4px 20px rgba(0,200,81,0.32); }
+    .green-glow:hover { box-shadow: 0 6px 30px rgba(0,200,81,0.48); }
+    .campaign-glow { box-shadow: 0 4px 16px rgba(0,135,56,0.28); }
+    .campaign-glow:hover { box-shadow: 0 6px 24px rgba(0,135,56,0.4); }
     .card-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
     .card-lift:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
     .pricing-row:hover { background: #f9fafb; }
     .badge-glow { animation: glow 2s ease-in-out infinite; }
     @keyframes glow {
-      0%, 100% { box-shadow: 0 0 8px rgba(34,197,94,0.25); }
-      50% { box-shadow: 0 0 16px rgba(34,197,94,0.45); }
+      0%, 100% { box-shadow: 0 0 8px rgba(0,200,81,0.28); }
+      50% { box-shadow: 0 0 16px rgba(0,200,81,0.5); }
     }
     details summary::-webkit-details-marker { display: none; }
     details summary { list-style: none; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
   </style>
 </head>
 <body class="bg-white text-brand-dark min-h-screen">
@@ -72,7 +76,7 @@
 
   <main>
     <!-- HERO -->
-    <section class="pt-16 sm:pt-24 pb-10 sm:pb-14 px-4 sm:px-6 bg-white">
+    <section class="pt-24 sm:pt-32 pb-10 sm:pb-14 px-4 sm:px-6 bg-white">
       <div class="max-w-3xl mx-auto text-center">
         <div class="inline-flex items-center gap-2 bg-brand-greenLight text-brand-green text-xs font-semibold px-4 py-1.5 rounded-full mb-6 tracking-wide uppercase border border-brand-greenBorder">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
@@ -90,10 +94,10 @@
 
     <!-- PRODUCT CARDS -->
     <section class="pb-20 sm:pb-28 px-4 sm:px-6">
-      <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+      <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
 
         <!-- CARD 1: Appointment Confirmation Calls -->
-        <div class="card-lift rounded-2xl bg-white border-2 border-brand-green/20 p-6 sm:p-8 flex flex-col relative shadow-sm">
+        <div class="card-lift rounded-2xl bg-white border-2 border-brand-green/20 p-6 sm:p-8 flex flex-col h-full relative shadow-sm">
           <!-- Badge -->
           <div class="absolute -top-3.5 left-6 sm:left-8">
             <span class="badge-glow inline-flex items-center gap-1.5 bg-brand-green text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wide">
@@ -120,12 +124,13 @@
                 <span class="text-sm text-brand-muted ml-1">one-time</span>
               </div>
               <div class="border-l border-brand-border pl-6">
-                <span class="text-xs text-brand-subtle uppercase tracking-wide font-medium block mb-1">Monthly</span>
-                <span class="text-2xl font-bold text-brand-green">$29</span>
-                <span class="text-sm text-brand-muted ml-1">/mo</span>
+                <span class="text-xs text-brand-green uppercase tracking-wide font-semibold block mb-1">Monthly</span>
+                <span class="text-2xl font-extrabold text-brand-green">$29</span>
+                <span class="text-sm text-brand-dark font-semibold ml-1">/mo</span>
               </div>
             </div>
             <div class="mt-3 pt-3 border-t border-brand-border">
+              <p class="text-sm font-semibold text-brand-dark mb-1.5">then $29/mo · cancel anytime</p>
               <span class="text-sm text-brand-muted">Includes <strong class="text-brand-dark">100 calls/mo</strong> · extra calls <strong class="text-brand-dark">$0.25 each</strong></span>
             </div>
           </div>
@@ -155,12 +160,12 @@
           </ul>
 
           <!-- CTA -->
-          <div class="text-center">
+          <div class="text-center mt-auto">
             <a href="#contact" class="green-glow inline-flex items-center justify-center w-full gap-2 bg-brand-green hover:bg-brand-greenHover text-white font-bold text-base px-6 py-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02]">
               Add Confirmation Calls — $49 now
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
             </a>
-            <p class="text-xs text-brand-subtle mt-3">then $29/month · cancel anytime</p>
+            <p class="text-sm font-semibold text-brand-dark mt-3">then $29/mo · cancel anytime</p>
             <a href="#contact" class="inline-flex items-center gap-1.5 text-sm text-brand-green hover:text-brand-greenHover font-medium mt-3 transition-colors group">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               Try a live demo
@@ -170,9 +175,9 @@
         </div>
 
         <!-- CARD 2: Marketing Campaign Blasts -->
-        <div class="card-lift rounded-2xl bg-white border border-brand-border p-6 sm:p-8 flex flex-col shadow-sm">
+        <div class="card-lift rounded-2xl bg-white border border-brand-border p-6 sm:p-8 flex flex-col h-full shadow-sm">
           <!-- Icon + Title -->
-          <div class="mb-5">
+          <div class="mt-4 mb-5">
             <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center mb-4">
               <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
             </div>
@@ -246,12 +251,12 @@
           </ul>
 
           <!-- CTA -->
-          <div class="text-center">
-            <a href="#contact" class="inline-flex items-center justify-center w-full gap-2 bg-brand-dark hover:bg-gray-800 text-white font-bold text-base px-6 py-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02]">
+          <div class="text-center mt-auto">
+            <a href="#contact" class="campaign-glow inline-flex items-center justify-center w-full gap-2 bg-brand-greenDeep hover:bg-brand-greenDeepHover text-white font-bold text-base px-6 py-4 rounded-xl border-2 border-brand-green/45 transition-all duration-200 transform hover:scale-[1.02]">
               Start a Campaign
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
             </a>
-            <p class="text-xs text-brand-subtle mt-3">Priced per 1,000 contacts · no monthly fee</p>
+            <p class="text-sm font-medium text-brand-muted mt-3">Priced per 1,000 contacts · no monthly fee</p>
           </div>
         </div>
 
@@ -317,7 +322,7 @@
     </section>
 
     <!-- CONTACT CTA -->
-    <section id="contact" class="py-16 sm:py-20 px-4 sm:px-6 border-t border-brand-border bg-brand-pageBg">
+    <section id="contact" class="scroll-mt-28 py-16 sm:py-20 px-4 sm:px-6 border-t border-brand-border bg-brand-pageBg">
       <div class="max-w-2xl mx-auto text-center">
         <div class="w-14 h-14 rounded-2xl bg-brand-greenLight border border-brand-greenBorder flex items-center justify-center mx-auto mb-6">
           <svg class="w-7 h-7 text-brand-green" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
