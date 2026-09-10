@@ -5,6 +5,7 @@ import {
   applySeedDemoBookJob,
   mergeMissingBySlug,
   refreshDesertSparkleDemoCopy,
+  refreshHolaTaxContactPhone,
   refreshPaFinancialArizonaCopy,
   refreshPaFinancialListedOfferings,
   restoreMesaStreetKitchenDemo,
@@ -236,6 +237,52 @@ test("stale P&A Financial services and black/weak logos refresh from seed", () =
     "Hola stays.",
   );
   assert.equal(refreshPaFinancialListedOfferings(next.items, seed).added, false);
+});
+
+test("Hola Tax seed lists the current Phoenix office phone", () => {
+  const src = readFileSync(new URL("../data/seed.ts", import.meta.url), "utf8");
+  const start = src.indexOf('id: "cli_hola_tax"');
+  assert.ok(start > 0);
+  const end = src.indexOf('id: "cli_pa_financial"', start);
+  const chunk = src.slice(start, end > start ? end : start + 2800);
+  assert.match(chunk, /slug: "hola-tax-service"/);
+  assert.match(chunk, /phone: "\(602\) 900-6441"/);
+  assert.match(chunk, /Call \(602\) 900-6441/);
+  assert.doesNotMatch(chunk, /545-3308/);
+});
+
+test("stale Hola Tax office phone is swapped from seed without touching other clients", () => {
+  const seed = [
+    {
+      slug: "hola-tax-service",
+      phone: "(602) 900-6441",
+      about: "Visit us at 1327 E Northern Ave. Call (602) 900-6441.",
+    },
+    { slug: "pa-financial", phone: "(602) 554-7507", about: "P&A stays." },
+  ];
+  const stale = [
+    {
+      slug: "hola-tax-service",
+      phone: "(602) 545-3308",
+      about: "Visit us at 1327 E Northern Ave. Call (602) 545-3308.",
+    },
+    { slug: "pa-financial", phone: "(602) 554-7507", about: "P&A stays." },
+  ];
+  const next = refreshHolaTaxContactPhone(stale, seed);
+  assert.equal(next.added, true);
+  const hola = next.items.find((row) => row.slug === "hola-tax-service");
+  assert.equal(hola?.phone, "(602) 900-6441");
+  assert.match(String(hola?.about), /\(602\) 900-6441/);
+  assert.equal(String(hola?.about).includes("545-3308"), false);
+  assert.equal(
+    next.items.find((row) => row.slug === "pa-financial")?.phone,
+    "(602) 554-7507",
+  );
+  assert.equal(
+    next.items.find((row) => row.slug === "pa-financial")?.about,
+    "P&A stays.",
+  );
+  assert.equal(refreshHolaTaxContactPhone(next.items, seed).added, false);
 });
 
 test("the sharp cut seed is a live paid Phoenix barber demo on the salon template", () => {

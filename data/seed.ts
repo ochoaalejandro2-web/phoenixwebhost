@@ -3,6 +3,7 @@ import {
   applySeedDemoBookJob,
   mergeMissingBySlug,
   refreshDesertSparkleDemoCopy,
+  refreshHolaTaxContactPhone,
   refreshPaFinancialArizonaCopy,
   refreshPaFinancialListedOfferings,
   restoreMesaStreetKitchenDemo,
@@ -452,13 +453,13 @@ function demoClients(): Client[] {
       slug: "hola-tax-service",
       contactName: "Hola Tax Service",
       email: "info@holataxservice.example",
-      phone: "(602) 545-3308",
+      phone: "(602) 900-6441",
       address: "1327 E Northern Ave, Phoenix, AZ 85020",
       city: "Phoenix, AZ",
       hours: "Mon 10am–7pm; Tue closed; Wed–Sat 10am–7pm; Sun closed",
       tagline: "Personal & small-business tax preparation in Phoenix",
       about:
-        "Hola Tax Service prepares personal and small-business taxes in Phoenix, helps with Arizona LLC paperwork, and does monthly bookkeeping for one person running one small business. Visit us at 1327 E Northern Ave. Call (602) 545-3308.",
+        "Hola Tax Service prepares personal and small-business taxes in Phoenix, helps with Arizona LLC paperwork, and does monthly bookkeeping for one person running one small business. Visit us at 1327 E Northern Ave. Call (602) 900-6441.",
       services: [
         "Personal tax preparation",
         "Small-business tax preparation",
@@ -571,17 +572,19 @@ export function mergeMissingSeedClients(state: AppState): {
   const sparkle = refreshDesertSparkleDemoCopy(restored.items, seed);
   const pa = refreshPaFinancialArizonaCopy(sparkle.items, seed);
   const offerings = refreshPaFinancialListedOfferings(pa.items, seed);
+  const hola = refreshHolaTaxContactPhone(offerings.items, seed);
   if (
     !missing.added &&
     !flags.added &&
     !restored.added &&
     !sparkle.added &&
     !pa.added &&
-    !offerings.added
+    !offerings.added &&
+    !hola.added
   ) {
     return { state, added: false };
   }
-  return { state: { ...state, clients: offerings.items }, added: true };
+  return { state: { ...state, clients: hola.items }, added: true };
 }
 
 export function createSeedState(): AppState {

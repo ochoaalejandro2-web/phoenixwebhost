@@ -8,7 +8,7 @@ test("Hola Tax SEO is the tax office, not Phoenixwebhost marketing", () => {
   const seo = holaTaxSeo("en");
   assert.equal(seo.brand, "Hola Tax Service");
   assert.equal(seo.title, "Hola Tax Service — Tax preparation in Phoenix");
-  assert.match(seo.description, /602\) 545-3308/);
+  assert.match(seo.description, /602\) 900-6441/);
   assert.match(seo.description, /1327 E Northern Ave/);
   assert.match(seo.description, /bookkeeping/i);
   assert.equal(seo.description.includes("$199"), false);

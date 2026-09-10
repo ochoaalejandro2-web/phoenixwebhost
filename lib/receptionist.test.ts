@@ -95,7 +95,7 @@ const holaTax = client({
   businessName: "Hola Tax Service LLC",
   slug: "hola-tax-service",
   template: "tax",
-  phone: "(602) 545-3308",
+  phone: "(602) 900-6441",
   address: "1327 E Northern Ave, Phoenix, AZ 85020",
   city: "Phoenix, AZ",
   hours: "Mon 10am–7pm; Tue closed; Wed–Sat 10am–7pm; Sun closed",
@@ -327,7 +327,7 @@ test("fallback answers Hola Tax LLC questions and follows Spanish", () => {
   const en = buildClientFacts(holaTax, "en");
   const llc = fallbackAnswer(en, "do you do LLCs?");
   assert.match(llc, /LLC/i);
-  assert.match(llc, /\(602\) 545-3308/);
+  assert.match(llc, /\(602\) 900-6441/);
   assert.equal(llc.includes(COMPANY.phone), false);
   assert.equal(/\$\d/.test(llc), false);
 
@@ -349,7 +349,7 @@ test("fallback answers Hola Tax bookkeeping at $199 for a solo owner", () => {
 
   const books = fallbackAnswer(en, "do you do bookkeeping?");
   assert.match(books, /Bookkeeping/i);
-  assert.match(books, /\(602\) 545-3308/);
+  assert.match(books, /\(602\) 900-6441/);
   assert.equal(books.includes(COMPANY.phone), false);
   assert.equal(/\$200|\$69/.test(books), false);
 
@@ -462,7 +462,7 @@ test("missing OIDC or a failed Gateway call falls back to site facts, never unav
   });
   assert.equal(failed.source, "facts");
   assert.match(failed.reply, /LLC/i);
-  assert.match(failed.reply, /\(602\) 545-3308/);
+  assert.match(failed.reply, /\(602\) 900-6441/);
   assert.equal(/unavailable/i.test(failed.reply), false);
 
   const empty = await answerReceptionist({

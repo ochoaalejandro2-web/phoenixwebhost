@@ -1,6 +1,8 @@
 export const MESA_STREET_KITCHEN_SLUG = "mesa-street-kitchen";
 export const DESERT_SPARKLE_SLUG = "desert-sparkle-cleaning";
 export const PA_FINANCIAL_SEED_SLUG = "pa-financial";
+export const HOLA_TAX_SEED_SLUG = "hola-tax-service";
+const HOLA_TAX_STALE_PHONE = "(602) 545-3308";
 
 export function mergeMissingBySlug<T extends { slug: string }>(
   existing: T[],
@@ -155,6 +157,34 @@ export function refreshPaFinancialArizonaCopy<
       ...client,
       ...(cityNeedsSwap ? { city: fresh.city } : {}),
       ...(aboutNeedsSwap ? { about: fresh.about } : {}),
+    };
+  });
+  return { items, added };
+}
+
+/** Existing Hola Tax rows keep the retired office phone until seed refresh. */
+export function refreshHolaTaxContactPhone<
+  T extends { slug: string; phone?: string; about?: string },
+>(existing: T[], seed: T[]): { items: T[]; added: boolean } {
+  const fresh = seed.find((row) => row.slug === HOLA_TAX_SEED_SLUG);
+  if (!fresh) return { items: existing, added: false };
+  let added = false;
+  const items = existing.map((client) => {
+    if (client.slug !== HOLA_TAX_SEED_SLUG) return client;
+    const phoneNeedsSwap =
+      typeof client.phone === "string" &&
+      (client.phone.includes(HOLA_TAX_STALE_PHONE) ||
+        client.phone.replace(/\D/g, "") === "6025453308");
+    const aboutNeedsSwap =
+      typeof client.about === "string" &&
+      (client.about.includes(HOLA_TAX_STALE_PHONE) ||
+        client.about.includes("6025453308"));
+    if (!phoneNeedsSwap && !aboutNeedsSwap) return client;
+    added = true;
+    return {
+      ...client,
+      ...(phoneNeedsSwap && fresh.phone ? { phone: fresh.phone } : {}),
+      ...(aboutNeedsSwap && fresh.about ? { about: fresh.about } : {}),
     };
   });
   return { items, added };

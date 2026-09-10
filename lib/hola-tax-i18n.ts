@@ -110,7 +110,7 @@ export const holaTaxCopy = {
     },
     tagline: "Personal & small-business tax preparation in Phoenix",
     about:
-      "Hola Tax Service prepares personal and small-business taxes in Phoenix, helps with Arizona LLC paperwork, and does monthly bookkeeping for one person running one small business. Visit us at 1327 E Northern Ave. Call (602) 545-3308.",
+      "Hola Tax Service prepares personal and small-business taxes in Phoenix, helps with Arizona LLC paperwork, and does monthly bookkeeping for one person running one small business. Visit us at 1327 E Northern Ave. Call (602) 900-6441.",
   },
   es: {
     servicesTitle: "Cómo le ayudamos",
@@ -166,7 +166,7 @@ export const holaTaxCopy = {
     },
     tagline: "Preparación de impuestos personales y de negocios pequeños en Phoenix",
     about:
-      "Hola Tax Service prepara impuestos personales y de negocios pequeños en Phoenix, ayuda con el papeleo de LLC en Arizona, y lleva la contabilidad mensual para una persona con un negocio pequeño. Visítenos en 1327 E Northern Ave. Llame al (602) 545-3308.",
+      "Hola Tax Service prepara impuestos personales y de negocios pequeños en Phoenix, ayuda con el papeleo de LLC en Arizona, y lleva la contabilidad mensual para una persona con un negocio pequeño. Visítenos en 1327 E Northern Ave. Llame al (602) 900-6441.",
   },
 } as const;
 

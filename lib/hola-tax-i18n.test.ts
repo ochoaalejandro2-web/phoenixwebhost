@@ -168,6 +168,10 @@ test("Hola Tax bookkeeping is $199/month for one solo small business", () => {
     assert.equal(blob.includes("$199"), true);
     assert.equal(blob.includes("$349"), true);
   }
-  assert.match(tHolaTax("en").ctaCallOrText("(602) 545-3308"), /Call or text/);
-  assert.match(tHolaTax("es").ctaCallOrText("(602) 545-3308"), /texto/);
+  assert.match(tHolaTax("en").ctaCallOrText("(602) 900-6441"), /Call or text/);
+  assert.match(tHolaTax("es").ctaCallOrText("(602) 900-6441"), /texto/);
+  assert.match(tHolaTax("en").about, /\(602\) 900-6441/);
+  assert.match(tHolaTax("es").about, /\(602\) 900-6441/);
+  assert.equal(tHolaTax("en").about.includes("545-3308"), false);
+  assert.equal(tHolaTax("es").about.includes("545-3308"), false);
 });
